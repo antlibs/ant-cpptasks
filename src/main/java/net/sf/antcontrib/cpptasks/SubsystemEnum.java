@@ -29,6 +29,6 @@ public final class SubsystemEnum extends EnumeratedAttribute {
         setValue("gui");
     }
     public String[] getValues() {
-        return (String[]) values.clone();
+        return values;
     }
 }
