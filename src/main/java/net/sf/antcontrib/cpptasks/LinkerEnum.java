@@ -25,6 +25,7 @@ import net.sf.antcontrib.cpptasks.gcc.GccLinker;
 import net.sf.antcontrib.cpptasks.gcc.GppLinker;
 import net.sf.antcontrib.cpptasks.gcc.LdLinker;
 import net.sf.antcontrib.cpptasks.hp.aCCLinker;
+import net.sf.antcontrib.cpptasks.hp.HPLinker;
 import net.sf.antcontrib.cpptasks.ibm.VisualAgeLinker;
 import net.sf.antcontrib.cpptasks.intel.IntelLinux32Linker;
 import net.sf.antcontrib.cpptasks.intel.IntelLinux64Linker;
@@ -72,6 +73,7 @@ public class LinkerEnum extends EnumeratedAttribute {
             new ProcessorEnumValue("armcpp", ADSLinker.getInstance()),
             new ProcessorEnumValue("tcc", ADSLinker.getInstance()),
             new ProcessorEnumValue("tcpp", ADSLinker.getInstance()),
+            new ProcessorEnumValue("hp", HPLinker.getInstance()),
             // gcc cross compilers
             new ProcessorEnumValue(
                     "sparc-sun-solaris2-gcc",
