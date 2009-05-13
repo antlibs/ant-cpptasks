@@ -75,10 +75,7 @@ public final class XlcLinker extends AbstractLdLinker
     private XlcLinker(String command, String[] extensions,
         String[] ignoredExtensions, String outputPrefix,
         String outputSuffix) {
-        //
-        //  just guessing that -? might display something useful
-        //
-        super(command, "-?", extensions, ignoredExtensions,
+        super(command, "-qversion", extensions, ignoredExtensions,
           outputPrefix, outputSuffix,false,null);
     }
 

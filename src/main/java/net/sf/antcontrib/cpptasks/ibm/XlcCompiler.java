@@ -73,7 +73,7 @@ public final class XlcCompiler extends GccCompatibleCCompiler {
 	 * singleton instance of this class.
 	 */
 	private XlcCompiler(String command, boolean newEnvironment, Environment env) {
-		super(command, "-help", false, null, newEnvironment, env);
+		super(command, "-qversion", false, null, newEnvironment, env);
 	}
 
     public int getMaximumCommandLength() {
