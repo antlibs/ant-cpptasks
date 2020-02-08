@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,30 +15,33 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.devstudio;
+
 import net.sf.antcontrib.cpptasks.compiler.AbstractProcessor;
 import net.sf.antcontrib.cpptasks.compiler.TestAbstractLinker;
 import org.apache.tools.ant.taskdefs.condition.Os;
+
 /**
  * Test for Microsoft Developer Studio linker
- * 
+ * <p>
  * Override create to test concrete compiler implementions
  */
 public class TestDevStudioLinker extends TestAbstractLinker {
     public TestDevStudioLinker(String name) {
         super(name);
     }
+
     protected AbstractProcessor create() {
         return DevStudioLinker.getInstance();
     }
+
     public void testGetIdentfier() {
         if (!Os.isFamily("windows")) {
             return;
         }
         AbstractProcessor compiler = create();
         String id = compiler.getIdentifier();
-        boolean hasMSLinker = ((id.indexOf("Microsoft") >= 0) && (id
-                .indexOf("Linker") >= 0))
-                || id.indexOf("link") >= 0;
+        boolean hasMSLinker = ((id.contains("Microsoft")) && (id.contains("Linker")))
+                || id.contains("link");
         assertTrue(hasMSLinker);
     }
 }

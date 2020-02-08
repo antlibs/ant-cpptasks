@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +15,7 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.compiler;
+
 import java.io.File;
 
 import net.sf.antcontrib.cpptasks.CCTask;
@@ -25,9 +26,10 @@ import net.sf.antcontrib.cpptasks.parser.Parser;
 import net.sf.antcontrib.cpptasks.VersionInfo;
 
 import org.apache.tools.ant.BuildException;
+
 /**
  * Test for abstract compiler class
- * 
+ * <p>
  * Override create to test concrete compiler implementions
  */
 public class TestAbstractCompiler extends TestAbstractProcessor {
@@ -36,39 +38,49 @@ public class TestAbstractCompiler extends TestAbstractProcessor {
             super(new String[]{".cpp", ".c"},
                     new String[]{".hpp", ".h", ".inl"}, ".o");
         }
+
         public void compile(CCTask task, File[] srcfile, File[] outputfile,
-                CompilerConfiguration config) throws BuildException {
+                            CompilerConfiguration config) throws BuildException {
             throw new BuildException("Not implemented");
         }
+
         public CompilerConfiguration createConfiguration(CCTask task,
-                LinkType linkType, ProcessorDef[] def1, CompilerDef def2,
-				net.sf.antcontrib.cpptasks.TargetDef targetPlatform,
-				VersionInfo versionInfo) {
+                                                         LinkType linkType, ProcessorDef[] def1, CompilerDef def2,
+                                                         net.sf.antcontrib.cpptasks.TargetDef targetPlatform,
+                                                         VersionInfo versionInfo) {
             return null;
         }
+
         public Parser createParser(File file) {
             return new CParser();
         }
+
         public String getIdentifier() {
             return "dummy";
         }
+
         public Linker getLinker(LinkType type) {
             return null;
         }
     }
+
     public TestAbstractCompiler(String name) {
         super(name);
     }
+
     protected AbstractProcessor create() {
         return new DummyAbstractCompiler();
     }
+
     protected String getObjectExtension() {
         return ".o";
     }
+
     public void testCanParseTlb() {
         AbstractCompiler compiler = (AbstractCompiler) create();
         assertEquals(false, compiler.canParse(new File("sample.tlb")));
     }
+
     public void testGetOutputFileName1() {
         AbstractProcessor compiler = create();
         String[] output = compiler.getOutputFileNames("c:/foo\\bar\\hello.c", null);

@@ -69,82 +69,75 @@ import org.apache.tools.ant.types.Environment;
  */
 public final class HPCompiler extends GccCompatibleCCompiler {
 
-	private String identifier;
-	private File[] includePath;
-	private static final HPCompiler instance =
-		new HPCompiler("cc", false, null);
+    private String identifier;
+    private File[] includePath;
+    private static final HPCompiler instance = new HPCompiler("cc", false, null);
 
-	/**
-	 * Private constructor.  Use GccCCompiler.getInstance() to get
-	 * singleton instance of this class.
-	 */
-	private HPCompiler(
-		String command,
-		boolean newEnvironment,
-		Environment env) {
-		super(command, "-help", false, null, newEnvironment, env);
-	}
+    /**
+     * Private constructor.  Use GccCCompiler.getInstance() to get
+     * singleton instance of this class.
+     */
+    private HPCompiler(String command, boolean newEnvironment, Environment env) {
+        super(command, "-help", false, null, newEnvironment, env);
+    }
 
-	public int getMaximumCommandLength() {
-		return Integer.MAX_VALUE;
-	}
+    public int getMaximumCommandLength() {
+        return Integer.MAX_VALUE;
+    }
 
-	/**
-	 * Gets singleton instance of this class
-	 */
-	public static HPCompiler getInstance() {
-		return instance;
-	}
+    /**
+     * Gets singleton instance of this class
+     */
+    public static HPCompiler getInstance() {
+        return instance;
+    }
 
-	public File[] getEnvironmentIncludePath() {
-		if (includePath == null) {
-			File ccLoc = CUtil.getExecutableLocation("cc");
-			if (ccLoc != null) {
-				File compilerIncludeDir =
-					new File(new File(ccLoc, "../include").getAbsolutePath());
-				if (compilerIncludeDir.exists()) {
-					includePath = new File[2];
-					includePath[0] = compilerIncludeDir;
-				}
-			}
-			if (includePath == null) {
-				includePath = new File[1];
-			}
-			includePath[includePath.length - 1] = new File("/usr/include");
-		}
-		return includePath;
-	}
+    public File[] getEnvironmentIncludePath() {
+        if (includePath == null) {
+            File ccLoc = CUtil.getExecutableLocation("cc");
+            if (ccLoc != null) {
+                File compilerIncludeDir = new File(new File(ccLoc, "../include").getAbsolutePath());
+                if (compilerIncludeDir.exists()) {
+                    includePath = new File[2];
+                    includePath[0] = compilerIncludeDir;
+                }
+            }
+            if (includePath == null) {
+                includePath = new File[1];
+            }
+            includePath[includePath.length - 1] = new File("/usr/include");
+        }
+        return includePath;
+    }
 
-	public void addImpliedArgs(
-		Vector args,
-		boolean debug,
-		boolean multithreaded,
-		boolean exceptions,
-		LinkType linkType) {
-		args.addElement("-c");
-		if (debug) {
-			args.addElement("-g");
-		}
+    public void addImpliedArgs(Vector args,
+                               boolean debug,
+                               boolean multithreaded,
+                               boolean exceptions,
+                               LinkType linkType) {
+        args.addElement("-c");
+        if (debug) {
+            args.addElement("-g");
+        }
 		/*
 		if (multithreaded) {
 		  args.addElement("-mt");
 		}
 		*/
-		if (linkType.isSharedLibrary()) {
-			args.addElement("+z");
-		}
-	}
+        if (linkType.isSharedLibrary()) {
+            args.addElement("+z");
+        }
+    }
 
-	public void addWarningSwitch(Vector args, int level) {
-		switch (level) {
-			case 0 :
-				args.addElement("-w");
-				break;
-
-			case 1 :
-			case 2 :
-				args.addElement("+w");
-				break;
+    public void addWarningSwitch(Vector args, int level) {
+        switch (level) {
+            case 0:
+                args.addElement("-w");
+                break;
+            case 1:
+            case 2:
+                args.addElement("+w");
+                break;
 				/*
 				        case 3:
 				        case 4:
@@ -152,10 +145,10 @@ public final class HPCompiler extends GccCompatibleCCompiler {
 				        args.addElement("+w2");
 				        break;
 				*/
-		}
-	}
+        }
+    }
 
-	public Linker getLinker(LinkType linkType) {
-		return HPLinker.getInstance().getLinker(linkType);
-	}
+    public Linker getLinker(LinkType linkType) {
+        return HPLinker.getInstance().getLinker(linkType);
+    }
 }

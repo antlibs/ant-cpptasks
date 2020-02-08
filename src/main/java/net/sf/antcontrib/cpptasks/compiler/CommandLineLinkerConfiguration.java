@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,34 +15,34 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.compiler;
+
 import net.sf.antcontrib.cpptasks.CCTask;
 import net.sf.antcontrib.cpptasks.LinkerParam;
 import net.sf.antcontrib.cpptasks.ProcessorParam;
 import net.sf.antcontrib.cpptasks.TargetInfo;
 import net.sf.antcontrib.cpptasks.VersionInfo;
-
 import org.apache.tools.ant.BuildException;
+
 /**
  * A configuration for a command line linker
- * 
+ *
  * @author Curt Arnold
  */
-public final class CommandLineLinkerConfiguration
-        implements
-            LinkerConfiguration {
-    private/* final */String[][] args;
-    private/* final */String identifier;
+public final class CommandLineLinkerConfiguration implements LinkerConfiguration {
+    private/* final */ String[][] args;
+    private/* final */ String identifier;
     private String[] libraryNames;
-    private/* final */CommandLineLinker linker;
-    private/* final */boolean map;
-    private/* final */ProcessorParam[] params;
-    private/* final */boolean rebuild;
+    private/* final */ CommandLineLinker linker;
+    private/* final */ boolean map;
+    private/* final */ ProcessorParam[] params;
+    private/* final */ boolean rebuild;
     private boolean debug;
     private String startupObject;
+
     public CommandLineLinkerConfiguration(CommandLineLinker linker,
-            String identifier, String[][] args, ProcessorParam[] params,
-            boolean rebuild, boolean map, boolean debug, String[] libraryNames,
-            String startupObject) {
+                                          String identifier, String[][] args, ProcessorParam[] params,
+                                          boolean rebuild, boolean map, boolean debug, String[] libraryNames,
+                                          String startupObject) {
         if (linker == null) {
             throw new NullPointerException("linker");
         }
@@ -64,13 +64,16 @@ public final class CommandLineLinkerConfiguration
         }
         this.startupObject = startupObject;
     }
+
     public int bid(String filename) {
         return linker.bid(filename);
     }
+
     public String[] getEndArguments() {
         String[] clone = (String[]) args[1].clone();
         return clone;
     }
+
     /**
      * Returns a string representation of this configuration. Should be
      * canonical so that equivalent configurations will have equivalent string
@@ -79,36 +82,46 @@ public final class CommandLineLinkerConfiguration
     public String getIdentifier() {
         return identifier;
     }
+
     public String[] getLibraryNames() {
         String[] clone = (String[]) libraryNames.clone();
         return clone;
     }
+
     public boolean getMap() {
         return map;
     }
+
     public String[] getOutputFileNames(String inputFile, VersionInfo versionInfo) {
         return linker.getOutputFileNames(inputFile, versionInfo);
     }
+
     public LinkerParam getParam(String name) {
         for (int i = 0; i < params.length; i++) {
-            if (name.equals(params[i].getName()))
+            if (name.equals(params[i].getName())) {
                 return (LinkerParam) params[i];
+            }
         }
         return null;
     }
+
     public ProcessorParam[] getParams() {
         return params;
     }
+
     public String[] getPreArguments() {
         String[] clone = (String[]) args[0].clone();
         return clone;
     }
+
     public boolean getRebuild() {
         return rebuild;
     }
+
     public String getStartupObject() {
         return startupObject;
     }
+
     public void link(CCTask task, TargetInfo linkTarget) throws BuildException {
         //
         //  AllSourcePath's include any syslibsets
@@ -116,13 +129,16 @@ public final class CommandLineLinkerConfiguration
         String[] sourcePaths = linkTarget.getAllSourcePaths();
         linker.link(task, linkTarget.getOutput(), sourcePaths, this);
     }
+
     public String toString() {
         return identifier;
     }
+
     public Linker getLinker() {
-    	return linker;
+        return linker;
     }
+
     public boolean isDebug() {
-    	return debug;
+        return debug;
     }
 }

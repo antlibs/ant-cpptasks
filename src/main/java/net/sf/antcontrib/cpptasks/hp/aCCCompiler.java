@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2001-2007 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +15,7 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.hp;
+
 import java.io.File;
 import java.util.Vector;
 
@@ -25,41 +26,44 @@ import net.sf.antcontrib.cpptasks.gcc.GccCompatibleCCompiler;
 import net.sf.antcontrib.cpptasks.OptimizationEnum;
 
 import org.apache.tools.ant.types.Environment;
+
 /**
  * Adapter for the HP aC++ C++ compiler
- * 
+ *
  * @author Curt Arnold
  */
 public final class aCCCompiler extends GccCompatibleCCompiler {
-    private final static String[] headerExtensions = new String[]{".h", ".hpp",
-            ".inl"};
-    private final static String[] sourceExtensions = new String[]{".c", ".cc",
-            ".cxx", ".cpp", ".c++", ".i", ".s"};
-    
-    private static final aCCCompiler instance = new aCCCompiler("aCC", 
-            sourceExtensions, headerExtensions, false, null);
+    private final static String[] headerExtensions = new String[]{".h", ".hpp", ".inl"};
+    private final static String[] sourceExtensions = new String[]{".c", ".cc", ".cxx", ".cpp",
+            ".c++", ".i", ".s"};
+
+    private static final aCCCompiler instance = new aCCCompiler("aCC", sourceExtensions,
+            headerExtensions, false, null);
     /**
      * Gets singleton instance of this class
      */
     public static aCCCompiler getInstance() {
         return instance;
     }
+
     private String identifier;
     private File[] includePath;
+
     /**
      * Private constructor. Use GccCCompiler.getInstance() to get singleton
      * instance of this class.
      */
-    private aCCCompiler(String command, String[] sourceExtensions, 
-            String[] headerExtensions, boolean newEnvironment, 
-            Environment env) {
-        super(command, "-help", sourceExtensions, headerExtensions, false, 
+    private aCCCompiler(String command, String[] sourceExtensions,
+                        String[] headerExtensions, boolean newEnvironment,
+                        Environment env) {
+        super(command, "-help", sourceExtensions, headerExtensions, false,
                 null, newEnvironment, env);
     }
+
     public void addImpliedArgs(Vector args, boolean debug,
-            boolean multithreaded, boolean exceptions, LinkType linkType,
-			final Boolean rtti,
-			final OptimizationEnum optimization) {
+                               boolean multithreaded, boolean exceptions, LinkType linkType,
+                               final Boolean rtti,
+                               final OptimizationEnum optimization) {
         args.addElement("-c");
         if (debug) {
             args.addElement("-g");
@@ -71,30 +75,31 @@ public final class aCCCompiler extends GccCompatibleCCompiler {
         //
         //    per patch 1193690
         //
-        if (linkType.isSharedLibrary() && (! args.contains("+Z"))) {
+        if (linkType.isSharedLibrary() && (!args.contains("+Z"))) {
             args.addElement("+z");
         }
     }
+
     public void addWarningSwitch(Vector args, int level) {
         switch (level) {
-            case 0 :
+            case 0:
                 args.addElement("-w");
                 break;
-            case 1 :
-            case 2 :
+            case 1:
+            case 2:
                 args.addElement("+w");
                 break;
-        /*
-         * case 3: case 4: case 5: args.addElement("+w2"); break;
-         */
+            /*
+             * case 3: case 4: case 5: args.addElement("+w2"); break;
+             */
         }
     }
+
     public File[] getEnvironmentIncludePath() {
         if (includePath == null) {
             File ccLoc = CUtil.getExecutableLocation("aCC");
             if (ccLoc != null) {
-                File compilerIncludeDir = new File(
-                        new File(ccLoc, "../include").getAbsolutePath());
+                File compilerIncludeDir = new File(new File(ccLoc, "../include").getAbsolutePath());
                 if (compilerIncludeDir.exists()) {
                     includePath = new File[2];
                     includePath[0] = compilerIncludeDir;
@@ -107,9 +112,11 @@ public final class aCCCompiler extends GccCompatibleCCompiler {
         }
         return includePath;
     }
+
     public Linker getLinker(LinkType linkType) {
         return aCCLinker.getInstance().getLinker(linkType);
     }
+
     public int getMaximumCommandLength() {
         return Integer.MAX_VALUE;
     }

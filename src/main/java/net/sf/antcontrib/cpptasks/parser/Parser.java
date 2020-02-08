@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,14 +15,17 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.parser;
+
 import java.io.IOException;
 import java.io.Reader;
+
 /**
  * A parser that extracts #include statements from a Reader.
- * 
+ *
  * @author Curt Arnold
  */
 public interface Parser {
     String[] getIncludes();
+
     void parse(Reader reader) throws IOException;
 }

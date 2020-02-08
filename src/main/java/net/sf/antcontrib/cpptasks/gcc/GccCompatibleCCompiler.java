@@ -15,8 +15,10 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.gcc;
+
 import java.io.File;
 import java.util.Vector;
+
 import net.sf.antcontrib.cpptasks.CUtil;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineCCompiler;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
@@ -31,40 +33,39 @@ import net.sf.antcontrib.cpptasks.OptimizationEnum;
  * @author Curt Arnold
  */
 public abstract class GccCompatibleCCompiler extends CommandLineCCompiler {
-    private final static String[] headerExtensions = new String[]{".h", ".hpp",
-            ".inl"};
-    private final static String[] sourceExtensions = new String[]{".c", ".cc",
-            ".cpp", ".cxx", ".c++", ".i", ".f", ".for"};
+    private final static String[] headerExtensions = new String[]{".h", ".hpp", ".inl"};
+    private final static String[] sourceExtensions = new String[]{".c", ".cc", ".cpp", ".cxx",
+            ".c++", ".i", ".f", ".for"};
     /**
      * Private constructor. Use GccCCompiler.getInstance() to get singleton
      * instance of this class.
      */
     protected GccCompatibleCCompiler(String command, String identifierArg,
-            boolean libtool, GccCompatibleCCompiler libtoolCompiler,
-            boolean newEnvironment, Environment env) {
+                                     boolean libtool, GccCompatibleCCompiler libtoolCompiler,
+                                     boolean newEnvironment, Environment env) {
         super(command, identifierArg, sourceExtensions, headerExtensions,
-                libtool ? ".fo" : ".o", libtool, libtoolCompiler,
-                newEnvironment, env);
+                libtool ? ".fo" : ".o", libtool, libtoolCompiler, newEnvironment, env);
     }
+
     /**
      * Private constructor. Use GccCCompiler.getInstance() to get singleton
      * instance of this class.
      */
     protected GccCompatibleCCompiler(String command, String identifierArg,
-            String[] sourceExtensions, String[] headerExtensions,
-            boolean libtool, GccCompatibleCCompiler libtoolCompiler,
-            boolean newEnvironment, Environment env) {
+                                     String[] sourceExtensions, String[] headerExtensions,
+                                     boolean libtool, GccCompatibleCCompiler libtoolCompiler,
+                                     boolean newEnvironment, Environment env) {
         super(command, identifierArg, sourceExtensions, headerExtensions,
-                libtool ? ".fo" : ".o", libtool, libtoolCompiler,
-                newEnvironment, env);
+                libtool ? ".fo" : ".o", libtool, libtoolCompiler, newEnvironment, env);
     }
+
     public void addImpliedArgs(final Vector args,
-                    final boolean debug,
-            final boolean multithreaded,
-                        final boolean exceptions,
-                        final LinkType linkType,
-                        final Boolean rtti,
-                        final OptimizationEnum optimization) {
+                               final boolean debug,
+                               final boolean multithreaded,
+                               final boolean exceptions,
+                               final LinkType linkType,
+                               final Boolean rtti,
+                               final OptimizationEnum optimization) {
         //
         //  -fPIC is too much trouble
         //      users have to manually add it for
@@ -74,21 +75,21 @@ public abstract class GccCompatibleCCompiler extends CommandLineCCompiler {
         if (debug) {
             args.addElement("-g");
         } else {
-          if (optimization != null) {
-            if (optimization.isSize()) {
-              args.addElement("-Os");
-            } else if (optimization.isSpeed()) {
-              if ("full".equals(optimization.getValue())) {
-                args.addElement("-O2");
-              } else {
-                if ("speed".equals(optimization.getValue())) {
-                  args.addElement("-O1");
-                } else {
-                  args.addElement("-O3");
+            if (optimization != null) {
+                if (optimization.isSize()) {
+                    args.addElement("-Os");
+                } else if (optimization.isSpeed()) {
+                    if ("full".equals(optimization.getValue())) {
+                        args.addElement("-O2");
+                    } else {
+                        if ("speed".equals(optimization.getValue())) {
+                            args.addElement("-O1");
+                        } else {
+                            args.addElement("-O3");
+                        }
+                    }
                 }
-              }
             }
-          }
         }
         if (getIdentifier().indexOf("mingw") >= 0) {
             if (linkType.isSubsystemConsole()) {
@@ -99,32 +100,35 @@ public abstract class GccCompatibleCCompiler extends CommandLineCCompiler {
             }
         }
         if (rtti != null && !rtti.booleanValue()) {
-          args.addElement("-fno-rtti");
+            args.addElement("-fno-rtti");
         }
 
     }
+
     /**
      * Adds an include path to the command.
      */
     public void addIncludePath(String path, Vector cmd) {
         cmd.addElement("-I" + path);
     }
+
     public void addWarningSwitch(Vector args, int level) {
         switch (level) {
-            case 0 :
+            case 0:
                 args.addElement("-w");
                 break;
-            case 5 :
+            case 5:
                 args.addElement("-Werror");
-            /* nobreak */
-            case 4 :
+                /* nobreak */
+            case 4:
                 args.addElement("-W");
-            /* nobreak */
-            case 3 :
+                /* nobreak */
+            case 3:
                 args.addElement("-Wall");
                 break;
         }
     }
+
     public void getDefineSwitch(StringBuffer buffer, String define, String value) {
         buffer.append("-D");
         buffer.append(define);
@@ -133,12 +137,15 @@ public abstract class GccCompatibleCCompiler extends CommandLineCCompiler {
             buffer.append(value);
         }
     }
+
     protected File[] getEnvironmentIncludePath() {
         return CUtil.getPathFromEnvironment("INCLUDE", ":");
     }
+
     public String getIncludeDirSwitch(String includeDir) {
         return "-I" + includeDir;
     }
+
     public void getUndefineSwitch(StringBuffer buffer, String define) {
         buffer.append("-U");
         buffer.append(define);

@@ -33,173 +33,182 @@ import net.sf.antcontrib.cpptasks.types.LibraryTypeEnum;
  *
  * @author Curt Arnold
  */
-public abstract class OpenWatcomLinker
-    extends CommandLineLinker {
-  /**
-   * Constructor.
-   * @param command String command string (wcl386 or wfl386)
-   * @param outputSuffix String output suffix
-   */
-  protected OpenWatcomLinker(final String command,
-                             final String outputSuffix) {
-    super(command, "-r", new String[] {".obj", ".lib", ".res"}
-          ,
-          new String[] {".map", ".pdb", ".lnk"}
-          , outputSuffix, false, null);
-  }
+public abstract class OpenWatcomLinker extends CommandLineLinker {
+    /**
+     * Constructor.
+     *
+     * @param command      String command string (wcl386 or wfl386)
+     * @param outputSuffix String output suffix
+     */
+    protected OpenWatcomLinker(final String command,
+                               final String outputSuffix) {
+        super(command, "-r", new String[]{".obj", ".lib", ".res"},
+                new String[]{".map", ".pdb", ".lnk"}, outputSuffix, false, null);
+    }
 
-  /**
-   * Add specified base address to linker options.
-   * @param base long base address
-   * @param args Vector command options
-   */
-  protected final void addBase(final long base, final Vector args) {
-  }
+    /**
+     * Add specified base address to linker options.
+     *
+     * @param base long base address
+     * @param args Vector command options
+     */
+    protected final void addBase(final long base, final Vector args) {
+    }
 
-  /**
-   * Adds non-default entry point.
-   * @param entry entry point name
-   * @param args command line parameters
-   */
-  protected final void addEntry(final String entry, final Vector args) {
-  }
+    /**
+     * Adds non-default entry point.
+     *
+     * @param entry entry point name
+     * @param args  command line parameters
+     */
+    protected final void addEntry(final String entry, final Vector args) {
+    }
 
-  /**
-   * Adds fixed option.
-   * @param fixed if executable is fixed
-   * @param args command line parameters
-   */
-  protected final void addFixed(final Boolean fixed, final Vector args) {
-  }
+    /**
+     * Adds fixed option.
+     *
+     * @param fixed if executable is fixed
+     * @param args  command line parameters
+     */
+    protected final void addFixed(final Boolean fixed, final Vector args) {
+    }
 
-   /**
-   *  Adds other command line parameters.
-   * @param debug boolean is debug
-   * @param linkType LinkType link type
-   * @param args Vector command line arguments
-   */
-  protected final void addImpliedArgs(final boolean debug,
-                                final LinkType linkType,
-                                final Vector args) {
-    if (linkType.isExecutable()) {
-      if (linkType.isSubsystemConsole()) {
-        args.addElement("/bc");
-      } else {
-        if (linkType.isSubsystemGUI()) {
-          args.addElement("/bg");
+    /**
+     * Adds other command line parameters.
+     *
+     * @param debug    boolean is debug
+     * @param linkType LinkType link type
+     * @param args     Vector command line arguments
+     */
+    protected final void addImpliedArgs(final boolean debug,
+                                        final LinkType linkType,
+                                        final Vector args) {
+        if (linkType.isExecutable()) {
+            if (linkType.isSubsystemConsole()) {
+                args.addElement("/bc");
+            } else {
+                if (linkType.isSubsystemGUI()) {
+                    args.addElement("/bg");
+                }
+            }
         }
-      }
+        if (linkType.isSharedLibrary()) {
+            args.addElement("/bd");
+        }
     }
-    if (linkType.isSharedLibrary()) {
-      args.addElement("/bd");
+
+    /**
+     * Add command line switch to force incremental linking.
+     *
+     * @param incremental boolean do incremental linking
+     * @param args        Vector command line arguments
+     */
+    protected final void addIncremental(final boolean incremental,
+                                        final Vector args) {
     }
-  }
 
-  /**
-   * Add command line switch to force incremental linking.
-   * @param incremental boolean do incremental linking
-   * @param args Vector command line arguments
-   */
-  protected final void addIncremental(final boolean incremental,
-                                      final Vector args) {
-  }
-
-  /**
-   * Add command line switch to force map generation.
-   * @param map boolean build map
-   * @param args Vector command line arguments
-   */
-  protected final void addMap(final boolean map, final Vector args) {
-    if (map) {
-      args.addElement("/fm");
+    /**
+     * Add command line switch to force map generation.
+     *
+     * @param map  boolean build map
+     * @param args Vector command line arguments
+     */
+    protected final void addMap(final boolean map, final Vector args) {
+        if (map) {
+            args.addElement("/fm");
+        }
     }
-  }
 
-  /**
-   * Add command line switch for stack reservation.
-   * @param stack int stack size.
-   * @param args Vector command line arguments.
-   */
-  protected final void addStack(final int stack, final Vector args) {
-    if (stack >= 0) {
-      String stackStr = Integer.toString(stack);
-      args.addElement("/k" + stackStr);
+    /**
+     * Add command line switch for stack reservation.
+     *
+     * @param stack int stack size.
+     * @param args  Vector command line arguments.
+     */
+    protected final void addStack(final int stack, final Vector args) {
+        if (stack >= 0) {
+            String stackStr = Integer.toString(stack);
+            args.addElement("/k" + stackStr);
+        }
     }
-  }
 
-  /**
-   * Adds source or object files to the bidded fileset to
-   * support version information.
-   *
-   * @param versionInfo version information
-   * @param linkType link type
-   * @param isDebug true if debug build
-   * @param outputFile name of generated executable
-   * @param objDir directory for generated files
-   * @param matcher bidded fileset
-   * @throws IOException if unable to write version resource
-   */
-  public final void addVersionFiles(final VersionInfo versionInfo,
-                              final LinkType linkType,
-                              final File outputFile,
-                              final boolean isDebug,
-                              final File objDir,
-                              final TargetMatcher matcher) throws IOException {
-    WindowsPlatform.addVersionFiles(versionInfo, linkType, outputFile, isDebug,
-                                    objDir, matcher);
-  }
+    /**
+     * Adds source or object files to the bidded fileset to
+     * support version information.
+     *
+     * @param versionInfo version information
+     * @param linkType    link type
+     * @param isDebug     true if debug build
+     * @param outputFile  name of generated executable
+     * @param objDir      directory for generated files
+     * @param matcher     bidded fileset
+     * @throws IOException if unable to write version resource
+     */
+    public final void addVersionFiles(final VersionInfo versionInfo,
+                                      final LinkType linkType,
+                                      final File outputFile,
+                                      final boolean isDebug,
+                                      final File objDir,
+                                      final TargetMatcher matcher) throws IOException {
+        WindowsPlatform.addVersionFiles(versionInfo, linkType, outputFile, isDebug, objDir, matcher);
+    }
 
-  /**
-   * Get command file switch.
-   * @param commandFile String command file name
-   * @return String command line option
-   */
-  public final String getCommandFileSwitch(final String commandFile) {
-    return "@" + commandFile;
-  }
+    /**
+     * Get command file switch.
+     *
+     * @param commandFile String command file name
+     * @return String command line option
+     */
+    public final String getCommandFileSwitch(final String commandFile) {
+        return "@" + commandFile;
+    }
 
-  /**
-   * Get search path for libraries.
-   * @return File[] library path
-   */
-  public final File[] getLibraryPath() {
-    return CUtil.getPathFromEnvironment("LIB", ";");
-  }
+    /**
+     * Get search path for libraries.
+     *
+     * @return File[] library path
+     */
+    public final File[] getLibraryPath() {
+        return CUtil.getPathFromEnvironment("LIB", ";");
+    }
 
-  /**
-   * Get file selectors for libraries.
-   * @param libnames String[]
-   * @param libType LibraryTypeEnum
-   * @return String[]
-   */
-  public final String[] getLibraryPatterns(final String[] libnames,
-                                           final LibraryTypeEnum libType) {
-    return OpenWatcomProcessor.getLibraryPatterns(libnames, libType);
-  }
+    /**
+     * Get file selectors for libraries.
+     *
+     * @param libnames String[]
+     * @param libType  LibraryTypeEnum
+     * @return String[]
+     */
+    public final String[] getLibraryPatterns(final String[] libnames,
+                                             final LibraryTypeEnum libType) {
+        return OpenWatcomProcessor.getLibraryPatterns(libnames, libType);
+    }
 
-  /**
-   * Get maximum command line length.
-   * @return int command line length
-   */
-  public final int getMaximumCommandLength() {
-    return 1024;
-  }
+    /**
+     * Get maximum command line length.
+     *
+     * @return int command line length
+     */
+    public final int getMaximumCommandLength() {
+        return 1024;
+    }
 
-  /**
-   * Get output file switch.
-   * @param outFile Output file name
-   * @return String[] command line switches
-   */
-  public final String[] getOutputFileSwitch(final String outFile) {
-    return OpenWatcomProcessor.getOutputFileSwitch(outFile);
-  }
+    /**
+     * Get output file switch.
+     *
+     * @param outFile Output file name
+     * @return String[] command line switches
+     */
+    public final String[] getOutputFileSwitch(final String outFile) {
+        return OpenWatcomProcessor.getOutputFileSwitch(outFile);
+    }
 
-  /**
-   * Gets file name sensitivity of processors.
-   * @return boolean true if case sensitive.
-   */
-  public final boolean isCaseSensitive() {
-    return OpenWatcomProcessor.isCaseSensitive();
-  }
-
+    /**
+     * Gets file name sensitivity of processors.
+     *
+     * @return boolean true if case sensitive.
+     */
+    public final boolean isCaseSensitive() {
+        return OpenWatcomProcessor.isCaseSensitive();
+    }
 }

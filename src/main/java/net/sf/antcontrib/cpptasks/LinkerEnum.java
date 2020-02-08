@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +15,7 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks;
+
 import net.sf.antcontrib.cpptasks.arm.ADSLinker;
 import net.sf.antcontrib.cpptasks.borland.BorlandLinker;
 import net.sf.antcontrib.cpptasks.compaq.CompaqVisualFortranLinker;
@@ -42,9 +43,8 @@ import net.sf.antcontrib.cpptasks.openwatcom.OpenWatcomFortranLinker;
 
 /**
  * Enumeration of supported linkers
- * 
+ *
  * @author Curt Arnold
- *  
  */
 public class LinkerEnum extends EnumeratedAttribute {
     private final static ProcessorEnumValue[] linkers = new ProcessorEnumValue[]{
@@ -54,8 +54,7 @@ public class LinkerEnum extends EnumeratedAttribute {
             new ProcessorEnumValue("ar", GccLibrarian.getInstance()),
             new ProcessorEnumValue("msvc", DevStudioLinker.getInstance()),
             new ProcessorEnumValue("bcc", BorlandLinker.getInstance()),
-            new ProcessorEnumValue("df", CompaqVisualFortranLinker
-                    .getInstance()),
+            new ProcessorEnumValue("df", CompaqVisualFortranLinker.getInstance()),
             new ProcessorEnumValue("icl", IntelWin32Linker.getInstance()),
             new ProcessorEnumValue("ecl", IntelWin32Linker.getInstance()),
             new ProcessorEnumValue("icc", IntelLinux32Linker.getInstance()),
@@ -63,8 +62,7 @@ public class LinkerEnum extends EnumeratedAttribute {
             new ProcessorEnumValue("CC", ForteCCLinker.getInstance()),
             new ProcessorEnumValue("aCC", aCCLinker.getInstance()),
             new ProcessorEnumValue("os390", OS390Linker.getInstance()),
-            new ProcessorEnumValue("os390batch", OS390Linker
-                    .getDataSetInstance()),
+            new ProcessorEnumValue("os390batch", OS390Linker.getDataSetInstance()),
             new ProcessorEnumValue("os400", IccLinker.getInstance()),
             new ProcessorEnumValue("sunc89", C89Linker.getInstance()),
             new ProcessorEnumValue("xlC", VisualAgeLinker.getInstance()),
@@ -77,39 +75,33 @@ public class LinkerEnum extends EnumeratedAttribute {
             new ProcessorEnumValue("hp", HPLinker.getInstance()),
             new ProcessorEnumValue("xlc_r", XlcLinker.getInstance()),
             // gcc cross compilers
-            new ProcessorEnumValue(
-                    "sparc-sun-solaris2-gcc",
+            new ProcessorEnumValue("sparc-sun-solaris2-gcc",
                     net.sf.antcontrib.cpptasks.gcc.cross.sparc_sun_solaris2.GccLinker
                             .getInstance()),
-            new ProcessorEnumValue(
-                    "sparc-sun-solaris2-g++",
+            new ProcessorEnumValue("sparc-sun-solaris2-g++",
                     net.sf.antcontrib.cpptasks.gcc.cross.sparc_sun_solaris2.GppLinker
                             .getInstance()),
-            new ProcessorEnumValue(
-                    "sparc-sun-solaris2-ld",
+            new ProcessorEnumValue("sparc-sun-solaris2-ld",
                     net.sf.antcontrib.cpptasks.gcc.cross.sparc_sun_solaris2.LdLinker
                             .getInstance()),
-            new ProcessorEnumValue(
-                    "sparc-sun-solaris2-ar",
+            new ProcessorEnumValue("sparc-sun-solaris2-ar",
                     net.sf.antcontrib.cpptasks.gcc.cross.sparc_sun_solaris2.GccLibrarian
                             .getInstance()),
             new ProcessorEnumValue("gcc-cross",
-                    net.sf.antcontrib.cpptasks.gcc.cross.GccLinker
-                            .getInstance()),
+                    net.sf.antcontrib.cpptasks.gcc.cross.GccLinker.getInstance()),
             new ProcessorEnumValue("g++-cross",
-                    net.sf.antcontrib.cpptasks.gcc.cross.GppLinker
-                            .getInstance()),
+                    net.sf.antcontrib.cpptasks.gcc.cross.GppLinker.getInstance()),
             new ProcessorEnumValue("ld-cross",
                     net.sf.antcontrib.cpptasks.gcc.cross.LdLinker.getInstance()),
             new ProcessorEnumValue("ar-cross",
-                    net.sf.antcontrib.cpptasks.gcc.cross.GccLibrarian
-                            .getInstance()),
-			new ProcessorEnumValue("wcl", OpenWatcomCLinker.getInstance()),
-			new ProcessorEnumValue("wfl", OpenWatcomFortranLinker.getInstance()),
-							};
+                    net.sf.antcontrib.cpptasks.gcc.cross.GccLibrarian.getInstance()),
+            new ProcessorEnumValue("wcl", OpenWatcomCLinker.getInstance()),
+            new ProcessorEnumValue("wfl", OpenWatcomFortranLinker.getInstance()),
+    };
     public Linker getLinker() {
         return (Linker) linkers[getIndex()].getProcessor();
     }
+
     public String[] getValues() {
         return ProcessorEnumValue.getValues(linkers);
     }

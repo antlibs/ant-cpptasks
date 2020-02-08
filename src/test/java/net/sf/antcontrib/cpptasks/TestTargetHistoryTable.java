@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2003-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,52 +15,60 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 import net.sf.antcontrib.cpptasks.compiler.ProcessorConfiguration;
 import net.sf.antcontrib.cpptasks.VersionInfo;
+
 /**
  * Tests for TargetHistoryTable
- * 
+ *
  * @author CurtA
  */
 public class TestTargetHistoryTable extends TestXMLConsumer {
     public static class MockProcessorConfiguration
             implements
-                ProcessorConfiguration {
+            ProcessorConfiguration {
         public MockProcessorConfiguration() {
         }
+
         public int bid(String fileName) {
             return 100;
         }
+
         public String getIdentifier() {
             return "Mock Configuration";
         }
+
         public String[] getOutputFileNames(String baseName, VersionInfo versionInfo) {
-            return new String[] { baseName };
+            return new String[]{baseName};
         }
+
         public ProcessorParam[] getParams() {
             return new ProcessorParam[0];
         }
+
         public boolean getRebuild() {
             return false;
         }
     }
+
     /**
      * Constructor
-     * 
-     * @param name
-     *            test case name
+     *
+     * @param name test case name
      * @see junit.framework.TestCase#TestCase(String)
      */
     public TestTargetHistoryTable(String name) {
         super(name);
     }
+
     /**
      * Tests loading a stock history file
-     * 
+     *
      * @throws IOException
      */
     public void testLoadOpenshore() throws IOException {
@@ -68,15 +76,15 @@ public class TestTargetHistoryTable extends TestXMLConsumer {
             copyResourceToTmpDir("openshore/history.xml", "history.xml");
             CCTask task = new CCTask();
             String tmpDir = System.getProperty("java.io.tmpdir");
-            TargetHistoryTable history = new TargetHistoryTable(task, new File(
-                    tmpDir));
+            TargetHistoryTable history = new TargetHistoryTable(task, new File(tmpDir));
         } finally {
             deleteTmpFile("history.xml");
         }
     }
+
     /**
      * Tests loading a stock history file
-     * 
+     *
      * @throws IOException
      */
     public void testLoadXerces() throws IOException {
@@ -84,15 +92,15 @@ public class TestTargetHistoryTable extends TestXMLConsumer {
             copyResourceToTmpDir("xerces-c/history.xml", "history.xml");
             CCTask task = new CCTask();
             String tmpDir = System.getProperty("java.io.tmpdir");
-            TargetHistoryTable history = new TargetHistoryTable(task, new File(
-                    tmpDir));
+            TargetHistoryTable history = new TargetHistoryTable(task, new File(tmpDir));
         } finally {
             deleteTmpFile("history.xml");
         }
     }
+
     /**
      * Tests for bug fixed by patch [ 650397 ] Fix: Needless rebuilds on Unix
-     * 
+     *
      * @throws IOException
      */
     public void testUpdateTimeResolution() throws IOException {
@@ -106,8 +114,7 @@ public class TestTargetHistoryTable extends TestXMLConsumer {
             if (historyFile.exists()) {
                 historyFile.delete();
             }
-            TargetHistoryTable table = new TargetHistoryTable(null, new File(
-                    tempDir));
+            TargetHistoryTable table = new TargetHistoryTable(null, new File(tempDir));
             //
             //  create a dummy compiled unit
             //

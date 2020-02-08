@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,17 +15,23 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.compiler;
+
 import junit.framework.TestCase;
+
 /**
+ *
  */
 public abstract class TestCompilerConfiguration extends TestCase {
     public TestCompilerConfiguration(String name) {
         super(name);
     }
+
     protected abstract CompilerConfiguration create();
+
     public String getObjectFileExtension() {
         return ".o";
     }
+
     public void testBid() {
         CompilerConfiguration compiler = create();
         int bid = compiler.bid("c:/foo\\bar\\hello.c");
@@ -41,6 +47,7 @@ public abstract class TestCompilerConfiguration extends TestCase {
         bid = compiler.bid("c:/foo\\bar/hello.java");
         assertEquals(0, bid);
     }
+
     public void testGetOutputFileName1() {
         CompilerConfiguration compiler = create();
         String input = "c:/foo\\bar\\hello.c";
@@ -52,6 +59,7 @@ public abstract class TestCompilerConfiguration extends TestCase {
         } catch (java.lang.IllegalStateException ex) {
         }
     }
+
     public void testGetOutputFileName2() {
         CompilerConfiguration compiler = create();
         String[] output = compiler.getOutputFileNames("c:/foo\\bar\\hello.c", null);

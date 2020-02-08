@@ -15,6 +15,7 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.gcc;
+
 import java.io.File;
 import java.util.Vector;
 
@@ -25,7 +26,6 @@ import net.sf.antcontrib.cpptasks.compiler.Processor;
 import net.sf.antcontrib.cpptasks.parser.CParser;
 import net.sf.antcontrib.cpptasks.parser.FortranParser;
 import net.sf.antcontrib.cpptasks.parser.Parser;
-
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.types.Environment;
 import net.sf.antcontrib.cpptasks.OptimizationEnum;
@@ -48,9 +48,8 @@ public final class GccCCompiler extends GccCompatibleCCompiler {
             ".m", /* Objective-C */
             ".mm", /* Objected-C++ */
             ".s" /* Assembly */
-            };
-    private final static String[] headerExtensions = new String[]{".h", ".hpp",
-    ".inl"};
+    };
+    private final static String[] headerExtensions = new String[]{".h", ".hpp", ".inl"};
     private static final GccCCompiler cppInstance = new GccCCompiler("c++",
             sourceExtensions, headerExtensions, false,
             new GccCCompiler("c++", sourceExtensions, headerExtensions, true,
@@ -67,58 +66,65 @@ public final class GccCCompiler extends GccCompatibleCCompiler {
             sourceExtensions, headerExtensions, false,
             new GccCCompiler("gcc", sourceExtensions, headerExtensions, true,
                     null, false, null), false, null);
+
     /**
      * Gets c++ adapter
      */
     public static GccCCompiler getCppInstance() {
         return cppInstance;
     }
+
     /**
      * Gets g77 adapter
      */
     public static GccCCompiler getG77Instance() {
         return g77Instance;
     }
+
     /**
      * Gets gpp adapter
      */
     public static GccCCompiler getGppInstance() {
         return gppInstance;
     }
+
     /**
      * Gets gcc adapter
      */
     public static GccCCompiler getInstance() {
         return instance;
     }
+
     private String identifier;
     private File[] includePath;
     private boolean isPICMeaningful = true;
+
     /**
      * Private constructor. Use GccCCompiler.getInstance() to get singleton
      * instance of this class.
      */
     private GccCCompiler(String command, String[] sourceExtensions,
-            String[] headerExtensions, boolean isLibtool,
-            GccCCompiler libtoolCompiler, boolean newEnvironment,
-            Environment env) {
+                         String[] headerExtensions, boolean isLibtool,
+                         GccCCompiler libtoolCompiler, boolean newEnvironment,
+                         Environment env) {
         super(command, null, sourceExtensions, headerExtensions, isLibtool,
                 libtoolCompiler, newEnvironment, env);
         isPICMeaningful = System.getProperty("os.name").indexOf("Windows") < 0;
     }
+
     public void addImpliedArgs(final Vector args,
-    		final boolean debug,
-            final boolean multithreaded,
-			final boolean exceptions,
-			final LinkType linkType,
-			final Boolean rtti,
-			final OptimizationEnum optimization) {
-        super.addImpliedArgs(args, debug, multithreaded,
-        		exceptions, linkType, rtti, optimization);
+                               final boolean debug,
+                               final boolean multithreaded,
+                               final boolean exceptions,
+                               final LinkType linkType,
+                               final Boolean rtti,
+                               final OptimizationEnum optimization) {
+        super.addImpliedArgs(args, debug, multithreaded, exceptions, linkType, rtti, optimization);
         if (isPICMeaningful && linkType.isSharedLibrary()) {
             args.addElement("-fPIC");
         }
     }
+
     public Processor changeEnvironment(boolean newEnvironment, Environment env) {
         if (newEnvironment || env != null) {
             return new GccCCompiler(getCommand(), this.getSourceExtensions(),
@@ -128,11 +134,11 @@ public final class GccCCompiler extends GccCompatibleCCompiler {
         }
         return this;
     }
+
     /**
      * Create parser to determine dependencies.
-     *
+     * <p>
      * Will create appropriate parser (C++, FORTRAN) based on file extension.
-     *
      */
     protected Parser createParser(File source) {
         if (source != null) {
@@ -147,6 +153,7 @@ public final class GccCCompiler extends GccCompatibleCCompiler {
         }
         return new CParser();
     }
+
     public File[] getEnvironmentIncludePath() {
         if (includePath == null) {
             //
@@ -216,6 +223,7 @@ public final class GccCCompiler extends GccCompatibleCCompiler {
         }
         return (File[]) includePath.clone();
     }
+
     public String getIdentifier() throws BuildException {
         if (identifier == null) {
             StringBuffer buf;
@@ -233,20 +241,21 @@ public final class GccCCompiler extends GccCompatibleCCompiler {
         }
         return identifier;
     }
+
     public Linker getLinker(LinkType linkType) {
         return GccLinker.getInstance().getLinker(linkType);
     }
+
     public int getMaximumCommandLength() {
-    	/*
-    	 * Window-specific compilers use a limit of 2048 to prevent over
-    	 * running the available command line length, while the Unix compilers
-    	 * assume that they have an unlimited command line.
-    	 */
-    	if(System.getProperty("os.name").indexOf("Windows") >= 0) {
-    		return 2048;
-    	}
-    	else {
-    		return Integer.MAX_VALUE;
-    	}
+        /*
+         * Window-specific compilers use a limit of 2048 to prevent over
+         * running the available command line length, while the Unix compilers
+         * assume that they have an unlimited command line.
+         */
+        if (System.getProperty("os.name").indexOf("Windows") >= 0) {
+            return 2048;
+        } else {
+            return Integer.MAX_VALUE;
+        }
     }
 }

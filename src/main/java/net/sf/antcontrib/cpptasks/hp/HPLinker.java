@@ -17,11 +17,11 @@
  *    distribution.
  *
  * 3. The end-user documentation included with the redistribution, if
- *    any, must include the following acknowlegement:
+ *    any, must include the following acknowledgement:
  *       "This product includes software developed by the
  *        Apache Software Foundation (http://www.apache.org/)."
- *    Alternately, this acknowlegement may appear in the software itself,
- *    if and wherever such third-party acknowlegements normally appear.
+ *    Alternately, this acknowledgement may appear in the software itself,
+ *    if and wherever such third-party acknowledgements normally appear.
  *
  * 4. The names "The Jakarta Project", "Ant", and "Apache Software
  *    Foundation" must not be used to endorse or promote products derived
@@ -66,26 +66,24 @@ import net.sf.antcontrib.cpptasks.gcc.AbstractLdLinker;
  *
  * @author Curt Arnold
  */
-public final class HPLinker extends AbstractLdLinker
-{
-    private static final String[] objFiles = new String[]
-      { ".o", ".a", ".lib", ".dll", ".so", ".sl" };
+public final class HPLinker extends AbstractLdLinker {
+    private static final String[] objFiles = new String[]{".o", ".a", ".lib", ".dll", ".so", ".sl"};
     private static final String[] discardFiles = new String[0];
 
     private static final HPLinker instance =
-      new HPLinker("ld", objFiles, discardFiles, "", "");
+            new HPLinker("ld", objFiles, discardFiles, "", "");
     private static final HPLinker dllLinker =
-      new HPLinker("ld", objFiles, discardFiles, "lib", ".sl");
+            new HPLinker("ld", objFiles, discardFiles, "lib", ".sl");
     private static final HPLinker arLinker =
-      new HPLinker("ld", objFiles, discardFiles, "", ".a");
+            new HPLinker("ld", objFiles, discardFiles, "", ".a");
 
     private File[] libDirs;
 
     private HPLinker(String command, String[] extensions,
-        String[] ignoredExtensions, String outputPrefix,
-        String outputSuffix) {
+                     String[] ignoredExtensions, String outputPrefix,
+                     String outputSuffix) {
         super(command, "-help", extensions, ignoredExtensions,
-          outputPrefix, outputSuffix,false,null);
+                outputPrefix, outputSuffix, false, null);
     }
 
     public static HPLinker getInstance() {
@@ -94,51 +92,49 @@ public final class HPLinker extends AbstractLdLinker
 
     /**
      * Returns library path.
-     *
      */
     public File[] getLibraryPath() {
-      if(libDirs == null) {
-        File CCloc = CUtil.getExecutableLocation("ld");
-        if(CCloc != null) {
-          File compilerLib = new File(
-            new File(CCloc, "../lib").getAbsolutePath());
-          if (compilerLib.exists()) {
-            libDirs = new File[2];
-            libDirs[0] = compilerLib;
-          }
-        }
         if (libDirs == null) {
-          libDirs = new File[1];
+            File CCloc = CUtil.getExecutableLocation("ld");
+            if (CCloc != null) {
+                File compilerLib = new File(new File(CCloc, "../lib").getAbsolutePath());
+                if (compilerLib.exists()) {
+                    libDirs = new File[2];
+                    libDirs[0] = compilerLib;
+                }
+            }
+            if (libDirs == null) {
+                libDirs = new File[1];
+            }
         }
-      }
-      libDirs[libDirs.length-1] = new File("/usr/lib");
-      return libDirs;
+        libDirs[libDirs.length - 1] = new File("/usr/lib");
+        return libDirs;
     }
 
     public void addImpliedArgs(boolean debug, LinkType linkType, Vector args) {
 /*      if(linkType.isStaticRuntime()) {
         args.addElement("-static");
       }
-*/      
-      if(linkType.isSharedLibrary()) {
-        args.addElement("-b");
-      }
+*/
+        if (linkType.isSharedLibrary()) {
+            args.addElement("-b");
+        }
 /*      
       if (linkType.isStaticLibrary()) {
         args.addElement("-Wl,-noshared");
       }
-*/      
+*/
     }
 
 
     public Linker getLinker(LinkType type) {
-      if(type.isStaticLibrary()) {
-        return arLinker;
-      }
-      if(type.isSharedLibrary()) {
-        return dllLinker;
-      }
-      return instance;
+        if (type.isStaticLibrary()) {
+            return arLinker;
+        }
+        if (type.isSharedLibrary()) {
+            return dllLinker;
+        }
+        return instance;
     }
 
     public void addIncremental(boolean incremental, Vector args) {

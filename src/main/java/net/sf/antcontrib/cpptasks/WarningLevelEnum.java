@@ -15,6 +15,7 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks;
+
 import org.apache.tools.ant.types.EnumeratedAttribute;
 
 /**
@@ -22,19 +23,20 @@ import org.apache.tools.ant.types.EnumeratedAttribute;
  * "production", "diagnostic", and "aserror".
  */
 public final class WarningLevelEnum extends EnumeratedAttribute {
-   /**
-    * Constructor.
-    *
-    */
+    /**
+     * Constructor.
+     */
     public WarningLevelEnum() {
         setValue("default");
     }
+
     /**
      * Get allowable values.
+     *
      * @return allowable values
      */
     public String[] getValues() {
         return new String[]{"none", "severe", "default", "production",
-              "diagnostic", "aserror"};
+                "diagnostic", "aserror"};
     }
 }

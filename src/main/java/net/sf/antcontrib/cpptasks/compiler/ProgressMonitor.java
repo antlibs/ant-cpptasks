@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2001-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,17 +15,19 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.compiler;
+
 /**
  * Interface to receive notification of compile progress
- * 
+ *
  * @author Curt Arnold
  */
 public interface ProgressMonitor {
     public void finish(ProcessorConfiguration config, boolean normal);
+
     /**
      * Called to notify monitor of progress
-     *  
      */
     void progress(String[] sources);
+
     public void start(ProcessorConfiguration config);
 }

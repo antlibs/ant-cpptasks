@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2001-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +15,7 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.hp;
+
 import java.io.File;
 import java.util.Vector;
 
@@ -22,30 +23,33 @@ import net.sf.antcontrib.cpptasks.CUtil;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 import net.sf.antcontrib.cpptasks.gcc.AbstractLdLinker;
+
 /**
  * Adapter for Sun (r) Forte(tm) C++ Linker
- * 
+ *
  * @author Curt Arnold
  */
 public final class aCCLinker extends AbstractLdLinker {
     private static final String[] discardFiles = new String[0];
-    private static final String[] objFiles = new String[]{".o", ".a", ".lib",
-            ".dll", ".so", ".sl"};
-    private static final aCCLinker arLinker = new aCCLinker("aCC", objFiles,
-            discardFiles, "", ".a");
-    private static final aCCLinker dllLinker = new aCCLinker("aCC", objFiles,
-            discardFiles, "lib", ".sl");
-    private static final aCCLinker instance = new aCCLinker("aCC", objFiles,
-            discardFiles, "", "");
+    private static final String[] objFiles = new String[]{".o", ".a", ".lib", ".dll", ".so", ".sl"};
+    private static final aCCLinker arLinker = new aCCLinker("aCC", objFiles, discardFiles,
+            "", ".a");
+    private static final aCCLinker dllLinker = new aCCLinker("aCC", objFiles, discardFiles,
+            "lib", ".sl");
+    private static final aCCLinker instance = new aCCLinker("aCC", objFiles, discardFiles,
+            "", "");
     public static aCCLinker getInstance() {
         return instance;
     }
+
     private File[] libDirs;
+
     private aCCLinker(String command, String[] extensions,
-            String[] ignoredExtensions, String outputPrefix, String outputSuffix) {
+                      String[] ignoredExtensions, String outputPrefix, String outputSuffix) {
         super(command, "-help", extensions, ignoredExtensions, outputPrefix,
                 outputSuffix, false, null);
     }
+
     public void addImpliedArgs(boolean debug, LinkType linkType, Vector args) {
         if (debug) {
             args.addElement("-g");
@@ -60,22 +64,22 @@ public final class aCCLinker extends AbstractLdLinker {
          * if (linkType.isStaticLibrary()) { args.addElement("-Wl,-noshared"); }
          */
     }
+
     public void addIncremental(boolean incremental, Vector args) {
         /*
          * if (incremental) { args.addElement("-xidlon"); } else {
          * args.addElement("-xidloff"); }
          */
     }
+
     /**
      * Returns library path.
-     *  
      */
     public File[] getLibraryPath() {
         if (libDirs == null) {
             File CCloc = CUtil.getExecutableLocation("aCC");
             if (CCloc != null) {
-                File compilerLib = new File(new File(CCloc, "../lib")
-                        .getAbsolutePath());
+                File compilerLib = new File(new File(CCloc, "../lib").getAbsolutePath());
                 if (compilerLib.exists()) {
                     libDirs = new File[2];
                     libDirs[0] = compilerLib;
@@ -88,6 +92,7 @@ public final class aCCLinker extends AbstractLdLinker {
         libDirs[libDirs.length - 1] = new File("/usr/lib");
         return libDirs;
     }
+
     public Linker getLinker(LinkType type) {
         if (type.isStaticLibrary()) {
             return arLinker;

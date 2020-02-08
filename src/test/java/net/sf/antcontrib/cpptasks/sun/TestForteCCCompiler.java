@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2007 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,14 +15,15 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.sun;
+
 import java.util.Vector;
 
 import junit.framework.TestCase;
 
 import net.sf.antcontrib.cpptasks.compiler.AbstractProcessor;
+
 /**
  * Test Sun Forte compiler adapter
- *  
  */
 // TODO Since ForteCCCompiler extends GccCompatibleCCompiler, this test
 // should probably extend TestGccCompatibleCCompiler.
@@ -30,46 +31,47 @@ public class TestForteCCCompiler extends TestCase {
     public TestForteCCCompiler(String name) {
         super(name);
     }
+
     public void testBidC() {
         ForteCCCompiler compiler = ForteCCCompiler.getInstance();
-        assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler
-                .bid("foo.c"));
+        assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.c"));
     }
+
     public void testBidCpp() {
         ForteCCCompiler compiler = ForteCCCompiler.getInstance();
-        assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler
-                .bid("foo.C"));
+        assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.C"));
     }
+
     public void testBidCpp2() {
         ForteCCCompiler compiler = ForteCCCompiler.getInstance();
-        assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler
-                .bid("foo.cc"));
+        assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.cc"));
     }
+
     public void testBidCpp3() {
         ForteCCCompiler compiler = ForteCCCompiler.getInstance();
-        assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler
-                .bid("foo.cxx"));
+        assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.cxx"));
     }
+
     public void testBidCpp4() {
         ForteCCCompiler compiler = ForteCCCompiler.getInstance();
-        assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler
-                .bid("foo.cpp"));
+        assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.cpp"));
     }
+
     public void testBidCpp5() {
         ForteCCCompiler compiler = ForteCCCompiler.getInstance();
-        assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler
-                .bid("foo.c++"));
+        assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.c++"));
     }
+
     public void testBidPreprocessed() {
         ForteCCCompiler compiler = ForteCCCompiler.getInstance();
-        assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler
-                .bid("foo.i"));
+        assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.i"));
     }
+
     public void testBidAssembly() {
         ForteCCCompiler compiler = ForteCCCompiler.getInstance();
-        assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler
-                .bid("foo.s"));
+        assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.s"));
     }
+
     /**
      * Tests command line switches for warning = 0
      */
@@ -80,6 +82,7 @@ public class TestForteCCCompiler extends TestCase {
         assertEquals(1, args.size());
         assertEquals("-w", args.elementAt(0));
     }
+
     /**
      * Tests command line switches for warning = 1
      */
@@ -89,6 +92,7 @@ public class TestForteCCCompiler extends TestCase {
         compiler.addWarningSwitch(args, 1);
         assertEquals(0, args.size());
     }
+
     /**
      * Tests command line switches for warning = 2
      */
@@ -98,6 +102,7 @@ public class TestForteCCCompiler extends TestCase {
         compiler.addWarningSwitch(args, 2);
         assertEquals(0, args.size());
     }
+
     /**
      * Tests command line switches for warning = 3
      */
@@ -108,6 +113,7 @@ public class TestForteCCCompiler extends TestCase {
         assertEquals(1, args.size());
         assertEquals("+w", args.elementAt(0));
     }
+
     /**
      * Tests command line switches for warning = 4
      */
@@ -118,6 +124,7 @@ public class TestForteCCCompiler extends TestCase {
         assertEquals(1, args.size());
         assertEquals("+w2", args.elementAt(0));
     }
+
     /**
      * Tests command line switches for warning = 5
      */

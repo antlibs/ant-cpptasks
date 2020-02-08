@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,25 +15,27 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.parser;
+
 public class PostE extends AbstractParserState {
     private AbstractParserState bracket;
     private AbstractParserState quote;
-    public PostE(CParser parser, AbstractParserState bracket,
-            AbstractParserState quote) {
+
+    public PostE(CParser parser, AbstractParserState bracket, AbstractParserState quote) {
         super(parser);
         this.bracket = bracket;
         this.quote = quote;
     }
+
     public AbstractParserState consume(char ch) {
         switch (ch) {
-            case ' ' :
-            case '\t' :
+            case ' ':
+            case '\t':
                 return this;
-            case '<' :
+            case '<':
                 return bracket;
-            case '"' :
+            case '"':
                 return quote;
-            case '\n' :
+            case '\n':
                 return getParser().getNewLineState();
         }
         return null;

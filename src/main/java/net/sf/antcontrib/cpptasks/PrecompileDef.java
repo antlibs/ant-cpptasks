@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +15,7 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks;
+
 import java.io.File;
 import java.util.Enumeration;
 import java.util.Vector;
@@ -24,10 +25,11 @@ import net.sf.antcontrib.cpptasks.types.ConditionalFileSet;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.DirectoryScanner;
 import org.apache.tools.ant.types.DataType;
+
 /**
  * An element that specifies a prototype file and rules for source files that
  * should not use precompiled headers
- * 
+ *
  * @author Curt Arnold
  */
 public final class PrecompileDef extends DataType {
@@ -38,12 +40,13 @@ public final class PrecompileDef extends DataType {
      */
     private File prototype = new File("stdafx.cpp");
     private String unlessCond;
+
     /**
      * Constructor
-     *  
      */
     public PrecompileDef() {
     }
+
     /**
      * Method used by PrecompileExceptDef to add exception set to
      * PrecompileDef.
@@ -52,18 +55,20 @@ public final class PrecompileDef extends DataType {
         exceptSet.setProject(getProject());
         exceptSets.addElement(exceptSet);
     }
+
     /**
      * Adds filesets that specify files that should not be processed with
      * precompiled headers enabled.
-     * 
      */
     public PrecompileExceptDef createExcept() {
         return new PrecompileExceptDef(this);
     }
+
     public void execute() throws org.apache.tools.ant.BuildException {
         throw new org.apache.tools.ant.BuildException(
                 "Not an actual task, but looks like one for documentation purposes");
     }
+
     public String[] getExceptFiles() {
         PrecompileDef ref = getRef();
         if (ref != null) {
@@ -76,11 +81,9 @@ public final class PrecompileDef extends DataType {
         String[] exceptFiles = null;
         Enumeration setEnum = exceptSets.elements();
         while (setEnum.hasMoreElements()) {
-            ConditionalFileSet exceptSet = (ConditionalFileSet) setEnum
-                    .nextElement();
+            ConditionalFileSet exceptSet = (ConditionalFileSet) setEnum.nextElement();
             if (exceptSet.isActive()) {
-                DirectoryScanner scanner = exceptSet
-                        .getDirectoryScanner(p);
+                DirectoryScanner scanner = exceptSet.getDirectoryScanner(p);
                 String[] scannerFiles = scanner.getIncludedFiles();
                 if (exceptFiles == null) {
                     exceptFiles = scannerFiles;
@@ -105,9 +108,9 @@ public final class PrecompileDef extends DataType {
         }
         return exceptFiles;
     }
+
     /**
      * Gets prototype source file
-     *  
      */
     public File getPrototype() {
         PrecompileDef ref = getRef();
@@ -116,6 +119,7 @@ public final class PrecompileDef extends DataType {
         }
         return prototype;
     }
+
     private PrecompileDef getRef() {
         if (isReference()) {
             return ((PrecompileDef) getCheckedRef(PrecompileDef.class,
@@ -123,7 +127,8 @@ public final class PrecompileDef extends DataType {
         }
         return null;
     }
-    public boolean isActive() {    	
+
+    public boolean isActive() {
         boolean isActive = CUtil.isActive(getProject(), ifCond, unlessCond);
         if (!isActive) {
             PrecompileDef ref = getRef();
@@ -133,17 +138,18 @@ public final class PrecompileDef extends DataType {
         }
         return isActive;
     }
+
     /**
      * Sets a description of the current data type.
      */
     public void setDescription(String desc) {
         super.setDescription(desc);
     }
+
     /**
      * Sets an id that can be used to reference this element.
-     * 
-     * @param id
-     *            id
+     *
+     * @param id id
      */
     public void setId(String id) {
         //
@@ -151,29 +157,29 @@ public final class PrecompileDef extends DataType {
         //     mechanism, but we can document it
         //
     }
+
     /**
      * Set the 'if' condition.
-     * 
+     * <p>
      * The processor will be ignored unless the property is defined.
-     * 
+     * <p>
      * The value of property is insignificant, but values that would imply
      * misinterpretation ("false", "no") will throw an exception when
      * isActive() is evaluated.
-     * 
-     * @param propName
-     *            name of property
+     *
+     * @param propName name of property
      */
     public void setIf(String propName) {
         ifCond = propName;
     }
+
     /**
      * Sets file to precompile.
-     * 
+     * <p>
      * Should be a source file that includes only one unguarded header file.
      * Default value is "stdafx.cpp".
-     * 
-     * @param prototype
-     *            file path for prototype source file
+     *
+     * @param prototype file path for prototype source file
      */
     public void setPrototype(File prototype) {
         if (isReference()) {
@@ -184,27 +190,26 @@ public final class PrecompileDef extends DataType {
         }
         this.prototype = prototype;
     }
+
     /**
      * Specifies that this element should behave as if the content of the
      * element with the matching id attribute was inserted at this location.
-     * 
-     * @param ref
-     *            Reference to other element
-     *  
+     *
+     * @param ref Reference to other element
      */
     public void setRefid(org.apache.tools.ant.types.Reference ref) {
         super.setRefid(ref);
     }
+
     /**
      * Set the 'unless' condition. If named property exists at execution time,
      * the processor will be ignored.
-     * 
+     * <p>
      * Value of property is insignificant, but values that would imply
      * misinterpretation ("false", "no") of the behavior will throw an
      * exception when isActive is called.
-     * 
-     * @param propName
-     *            name of property
+     *
+     * @param propName name of property
      */
     public void setUnless(String propName) {
         unlessCond = propName;

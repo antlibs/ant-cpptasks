@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2005 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +15,7 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.borland;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -25,27 +26,27 @@ import java.io.FileWriter;
 
 import net.sf.antcontrib.cpptasks.CUtil;
 import net.sf.antcontrib.cpptasks.types.LibraryTypeEnum;
+
 /**
  * A add-in class for Borland(r) processor adapters
- * 
- *  
  */
 public final class BorlandProcessor {
     public static void addWarningSwitch(Vector args, int level) {
         switch (level) {
-            case 0 :
+            case 0:
                 args.addElement("-w-");
                 break;
-            case 5 :
+            case 5:
                 args.addElement("-w!");
                 break;
-            default :
+            default:
                 args.addElement("-w");
                 break;
         }
     }
+
     public static void getDefineSwitch(StringBuffer buffer, String define,
-            String value) {
+                                       String value) {
         buffer.append("-D");
         buffer.append(define);
         if (value != null && value.length() > 0) {
@@ -53,20 +54,18 @@ public final class BorlandProcessor {
             buffer.append(value);
         }
     }
+
     /**
      * This method extracts path information from the appropriate .cfg file in
      * the install directory.
-     * 
-     * @param toolName
-     *            Tool name, for example, "bcc32", "brc32", "ilink32"
-     * @param switchChar
-     *            Command line switch character, for example "L" for libraries
-     * @param defaultRelativePath
-     *            default path relative to executable directory
+     *
+     * @param toolName            Tool name, for example, "bcc32", "brc32", "ilink32"
+     * @param switchChar          Command line switch character, for example "L" for libraries
+     * @param defaultRelativePath default path relative to executable directory
      * @return path
      */
     public static File[] getEnvironmentPath(String toolName, char switchChar,
-            String[] defaultRelativePath) {
+                                            String[] defaultRelativePath) {
         if (toolName == null) {
             throw new NullPointerException("toolName");
         }
@@ -80,8 +79,7 @@ public final class BorlandProcessor {
             if (cfgFile.exists()) {
                 try {
                     Reader reader = new BufferedReader(new FileReader(cfgFile));
-                    BorlandCfgParser cfgParser = new BorlandCfgParser(
-                            switchChar);
+                    BorlandCfgParser cfgParser = new BorlandCfgParser(switchChar);
                     path = cfgParser.parsePath(reader);
                     reader.close();
                 } catch (IOException ex) {
@@ -128,12 +126,14 @@ public final class BorlandProcessor {
         }
         return resourcePath;
     }
+
     public static String getIncludeDirSwitch(String includeOption,
-            String includeDir) {
+                                             String includeDir) {
         StringBuffer buf = new StringBuffer(includeOption);
         quoteFile(buf, includeDir);
         return buf.toString();
     }
+
     public static String[] getLibraryPatterns(String[] libnames, LibraryTypeEnum libType) {
         StringBuffer buf = new StringBuffer();
         String[] patterns = new String[libnames.length];
@@ -145,21 +145,25 @@ public final class BorlandProcessor {
         }
         return patterns;
     }
+
     public static String[] getOutputFileSwitch(String outFile) {
         return new String[0];
     }
+
     public static void getUndefineSwitch(StringBuffer buffer, String define) {
         buffer.append("-U");
         buffer.append(define);
     }
+
     public static boolean isCaseSensitive() {
         return false;
     }
+
     public static void quoteFile(StringBuffer buf, String outPath) {
         if (outPath.charAt(0) != '\"'
-            && (outPath.indexOf(' ') >= 0
-            || outPath.indexOf('-') >= 0
-            || outPath.indexOf('/') >= 0)) {
+                && (outPath.indexOf(' ') >= 0
+                || outPath.indexOf('-') >= 0
+                || outPath.indexOf('/') >= 0)) {
             buf.append('\"');
             buf.append(outPath);
             buf.append('\"');
@@ -167,20 +171,17 @@ public final class BorlandProcessor {
             buf.append(outPath);
         }
     }
-    
+
     /**
      * Prepares argument list to execute the linker using a response file.
-     * 
-     * @param outputFile
-     *            linker output file
-     * @param args
-     *            output of prepareArguments
+     *
+     * @param outputFile linker output file
+     * @param args       output of prepareArguments
      * @return arguments for runTask
      */
-    public static String[] prepareResponseFile(File outputFile, 
-    		String[] args,
-			String continuation)
-            throws IOException {
+    public static String[] prepareResponseFile(File outputFile,
+                                               String[] args,
+                                               String continuation) throws IOException {
         String baseName = outputFile.getName();
         File commandFile = new File(outputFile.getParent(), baseName + ".rsp");
         FileWriter writer = new FileWriter(commandFile);
@@ -213,7 +214,7 @@ public final class BorlandProcessor {
         execArgs[1] = commandFile.toString();
         return execArgs;
     }
-    
+
     private BorlandProcessor() {
     }
 }

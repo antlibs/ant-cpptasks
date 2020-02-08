@@ -29,25 +29,24 @@ import org.xml.sax.SAXException;
  * Project writer interface.
  *
  * @author curta
- *
  */
 public interface ProjectWriter {
-  /**
-   *  Write  project definition file.
-   * @param baseName File name base, writer may append appropriate extension
-   * @param task task
-   * @param projectDef project element
-   * @param files source and header files
-   * @param targets compilation targets
-   * @param linkTarget link target
-   * @throws IOException if I/O error is encountered
-   * @throws SAXException if I/O error during XML serialization
-   */
-  void writeProject(final File baseName,
-                    final CCTask task,
-                    final ProjectDef projectDef,
-                    final List files,
-                    final Hashtable targets,
-                    final TargetInfo linkTarget)
-      throws IOException, SAXException;
+    /**
+     * Write  project definition file.
+     *
+     * @param baseName   File name base, writer may append appropriate extension
+     * @param task       task
+     * @param projectDef project element
+     * @param files      source and header files
+     * @param targets    compilation targets
+     * @param linkTarget link target
+     * @throws IOException  if I/O error is encountered
+     * @throws SAXException if I/O error during XML serialization
+     */
+    void writeProject(final File baseName,
+                      final CCTask task,
+                      final ProjectDef projectDef,
+                      final List files,
+                      final Hashtable targets,
+                      final TargetInfo linkTarget) throws IOException, SAXException;
 }

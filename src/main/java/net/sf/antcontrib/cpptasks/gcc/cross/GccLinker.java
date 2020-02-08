@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2001-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +15,10 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.gcc.cross;
+
 import java.io.File;
 import java.util.Vector;
+
 import net.sf.antcontrib.cpptasks.CCTask;
 import net.sf.antcontrib.cpptasks.CUtil;
 import net.sf.antcontrib.cpptasks.LinkerParam;
@@ -25,9 +27,10 @@ import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 import net.sf.antcontrib.cpptasks.gcc.AbstractLdLinker;
 import org.apache.tools.ant.BuildException;
+
 /**
  * Adapter for the GCC linker
- * 
+ *
  * @author Adam Murdoch
  */
 public class GccLinker extends AbstractLdLinker {
@@ -36,7 +39,7 @@ public class GccLinker extends AbstractLdLinker {
             ".dll", ".so", ".sl"};
     private static final GccLinker dllLinker = new GccLinker("gcc", objFiles,
             discardFiles, "lib", ".so", false, new GccLinker("gcc", objFiles,
-                    discardFiles, "lib", ".so", true, null));
+            discardFiles, "lib", ".so", true, null));
     private static final GccLinker instance = new GccLinker("gcc", objFiles,
             discardFiles, "", "", false, null);
     private static final String[] libtoolObjFiles = new String[]{".fo", ".a",
@@ -49,16 +52,20 @@ public class GccLinker extends AbstractLdLinker {
             objFiles, discardFiles, "lib", ".bundle", false, null);
     private static final GccLinker machDllLinker = new GccLinker("gcc",
             objFiles, discardFiles, "lib", ".dylib", false, null);
+
     public static GccLinker getInstance() {
         return instance;
     }
+
     private File[] libDirs;
+
     protected GccLinker(String command, String[] extensions,
-            String[] ignoredExtensions, String outputPrefix,
-            String outputSuffix, boolean isLibtool, GccLinker libtoolLinker) {
+                        String[] ignoredExtensions, String outputPrefix,
+                        String outputSuffix, boolean isLibtool, GccLinker libtoolLinker) {
         super(command, "-dumpversion", extensions, ignoredExtensions,
                 outputPrefix, outputSuffix, isLibtool, libtoolLinker);
     }
+
     protected void addImpliedArgs(boolean debug, LinkType linkType, Vector args) {
         super.addImpliedArgs(debug, linkType, args);
         if (getIdentifier().indexOf("mingw") >= 0) {
@@ -70,19 +77,19 @@ public class GccLinker extends AbstractLdLinker {
             }
         }
     }
+
     protected Object clone() throws CloneNotSupportedException {
         GccLinker clone = (GccLinker) super.clone();
         return clone;
     }
+
     /**
      * Allows drived linker to decorate linker option. Override by GccLinker to
      * prepend a "-Wl," to pass option to through gcc to linker.
-     * 
-     * @param buf
-     *            buffer that may be used and abused in the decoration process,
+     *
+     * @param buf buffer that may be used and abused in the decoration process,
      *            must not be null.
-     * @param arg
-     *            linker argument
+     * @param arg linker argument
      */
     public String decorateLinkerOption(StringBuffer buf, String arg) {
         String decoratedArg = arg;
@@ -91,19 +98,19 @@ public class GccLinker extends AbstractLdLinker {
                 //
                 //   passed automatically by GCC
                 //
-                case 'g' :
-                case 'f' :
-                case 'F' :
-                /* Darwin */
-                case 'm' :
-                case 'O' :
-                case 'W' :
-                case 'l' :
-                case 'L' :
-                case 'u' :
-                case 'v' :
+                case 'g':
+                case 'f':
+                case 'F':
+                    /* Darwin */
+                case 'm':
+                case 'O':
+                case 'W':
+                case 'l':
+                case 'L':
+                case 'u':
+                case 'v':
                     break;
-                default :
+                default:
                     boolean known = false;
                     for (int i = 0; i < linkerOptions.length; i++) {
                         if (linkerOptions[i].equals(arg)) {
@@ -122,9 +129,9 @@ public class GccLinker extends AbstractLdLinker {
         }
         return decoratedArg;
     }
+
     /**
      * Returns library path.
-     *  
      */
     public File[] getLibraryPath() {
         if (libDirs == null) {
@@ -195,6 +202,7 @@ public class GccLinker extends AbstractLdLinker {
         }
         return libDirs;
     }
+
     public Linker getLinker(LinkType type) {
         if (type.isStaticLibrary()) {
             return GccLibrarian.getInstance();
@@ -215,20 +223,23 @@ public class GccLinker extends AbstractLdLinker {
         }
         return instance;
     }
+
     public void link(CCTask task, File outputFile, String[] sourceFiles,
-            CommandLineLinkerConfiguration config) throws BuildException {
+                     CommandLineLinkerConfiguration config) throws BuildException {
         try {
             GccLinker clone = (GccLinker) this.clone();
             LinkerParam param = config.getParam("target");
-            if (param != null)
+            if (param != null) {
                 clone.setCommand(param.getValue() + "-" + this.getCommand());
+            }
             clone.superlink(task, outputFile, sourceFiles, config);
         } catch (CloneNotSupportedException e) {
             superlink(task, outputFile, sourceFiles, config);
         }
     }
+
     private void superlink(CCTask task, File outputFile, String[] sourceFiles,
-            CommandLineLinkerConfiguration config) throws BuildException {
+                           CommandLineLinkerConfiguration config) throws BuildException {
         super.link(task, outputFile, sourceFiles, config);
     }
 }

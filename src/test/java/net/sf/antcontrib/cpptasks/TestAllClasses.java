@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2007 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,16 +15,19 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks;
+
 import junit.framework.TestSuite;
+
 /**
  * Test for abstract compiler class
- * 
+ * <p>
  * Override create to test concrete compiler implementions
  */
 public class TestAllClasses extends TestSuite {
     public static TestSuite suite() {
         return new TestAllClasses("TestAllClasses");
     }
+
     public TestAllClasses(String name) {
         super(name);
         addTestSuite(net.sf.antcontrib.cpptasks.TestCUtil.class);

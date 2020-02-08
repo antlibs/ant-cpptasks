@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,9 +15,11 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks;
+
 import java.io.File;
 import java.lang.reflect.Method;
 import java.util.Vector;
+
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Processor;
 import net.sf.antcontrib.cpptasks.compiler.ProcessorConfiguration;
@@ -29,19 +31,19 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.DataType;
 import org.apache.tools.ant.types.Environment;
 import org.apache.tools.ant.types.Reference;
+
 /**
  * An abstract compiler/linker definition.
- * 
+ *
  * @author Curt Arnold
  */
 public abstract class ProcessorDef extends DataType {
     /**
      * Returns the equivalent Boolean object for the specified value
-     * 
+     * <p>
      * Equivalent to Boolean.valueOf in JDK 1.4
-     * 
-     * @param val
-     *            boolean value
+     *
+     * @param val boolean value
      * @return Boolean.TRUE or Boolean.FALSE
      */
     protected static Boolean booleanValueOf(boolean val) {
@@ -50,6 +52,7 @@ public abstract class ProcessorDef extends DataType {
         }
         return Boolean.FALSE;
     }
+
     /**
      * if true, targets will be built for debugging
      */
@@ -96,22 +99,20 @@ public abstract class ProcessorDef extends DataType {
      * May be null.
      */
     private String unlessProp;
+
     /**
      * Constructor
-     *  
      */
     protected ProcessorDef() throws NullPointerException {
         inherit = true;
     }
+
     /**
      * Adds a <compilerarg>or <linkerarg>
-     * 
-     * @param arg
-     *            command line argument, must not be null
-     * @throws NullPointerException
-     *             if arg is null
-     * @throws BuildException
-     *             if this definition is a reference
+     *
+     * @param arg command line argument, must not be null
+     * @throws NullPointerException if arg is null
+     * @throws BuildException       if this definition is a reference
      */
     protected void addConfiguredProcessorArg(CommandLineArgument arg)
             throws NullPointerException, BuildException {
@@ -123,15 +124,13 @@ public abstract class ProcessorDef extends DataType {
         }
         processorArgs.addElement(arg);
     }
+
     /**
      * Adds a <compilerarg>or <linkerarg>
-     * 
-     * @param param
-     *            command line argument, must not be null
-     * @throws NullPointerException
-     *             if arg is null
-     * @throws BuildException
-     *             if this definition is a reference
+     *
+     * @param param command line argument, must not be null
+     * @throws NullPointerException if arg is null
+     * @throws BuildException       if this definition is a reference
      */
     protected void addConfiguredProcessorParam(ProcessorParam param)
             throws NullPointerException, BuildException {
@@ -143,6 +142,7 @@ public abstract class ProcessorDef extends DataType {
         }
         processorParams.addElement(param);
     }
+
     /**
      * Add an environment variable to the launched process.
      */
@@ -152,17 +152,16 @@ public abstract class ProcessorDef extends DataType {
         }
         env.addVariable(var);
     }
+
     /**
      * Adds a source file set.
-     * 
+     * <p>
      * Files in these set will be processed by this configuration and will not
      * participate in the auction.
-     * 
-     * @param srcSet
-     *            Fileset identifying files that should be processed by this
-     *            processor
-     * @throws BuildException
-     *             if processor definition is a reference
+     *
+     * @param srcSet Fileset identifying files that should be processed by this
+     *               processor
+     * @throws BuildException if processor definition is a reference
      */
     public void addFileset(ConditionalFileSet srcSet) throws BuildException {
         if (isReference()) {
@@ -171,17 +170,17 @@ public abstract class ProcessorDef extends DataType {
         srcSet.setProject(getProject());
         srcSets.addElement(srcSet);
     }
+
     /**
      * Creates a configuration
-     * 
-     * @param baseDef
-     *            reference to def from containing cc element, may be null
+     *
+     * @param baseDef reference to def from containing cc element, may be null
      * @return configuration
-     *  
      */
-    public ProcessorConfiguration createConfiguration(CCTask task,
-            LinkType linkType, ProcessorDef baseDef, 
-			TargetDef targetPlatform, VersionInfo versionInfo) {
+    public ProcessorConfiguration createConfiguration(CCTask task, LinkType linkType,
+                                                      ProcessorDef baseDef,
+                                                      TargetDef targetPlatform,
+                                                      VersionInfo versionInfo) {
         if (isReference()) {
             return ((ProcessorDef) getCheckedRef(ProcessorDef.class,
                     "ProcessorDef")).createConfiguration(task, linkType,
@@ -191,14 +190,15 @@ public abstract class ProcessorDef extends DataType {
         Processor proc = getProcessor(linkType);
         return proc.createConfiguration(task, linkType, defaultProviders, this, targetPlatform, versionInfo);
     }
+
     /**
      * Prepares list of processor arguments ( compilerarg, linkerarg ) that
      * are active for the current project settings.
-     * 
+     *
      * @return active compiler arguments
      */
     public CommandLineArgument[] getActiveProcessorArgs() {
-    	Project p = getProject();
+        Project p = getProject();
         if (p == null) {
             throw new java.lang.IllegalStateException("project must be set");
         }
@@ -208,8 +208,7 @@ public abstract class ProcessorDef extends DataType {
         }
         Vector activeArgs = new Vector(processorArgs.size());
         for (int i = 0; i < processorArgs.size(); i++) {
-            CommandLineArgument arg = (CommandLineArgument) processorArgs
-                    .elementAt(i);
+            CommandLineArgument arg = (CommandLineArgument) processorArgs.elementAt(i);
             if (arg.isActive(p)) {
                 activeArgs.addElement(arg);
             }
@@ -218,14 +217,15 @@ public abstract class ProcessorDef extends DataType {
         activeArgs.copyInto(array);
         return array;
     }
+
     /**
      * Prepares list of processor arguments ( compilerarg, linkerarg) that
      * are active for the current project settings.
-     * 
+     *
      * @return active compiler arguments
      */
     public ProcessorParam[] getActiveProcessorParams() {
-    	Project p = getProject();
+        Project p = getProject();
         if (p == null) {
             throw new java.lang.IllegalStateException("project must be set");
         }
@@ -235,8 +235,7 @@ public abstract class ProcessorDef extends DataType {
         }
         Vector activeParams = new Vector(processorParams.size());
         for (int i = 0; i < processorParams.size(); i++) {
-            ProcessorParam param = (ProcessorParam) processorParams
-                    .elementAt(i);
+            ProcessorParam param = (ProcessorParam) processorParams.elementAt(i);
             if (param.isActive(p)) {
                 activeParams.addElement(param);
             }
@@ -245,13 +244,12 @@ public abstract class ProcessorDef extends DataType {
         activeParams.copyInto(array);
         return array;
     }
+
     /**
      * Gets boolean indicating debug build
-     * 
-     * @param defaultProviders
-     *            array of ProcessorDef's in descending priority
-     * @param index
-     *            index to first element in array that should be considered
+     *
+     * @param defaultProviders array of ProcessorDef's in descending priority
+     * @param index            index to first element in array that should be considered
      * @return if true, built targets for debugging
      */
     public boolean getDebug(ProcessorDef[] defaultProviders, int index) {
@@ -269,15 +267,14 @@ public abstract class ProcessorDef extends DataType {
         }
         return false;
     }
+
     /**
      * Creates an chain of objects which provide default values in descending
      * order of significance.
-     * 
-     * @param baseDef
-     *            corresponding ProcessorDef from CCTask, will be last element
-     *            in array unless inherit = false
+     *
+     * @param baseDef corresponding ProcessorDef from CCTask, will be last element
+     *                in array unless inherit = false
      * @return default provider array
-     *  
      */
     protected final ProcessorDef[] getDefaultProviders(ProcessorDef baseDef) {
         ProcessorDef extendsDef = getExtends();
@@ -293,12 +290,12 @@ public abstract class ProcessorDef extends DataType {
         chain.copyInto(defaultProviders);
         return defaultProviders;
     }
+
     /**
      * Gets the ProcessorDef specified by the extends attribute
-     * 
+     *
      * @return Base ProcessorDef, null if extends is not specified
-     * @throws BuildException
-     *             if reference is not same type object
+     * @throws BuildException if reference is not same type object
      */
     public ProcessorDef getExtends() throws BuildException {
         if (extendsRef != null) {
@@ -313,16 +310,18 @@ public abstract class ProcessorDef extends DataType {
         }
         return null;
     }
+
     /**
      * Gets the inherit attribute. If the inherit value is true, this processor
      * definition will inherit default values from the containing cc element.
-     * 
+     *
      * @return if true then properties from the containing <cc>element are
-     *         used.
+     * used.
      */
     public final boolean getInherit() {
         return inherit;
     }
+
     public boolean getLibtool() {
         if (libtool != null) {
             return libtool.booleanValue();
@@ -337,9 +336,10 @@ public abstract class ProcessorDef extends DataType {
         }
         return false;
     }
+
     /**
      * Obtains the appropriate processor (compiler, linker)
-     * 
+     *
      * @return processor
      */
     protected Processor getProcessor() {
@@ -360,23 +360,22 @@ public abstract class ProcessorDef extends DataType {
     }
 
     /**
-     * Obtains the appropriate processor (compiler, linker) based on the 
+     * Obtains the appropriate processor (compiler, linker) based on the
      * LinkType.
      *
      * @return processor
      */
     protected Processor getProcessor(LinkType linkType) {
-      // by default ignore the linkType.
-      return getProcessor();
+        // by default ignore the linkType.
+        return getProcessor();
     }
+
     /**
      * Gets a boolean value indicating whether all targets must be rebuilt
      * regardless of dependency analysis.
-     * 
-     * @param defaultProviders
-     *            array of ProcessorDef's in descending priority
-     * @param index
-     *            index to first element in array that should be considered
+     *
+     * @param defaultProviders array of ProcessorDef's in descending priority
+     * @param index            index to first element in array that should be considered
      * @return true if all targets should be rebuilt.
      */
     public boolean getRebuild(ProcessorDef[] defaultProviders, int index) {
@@ -394,10 +393,11 @@ public abstract class ProcessorDef extends DataType {
         }
         return false;
     }
+
     /**
      * Returns true if the processor definition contains embedded file set
      * definitions
-     * 
+     *
      * @return true if processor definition contains embedded filesets
      */
     public boolean hasFileSets() {
@@ -407,19 +407,18 @@ public abstract class ProcessorDef extends DataType {
         }
         return srcSets.size() > 0;
     }
+
     /**
      * Determine if this def should be used.
-     * 
+     * <p>
      * Definition will be active if the "if" variable (if specified) is set and
      * the "unless" variable (if specified) is not set and that all reference
      * or extended definitions are active
-     * 
+     *
      * @return true if processor is active
-     * @throws IllegalStateException
-     *             if not properly initialized
-     * @throws BuildException
-     *             if "if" or "unless" variable contains suspicious values
-     *             "false" or "no" which indicates possible confusion
+     * @throws IllegalStateException if not properly initialized
+     * @throws BuildException        if "if" or "unless" variable contains suspicious values
+     *                               "false" or "no" which indicates possible confusion
      */
     public boolean isActive() throws BuildException, IllegalStateException {
         Project project = getProject();
@@ -443,22 +442,19 @@ public abstract class ProcessorDef extends DataType {
         }
         return true;
     }
+
     /**
      * Sets the class name for the adapter. Use the "name" attribute when the
      * tool is supported.
-     * 
-     * @param className
-     *            full class name
-     *  
+     *
+     * @param className full class name
      */
     public void setClassname(String className) throws BuildException {
         Object proc = null;
         try {
-            Class implClass = ProcessorDef.class.getClassLoader().loadClass(
-                    className);
+            Class implClass = ProcessorDef.class.getClassLoader().loadClass(className);
             try {
-                Method getInstance = implClass.getMethod("getInstance",
-                        new Class[0]);
+                Method getInstance = implClass.getMethod("getInstance", new Class[0]);
                 proc = getInstance.invoke(null, new Object[0]);
             } catch (Exception ex) {
                 proc = implClass.newInstance();
@@ -468,13 +464,12 @@ public abstract class ProcessorDef extends DataType {
         }
         setProcessor((Processor) proc);
     }
+
     /**
      * If set true, all targets will be built for debugging.
-     * 
-     * @param debug
-     *            true if targets should be built for debugging
-     * @throws BuildException
-     *             if processor definition is a reference
+     *
+     * @param debug true if targets should be built for debugging
+     * @throws BuildException if processor definition is a reference
      */
     public void setDebug(boolean debug) throws BuildException {
         if (isReference()) {
@@ -482,22 +477,22 @@ public abstract class ProcessorDef extends DataType {
         }
         this.debug = booleanValueOf(debug);
     }
+
     /**
      * Sets a description of the current data type.
      */
     public void setDescription(String desc) {
         super.setDescription(desc);
     }
+
     /**
      * Specifies that this element extends the element with id attribute with a
      * matching value. The configuration will be constructed from the settings
      * of this element, element referenced by extends, and the containing cc
      * element.
-     * 
-     * @param extendsRef
-     *            Reference to the extended processor definition.
-     * @throws BuildException
-     *             if this processor definition is a reference
+     *
+     * @param extendsRef Reference to the extended processor definition.
+     * @throws BuildException if this processor definition is a reference
      */
     public void setExtends(Reference extendsRef) throws BuildException {
         if (isReference()) {
@@ -505,11 +500,11 @@ public abstract class ProcessorDef extends DataType {
         }
         this.extendsRef = extendsRef;
     }
+
     /**
      * Sets an id that can be used to reference this element.
-     * 
-     * @param id
-     *            id
+     *
+     * @param id id
      */
     public void setId(String id) {
         //
@@ -517,29 +512,28 @@ public abstract class ProcessorDef extends DataType {
         //     mechanism, but we can document it
         //
     }
+
     /**
      * Sets the property name for the 'if' condition.
-     * 
+     * <p>
      * The configuration will be ignored unless the property is defined.
-     * 
+     * <p>
      * The value of the property is insignificant, but values that would imply
      * misinterpretation ("false", "no") will throw an exception when
      * evaluated.
-     * 
-     * @param propName
-     *            name of property
+     *
+     * @param propName name of property
      */
     public void setIf(String propName) {
         ifProp = propName;
     }
+
     /**
      * If inherit has the default value of true, defines, includes and other
      * settings from the containing cc element will be inherited.
-     * 
-     * @param inherit
-     *            new value
-     * @throws BuildException
-     *             if processor definition is a reference
+     *
+     * @param inherit new value
+     * @throws BuildException if processor definition is a reference
      */
     public void setInherit(boolean inherit) throws BuildException {
         if (isReference()) {
@@ -547,13 +541,13 @@ public abstract class ProcessorDef extends DataType {
         }
         this.inherit = inherit;
     }
+
     /**
      * Set use of libtool.
-     * 
+     * <p>
      * If set to true, the "libtool " will be prepended to the command line
-     * 
-     * @param libtool
-     *            If true, use libtool.
+     *
+     * @param libtool If true, use libtool.
      */
     public void setLibtool(boolean libtool) {
         if (isReference()) {
@@ -561,6 +555,7 @@ public abstract class ProcessorDef extends DataType {
         }
         this.libtool = booleanValueOf(libtool);
     }
+
     /**
      * Do not propagate old environment when new environment variables are
      * specified.
@@ -568,18 +563,15 @@ public abstract class ProcessorDef extends DataType {
     public void setNewenvironment(boolean newenv) {
         newEnvironment = newenv;
     }
+
     /**
      * Sets the processor
-     * 
-     * @param processor
-     *            processor, may not be null.
-     * @throws BuildException
-     *             if ProcessorDef is a reference
-     * @throws NullPointerException
-     *             if processor is null
+     *
+     * @param processor processor, may not be null.
+     * @throws BuildException       if ProcessorDef is a reference
+     * @throws NullPointerException if processor is null
      */
-    protected void setProcessor(Processor processor) throws BuildException,
-            NullPointerException {
+    protected void setProcessor(Processor processor) throws BuildException, NullPointerException {
         if (processor == null) {
             throw new NullPointerException("processor");
         }
@@ -592,13 +584,12 @@ public abstract class ProcessorDef extends DataType {
             this.processor = processor.changeEnvironment(newEnvironment, env);
         }
     }
+
     /**
      * If set true, all targets will be unconditionally rebuilt.
-     * 
-     * @param rebuild
-     *            if true, rebuild all targets.
-     * @throws BuildException
-     *             if processor definition is a reference
+     *
+     * @param rebuild if true, rebuild all targets.
+     * @throws BuildException if processor definition is a reference
      */
     public void setRebuild(boolean rebuild) throws BuildException {
         if (isReference()) {
@@ -606,50 +597,48 @@ public abstract class ProcessorDef extends DataType {
         }
         this.rebuild = booleanValueOf(rebuild);
     }
+
     /**
      * Specifies that this element should behave as if the content of the
      * element with the matching id attribute was inserted at this location. If
      * specified, no other attributes or child content should be specified,
      * other than "if", "unless" and "description".
-     * 
-     * @param ref
-     *            Reference to other element
-     *  
+     *
+     * @param ref Reference to other element
      */
     public void setRefid(org.apache.tools.ant.types.Reference ref) {
         super.setRefid(ref);
     }
+
     /**
      * Set the property name for the 'unless' condition.
-     * 
+     * <p>
      * If named property is set, the configuration will be ignored.
-     * 
+     * <p>
      * The value of the property is insignificant, but values that would imply
      * misinterpretation ("false", "no") of the behavior will throw an
      * exception when evaluated.
-     * 
-     * @param propName
-     *            name of property
+     *
+     * @param propName name of property
      */
     public void setUnless(String propName) {
         unlessProp = propName;
     }
+
     /**
      * This method calls the FileVistor's visit function for every file in the
      * processors definition
-     * 
-     * @param visitor
-     *            object whose visit method is called for every file
+     *
+     * @param visitor object whose visit method is called for every file
      */
     public void visitFiles(FileVisitor visitor) {
-    	Project p = getProject();
+        Project p = getProject();
         if (p == null) {
-            throw new java.lang.IllegalStateException(
-                    "project must be set before this call");
+            throw new java.lang.IllegalStateException("project must be set before this call");
         }
         if (isReference()) {
-            ((ProcessorDef) getCheckedRef(ProcessorDef.class, "ProcessorDef"))
-                    .visitFiles(visitor);
+            ((ProcessorDef) getCheckedRef(ProcessorDef.class,
+                    "ProcessorDef")).visitFiles(visitor);
         }
         //
         //   if this processor extends another,
@@ -659,10 +648,9 @@ public abstract class ProcessorDef extends DataType {
         if (extendsDef != null) {
             extendsDef.visitFiles(visitor);
         }
-        
+
         for (int i = 0; i < srcSets.size(); i++) {
-            ConditionalFileSet srcSet = (ConditionalFileSet) srcSets
-                    .elementAt(i);
+            ConditionalFileSet srcSet = (ConditionalFileSet) srcSets.elementAt(i);
             if (srcSet.isActive()) {
                 // Find matching source files
                 DirectoryScanner scanner = srcSet.getDirectoryScanner(p);

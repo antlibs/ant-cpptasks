@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2003-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +15,7 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -22,31 +23,28 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import junit.framework.TestCase;
+
 /**
  * Base class for tests on classes that consume or public XML documents.
- * 
+ *
  * @author Curt Arnold
- *  
  */
 public abstract class TestXMLConsumer extends TestCase {
     /**
      * copies a resource to a temporary directory.
-     * 
-     * @param resourceName
-     *            resouce name, such as "files/openshore/history.xml".
-     * @param tmpFile name for temporary file created in /tmp or similar.
+     *
+     * @param resourceName resouce name, such as "files/openshore/history.xml".
+     * @param tmpFile      name for temporary file created in /tmp or similar.
      */
     public static final void copyResourceToTmpDir(String resourceName,
-            String tmpFile) throws IOException {
+                                                  String tmpFile) throws IOException {
         String tmpDir = System.getProperty("java.io.tmpdir");
         //
         //  attempt to get resource from jar
         //      (should succeed unless testing in IDE)
         InputStream src = null;
-        if (TestTargetHistoryTable.class.getClassLoader().getResource(
-                resourceName) != null) {
-            src = TestTargetHistoryTable.class.getClassLoader()
-                    .getResourceAsStream(resourceName);
+        if (TestTargetHistoryTable.class.getClassLoader().getResource(resourceName) != null) {
+            src = TestTargetHistoryTable.class.getClassLoader().getResourceAsStream(resourceName);
         }
         //
         //  if not found, try to find it relative to the current directory
@@ -74,11 +72,11 @@ public abstract class TestXMLConsumer extends TestCase {
             src.close();
         }
     }
+
     /**
      * Deletes a file, if it exists, from the user's temporary directory.
-     * 
-     * @param tmpName
-     *            file name, may not be null
+     *
+     * @param tmpName file name, may not be null
      */
     public static void deleteTmpFile(String tmpName) throws IOException {
         String tmpDir = System.getProperty("java.io.tmpdir");
@@ -87,6 +85,7 @@ public abstract class TestXMLConsumer extends TestCase {
             tmpFile.delete();
         }
     }
+
     /**
      * @param testName
      */

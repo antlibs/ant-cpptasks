@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2005 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,28 +15,33 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks;
+
 import junit.framework.TestCase;
 
 import org.apache.tools.ant.BuildException;
+
 /**
  * Tests for CompilerEnum.
  */
 public class TestCompilerEnum extends TestCase {
     /**
      * Create instance of TestCompilerEnum.
+     *
      * @param name test name.
      */
     public TestCompilerEnum(final String name) {
         super(name);
     }
-    /**
-     * Test that "gcc" is recognized as a compiler enum.
-     */
+
+   /**
+    * Test that "gcc" is recognized as a compiler enum.
+    */
     public void testCompilerEnum1() {
         CompilerEnum compilerEnum = new CompilerEnum();
         compilerEnum.setValue("gcc");
         assertTrue(compilerEnum.getIndex() >= 0);
     }
+
     /**
      * Test that "bogus" is not recognized as a compiler enum.
      */

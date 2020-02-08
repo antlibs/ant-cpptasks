@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2001-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,28 +15,28 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.compiler;
+
 import java.io.File;
 
 import net.sf.antcontrib.cpptasks.parser.CParser;
 import net.sf.antcontrib.cpptasks.parser.Parser;
-
 import org.apache.tools.ant.types.Environment;
+
 /**
  * A command line C compiler that can utilize precompilation of header files
- * 
+ *
  * @author Curt Arnold
  */
-public abstract class PrecompilingCommandLineCCompiler
-        extends
-            PrecompilingCommandLineCompiler {
+public abstract class PrecompilingCommandLineCCompiler extends PrecompilingCommandLineCompiler {
     protected PrecompilingCommandLineCCompiler(String command,
-            String identifierArg, String[] sourceExtensions,
-            String[] headerExtensions, String outputSuffix, boolean libtool,
-            PrecompilingCommandLineCCompiler libtoolCompiler,
-            boolean newEnvironment, Environment env) {
+                                               String identifierArg, String[] sourceExtensions,
+                                               String[] headerExtensions, String outputSuffix, boolean libtool,
+                                               PrecompilingCommandLineCCompiler libtoolCompiler,
+                                               boolean newEnvironment, Environment env) {
         super(command, identifierArg, sourceExtensions, headerExtensions,
                 outputSuffix, libtool, libtoolCompiler, newEnvironment, env);
     }
+
     protected Parser createParser(File source) {
         return new CParser();
     }

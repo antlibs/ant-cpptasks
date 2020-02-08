@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,18 +15,21 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.types;
+
 import java.lang.reflect.Method;
 
 /**
  * Helper class which can be used for Ant task attribute setter methods to
  * allow the build file to specify a long in either decimal, octal, or
  * hexadecimal format.
- *  // FlexInteger author
+ * // FlexInteger author
+ *
  * @author Erik Hatcher
  * @see org.apache.tools.ant.types.FlexInteger
  */
 public class FlexLong {
     private Long value;
+
     /**
      * Constructor used by Ant's introspection mechanism for attribute
      * population
@@ -35,8 +38,7 @@ public class FlexLong {
         // Java 1.1 did not support Long.decode().. so we call it by
         // reflection.
         try {
-            Method m = Long.class
-                    .getMethod("decode", new Class[]{String.class});
+            Method m = Long.class.getMethod("decode", new Class[]{String.class});
             Object rc = m.invoke(null, new Object[]{value});
             this.value = (Long) rc;
         } catch (Exception e) {
@@ -44,12 +46,14 @@ public class FlexLong {
             this.value = new Long(value);
         }
     }
+
     /**
      * Returns the decimal integer value
      */
     public long longValue() {
         return value.longValue();
     }
+
     /**
      * Overridden method to return the decimal value for display
      */

@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,21 +15,24 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks;
+
 import java.io.File;
 
 import net.sf.antcontrib.cpptasks.compiler.ProcessorConfiguration;
+
 /**
  * A description of a file built or to be built
  */
 public final class TargetInfo {
     private static final File[] emptyFileArray = new File[0];
-    private/* final */ProcessorConfiguration config;
-    private/* final */File output;
+    private/* final */ ProcessorConfiguration config;
+    private/* final */ File output;
     private boolean rebuild;
-    private/* final */File[] sources;
+    private/* final */ File[] sources;
     private File[] sysSources;
+
     public TargetInfo(ProcessorConfiguration config, File[] sources,
-            File[] sysSources, File output, boolean rebuild) {
+                      File[] sysSources, File output, boolean rebuild) {
         if (config == null) {
             throw new NullPointerException("config");
         }
@@ -55,6 +58,7 @@ public final class TargetInfo {
             rebuild = true;
         }
     }
+
     public String[] getAllSourcePaths() {
         String[] paths = new String[sysSources.length + sources.length];
         for (int i = 0; i < sysSources.length; i++) {
@@ -66,6 +70,7 @@ public final class TargetInfo {
         }
         return paths;
     }
+
     public File[] getAllSources() {
         File[] allSources = new File[sources.length + sysSources.length];
         for (int i = 0; i < sysSources.length; i++) {
@@ -77,15 +82,19 @@ public final class TargetInfo {
         }
         return allSources;
     }
+
     public ProcessorConfiguration getConfiguration() {
         return config;
     }
+
     public File getOutput() {
         return output;
     }
+
     public boolean getRebuild() {
         return rebuild;
     }
+
     /**
      * Returns an array of SourceHistory objects (contains relative path and
      * last modified time) for the source[s] of this target
@@ -99,6 +108,7 @@ public final class TargetInfo {
         }
         return histories;
     }
+
     public String[] getSourcePaths() {
         String[] paths = new String[sources.length];
         for (int i = 0; i < sources.length; i++) {
@@ -106,10 +116,12 @@ public final class TargetInfo {
         }
         return paths;
     }
+
     public File[] getSources() {
         File[] clone = (File[]) sources.clone();
         return clone;
     }
+
     public String[] getSysSourcePaths() {
         String[] paths = new String[sysSources.length];
         for (int i = 0; i < sysSources.length; i++) {
@@ -117,10 +129,12 @@ public final class TargetInfo {
         }
         return paths;
     }
+
     public File[] getSysSources() {
         File[] clone = (File[]) sysSources.clone();
         return clone;
     }
+
     public void mustRebuild() {
         this.rebuild = true;
     }

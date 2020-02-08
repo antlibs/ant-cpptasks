@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2001-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +15,7 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.compiler;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -24,7 +25,7 @@ import net.sf.antcontrib.cpptasks.types.LibraryTypeEnum;
 
 /**
  * A linker for executables, and static and dynamic libraries.
- * 
+ *
  * @author Adam Murdoch
  */
 public interface Linker extends Processor {
@@ -33,48 +34,51 @@ public interface Linker extends Processor {
      * collisions
      */
     String getLibraryKey(File libname);
+
     /**
      * returns the library path for the linker
      */
     File[] getLibraryPath();
+
     /**
      * Returns a set of filename patterns corresponding to library names.
-     * 
+     * <p>
      * For example, "advapi32" would be expanded to "advapi32.dll" by
      * DevStudioLinker and to "libadvapi32.a" and "libadvapi32.so" by
      * GccLinker.
-     * 
-     * @param libnames
-     *            array of library names
+     *
+     * @param libnames array of library names
      */
     String[] getLibraryPatterns(String[] libnames, LibraryTypeEnum libraryType);
+
     /**
      * Gets the linker for the specified link type.
-     * 
+     *
      * @return appropriate linker or null, will return this if this linker can
-     *         handle the specified link type
+     * handle the specified link type
      */
     Linker getLinker(LinkType linkType);
+
     /**
      * Returns true if the linker is case-sensitive
      */
     boolean isCaseSensitive();
-    
+
     /**
      * Adds source or object files to the bidded fileset to
      * support version information.
-     * 
+     *
      * @param versionInfo version information
-     * @param linkType link type
-     * @param isDebug true if debug build
-     * @param outputFile name of generated executable
-     * @param objDir directory for generated files
-     * @param matcher bidded fileset
+     * @param linkType    link type
+     * @param isDebug     true if debug build
+     * @param outputFile  name of generated executable
+     * @param objDir      directory for generated files
+     * @param matcher     bidded fileset
      */
-	void addVersionFiles(final VersionInfo versionInfo, 
-			final LinkType linkType,
-			final File outputFile,
-			final boolean isDebug,
-			final File objDir, 
-			final TargetMatcher matcher) throws IOException;
+    void addVersionFiles(final VersionInfo versionInfo,
+                         final LinkType linkType,
+                         final File outputFile,
+                         final boolean isDebug,
+                         final File objDir,
+                         final TargetMatcher matcher) throws IOException;
 }

@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2003-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,27 +15,32 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.gcc;
+
 import junit.framework.TestCase;
 import net.sf.antcontrib.cpptasks.OutputTypeEnum;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
+
 /**
  * @author CurtA
  */
 public class TestGccLinker extends TestCase {
     private final String realOSName;
+
     /**
      * Constructor
-     * 
+     *
      * @param name test name
      */
     public TestGccLinker(String name) {
         super(name);
         realOSName = System.getProperty("os.name");
     }
+
     protected void tearDown() throws java.lang.Exception {
         System.setProperty("os.name", realOSName);
     }
+
     public void testGetLinkerDarwinPlugin() {
         System.setProperty("os.name", "Mac OS X");
         GccLinker linker = GccLinker.getInstance();
@@ -46,6 +51,7 @@ public class TestGccLinker extends TestCase {
         Linker pluginLinker = linker.getLinker(linkType);
         assertEquals("libfoo.bundle", pluginLinker.getOutputFileNames("foo", null)[0]);
     }
+
     public void testGetLinkerDarwinShared() {
         System.setProperty("os.name", "Mac OS X");
         GccLinker linker = GccLinker.getInstance();
@@ -56,6 +62,7 @@ public class TestGccLinker extends TestCase {
         Linker sharedLinker = linker.getLinker(linkType);
         assertEquals("libfoo.dylib", sharedLinker.getOutputFileNames("foo", null)[0]);
     }
+
     public void testGetLinkerNonDarwinPlugin() {
         System.setProperty("os.name", "Microsoft Windows");
         GccLinker linker = GccLinker.getInstance();
@@ -66,6 +73,7 @@ public class TestGccLinker extends TestCase {
         Linker pluginLinker = linker.getLinker(linkType);
         assertEquals("libfoo.so", pluginLinker.getOutputFileNames("foo", null)[0]);
     }
+
     public void testGetLinkerNonDarwinShared() {
         System.setProperty("os.name", "Microsoft Windows");
         GccLinker linker = GccLinker.getInstance();

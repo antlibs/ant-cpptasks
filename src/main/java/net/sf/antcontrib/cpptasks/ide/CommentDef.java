@@ -24,22 +24,21 @@ import java.util.List;
 
 /**
  * Defines a comment to place in the generated project files.
- *
  */
 public final class CommentDef {
     private String text;
 
     public CommentDef() {
-		text = "";
+        text = "";
     }
-
 
     public String getText() {
-		return text;
+        return text;
     }
-	public void addText(final String newText) {
-		text += newText;
-	}
+
+    public void addText(final String newText) {
+        text += newText;
+    }
 
     public String toString() {
         return text;

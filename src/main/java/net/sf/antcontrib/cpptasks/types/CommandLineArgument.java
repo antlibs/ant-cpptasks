@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2001-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +15,9 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.types;
+
 import org.apache.tools.ant.types.EnumeratedAttribute;
+
 /**
  * An compiler/linker command line flag.
  */
@@ -28,18 +30,23 @@ public class CommandLineArgument {
             return new String[]{"start", "mid", "end"};
         }
     }
+
     private String ifCond;
     private int location;
     private String unlessCond;
     private String value;
+
     public CommandLineArgument() {
     }
+
     public int getLocation() {
         return location;
     }
+
     public String getValue() {
         return value;
     }
+
     /**
      * Returns true if the define's if and unless conditions (if any) are
      * satisfied.
@@ -55,11 +62,12 @@ public class CommandLineArgument {
         }
         return true;
     }
+
     /**
      * Sets the property name for the 'if' condition.
-     * 
+     * <p>
      * The argument will be ignored unless the property is defined.
-     * 
+     * <p>
      * The value of the property is insignificant, but values that would imply
      * misinterpretation ("false", "no") will throw an exception when
      * evaluated.
@@ -67,36 +75,36 @@ public class CommandLineArgument {
     public void setIf(String propName) {
         ifCond = propName;
     }
+
     /**
      * Specifies relative location of argument on command line. "start" will
      * place argument at start of command line, "mid" will place argument after
      * all "start" arguments but before filenames, "end" will place argument
      * after filenames.
-     *  
      */
     public void setLocation(LocationEnum location) {
         this.location = location.getIndex();
     }
+
     /**
      * Set the property name for the 'unless' condition.
-     * 
+     * <p>
      * If named property is set, the argument will be ignored.
-     * 
+     * <p>
      * The value of the property is insignificant, but values that would imply
      * misinterpretation ("false", "no") of the behavior will throw an
      * exception when evaluated.
-     * 
-     * @param propName
-     *            name of property
+     *
+     * @param propName name of property
      */
     public void setUnless(String propName) {
         unlessCond = propName;
     }
+
     /**
      * Specifies the string that should appear on the command line. The
      * argument will be quoted if it contains embedded blanks. Use multiple
      * arguments to avoid quoting.
-     *  
      */
     public void setValue(String value) {
         this.value = value;

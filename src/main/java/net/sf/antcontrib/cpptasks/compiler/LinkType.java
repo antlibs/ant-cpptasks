@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2001-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,92 +15,102 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.compiler;
+
 import net.sf.antcontrib.cpptasks.OutputTypeEnum;
 import net.sf.antcontrib.cpptasks.SubsystemEnum;
+
 /**
  * This class represents the target platform for the compile and link step. The
  * name is an anachronism and should be changed.
- * 
+ *
  * @author Curt Arnold
  */
 public class LinkType {
     private OutputTypeEnum outputType = new OutputTypeEnum();
     private boolean staticRuntime = false;
     private SubsystemEnum subsystem = new SubsystemEnum();
+
     /**
      * Constructor
-     * 
+     * <p>
      * By default, an gui executable with a dynamically linked runtime
-     *  
      */
     public LinkType() {
     }
+
     /**
      * Gets whether the link should produce an executable
-     * 
+     *
      * @return boolean
      */
     public boolean isExecutable() {
         String value = outputType.getValue();
         return value.equals("executable");
     }
+
     /**
      * Gets whether the link should produce a plugin module.
-     * 
+     *
      * @return boolean
      */
     public boolean isPluginModule() {
         String value = outputType.getValue();
         return value.equals("plugin");
     }
+
     /**
      * Gets whether the link should produce a shared library.
-     * 
+     *
      * @return boolean
      */
     public boolean isSharedLibrary() {
         String value = outputType.getValue();
         return value.equals("shared") || value.equals("plugin");
     }
+
     /**
      * Gets whether the link should produce a static library.
-     * 
+     *
      * @return boolean
      */
     public boolean isStaticLibrary() {
         String value = outputType.getValue();
         return value.equals("static");
     }
+
     /**
      * Gets whether the module should use a statically linked runtime library.
-     * 
+     *
      * @return boolean
      */
     public boolean isStaticRuntime() {
         return staticRuntime;
     }
+
     /**
      * Gets whether the link should produce a module for a console subsystem.
-     * 
+     *
      * @return boolean
      */
     public boolean isSubsystemConsole() {
         String value = subsystem.getValue();
         return value.equals("console");
     }
+
     /**
      * Gets whether the link should produce a module for a graphical user
      * interface subsystem.
-     * 
+     *
      * @return boolean
      */
     public boolean isSubsystemGUI() {
         String value = subsystem.getValue();
         return value.equals("gui");
     }
+
     /**
      * Sets the output type (execuable, shared, etc).
-     * 
+     *
      * @param outputType may not be null
      */
     public void setOutputType(OutputTypeEnum outputType) {
@@ -109,29 +119,29 @@ public class LinkType {
         }
         this.outputType = outputType;
     }
-    
+
     /**
      * Gets the output type.
+     *
      * @return output type
      */
     public String getOutputType() {
-    	return outputType.getValue();
+        return outputType.getValue();
     }
-    
+
     /**
      * Requests use of a static runtime library.
-     * 
-     * @param staticRuntime
-     *            if true, use static runtime library if possible.
+     *
+     * @param staticRuntime if true, use static runtime library if possible.
      */
     public void setStaticRuntime(boolean staticRuntime) {
         this.staticRuntime = staticRuntime;
     }
+
     /**
      * Sets the subsystem (gui, console, etc).
-     * 
-     * @param subsystem
-     *            subsystem, may not be null
+     *
+     * @param subsystem subsystem, may not be null
      */
     public void setSubsystem(SubsystemEnum subsystem) {
         if (subsystem == null) {
@@ -139,12 +149,13 @@ public class LinkType {
         }
         this.subsystem = subsystem;
     }
-    
+
     /**
      * Get subsystem name.
+     *
      * @return subsystem name
      */
     public String getSubsystem() {
-    	return subsystem.getValue();
+        return subsystem.getValue();
     }
 }

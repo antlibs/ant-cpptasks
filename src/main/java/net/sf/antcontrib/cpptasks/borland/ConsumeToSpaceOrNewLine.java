@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,12 +15,15 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.borland;
+
 import net.sf.antcontrib.cpptasks.parser.AbstractParser;
 import net.sf.antcontrib.cpptasks.parser.AbstractParserState;
+
 public class ConsumeToSpaceOrNewLine extends AbstractParserState {
     public ConsumeToSpaceOrNewLine(AbstractParser parser) {
         super(parser);
     }
+
     public AbstractParserState consume(char ch) {
         if (ch == ' ' || ch == '\t' || ch == '\n') {
             return getParser().getNewLineState();

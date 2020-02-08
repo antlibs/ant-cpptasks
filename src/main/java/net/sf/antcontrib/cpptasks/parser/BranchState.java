@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,17 +15,20 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.parser;
+
 public class BranchState extends AbstractParserState {
     private char[] branchChars;
     private AbstractParserState[] branchStates;
     private AbstractParserState noMatchState;
+
     public BranchState(AbstractParser parser, char[] branchChars,
-            AbstractParserState[] branchStates, AbstractParserState noMatchState) {
+                       AbstractParserState[] branchStates, AbstractParserState noMatchState) {
         super(parser);
         this.branchChars = (char[]) branchChars.clone();
         this.branchStates = (AbstractParserState[]) branchStates.clone();
         this.noMatchState = noMatchState;
     }
+
     public AbstractParserState consume(char ch) {
         AbstractParserState state;
         for (int i = 0; i < branchChars.length; i++) {
@@ -40,6 +43,7 @@ public class BranchState extends AbstractParserState {
         }
         return state;
     }
+
     protected AbstractParserState getNoMatchState() {
         return noMatchState;
     }

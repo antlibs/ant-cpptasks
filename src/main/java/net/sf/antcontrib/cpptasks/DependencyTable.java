@@ -15,6 +15,7 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -27,12 +28,14 @@ import java.util.Vector;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+
 import net.sf.antcontrib.cpptasks.compiler.CompilerConfiguration;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+
 /**
  * @author Curt Arnold
  */
@@ -49,24 +52,23 @@ public final class DependencyTable {
         private String source;
         private long sourceLastModified;
         private Vector sysIncludes;
+
         /**
          * Constructor
          *
-         * @param history
-         *            hashtable of TargetHistory keyed by output name
-         * @param outputFiles
-         *            existing files in output directory
+         * @param history     hashtable of TargetHistory keyed by output name
+         * @param outputFiles existing files in output directory
          */
-        private DependencyTableHandler(DependencyTable dependencyTable,
-                File baseDir) {
+        private DependencyTableHandler(DependencyTable dependencyTable, File baseDir) {
             this.dependencyTable = dependencyTable;
             this.baseDir = baseDir;
             includes = new Vector();
             sysIncludes = new Vector();
             source = null;
         }
+
         public void endElement(String namespaceURI, String localName,
-                String qName) throws SAXException {
+                               String qName) throws SAXException {
             //
             //   if </source> then
             //       create Dependency object and add to hashtable
@@ -86,13 +88,11 @@ public final class DependencyTable {
                         //       a few tens of milliseconds, as long
                         //       as the times are within a second
                         long existingLastModified = existingFile.lastModified();
-                        if (!CUtil.isSignificantlyAfter(existingLastModified, sourceLastModified) &&
-                                        !CUtil.isSignificantlyBefore(existingLastModified, sourceLastModified)) {
-                            DependencyInfo dependInfo = new DependencyInfo(
-                                    includePath, source, sourceLastModified,
-                                    includes, sysIncludes);
-                            dependencyTable.putDependencyInfo(source,
-                                    dependInfo);
+                        if (!CUtil.isSignificantlyAfter(existingLastModified, sourceLastModified)
+                                && !CUtil.isSignificantlyBefore(existingLastModified, sourceLastModified)) {
+                            DependencyInfo dependInfo = new DependencyInfo(includePath, source,
+                                    sourceLastModified, includes, sysIncludes);
+                            dependencyTable.putDependencyInfo(source, dependInfo);
                         }
                     }
                     source = null;
@@ -108,11 +108,12 @@ public final class DependencyTable {
                 }
             }
         }
+
         /**
          * startElement handler
          */
         public void startElement(String namespaceURI, String localName,
-                String qName, Attributes atts) throws SAXException {
+                                 String qName, Attributes atts) throws SAXException {
             //
             //   if includes, then add relative file name to vector
             //
@@ -129,8 +130,7 @@ public final class DependencyTable {
                     //
                     if (qName.equals("source")) {
                         source = atts.getValue("file");
-                        sourceLastModified = Long.parseLong(atts
-                                .getValue("lastModified"), 16);
+                        sourceLastModified = Long.parseLong(atts.getValue("lastModified"), 16);
                         includes.setSize(0);
                         sysIncludes.setSize(0);
                     } else {
@@ -142,21 +142,24 @@ public final class DependencyTable {
             }
         }
     }
+
     public abstract class DependencyVisitor {
         /**
          * Previews all the children of this source file.
-         *
+         * <p>
          * May be called multiple times as DependencyInfo's for children are
          * filled in.
          *
          * @return true to continue towards recursion into included files
          */
         public abstract boolean preview(DependencyInfo parent,
-                DependencyInfo[] children);
+                                        DependencyInfo[] children);
+
         /**
          * Called if the dependency depth exhausted the stack.
          */
         public abstract void stackExhausted();
+
         /**
          * Visits the dependency info.
          *
@@ -164,19 +167,23 @@ public final class DependencyTable {
          */
         public abstract boolean visit(DependencyInfo dependInfo);
     }
+
     public class TimestampChecker extends DependencyVisitor {
         private boolean noNeedToRebuild;
         private long outputLastModified;
         private boolean rebuildOnStackExhaustion;
+
         public TimestampChecker(final long outputLastModified,
-                boolean rebuildOnStackExhaustion) {
+                                boolean rebuildOnStackExhaustion) {
             this.outputLastModified = outputLastModified;
             noNeedToRebuild = true;
             this.rebuildOnStackExhaustion = rebuildOnStackExhaustion;
         }
+
         public boolean getMustRebuild() {
             return !noNeedToRebuild;
         }
+
         public boolean preview(DependencyInfo parent, DependencyInfo[] children) {
             int withCompositeTimes = 0;
             long parentCompositeLastModified = parent.getSourceLastModified();
@@ -187,8 +194,7 @@ public final class DependencyTable {
                     // rebuild
                     //
                     visit(children[i]);
-                    long childCompositeLastModified = children[i]
-                            .getCompositeLastModified();
+                    long childCompositeLastModified = children[i].getCompositeLastModified();
                     if (childCompositeLastModified != Long.MIN_VALUE) {
                         withCompositeTimes++;
                         if (childCompositeLastModified > parentCompositeLastModified) {
@@ -205,15 +211,17 @@ public final class DependencyTable {
             //
             return noNeedToRebuild;
         }
+
         public void stackExhausted() {
             if (rebuildOnStackExhaustion) {
                 noNeedToRebuild = false;
             }
         }
+
         public boolean visit(DependencyInfo dependInfo) {
             if (noNeedToRebuild) {
-                    if (CUtil.isSignificantlyAfter(dependInfo.getSourceLastModified(), outputLastModified)
-                                    || CUtil.isSignificantlyAfter(dependInfo.getCompositeLastModified(), outputLastModified)) {
+                if (CUtil.isSignificantlyAfter(dependInfo.getSourceLastModified(), outputLastModified)
+                        || CUtil.isSignificantlyAfter(dependInfo.getCompositeLastModified(), outputLastModified)) {
                     noNeedToRebuild = false;
                 }
             }
@@ -222,26 +230,30 @@ public final class DependencyTable {
             //      it has not yet been determined whether
             //      we need to rebuild and the composite modified time
             //         has not been determined for this file
-            return noNeedToRebuild
-                    && dependInfo.getCompositeLastModified() == Long.MIN_VALUE;
+            return noNeedToRebuild && dependInfo.getCompositeLastModified() == Long.MIN_VALUE;
         }
     }
-    private/* final */File baseDir;
+
+    private/* final */ File baseDir;
     private String baseDirPath;
     /**
      * a hashtable of DependencyInfo[] keyed by output file name
      */
     private final Hashtable dependencies = new Hashtable();
-    /** The file the cache was loaded from. */
-    private/* final */File dependenciesFile;
-    /** Flag indicating whether the cache should be written back to file. */
+    /**
+     * The file the cache was loaded from.
+     */
+    private/* final */ File dependenciesFile;
+    /**
+     * Flag indicating whether the cache should be written back to file.
+     */
     private boolean dirty;
+
     /**
      * Creates a target history table from dependencies.xml in the prject
      * directory, if it exists. Otherwise, initializes the dependencies empty.
      *
-     * @param baseDir
-     *            output directory for task
+     * @param baseDir output directory for task
      */
     public DependencyTable(File baseDir) {
         if (baseDir == null) {
@@ -258,6 +270,7 @@ public final class DependencyTable {
         //   load any existing dependencies from file
         dependenciesFile = new File(baseDir, "dependencies.xml");
     }
+
     public void commit(CCTask task) {
         //
         //   if not dirty, no need to update file
@@ -273,8 +286,7 @@ public final class DependencyTable {
             //   write dependency file
             //
             try {
-                FileOutputStream outStream = new FileOutputStream(
-                        dependenciesFile);
+                FileOutputStream outStream = new FileOutputStream(dependenciesFile);
                 OutputStreamWriter streamWriter;
                 //
                 //    Early VM's may not have UTF-8 support
@@ -296,45 +308,43 @@ public final class DependencyTable {
                 StringBuffer buf = new StringBuffer();
                 Enumeration includePathEnum = includePaths.elements();
                 while (includePathEnum.hasMoreElements()) {
-                    writeIncludePathDependencies((String) includePathEnum
-                            .nextElement(), writer, buf);
+                    writeIncludePathDependencies((String) includePathEnum.nextElement(), writer, buf);
                 }
                 writer.write("</dependencies>\n");
                 writer.close();
                 dirty = false;
             } catch (IOException ex) {
-                task.log("Error writing " + dependenciesFile.toString() + ":"
-                        + ex.toString());
+                task.log("Error writing " + dependenciesFile.toString() + ":" + ex.toString());
             }
         }
     }
+
     /**
      * Returns an enumerator of DependencyInfo's
      */
     public Enumeration elements() {
         return dependencies.elements();
     }
+
     /**
      * This method returns a DependencyInfo for the specific source file and
      * include path identifier
-     *
      */
     public DependencyInfo getDependencyInfo(String sourceRelativeName,
-            String includePathIdentifier) {
+                                            String includePathIdentifier) {
         DependencyInfo dependInfo = null;
-        DependencyInfo[] dependInfos = (DependencyInfo[]) dependencies
-                .get(sourceRelativeName);
+        DependencyInfo[] dependInfos = (DependencyInfo[]) dependencies.get(sourceRelativeName);
         if (dependInfos != null) {
             for (int i = 0; i < dependInfos.length; i++) {
                 dependInfo = dependInfos[i];
-                if (dependInfo.getIncludePathIdentifier().equals(
-                        includePathIdentifier)) {
+                if (dependInfo.getIncludePathIdentifier().equals(includePathIdentifier)) {
                     return dependInfo;
                 }
             }
         }
         return null;
     }
+
     private Vector getIncludePaths() {
         Vector includePaths = new Vector();
         DependencyInfo[] dependInfos;
@@ -344,8 +354,7 @@ public final class DependencyTable {
             for (int i = 0; i < dependInfos.length; i++) {
                 DependencyInfo dependInfo = dependInfos[i];
                 boolean matchesExisting = false;
-                final String dependIncludePath = dependInfo
-                        .getIncludePathIdentifier();
+                final String dependIncludePath = dependInfo.getIncludePathIdentifier();
                 Enumeration includePathEnum = includePaths.elements();
                 while (includePathEnum.hasMoreElements()) {
                     if (dependIncludePath.equals(includePathEnum.nextElement())) {
@@ -360,6 +369,7 @@ public final class DependencyTable {
         }
         return includePaths;
     }
+
     public void load() throws IOException, ParserConfigurationException,
             SAXException {
         dependencies.clear();
@@ -367,25 +377,24 @@ public final class DependencyTable {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             factory.setValidating(false);
             SAXParser parser = factory.newSAXParser();
-            parser.parse(dependenciesFile, new DependencyTableHandler(this,
-                    baseDir));
+            parser.parse(dependenciesFile, new DependencyTableHandler(this, baseDir));
             dirty = false;
         }
     }
+
     /**
      * Determines if the specified target needs to be rebuilt.
-     *
+     * <p>
      * This task may result in substantial IO as files are parsed to determine
      * their dependencies
      */
     public boolean needsRebuild(CCTask task, TargetInfo target,
-            int dependencyDepth) {
+                                int dependencyDepth) {
         //    look at any files where the compositeLastModified
         //    is not known, but the includes are known
         //
         boolean mustRebuild = false;
-        CompilerConfiguration compiler = (CompilerConfiguration) target
-                .getConfiguration();
+        CompilerConfiguration compiler = (CompilerConfiguration) target.getConfiguration();
         String includePathIdentifier = compiler.getIncludePathIdentifier();
         File[] sources = target.getSources();
         DependencyInfo[] dependInfos = new DependencyInfo[sources.length];
@@ -407,8 +416,7 @@ public final class DependencyTable {
         for (int i = 0; i < sources.length && !mustRebuild; i++) {
             File source = sources[i];
             String relative = CUtil.getRelativePath(baseDirPath, source);
-            DependencyInfo dependInfo = getDependencyInfo(relative,
-                    includePathIdentifier);
+            DependencyInfo dependInfo = getDependencyInfo(relative, includePathIdentifier);
             if (dependInfo == null) {
                 task.log("Parsing " + relative, Project.MSG_VERBOSE);
                 dependInfo = parseIncludes(task, compiler, source);
@@ -418,14 +426,15 @@ public final class DependencyTable {
         }
         return mustRebuild;
     }
+
     public DependencyInfo parseIncludes(CCTask task,
-            CompilerConfiguration compiler, File source) {
-        DependencyInfo dependInfo = compiler.parseIncludes(task, baseDir,
-                source);
+                                        CompilerConfiguration compiler, File source) {
+        DependencyInfo dependInfo = compiler.parseIncludes(task, baseDir, source);
         String relativeSource = CUtil.getRelativePath(baseDirPath, source);
         putDependencyInfo(relativeSource, dependInfo);
         return dependInfo;
     }
+
     private void putDependencyInfo(String key, DependencyInfo dependInfo) {
         //
         //   optimistic, add new value
@@ -440,12 +449,10 @@ public final class DependencyTable {
             //
             //   see if the include path matches a previous entry
             //       if so replace it
-            String includePathIdentifier = dependInfo
-                    .getIncludePathIdentifier();
+            String includePathIdentifier = dependInfo.getIncludePathIdentifier();
             for (int i = 0; i < old.length; i++) {
                 DependencyInfo oldDepend = old[i];
-                if (oldDepend.getIncludePathIdentifier().equals(
-                        includePathIdentifier)) {
+                if (oldDepend.getIncludePathIdentifier().equals(includePathIdentifier)) {
                     old[i] = dependInfo;
                     dependencies.put(key, old);
                     return;
@@ -463,9 +470,10 @@ public final class DependencyTable {
         }
         return;
     }
+
     public void walkDependencies(CCTask task, DependencyInfo dependInfo,
-            CompilerConfiguration compiler, DependencyInfo[] stack,
-            DependencyVisitor visitor) throws BuildException {
+                                 CompilerConfiguration compiler, DependencyInfo[] stack,
+                                 DependencyVisitor visitor) throws BuildException {
         //
         //   visit this node
         //       if visit returns true then
@@ -501,9 +509,7 @@ public final class DependencyTable {
             String includePathIdentifier = compiler.getIncludePathIdentifier();
             DependencyInfo[] includeInfos = new DependencyInfo[includes.length];
             for (int i = 0; i < includes.length; i++) {
-                DependencyInfo includeInfo = getDependencyInfo(includes[i],
-                        includePathIdentifier);
-                includeInfos[i] = includeInfo;
+                includeInfos[i] = getDependencyInfo(includes[i], includePathIdentifier);
             }
             //
             //   preview with only the already available dependency infos
@@ -522,33 +528,31 @@ public final class DependencyTable {
                         //      then anchor it the base directory
                         File src = new File(includes[i]);
                         if (!src.isAbsolute()) {
-                          src = new File(baseDir, includes[i]);
+                            src = new File(baseDir, includes[i]);
                         }
-                        DependencyInfo includeInfo = parseIncludes(task,
-                                compiler, src);
+                        DependencyInfo includeInfo = parseIncludes(task, compiler, src);
                         includeInfos[i] = includeInfo;
                     }
                 }
                 //
                 //   if it passes a review the second time
                 //      then recurse into all the children
-                if (missingCount == 0
-                        || visitor.preview(dependInfo, includeInfos)) {
+                if (missingCount == 0 || visitor.preview(dependInfo, includeInfos)) {
                     //
                     //   recurse into
                     //
                     for (int i = 0; i < includeInfos.length; i++) {
                         DependencyInfo includeInfo = includeInfos[i];
-                        walkDependencies(task, includeInfo, compiler, stack,
-                                visitor);
+                        walkDependencies(task, includeInfo, compiler, stack, visitor);
                     }
                 }
             }
             stack[stackPosition] = null;
         }
     }
+
     private void writeDependencyInfo(BufferedWriter writer, StringBuffer buf,
-            DependencyInfo dependInfo) throws IOException {
+                                     DependencyInfo dependInfo) throws IOException {
         String[] includes = dependInfo.getIncludes();
         String[] sysIncludes = dependInfo.getSysIncludes();
         //
@@ -580,8 +584,9 @@ public final class DependencyTable {
         writer.write("      </source>\n");
         return;
     }
+
     private void writeIncludePathDependencies(String includePathIdentifier,
-            BufferedWriter writer, StringBuffer buf) throws IOException {
+                                              BufferedWriter writer, StringBuffer buf) throws IOException {
         //
         //  include path element
         //
@@ -592,15 +597,13 @@ public final class DependencyTable {
         writer.write(buf.toString());
         Enumeration dependenciesEnum = dependencies.elements();
         while (dependenciesEnum.hasMoreElements()) {
-            DependencyInfo[] dependInfos = (DependencyInfo[]) dependenciesEnum
-                    .nextElement();
+            DependencyInfo[] dependInfos = (DependencyInfo[]) dependenciesEnum.nextElement();
             for (int i = 0; i < dependInfos.length; i++) {
                 DependencyInfo dependInfo = dependInfos[i];
                 //
                 //   if this is for the same include path
                 //      then output the info
-                if (dependInfo.getIncludePathIdentifier().equals(
-                        includePathIdentifier)) {
+                if (dependInfo.getIncludePathIdentifier().equals(includePathIdentifier)) {
                     writeDependencyInfo(writer, buf, dependInfo);
                 }
             }

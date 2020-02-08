@@ -49,8 +49,7 @@ import java.util.Map;
  *
  * @author curta
  */
-public final class VisualStudioNETProjectWriter
-        implements ProjectWriter {
+public final class VisualStudioNETProjectWriter implements ProjectWriter {
     /**
      * Version of VisualStudio.NET.
      */
@@ -71,7 +70,7 @@ public final class VisualStudioNETProjectWriter
      *
      * @param versionArg String VisualStudio.NET version
      * @param trueArg    literal to represent true, "true" in VC 2005.
-     * @param falseArg    literal to represent false, "false" in VC 2005.
+     * @param falseArg   literal to represent false, "false" in VC 2005.
      */
     public VisualStudioNETProjectWriter(final String versionArg,
                                         final String trueArg,
@@ -89,8 +88,6 @@ public final class VisualStudioNETProjectWriter
         this.trueLiteral = trueArg;
         this.falseLiteral = falseArg;
     }
-    
-
 
     /**
      * Gets the configuration type.
@@ -109,15 +106,13 @@ public final class VisualStudioNETProjectWriter
         return targtype;
     }
 
-
-
     /**
      * Get character set for Windows API.
+     *
      * @param compilerConfig compiler configuration, may not be null.
      * @return "1" is TCHAR is unicode, "0" if TCHAR is multi-byte.
      */
-    private String getCharacterSet(
-            final CommandLineCompilerConfiguration compilerConfig) {
+    private String getCharacterSet(final CommandLineCompilerConfiguration compilerConfig) {
         String[] args = compilerConfig.getPreArguments();
         String charset = "0";
         for (int i = 0; i < args.length; i++) {
@@ -133,16 +128,17 @@ public final class VisualStudioNETProjectWriter
 
     /**
      * Write the start tag of the Configuration element.
-     * @param content serialization content handler.
-     * @param isDebug if true, write a debug configuration.
-     * @param task cc task.
+     *
+     * @param content        serialization content handler.
+     * @param isDebug        if true, write a debug configuration.
+     * @param task           cc task.
      * @param compilerConfig compiler configuration.
      * @throws SAXException thrown if serialization error.
      */
     private void writeConfigurationStartTag(final ContentHandler content,
                                             final boolean isDebug,
                                             final CCTask task,
-                  final CommandLineCompilerConfiguration compilerConfig)
+                                            final CommandLineCompilerConfiguration compilerConfig)
             throws SAXException {
         AttributesImpl attributes = new AttributesImpl();
         if (isDebug) {
@@ -165,11 +161,11 @@ public final class VisualStudioNETProjectWriter
 
     /**
      * Get value of Optimization property.
+     *
      * @param compilerConfig compiler configuration, may not be null.
      * @return value of Optimization property.
      */
-    private String getOptimization(
-            final CommandLineCompilerConfiguration compilerConfig) {
+    private String getOptimization(final CommandLineCompilerConfiguration compilerConfig) {
         String[] args = compilerConfig.getPreArguments();
         String opt = "0";
         for (int i = 0; i < args.length; i++) {
@@ -191,21 +187,20 @@ public final class VisualStudioNETProjectWriter
 
     /**
      * Get value of AdditionalIncludeDirectories property.
+     *
      * @param compilerConfig compiler configuration.
-     * @param baseDir base for relative paths.
+     * @param baseDir        base for relative paths.
      * @return value of AdditionalIncludeDirectories property.
      */
-    private String getAdditionalIncludeDirectories(
-            final String baseDir,
-            final CommandLineCompilerConfiguration compilerConfig) {
+    private String getAdditionalIncludeDirectories(final String baseDir,
+                                                   final CommandLineCompilerConfiguration compilerConfig) {
         File[] includePath = compilerConfig.getIncludePath();
         StringBuffer includeDirs = new StringBuffer();
         for (int i = 0; i < includePath.length; i++) {
-          String relPath = CUtil.getRelativePath(baseDir, includePath[i]);
-          includeDirs.append(CUtil.toWindowsPath(relPath));
-          includeDirs.append(';');
+            String relPath = CUtil.getRelativePath(baseDir, includePath[i]);
+            includeDirs.append(CUtil.toWindowsPath(relPath));
+            includeDirs.append(';');
         }
-
 
         if (includeDirs.length() > 0) {
             includeDirs.setLength(includeDirs.length() - 1);
@@ -215,13 +210,13 @@ public final class VisualStudioNETProjectWriter
 
     /**
      * Get value of PreprocessorDefinitions property.
+     *
      * @param compilerConfig compiler configuration.
-     * @param isDebug true if generating debug configuration.
+     * @param isDebug        true if generating debug configuration.
      * @return value of PreprocessorDefinitions property.
      */
-    private String getPreprocessorDefinitions(
-            final CommandLineCompilerConfiguration compilerConfig,
-            final boolean isDebug) {
+    private String getPreprocessorDefinitions(final CommandLineCompilerConfiguration compilerConfig,
+                                              final boolean isDebug) {
         StringBuffer defines = new StringBuffer();
         String[] args = compilerConfig.getPreArguments();
         for (int i = 0; i < args.length; i++) {
@@ -249,13 +244,13 @@ public final class VisualStudioNETProjectWriter
 
     /**
      * Get value of RuntimeLibrary property.
+     *
      * @param compilerConfig compiler configuration.
-     * @param isDebug true if generating debug configuration.
+     * @param isDebug        true if generating debug configuration.
      * @return value of RuntimeLibrary property.
      */
-    private String getRuntimeLibrary(
-            final CommandLineCompilerConfiguration compilerConfig,
-            final boolean isDebug) {
+    private String getRuntimeLibrary(final CommandLineCompilerConfiguration compilerConfig,
+                                     final boolean isDebug) {
         String rtl = null;
         String[] args = compilerConfig.getPreArguments();
         for (int i = 0; i < args.length; i++) {
@@ -278,11 +273,11 @@ public final class VisualStudioNETProjectWriter
 
     /**
      * Get value of UsePrecompiledHeader property.
+     *
      * @param compilerConfig compiler configuration.
      * @return value of UsePrecompiledHeader property.
      */
-    private String getUsePrecompiledHeader(
-            final CommandLineCompilerConfiguration compilerConfig) {
+    private String getUsePrecompiledHeader(final CommandLineCompilerConfiguration compilerConfig) {
         String usePCH = "0";
         String[] args = compilerConfig.getPreArguments();
         for (int i = 0; i < args.length; i++) {
@@ -298,6 +293,7 @@ public final class VisualStudioNETProjectWriter
 
     /**
      * Get value of PrecompiledHeaderFile property.
+     *
      * @param compilerConfig compiler configuration.
      * @return value of PrecompiledHeaderFile property.
      */
@@ -313,10 +309,9 @@ public final class VisualStudioNETProjectWriter
         return pch;
     }
 
-
-
     /**
      * Get value of BasicRuntimeChecks property.
+     *
      * @param compilerConfig compiler configuration.
      * @return value of BasicRuntimeChecks property.
      */
@@ -340,11 +335,11 @@ public final class VisualStudioNETProjectWriter
 
     /**
      * Get value of WarningLevel property.
+     *
      * @param compilerConfig compiler configuration.
      * @return value of WarningLevel property.
      */
-    private String getWarningLevel(
-            final CommandLineCompilerConfiguration compilerConfig) {
+    private String getWarningLevel(final CommandLineCompilerConfiguration compilerConfig) {
         String warn = null;
         String[] args = compilerConfig.getPreArguments();
         for (int i = 0; i < args.length; i++) {
@@ -366,6 +361,7 @@ public final class VisualStudioNETProjectWriter
 
     /**
      * Get value of Detect64BitPortabilityProblems property.
+     *
      * @param compilerConfig compiler configuration.
      * @return value of Detect64BitPortabilityProblems property.
      */
@@ -383,6 +379,7 @@ public final class VisualStudioNETProjectWriter
 
     /**
      * Get value of DebugInformationFormat property.
+     *
      * @param compilerConfig compiler configuration.
      * @return value of DebugInformationFormat property.
      */
@@ -409,22 +406,23 @@ public final class VisualStudioNETProjectWriter
 
     /**
      * write the Compiler element.
-     * @param content serialization content handler.
-     * @param isDebug true if generating debug configuration.
-     * @param basePath base for relative file paths.
+     *
+     * @param content        serialization content handler.
+     * @param isDebug        true if generating debug configuration.
+     * @param basePath       base for relative file paths.
      * @param compilerConfig compiler configuration.
      * @throws SAXException thrown if error during serialization.
      */
     private void writeCompilerElement(final ContentHandler content,
-            final boolean isDebug,
-            final String basePath,
-            final CommandLineCompilerConfiguration compilerConfig)
+                                      final boolean isDebug,
+                                      final String basePath,
+                                      final CommandLineCompilerConfiguration compilerConfig)
             throws SAXException {
         AttributesImpl attributes = new AttributesImpl();
         addAttribute(attributes, "Name", "VCCLCompilerTool");
         String optimization = getOptimization(compilerConfig);
         String debugFormat = getDebugInformationFormat(compilerConfig);
-        if(isDebug) {
+        if (isDebug) {
             optimization = "0";
             if ("0".equals(debugFormat)) {
                 debugFormat = "4";
@@ -457,17 +455,15 @@ public final class VisualStudioNETProjectWriter
                 debugFormat);
         content.startElement(null, "Tool", "Tool", attributes);
         content.endElement(null, "Tool", "Tool");
-
     }
-
 
     /**
      * Get value of LinkIncremental property.
+     *
      * @param linkerConfig linker configuration.
      * @return value of LinkIncremental property
      */
-    private String getLinkIncremental(
-            final CommandLineLinkerConfiguration linkerConfig) {
+    private String getLinkIncremental(final CommandLineLinkerConfiguration linkerConfig) {
         String incremental = "0";
         String[] args = linkerConfig.getPreArguments();
         for (int i = 0; i < args.length; i++) {
@@ -481,14 +477,13 @@ public final class VisualStudioNETProjectWriter
         return incremental;
     }
 
-
     /**
      * Get value of Subsystem property.
+     *
      * @param linkerConfig linker configuration.
      * @return value of Subsystem property
      */
-    private String getSubsystem(
-            final CommandLineLinkerConfiguration linkerConfig) {
+    private String getSubsystem(final CommandLineLinkerConfiguration linkerConfig) {
         String subsystem = "0";
         String[] args = linkerConfig.getPreArguments();
         for (int i = 0; i < args.length; i++) {
@@ -507,11 +502,11 @@ public final class VisualStudioNETProjectWriter
 
     /**
      * Get value of TargetMachine property.
+     *
      * @param linkerConfig linker configuration.
      * @return value of TargetMachine property
      */
-    private String getTargetMachine(
-            final CommandLineLinkerConfiguration linkerConfig) {
+    private String getTargetMachine(final CommandLineLinkerConfiguration linkerConfig) {
         String subsystem = "0";
         String[] args = linkerConfig.getPreArguments();
         for (int i = 0; i < args.length; i++) {
@@ -524,78 +519,80 @@ public final class VisualStudioNETProjectWriter
 
     /**
      * Get value of AdditionalDependencies property.
-     * @param linkTarget link target.
+     *
+     * @param linkTarget          link target.
      * @param projectDependencies dependencies declared in project.
-     * @param targets all targets.
-     * @param basePath path to directory containing project file.
+     * @param targets             all targets.
+     * @param basePath            path to directory containing project file.
      * @return value of AdditionalDependencies property.
      */
     private String getAdditionalDependencies(final TargetInfo linkTarget,
                                              final List projectDependencies,
                                              final Map targets,
                                              final String basePath) {
-      String dependencies = null;
+        String dependencies = null;
         File[] linkSources = linkTarget.getAllSources();
         StringBuffer buf = new StringBuffer();
         for (int i = 0; i < linkSources.length; i++) {
-          //
-          //   if file was not compiled or otherwise generated
-          //
-          if (targets.get(linkSources[i].getName()) == null) {
             //
-            //   if source appears to be a system library or object file
-            //      just output the name of the file (advapi.lib for example)
-            //      otherwise construct a relative path.
+            //   if file was not compiled or otherwise generated
             //
-            String relPath = linkSources[i].getName();
-              //
-              //   check if file comes from a project dependency
-              //       if it does it should not be explicitly linked
-            boolean fromDependency = false;
-            if (relPath.indexOf(".") > 0) {
-                  String baseName = relPath.substring(0, relPath.indexOf("."));
-                  for(Iterator iter = projectDependencies.iterator(); iter.hasNext(); ) {
-                    DependencyDef depend = (DependencyDef) iter.next();
-                    if (baseName.compareToIgnoreCase(depend.getName()) == 0) {
-                        fromDependency = true;
+            if (targets.get(linkSources[i].getName()) == null) {
+                //
+                //   if source appears to be a system library or object file
+                //      just output the name of the file (advapi.lib for example)
+                //      otherwise construct a relative path.
+                //
+                String relPath = linkSources[i].getName();
+                //
+                //   check if file comes from a project dependency
+                //       if it does it should not be explicitly linked
+                boolean fromDependency = false;
+                if (relPath.indexOf(".") > 0) {
+                    String baseName = relPath.substring(0, relPath.indexOf("."));
+                    for (Iterator iter = projectDependencies.iterator(); iter.hasNext(); ) {
+                        DependencyDef depend = (DependencyDef) iter.next();
+                        if (baseName.compareToIgnoreCase(depend.getName()) == 0) {
+                            fromDependency = true;
+                        }
                     }
                 }
-            }
 
-            if (!fromDependency) {
-                if (!CUtil.isSystemPath(linkSources[i])) {
-                    relPath = CUtil.getRelativePath(basePath, linkSources[i]);
+                if (!fromDependency) {
+                    if (!CUtil.isSystemPath(linkSources[i])) {
+                        relPath = CUtil.getRelativePath(basePath, linkSources[i]);
+                    }
+                    //
+                    //   if path has an embedded space then
+                    //      must quote
+                    if (relPath.indexOf(' ') > 0) {
+                        buf.append('\"');
+                        buf.append(CUtil.toWindowsPath(relPath));
+                        buf.append('\"');
+                    } else {
+                        buf.append(relPath);
+                    }
+                    buf.append(' ');
                 }
-                //
-                //   if path has an embedded space then
-                //      must quote
-                if (relPath.indexOf(' ') > 0) {
-                    buf.append('\"');
-                    buf.append(CUtil.toWindowsPath(relPath));
-                    buf.append('\"');
-                } else {
-                    buf.append(relPath);
-                }
-                buf.append(' ');
-            }
             }
         }
         if (buf.length() > 0) {
-          buf.setLength(buf.length() - 1);
-          dependencies = buf.toString();
+            buf.setLength(buf.length() - 1);
+            dependencies = buf.toString();
         }
-      return dependencies;
+        return dependencies;
 
     }
 
     /**
      * Write Tool element for linker.
-     * @param content serialization content handler.
-     * @param isDebug true if generating debug configuration.
+     *
+     * @param content      serialization content handler.
+     * @param isDebug      true if generating debug configuration.
      * @param dependencies project dependencies.
-     * @param basePath path to directory containing project file.
-     * @param linkTarget link target.
-     * @param targets  all targets.
+     * @param basePath     path to directory containing project file.
+     * @param linkTarget   link target.
+     * @param targets      all targets.
      * @throws SAXException thrown if error during serialization.
      */
     private void writeLinkerElement(final ContentHandler content,
@@ -609,8 +606,7 @@ public final class VisualStudioNETProjectWriter
 
         ProcessorConfiguration config = linkTarget.getConfiguration();
         if (config instanceof CommandLineLinkerConfiguration) {
-            CommandLineLinkerConfiguration linkerConfig =
-                    (CommandLineLinkerConfiguration) config;
+            CommandLineLinkerConfiguration linkerConfig = (CommandLineLinkerConfiguration) config;
             if (linkerConfig.getLinker() instanceof DevStudioCompatibleLinker) {
                 addAttribute(attributes, "LinkIncremental",
                         getLinkIncremental(linkerConfig));
@@ -657,7 +653,6 @@ public final class VisualStudioNETProjectWriter
             projectName = fileName.getName();
         }
 
-
         File vcprojFile = new File(fileName + ".vcproj");
         if (!projectDef.getOverwrite() && vcprojFile.exists()) {
             throw new BuildException("Not allowed to overwrite project file "
@@ -669,11 +664,9 @@ public final class VisualStudioNETProjectWriter
                     + slnFile.toString());
         }
 
-        CommandLineCompilerConfiguration compilerConfig =
-                getBaseCompilerConfiguration(targets);
+        CommandLineCompilerConfiguration compilerConfig = getBaseCompilerConfiguration(targets);
         if (compilerConfig == null) {
-            throw new BuildException(
-                    "Unable to generate Visual Studio.NET project "
+            throw new BuildException("Unable to generate Visual Studio.NET project "
                             + "when Microsoft C++ is not used.");
         }
 
@@ -683,12 +676,12 @@ public final class VisualStudioNETProjectWriter
         ContentHandler content = serializer.asContentHandler();
         String basePath = fileName.getParentFile().getAbsolutePath();
         content.startDocument();
-        
-        for(Iterator iter = projectDef.getComments().iterator(); iter.hasNext(); ) {
-			String comment = ((CommentDef) iter.next()).getText();
-			serializer.comment(comment);
+
+        for (Iterator iter = projectDef.getComments().iterator(); iter.hasNext(); ) {
+            String comment = ((CommentDef) iter.next()).getText();
+            serializer.comment(comment);
         }
-        
+
         AttributesImpl emptyAttrs = new AttributesImpl();
 
         AttributesImpl attributes = new AttributesImpl();
@@ -768,8 +761,7 @@ public final class VisualStudioNETProjectWriter
     private void writeFilteredSources(final String name, final String filter,
                                       final String basePath,
                                       final File[] sortedSources,
-                                      final ContentHandler content)
-            throws SAXException {
+                                      final ContentHandler content) throws SAXException {
         AttributesImpl filterAttrs = new AttributesImpl();
         filterAttrs.addAttribute(null, "Name", "Name", "#PCDATA", name);
         filterAttrs.addAttribute(null, "Filter", "Filter", "#PCDATA", filter);
@@ -796,7 +788,7 @@ public final class VisualStudioNETProjectWriter
 
     /**
      * Returns true if the file has an extension that
-     *   appears in the group filter.
+     * appears in the group filter.
      *
      * @param filter    String group filter
      * @param candidate File file
@@ -806,20 +798,19 @@ public final class VisualStudioNETProjectWriter
         String fileName = candidate.getName();
         int lastDot = fileName.lastIndexOf('.');
         if (lastDot >= 0 && lastDot < fileName.length() - 1) {
-            String extension =
-                    ";" + fileName.substring(lastDot + 1).toLowerCase() + ";";
+            String extension = ";" + fileName.substring(lastDot + 1).toLowerCase() + ";";
             String semiFilter = ";" + filter + ";";
             return semiFilter.indexOf(extension) >= 0;
         }
         return false;
     }
 
-
     /**
      * Adds an non-namespace-qualified attribute to attribute list.
+     *
      * @param attributes list of attributes.
-     * @param attrName attribute name, may not be null.
-     * @param attrValue attribute value, if null attribute is not added.
+     * @param attrName   attribute name, may not be null.
+     * @param attrValue  attribute value, if null attribute is not added.
      */
     private static void addAttribute(final AttributesImpl attributes,
                                      final String attrName,
@@ -836,11 +827,12 @@ public final class VisualStudioNETProjectWriter
     /**
      * Gets the first recognized compiler from the
      * compilation targets.
+     *
      * @param targets compilation targets
      * @return representative (hopefully) compiler configuration
      */
     private CommandLineCompilerConfiguration
-            getBaseCompilerConfiguration(final Hashtable targets) {
+    getBaseCompilerConfiguration(final Hashtable targets) {
         //
         //   get the first target and assume that it is representative
         //
@@ -854,13 +846,12 @@ public final class VisualStudioNETProjectWriter
             if (config instanceof CommandLineCompilerConfiguration) {
                 CommandLineCompilerConfiguration compilerConfig =
                         (CommandLineCompilerConfiguration) config;
-                if (compilerConfig.getCompiler()
-                        instanceof DevStudioCCompiler) {
+                if (compilerConfig.getCompiler() instanceof DevStudioCCompiler) {
                     return compilerConfig;
                 }
             }
         }
         return null;
-  }
+    }
 }
 

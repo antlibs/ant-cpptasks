@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2001-2008 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,11 +15,14 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks;
+
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.*;
+import java.util.List;
+import java.util.Vector;
 
 import net.sf.antcontrib.cpptasks.compiler.CompilerConfiguration;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
@@ -36,58 +39,58 @@ import net.sf.antcontrib.cpptasks.types.LibrarySet;
 import net.sf.antcontrib.cpptasks.types.LinkerArgument;
 import net.sf.antcontrib.cpptasks.types.SystemIncludePath;
 import net.sf.antcontrib.cpptasks.types.SystemLibrarySet;
-
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.Environment;
+
 /**
  * Compile and link task.
- * 
+ *
  * <p>
  * This task can compile various source languages and produce executables,
  * shared libraries (aka DLL's) and static libraries. Compiler adaptors are
  * currently available for several C/C++ compilers, FORTRAN, MIDL and Windows
  * Resource files.
  * </p>
- * 
+ *
  * <p>
  * Copyright (c) 2001-2008, The Ant-Contrib project.
  * </p>
- * 
+ *
  * <p>
  * Licensed under the Apache Software License 2.0,
  * http://www.apache.org/licenses/LICENSE-2.0.
  * </p>
- * 
+ *
  * <p>
  * For use with Apache Ant 1.5 or later. This software is not a product of the
  * of the Apache Software Foundation and no endorsement is implied.
  * </p>
- * 
+ *
  * <p>
- * THIS SOFTWARE IS PROVIDED 'AS-IS', See 
+ * THIS SOFTWARE IS PROVIDED 'AS-IS', See
  * http://www.apache.org/licenses/LICENSE-2.0 for additional disclaimers.
  * </p>
- * 
+ * <p>
  * To use:
  * <ol>
  * <li>
- * Place cpptasks.jar into Ant's classpath by placing it in Ant's lib 
+ * Place cpptasks.jar into Ant's classpath by placing it in Ant's lib
  * directory, adding it to the CLASSPATH environment variable or by using the
  * -lib command line option.
- *  </li>
+ * </li>
  * <li>
  * Add type and task definitions to the build file:
  * <ul>
  * <li>
  * Ant 1.6 or later:
  * <ul>
- * <li>Add xmlns:cpptasks="antlib:net.sf.antcontrib.cpptasks" to 
+ * <li>Add xmlns:cpptasks="antlib:net.sf.antcontrib.cpptasks" to
  * &lt;project&gt; element.
  * </li>
  * <li>
- * Add &lt;cpptasks:cc/&gt;, &lt;cpptasks:compiler/&gt; and 
+ * Add &lt;cpptasks:cc/&gt;, &lt;cpptasks:compiler/&gt; and
  * &lt;cpptasks:linker/&gt; elements to the project.
  * </li>
  * </ul>
@@ -95,8 +98,8 @@ import org.apache.tools.ant.types.Environment;
  * <li>
  * Ant 1.5 or later:
  * <ul>
- * <li>Add &lt;taskdef resource="cpptasks.tasks"/&gt; and 
- * &lt;typedef resource="cpptasks.types"/&gt; to body of &lt;project&gt; 
+ * <li>Add &lt;taskdef resource="cpptasks.tasks"/&gt; and
+ * &lt;typedef resource="cpptasks.types"/&gt; to body of &lt;project&gt;
  * element.
  * </li>
  * <li>
@@ -115,7 +118,7 @@ import org.apache.tools.ant.types.Environment;
  * Build the project.
  * </li>
  * </ol>
- * 
+ *
  * @author Adam Murdoch
  * @author Curt Arnold
  */
@@ -123,10 +126,12 @@ public class CCTask extends Task {
     private static class SystemLibraryCollector implements FileVisitor {
         private Hashtable libraries;
         private Linker linker;
+
         public SystemLibraryCollector(Linker linker, Hashtable libraries) {
             this.linker = linker;
             this.libraries = libraries;
         }
+
         public void visit(File basedir, String filename) {
             if (linker.bid(filename) > 0) {
                 File libfile = new File(basedir, filename);
@@ -135,27 +140,32 @@ public class CCTask extends Task {
             }
         }
     }
-    
+
     private static class ProjectFileCollector implements FileVisitor {
         private final List files;
+
         /**
          * Creates a new ProjectFileCollector.
+         *
          * @param files vector for collected files.
          */
         public ProjectFileCollector(List files) {
             this.files = files;
         }
+
         /**
          * Called for each file to be considered for collection.
+         *
          * @param parentDir parent directory
-         * @param filename filename within directory
+         * @param filename  filename within directory
          */
-        public void visit(File parentDir, String filename)  {
+        public void visit(File parentDir, String filename) {
             files.add(new File(parentDir, filename));
         }
     }
-    
+
     private static final ProcessorConfiguration[] EMPTY_CONFIG_ARRAY = new ProcessorConfiguration[0];
+
     /**
      * Builds a Hashtable to targets needing to be rebuilt keyed by compiler
      * configuration
@@ -166,57 +176,70 @@ public class CCTask extends Task {
         while (targetEnum.hasMoreElements()) {
             TargetInfo target = (TargetInfo) targetEnum.nextElement();
             if (target.getRebuild()) {
-                Vector targetsForSameConfig = (Vector) targetsByConfig
-                        .get(target.getConfiguration());
+                Vector targetsForSameConfig =
+                        (Vector) targetsByConfig.get(target.getConfiguration());
                 if (targetsForSameConfig != null) {
                     targetsForSameConfig.addElement(target);
                 } else {
                     targetsForSameConfig = new Vector();
                     targetsForSameConfig.addElement(target);
-                    targetsByConfig.put(target.getConfiguration(),
-                            targetsForSameConfig);
+                    targetsByConfig.put(target.getConfiguration(), targetsForSameConfig);
                 }
             }
         }
         return targetsByConfig;
     }
-    /** The compiler definitions. */
+
+    /**
+     * The compiler definitions.
+     */
     private Vector _compilers = new Vector();
-    /** The output file type. */
-    //    private LinkType _linkType = LinkType.EXECUTABLE;
-    /** The library sets. */
+    /**
+     * The library sets.
+     */
     private Vector _libsets = new Vector();
-    /** The linker definitions. */
+    /**
+     * The linker definitions.
+     */
     private Vector _linkers = new Vector();
-    /** The object directory. */
+    /**
+     * The object directory.
+     */
     private File _objDir;
-    /** The output file. */
+    /**
+     * The output file.
+     */
     private File _outfile;
-    /** The linker definitions. */
+    /**
+     * The linker definitions.
+     */
     private final Vector targetPlatforms = new Vector();
-    /** The distributer definitions. */
+    /**
+     * The distributer definitions.
+     */
     private Vector distributers = new Vector();
     private final Vector versionInfos = new Vector();
     private final Vector projects = new Vector();
     private boolean projectsOnly = false;
 
-    
+
     /**
      * If true, stop build on compile failure.
      */
     protected boolean failOnError = true;
-    
+
     /**
      * Content that appears in <cc>and also in <compiler>are maintained by a
      * captive CompilerDef instance
      */
     private final CompilerDef compilerDef = new CompilerDef();
-    /** The OS390 dataset to build to object to */
+    /**
+     * The OS390 dataset to build to object to
+     */
     private String dataset;
     /**
-     * 
      * Depth of dependency checking
-     * 
+     * <p>
      * Values < 0 indicate full dependency checking Values >= 0 indicate
      * partial dependency checking and for superficial compilation checks. Will
      * throw BuildException before attempting link
@@ -229,7 +252,6 @@ public class CCTask extends Task {
     private final LinkerDef linkerDef = new LinkerDef();
     /**
      * contains the subsystem, output type and
-     *  
      */
     private final LinkType linkType = new LinkType();
     /**
@@ -242,15 +264,15 @@ public class CCTask extends Task {
      * files as possible before throwing a BuildException
      */
     private boolean relentless;
+
     public CCTask() {
     }
+
     /**
      * Adds a compiler definition or reference.
-     * 
-     * @param compiler
-     *            compiler
-     * @throws NullPointerException
-     *             if compiler is null
+     *
+     * @param compiler compiler
+     * @throws NullPointerException if compiler is null
      */
     public void addConfiguredCompiler(CompilerDef compiler) {
         if (compiler == null) {
@@ -259,34 +281,33 @@ public class CCTask extends Task {
         compiler.setProject(getProject());
         _compilers.addElement(compiler);
     }
+
     /**
      * Adds a compiler command-line arg. Argument will be inherited by all
      * nested compiler elements that do not have inherit="false".
-     *  
      */
     public void addConfiguredCompilerArg(CompilerArgument arg) {
         compilerDef.addConfiguredCompilerArg(arg);
     }
+
     /**
      * Adds a defineset. Will be inherited by all compiler elements that do not
      * have inherit="false".
-     * 
-     * @param defs
-     *            Define set
+     *
+     * @param defs Define set
      */
     public void addConfiguredDefineset(DefineSet defs) {
         compilerDef.addConfiguredDefineset(defs);
     }
+
     /**
      * Adds a linker definition. The first linker that is not disqualified by
      * its "if" and "unless" attributes will perform the link. If no child
      * linker element is active, the linker implied by the cc elements name or
      * classname attribute will be used.
-     * 
-     * @param linker
-     *            linker
-     * @throws NullPointerException
-     *             if linker is null
+     *
+     * @param linker linker
+     * @throws NullPointerException if linker is null
      */
     public void addConfiguredLinker(LinkerDef linker) {
         if (linker == null) {
@@ -295,6 +316,7 @@ public class CCTask extends Task {
         linker.setProject(getProject());
         _linkers.addElement(linker);
     }
+
     /**
      * Adds a linker command-line arg. Argument will be inherited by all nested
      * linker elements that do not have inherit="false".
@@ -302,6 +324,7 @@ public class CCTask extends Task {
     public void addConfiguredLinkerArg(LinkerArgument arg) {
         linkerDef.addConfiguredLinkerArg(arg);
     }
+
     /**
      * Add an environment variable to the launched process.
      */
@@ -309,30 +332,30 @@ public class CCTask extends Task {
         compilerDef.addEnv(var);
         linkerDef.addEnv(var);
     }
+
     /**
      * Adds a source file set.
-     * 
+     * <p>
      * Files in these filesets will be auctioned to the available compiler
      * configurations, with the default compiler implied by the cc element
      * bidding last. If no compiler is interested in the file, it will be
      * passed to the linker.
-     * 
+     * <p>
      * To have a file be processed by a particular compiler configuration, add
      * a fileset to the corresponding compiler element.
      */
     public void addFileset(ConditionalFileSet srcSet) {
         compilerDef.addFileset(srcSet);
     }
+
     /**
      * Adds a library set.
-     * 
+     * <p>
      * Library sets will be inherited by all linker elements that do not have
      * inherit="false".
-     * 
-     * @param libset
-     *            library set
-     * @throws NullPointerException
-     *             if libset is null.
+     *
+     * @param libset library set
+     * @throws NullPointerException if libset is null.
      */
     public void addLibset(LibrarySet libset) {
         if (libset == null) {
@@ -340,21 +363,20 @@ public class CCTask extends Task {
         }
         linkerDef.addLibset(libset);
     }
+
     /**
      * Adds a system library set. Timestamps and locations of system library
      * sets are not used in dependency analysis.
-     * 
+     * <p>
      * Essential libraries (such as C Runtime libraries) should not be
      * specified since the task will attempt to identify the correct libraries
      * based on the multithread, debug and runtime attributes.
-     * 
+     * <p>
      * System library sets will be inherited by all linker elements that do not
      * have inherit="false".
-     * 
-     * @param libset
-     *            library set
-     * @throws NullPointerException
-     *             if libset is null.
+     *
+     * @param libset library set
+     * @throws NullPointerException if libset is null.
      */
     public void addSyslibset(SystemLibrarySet libset) {
         if (libset == null) {
@@ -362,8 +384,10 @@ public class CCTask extends Task {
         }
         linkerDef.addSyslibset(libset);
     }
+
     /**
      * Specifies the generation of IDE project file.  Experimental.
+     *
      * @param projectDef project file generation specification
      */
     public void addProject(final ProjectDef projectDef) {
@@ -372,15 +396,16 @@ public class CCTask extends Task {
         }
         projects.addElement(projectDef);
     }
+
     public void setProjectsOnly(final boolean value) {
-    	projectsOnly = value;
+        projectsOnly = value;
     }
+
     /**
      * Checks all targets that are not forced to be rebuilt or are missing
      * object files to be checked for modified include files
-     * 
+     *
      * @return total number of targets to be rebuilt
-     *  
      */
     protected int checkForChangedIncludeFiles(Hashtable targets) {
         int potentialTargets = 0;
@@ -399,8 +424,7 @@ public class CCTask extends Task {
         //        might be out of date
         //
         if (potentialTargets > 0) {
-            log("Starting dependency analysis for "
-                    + Integer.toString(potentialTargets) + " files.");
+            log("Starting dependency analysis for " + Integer.toString(potentialTargets) + " files.");
             DependencyTable dependencyTable = new DependencyTable(_objDir);
             try {
                 dependencyTable.load();
@@ -431,17 +455,17 @@ public class CCTask extends Task {
             }
         }
         if (potentialTargets > 0) {
-            log(Integer.toString(potentialTargets - currentTargets
-                    + definiteTargets)
-                    + " files are up to date.");
+            log(Integer.toString(potentialTargets - currentTargets + definiteTargets) + " files are up to date.");
             log(Integer.toString(currentTargets - definiteTargets)
                     + " files to be recompiled from dependency analysis.");
         }
         log(Integer.toString(currentTargets) + " total files to be compiled.");
         return currentTargets;
     }
-    protected LinkerConfiguration collectExplicitObjectFiles(
-            Vector objectFiles, Vector sysObjectFiles, VersionInfo versionInfo) {
+
+    protected LinkerConfiguration collectExplicitObjectFiles(Vector objectFiles,
+                                                             Vector sysObjectFiles,
+                                                             VersionInfo versionInfo) {
         //
         //    find the first eligible linker
         //
@@ -457,8 +481,7 @@ public class CCTask extends Task {
             LinkerDef currentLinkerDef = (LinkerDef) _linkers.elementAt(i);
             if (currentLinkerDef.isActive()) {
                 selectedLinkerDef = currentLinkerDef;
-                selectedLinker = currentLinkerDef.getProcessor().getLinker(
-                        linkType);
+                selectedLinker = currentLinkerDef.getProcessor().getLinker(linkType);
                 //
                 //   skip the linker if it doesn't know how to
                 //      produce the specified link type
@@ -469,10 +492,9 @@ public class CCTask extends Task {
                         //
                         //   create collectors for object files
                         //      and system libraries
-                        objCollector = new ObjectFileCollector(selectedLinker,
-                                objectFiles);
-                        sysLibraryCollector = new SystemLibraryCollector(
-                                selectedLinker, sysLibraries);
+                        objCollector = new ObjectFileCollector(selectedLinker, objectFiles);
+                        sysLibraryCollector = new SystemLibraryCollector(selectedLinker,
+                                sysLibraries);
                         //
                         //    if the <linker> has embedded <fileset>'s
                         //       (such as linker specific libraries)
@@ -484,8 +506,7 @@ public class CCTask extends Task {
                         //
                         //    user libraries are just a specialized form
                         //       of an object fileset
-                        selectedLinkerDef.visitUserLibraries(selectedLinker,
-                                objCollector);
+                        selectedLinkerDef.visitUserLibraries(selectedLinker, objCollector);
                     }
                     break;
                 }
@@ -493,11 +514,9 @@ public class CCTask extends Task {
         }
         if (linkerConfig == null) {
             linkerConfig = linkerDef.createConfiguration(this, linkType, null, targetPlatform, versionInfo);
-            selectedLinker = (Linker) linkerDef.getProcessor().getLinker(
-                    linkType);
+            selectedLinker = (Linker) linkerDef.getProcessor().getLinker(linkType);
             objCollector = new ObjectFileCollector(selectedLinker, objectFiles);
-            sysLibraryCollector = new SystemLibraryCollector(selectedLinker,
-                    sysLibraries);
+            sysLibraryCollector = new SystemLibraryCollector(selectedLinker, sysLibraries);
         }
         //
         //  unless there was a <linker> element that
@@ -517,8 +536,7 @@ public class CCTask extends Task {
             //    add any system libraries to the hashtable
             //       done in reverse order so the earliest
             //        on the classpath takes priority
-            selectedLinkerDef.visitSystemLibraries(selectedLinker,
-                    sysLibraryCollector);
+            selectedLinkerDef.visitSystemLibraries(selectedLinker, sysLibraryCollector);
         }
         //
         //   copy over any system libraries to the
@@ -530,56 +548,58 @@ public class CCTask extends Task {
         }
         return (LinkerConfiguration) linkerConfig;
     }
+
     /**
      * Adds an include path.
-     * 
+     * <p>
      * Include paths will be inherited by nested compiler elements that do not
      * have inherit="false".
      */
     public IncludePath createIncludePath() {
         return compilerDef.createIncludePath();
     }
+
     /**
      * Specifies precompilation prototype file and exclusions. Inherited by all
      * compilers that do not have inherit="false".
-     *  
      */
     public PrecompileDef createPrecompile() throws BuildException {
         return compilerDef.createPrecompile();
     }
+
     /**
      * Adds a system include path. Locations and timestamps of files located
      * using the system include paths are not used in dependency analysis.
-     * 
-     * 
+     * <p>
+     * <p>
      * Standard include locations should not be specified. The compiler
      * adapters should recognized the settings from the appropriate environment
      * variables or configuration files.
-     * 
+     * <p>
      * System include paths will be inherited by nested compiler elements that
      * do not have inherit="false".
      */
     public SystemIncludePath createSysIncludePath() {
         return compilerDef.createSysIncludePath();
     }
+
     /**
      * Executes the task. Compiles the given files.
-     * 
-     * @throws BuildException
-     *             if someting goes wrong with the build
+     *
+     * @throws BuildException if someting goes wrong with the build
      */
     public void execute() throws BuildException {
         //
         //   if link type allowed objdir to be defaulted
         //      provide it from outfile
         if (_objDir == null) {
-        	if(_outfile != null) {
-        		_objDir = new File(_outfile.getParent());
-        	} else {
-        		_objDir = new File(".");
-        	}
+            if (_outfile != null) {
+                _objDir = new File(_outfile.getParent());
+            } else {
+                _objDir = new File(".");
+            }
         }
-        
+
         //
         //   if the object directory does not exist
         //
@@ -594,26 +614,26 @@ public class CCTask extends Task {
         VersionInfo versionInfo = null;
         Enumeration versionEnum = versionInfos.elements();
         while (versionEnum.hasMoreElements()) {
-        	versionInfo = (VersionInfo) versionEnum.nextElement();
-        	versionInfo = versionInfo.merge();
-        	if (versionInfo.isActive()) {
-        		break;
-        	} else {
-        		versionInfo = null;
-        	}
+            versionInfo = (VersionInfo) versionEnum.nextElement();
+            versionInfo = versionInfo.merge();
+            if (versionInfo.isActive()) {
+                break;
+            } else {
+                versionInfo = null;
+            }
         }
-        
-        
+
+
         //
         //  determine the eventual linker configuration
         //      (may be null) and collect any explicit
         //          object files or libraries
         Vector objectFiles = new Vector();
         Vector sysObjectFiles = new Vector();
-        LinkerConfiguration linkerConfig = collectExplicitObjectFiles(
-                objectFiles, sysObjectFiles, versionInfo);
-        
-        
+        LinkerConfiguration linkerConfig = collectExplicitObjectFiles(objectFiles, sysObjectFiles,
+                versionInfo);
+
+
         //
         //   Assemble hashtable of all files
         //       that we know how to compile (keyed by output file name)
@@ -628,13 +648,12 @@ public class CCTask extends Task {
             linkTarget = getLinkTarget(linkerConfig, objectFiles,
                     sysObjectFiles, targets, versionInfo);
         }
-        
+
         if (projects.size() > 0) {
-        	ArrayList files = new ArrayList();
-        	ProjectFileCollector matcher = new ProjectFileCollector(files);
+            ArrayList files = new ArrayList();
+            ProjectFileCollector matcher = new ProjectFileCollector(files);
             for (int i = 0; i < _compilers.size(); i++) {
-                CompilerDef currentCompilerDef = (CompilerDef) _compilers
-                        .elementAt(i);
+                CompilerDef currentCompilerDef = (CompilerDef) _compilers.elementAt(i);
                 if (currentCompilerDef.isActive()) {
                     if (currentCompilerDef.hasFileSets()) {
                         currentCompilerDef.visitFiles(matcher);
@@ -642,20 +661,19 @@ public class CCTask extends Task {
                 }
             }
             compilerDef.visitFiles(matcher);
-        	
-        	
-        	Enumeration iter = projects.elements();
-        	while (iter.hasMoreElements()) {
-        		ProjectDef projectDef = (ProjectDef) iter.nextElement();
-        		if (projectDef.isActive()) {
-        			projectDef.execute(this, files, targets, linkTarget);
-        		}
-        	}
+
+
+            Enumeration iter = projects.elements();
+            while (iter.hasMoreElements()) {
+                ProjectDef projectDef = (ProjectDef) iter.nextElement();
+                if (projectDef.isActive()) {
+                    projectDef.execute(this, files, targets, linkTarget);
+                }
+            }
         }
-        if (projectsOnly) return;
-      
-        
-        
+        if (projectsOnly) {
+            return;
+        }
         //
         //     mark targets that don't have a history record or
         //        whose source last modification time is not
@@ -681,21 +699,19 @@ public class CCTask extends Task {
             int index = 0;
             Enumeration targetVectorEnum = targetsByConfig.elements();
             while (targetVectorEnum.hasMoreElements()) {
-                Vector targetsForConfig = (Vector) targetVectorEnum
-                        .nextElement();
+                Vector targetsForConfig = (Vector) targetVectorEnum.nextElement();
                 //
                 //    get the configuration from the first entry
                 //
-                CompilerConfiguration config = (CompilerConfiguration) ((TargetInfo) targetsForConfig
-                        .elementAt(0)).getConfiguration();
+                CompilerConfiguration config = (CompilerConfiguration)
+                        ((TargetInfo) targetsForConfig.elementAt(0)).getConfiguration();
                 if (config.isPrecompileGeneration()) {
                     targetVectors[index++] = targetsForConfig;
                 }
             }
             targetVectorEnum = targetsByConfig.elements();
             while (targetVectorEnum.hasMoreElements()) {
-                Vector targetsForConfig = (Vector) targetVectorEnum
-                        .nextElement();
+                Vector targetsForConfig = (Vector) targetVectorEnum.nextElement();
                 for (int i = 0; i < targetVectors.length; i++) {
                     if (targetVectors[i] == targetsForConfig) {
                         break;
@@ -714,8 +730,8 @@ public class CCTask extends Task {
                 //
                 //    get the configuration from the first entry
                 //
-                CompilerConfiguration config = (CompilerConfiguration) ((TargetInfo) targetsForConfig
-                        .elementAt(0)).getConfiguration();
+                CompilerConfiguration config = (CompilerConfiguration)
+                        ((TargetInfo) targetsForConfig.elementAt(0)).getConfiguration();
                 //
                 //    prepare the list of source files
                 //
@@ -723,10 +739,8 @@ public class CCTask extends Task {
                 Enumeration targetsEnum = targetsForConfig.elements();
                 index = 0;
                 while (targetsEnum.hasMoreElements()) {
-                    TargetInfo targetInfo = ((TargetInfo) targetsEnum
-                            .nextElement());
-                    sourceFiles[index++] = targetInfo.getSources()[0]
-                            .toString();
+                    TargetInfo targetInfo = ((TargetInfo) targetsEnum.nextElement());
+                    sourceFiles[index++] = targetInfo.getSources()[0].toString();
                 }
                 try {
                     config.compile(this, _objDir, sourceFiles, relentless,
@@ -735,8 +749,9 @@ public class CCTask extends Task {
                     if (compileException == null) {
                         compileException = ex;
                     }
-                    if (!relentless)
+                    if (!relentless) {
                         break;
+                    }
                 }
             }
             //
@@ -756,9 +771,9 @@ public class CCTask extends Task {
             //           throw the exception
             //
             if (compileException != null) {
-            	if (failOnError) {
-            		throw compileException;
-            	} else {
+                if (failOnError) {
+                    throw compileException;
+                } else {
                     log(compileException.getMessage(), Project.MSG_ERR);
                     return;
                 }
@@ -772,11 +787,9 @@ public class CCTask extends Task {
         //
         //
         if (dependencyDepth >= 0) {
-            throw new BuildException(
-                    "All files at depth "
-                            + Integer.toString(dependencyDepth)
-                            + " from changes successfully compiled.\n"
-                            + "Remove or change dependencyDepth to -1 to perform full compilation.");
+            throw new BuildException("All files at depth " + Integer.toString(dependencyDepth)
+                    + " from changes successfully compiled.\n"
+                    + "Remove or change dependencyDepth to -1 to perform full compilation.");
         }
         //
         //   if no link target then
@@ -797,21 +810,21 @@ public class CCTask extends Task {
             File output = linkTarget.getOutput();
             if (linkTarget.getRebuild()) {
                 log("Starting link");
-                LinkerConfiguration linkConfig = (LinkerConfiguration) linkTarget
-                        .getConfiguration();
+                LinkerConfiguration linkConfig =
+                        (LinkerConfiguration) linkTarget.getConfiguration();
                 if (failOnError) {
-                	linkConfig.link(this, linkTarget);
+                    linkConfig.link(this, linkTarget);
                 } else {
-                	try {
-                    	linkConfig.link(this, linkTarget);                		
-                	} catch(BuildException ex) {
+                    try {
+                        linkConfig.link(this, linkTarget);
+                    } catch (BuildException ex) {
                         log(ex.getMessage(), Project.MSG_ERR);
-                        return;                		
-                	}
+                        return;
+                    }
                 }
-                if (outputFileProperty != null)
-                    getProject().setProperty(outputFileProperty,
-                            output.getAbsolutePath());
+                if (outputFileProperty != null) {
+                    getProject().setProperty(outputFileProperty, output.getAbsolutePath());
+                }
                 linkHistory.update(linkTarget);
                 try {
                     linkHistory.commit();
@@ -819,20 +832,22 @@ public class CCTask extends Task {
                     log("Error writing link history.xml: " + ex.toString());
                 }
             } else {
-                if (outputFileProperty != null)
-                    getProject().setProperty(outputFileProperty,
-                            output.getAbsolutePath());
+                if (outputFileProperty != null) {
+                    getProject().setProperty(outputFileProperty, output.getAbsolutePath());
+                }
             }
         }
     }
+
     /**
      * Gets the dataset.
-     * 
+     *
      * @return Returns a String
      */
     public String getDataset() {
         return dataset;
     }
+
     protected TargetHistoryTable getLinkHistory(TargetHistoryTable objHistory) {
         File outputFileDir = new File(_outfile.getParent());
         //
@@ -844,9 +859,10 @@ public class CCTask extends Task {
         }
         return new TargetHistoryTable(this, outputFileDir);
     }
+
     protected TargetInfo getLinkTarget(LinkerConfiguration linkerConfig,
-            Vector objectFiles, Vector sysObjectFiles, 
-			Hashtable compileTargets, VersionInfo versionInfo) {
+                                       Vector objectFiles, Vector sysObjectFiles,
+                                       Hashtable compileTargets, VersionInfo versionInfo) {
         //
         //  walk the compile phase targets and
         //     add those sources that have already been
@@ -856,8 +872,7 @@ public class CCTask extends Task {
         //
         Enumeration compileTargetsEnum = compileTargets.elements();
         while (compileTargetsEnum.hasMoreElements()) {
-            TargetInfo compileTarget = (TargetInfo) compileTargetsEnum
-                    .nextElement();
+            TargetInfo compileTarget = (TargetInfo) compileTargetsEnum.nextElement();
             //
             //   output of compile tasks
             //
@@ -876,25 +891,27 @@ public class CCTask extends Task {
         return new TargetInfo(linkerConfig, objectFileArray,
                 sysObjectFileArray, outputFile, linkerConfig.getRebuild());
     }
+
     public File getObjdir() {
         return _objDir;
     }
+
     public File getOutfile() {
         return _outfile;
     }
-    
+
     public TargetDef getTargetPlatform() {
-    	return null;
+        return null;
     }
+
     /**
      * This method collects a Hashtable, keyed by output file name, of
      * TargetInfo's for every source file that is specified in the filesets of
      * the <cc>and nested <compiler>elements. The TargetInfo's contain the
      * appropriate compiler configurations for their possible compilation
-     *  
      */
     private Hashtable getTargets(LinkerConfiguration linkerConfig,
-            Vector objectFiles, VersionInfo versionInfo, File outputFile) {
+                                 Vector objectFiles, VersionInfo versionInfo, File outputFile) {
         Hashtable targets = new Hashtable(1000);
         TargetDef targetPlatform = getTargetPlatform();
         //
@@ -902,17 +919,14 @@ public class CCTask extends Task {
         //
         Vector biddingProcessors = new Vector(_compilers.size());
         for (int i = 0; i < _compilers.size(); i++) {
-            CompilerDef currentCompilerDef = (CompilerDef) _compilers
-                    .elementAt(i);
+            CompilerDef currentCompilerDef = (CompilerDef) _compilers.elementAt(i);
             if (currentCompilerDef.isActive()) {
-                ProcessorConfiguration config = currentCompilerDef
-                        .createConfiguration(this, linkType, compilerDef, 
-                        		targetPlatform, versionInfo);
+                ProcessorConfiguration config = currentCompilerDef.createConfiguration(this,
+                        linkType, compilerDef, targetPlatform, versionInfo);
                 //
                 //   see if this processor had a precompile child element
                 //
-                PrecompileDef precompileDef = currentCompilerDef
-                        .getActivePrecompile(compilerDef);
+                PrecompileDef precompileDef = currentCompilerDef.getActivePrecompile(compilerDef);
                 ProcessorConfiguration[] localConfigs = new ProcessorConfiguration[]{config};
                 //
                 //    if it does then
@@ -923,12 +937,12 @@ public class CCTask extends Task {
                     //  will throw exceptions if prototype doesn't exist, etc
                     //
                     if (!prototype.exists()) {
-                        throw new BuildException("prototype ("
-                                + prototype.toString() + ") does not exist.");
+                        throw new BuildException("prototype (" + prototype.toString()
+                                + ") does not exist.");
                     }
                     if (prototype.isDirectory()) {
-                        throw new BuildException("prototype ("
-                                + prototype.toString() + ") is a directory.");
+                        throw new BuildException("prototype (" + prototype.toString()
+                                + ") is a directory.");
                     }
                     String[] exceptFiles = precompileDef.getExceptFiles();
                     //
@@ -937,8 +951,7 @@ public class CCTask extends Task {
                     //      or return null if compiler doesn't support
                     //      precompilation
                     CompilerConfiguration[] configs = ((CompilerConfiguration) config)
-                            .createPrecompileConfigurations(prototype,
-                                    exceptFiles);
+                            .createPrecompileConfigurations(prototype, exceptFiles);
                     if (configs != null && configs.length == 2) {
                         //
                         //   visit the precompiled file to add it into the
@@ -948,7 +961,7 @@ public class CCTask extends Task {
                                 _objDir,
                                 new ProcessorConfiguration[]{configs[0]},
                                 linkerConfig, objectFiles, targets, versionInfo);
-     
+
                         matcher.visit(new File(prototype.getParent()),
                                 prototype.getName());
                         //
@@ -967,7 +980,7 @@ public class CCTask extends Task {
                 if (currentCompilerDef.hasFileSets()) {
                     TargetMatcher matcher = new TargetMatcher(this, _objDir,
                             localConfigs, linkerConfig, objectFiles, targets,
-							versionInfo);
+                            versionInfo);
                     currentCompilerDef.visitFiles(matcher);
                 }
                 biddingProcessors.addElement(config);
@@ -979,8 +992,7 @@ public class CCTask extends Task {
         ProcessorConfiguration config = compilerDef.createConfiguration(this,
                 linkType, null, targetPlatform, versionInfo);
         biddingProcessors.addElement(config);
-        ProcessorConfiguration[] bidders = new ProcessorConfiguration[biddingProcessors
-                .size()];
+        ProcessorConfiguration[] bidders = new ProcessorConfiguration[biddingProcessors.size()];
         biddingProcessors.copyInto(bidders);
         //
         //   bid out the <fileset>'s in the cctask
@@ -988,81 +1000,84 @@ public class CCTask extends Task {
         TargetMatcher matcher = new TargetMatcher(this, _objDir, bidders,
                 linkerConfig, objectFiles, targets, versionInfo);
         compilerDef.visitFiles(matcher);
-        
+
         if (outputFile != null && versionInfo != null) {
-        	boolean isDebug = linkerConfig.isDebug();
-    		try {
-    			linkerConfig.getLinker().addVersionFiles(versionInfo, linkType,
-    				outputFile,
-					isDebug,
-    				_objDir, matcher);
-    		} catch(IOException ex) {
-    			throw new BuildException(ex);
-    		}
+            boolean isDebug = linkerConfig.isDebug();
+            try {
+                linkerConfig.getLinker().addVersionFiles(versionInfo, linkType,
+                        outputFile,
+                        isDebug,
+                        _objDir, matcher);
+            } catch (IOException ex) {
+                throw new BuildException(ex);
+            }
         }
         return targets;
     }
+
     /**
      * Sets the default compiler adapter. Use the "name" attribute when the
      * compiler is a supported compiler.
-     * 
-     * @param classname
-     *            fully qualified classname which implements CompilerAdapter
+     *
+     * @param classname fully qualified classname which implements CompilerAdapter
      */
     public void setClassname(String classname) {
         compilerDef.setClassname(classname);
         linkerDef.setClassname(classname);
     }
+
     /**
      * Sets the dataset for OS/390 builds.
-     * 
-     * @param dataset
-     *            The dataset to set
+     *
+     * @param dataset The dataset to set
      */
     public void setDataset(String dataset) {
         this.dataset = dataset;
     }
+
     /**
      * Enables or disables generation of debug info.
      */
     public void setDebug(boolean debug) {
         compilerDef.setDebug(debug);
-        linkerDef.setDebug(debug);     
+        linkerDef.setDebug(debug);
     }
-    
+
     /**
      * Gets debug state.
+     *
      * @return true if building for debugging
      */
     public boolean getDebug() {
-    	return compilerDef.getDebug(null, 0);
+        return compilerDef.getDebug(null, 0);
     }
-    
+
     /**
      * Deprecated.
-     * 
+     * <p>
      * Controls the depth of the dependency evaluation. Used to do a quick
      * check of changes before a full build.
-     * 
+     * <p>
      * Any negative value which will perform full dependency checking. Positive
      * values will truncate dependency checking. A value of 0 will cause only
      * those files that changed to be recompiled, a value of 1 which cause
      * files that changed or that explicitly include a file that changed to be
      * recompiled.
-     * 
+     * <p>
      * Any non-negative value will cause a BuildException to be thrown before
      * attempting a link or completing the task.
-     *  
      */
     public void setDependencyDepth(int depth) {
         dependencyDepth = depth;
     }
+
     /**
      * Enables generation of exception handling code
      */
     public void setExceptions(boolean exceptions) {
         compilerDef.setExceptions(exceptions);
     }
+
     /**
      * Enables run-time type information.
      */
@@ -1072,42 +1087,43 @@ public class CCTask extends Task {
     //    public LinkType getLinkType() {
     //      return linkType;
     //    }
+
     /**
      * Enables or disables incremental linking.
-     * 
-     * @param incremental
-     *            new state
+     *
+     * @param incremental new state
      */
     public void setIncremental(boolean incremental) {
         linkerDef.setIncremental(incremental);
     }
+
     /**
      * Set use of libtool.
-     * 
+     * <p>
      * If set to true, the "libtool " will be prepended to the command line for
      * compatible processors
-     * 
-     * @param libtool
-     *            If true, use libtool.
+     *
+     * @param libtool If true, use libtool.
      */
     public void setLibtool(boolean libtool) {
         compilerDef.setLibtool(libtool);
         linkerDef.setLibtool(libtool);
     }
+
     /**
      * Sets the output file type. Supported values "executable", "shared", and
      * "static".  Deprecated, specify outtype instead.
-     * 
+     *
      * @deprecated
      */
     public void setLink(OutputTypeEnum outputType) {
         linkType.setOutputType(outputType);
     }
+
     /**
      * Enables or disables generation of multithreaded code
-     * 
-     * @param multi
-     *            If true, generated code may be multithreaded.
+     *
+     * @param multi If true, generated code may be multithreaded.
      */
     public void setMultithreaded(boolean multi) {
         compilerDef.setMultithreaded(multi);
@@ -1115,9 +1131,10 @@ public class CCTask extends Task {
     //
     //  keep near duplicate comment at CompilerDef.setName in sync
     //
+
     /**
      * Sets type of the default compiler and linker.
-     * 
+     *
      * <table width="100%" border="1"> <thead>Supported compilers </thead>
      * <tr>
      * <td>gcc (default)</td>
@@ -1220,7 +1237,6 @@ public class CCTask extends Task {
      * <td>OpenWatcom FORTRAN compiler</td>
      * </tr>
      * </table>
-     *  
      */
     public void setName(CompilerEnum name) {
         compilerDef.setName(name);
@@ -1228,6 +1244,7 @@ public class CCTask extends Task {
         Linker linker = compiler.getLinker(linkType);
         linkerDef.setProcessor(linker);
     }
+
     /**
      * Do not propagate old environment when new environment variables are
      * specified.
@@ -1236,14 +1253,14 @@ public class CCTask extends Task {
         compilerDef.setNewenvironment(newenv);
         linkerDef.setNewenvironment(newenv);
     }
+
     /**
      * Sets the destination directory for object files.
-     * 
+     * <p>
      * Generally this should be a property expression that evaluates to
      * distinct debug and release object file directories.
-     * 
-     * @param dir
-     *            object directory
+     *
+     * @param dir object directory
      */
     public void setObjdir(File dir) {
         if (dir == null) {
@@ -1251,14 +1268,14 @@ public class CCTask extends Task {
         }
         _objDir = dir;
     }
+
     /**
      * Sets the output file name. If not specified, the task will only compile
      * files and not attempt to link. If an extension is not specified, the
      * task may use a system appropriate extension and prefix, for example,
      * outfile="example" may result in "libexample.so" being created.
-     * 
-     * @param outfile
-     *            output file name
+     *
+     * @param outfile output file name
      */
     public void setOutfile(File outfile) {
         //
@@ -1268,6 +1285,7 @@ public class CCTask extends Task {
             _outfile = outfile;
         }
     }
+
     /**
      * Specifies the name of a property to set with the physical filename that
      * is produced by the linker
@@ -1275,6 +1293,7 @@ public class CCTask extends Task {
     public void setOutputFileProperty(String outputFileProperty) {
         this.outputFileProperty = outputFileProperty;
     }
+
     /**
      * Sets the output file type. Supported values "executable", "shared", and
      * "static".
@@ -1282,15 +1301,16 @@ public class CCTask extends Task {
     public void setOuttype(OutputTypeEnum outputType) {
         linkType.setOutputType(outputType);
     }
-    
+
     /**
      * Gets output type.
+     *
      * @return output type
      */
     public String getOuttype() {
-    	return linkType.getOutputType();
+        return linkType.getOutputType();
     }
-    
+
     /**
      * Sets the project.
      */
@@ -1299,37 +1319,39 @@ public class CCTask extends Task {
         compilerDef.setProject(project);
         linkerDef.setProject(project);
     }
+
     /**
      * If set to true, all files will be rebuilt.
-     * 
+     *
      * @param rebuildAll If true, all files will be rebuilt. If false, up to
-     * date files will not be rebuilt.
+     *                   date files will not be rebuilt.
      */
     public void setRebuild(boolean rebuildAll) {
         compilerDef.setRebuild(rebuildAll);
         linkerDef.setRebuild(rebuildAll);
     }
+
     /**
      * If set to true, compilation errors will not stop the task until all
      * files have been attempted.
-     * 
-     * @param relentless
-     *            If true, don't stop on the first compilation error
-     *  
+     *
+     * @param relentless If true, don't stop on the first compilation error
      */
     public void setRelentless(boolean relentless) {
         this.relentless = relentless;
     }
+
     /**
      * Sets the type of runtime library, possible values "dynamic", "static".
      */
     public void setRuntime(RuntimeType rtlType) {
         linkType.setStaticRuntime((rtlType.getIndex() == 1));
     }
+
     /**
      * Sets the nature of the subsystem under which that the program will
      * execute.
-     * 
+     *
      * <table width="100%" border="1"> <thead>Supported subsystems </thead>
      * <tr>
      * <td>gui</td>
@@ -1344,11 +1366,9 @@ public class CCTask extends Task {
      * <td>Other</td>
      * </tr>
      * </table>
-     * 
-     * @param subsystem
-     *            subsystem
-     * @throws NullPointerException
-     *             if subsystem is null
+     *
+     * @param subsystem subsystem
+     * @throws NullPointerException if subsystem is null
      */
     public void setSubsystem(SubsystemEnum subsystem) {
         if (subsystem == null) {
@@ -1356,15 +1376,16 @@ public class CCTask extends Task {
         }
         linkType.setSubsystem(subsystem);
     }
-    
+
     /**
      * Gets subsystem name.
+     *
      * @return Subsystem name
      */
     public String getSubsystem() {
-    	return linkType.getSubsystem();
+        return linkType.getSubsystem();
     }
-    
+
     /**
      * Enumerated attribute with the values "none", "severe", "default",
      * "production", "diagnostic", and "aserror".
@@ -1372,10 +1393,11 @@ public class CCTask extends Task {
     public void setWarnings(WarningLevelEnum level) {
         compilerDef.setWarnings(level);
     }
-    
+
     /**
      * Indicates whether the build will continue
      * even if there are compilation errors; defaults to true.
+     *
      * @param fail if true halt the build on failure
      */
     public void setFailonerror(boolean fail) {
@@ -1384,18 +1406,18 @@ public class CCTask extends Task {
 
     /**
      * Gets the failonerror flag.
+     *
      * @return the failonerror flag
      */
     public boolean getFailonerror() {
         return failOnError;
     }
+
     /**
      * Adds a target definition or reference (Non-functional prototype).
-     * 
-     * @param target
-     *            target
-     * @throws NullPointerException
-     *             if compiler is null
+     *
+     * @param target target
+     * @throws NullPointerException if compiler is null
      */
     public void addConfiguredTarget(TargetDef target) {
         if (target == null) {
@@ -1404,13 +1426,12 @@ public class CCTask extends Task {
         target.setProject(getProject());
         targetPlatforms.addElement(target);
     }
+
     /**
      * Adds a distributer definition or reference (Non-functional prototype).
-     * 
-     * @param distributer
-     *            distributer
-     * @throws NullPointerException
-     *             if compiler is null
+     *
+     * @param distributer distributer
+     * @throws NullPointerException if compiler is null
      */
     public void addConfiguredDistributer(DistributerDef distributer) {
         if (distributer == null) {
@@ -1419,14 +1440,16 @@ public class CCTask extends Task {
         distributer.setProject(getProject());
         distributers.addElement(distributer);
     }
+
     /**
      * Sets optimization.
+     *
      * @param optimization
      */
     public void setOptimize(OptimizationEnum optimization) {
-    	compilerDef.setOptimize(optimization);
+        compilerDef.setOptimize(optimization);
     }
-    
+
     /**
      * Adds desriptive version information to be included in the
      * generated file.  The first active version info block will
@@ -1436,5 +1459,4 @@ public class CCTask extends Task {
         newVersionInfo.setProject(this.getProject());
         versionInfos.addElement(newVersionInfo);
     }
-    
 }

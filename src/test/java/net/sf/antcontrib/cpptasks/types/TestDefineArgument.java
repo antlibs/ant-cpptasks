@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,10 +15,12 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.types;
+
 import junit.framework.TestCase;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
+
 /**
  * Tests for the DefineArgument class
  */
@@ -26,6 +28,7 @@ public class TestDefineArgument extends TestCase {
     public TestDefineArgument(String name) {
         super(name);
     }
+
     public void testIsActive1() {
         DefineArgument arg = new DefineArgument();
         Project project = new Project();
@@ -36,6 +39,7 @@ public class TestDefineArgument extends TestCase {
         }
         fail("isActive should throw exception if name is not set");
     }
+
     public void testIsActive2() {
         DefineArgument arg = new DefineArgument();
         arg.setName("TEST");
@@ -44,6 +48,7 @@ public class TestDefineArgument extends TestCase {
         arg.setIf("cond");
         assertTrue(arg.isActive(project));
     }
+
     public void testIsActive3() {
         DefineArgument arg = new DefineArgument();
         arg.setName("TEST");
@@ -51,6 +56,7 @@ public class TestDefineArgument extends TestCase {
         arg.setIf("cond");
         assertTrue(!arg.isActive(project));
     }
+
     public void testIsActive4() {
         DefineArgument arg = new DefineArgument();
         arg.setName("TEST");
@@ -64,6 +70,7 @@ public class TestDefineArgument extends TestCase {
         }
         fail("Should throw exception for suspicious value");
     }
+
     public void testIsActive5() {
         DefineArgument arg = new DefineArgument();
         arg.setName("TEST");
@@ -72,6 +79,7 @@ public class TestDefineArgument extends TestCase {
         arg.setUnless("cond");
         assertTrue(!arg.isActive(project));
     }
+
     public void testIsActive6() {
         DefineArgument arg = new DefineArgument();
         arg.setName("TEST");
@@ -79,6 +87,7 @@ public class TestDefineArgument extends TestCase {
         arg.setUnless("cond");
         assertTrue(arg.isActive(project));
     }
+
     public void testIsActive7() {
         DefineArgument arg = new DefineArgument();
         arg.setName("TEST");
@@ -92,6 +101,7 @@ public class TestDefineArgument extends TestCase {
         }
         fail("Should throw exception for suspicious value");
     }
+
     public void testIsActive8() {
         DefineArgument arg = new DefineArgument();
         arg.setName("TEST");
@@ -101,6 +111,7 @@ public class TestDefineArgument extends TestCase {
         arg.setUnless("cond");
         assertTrue(!arg.isActive(project));
     }
+
     public void testMerge() {
         UndefineArgument[] base = new UndefineArgument[2];
         UndefineArgument[] specific = new UndefineArgument[2];

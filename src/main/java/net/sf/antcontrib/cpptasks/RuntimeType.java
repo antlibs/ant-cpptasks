@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2001-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +15,9 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks;
+
 import org.apache.tools.ant.types.EnumeratedAttribute;
+
 /**
  * Enumerated attribute with the values "dynamic" and "static",
  */

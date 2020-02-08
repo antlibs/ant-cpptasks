@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,37 +15,44 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.intel;
+
 import java.util.Vector;
 
 import net.sf.antcontrib.cpptasks.devstudio.DevStudioProcessor;
+
 /**
  * A add-in class for Intel (r) compilers and linkers
- * 
- *  
  */
 public class IntelProcessor {
     public static void addWarningSwitch(Vector args, int level) {
         DevStudioProcessor.addWarningSwitch(args, level);
     }
+
     public static String getCommandFileSwitch(String cmdFile) {
         return DevStudioProcessor.getCommandFileSwitch(cmdFile);
     }
+
     public static void getDefineSwitch(StringBuffer buffer, String define,
-            String value) {
+                                       String value) {
         DevStudioProcessor.getDefineSwitch(buffer, define, value);
     }
+
     public static String getIncludeDirSwitch(String includeDir) {
         return DevStudioProcessor.getIncludeDirSwitch(includeDir);
     }
+
     public static String[] getOutputFileSwitch(String outPath) {
         return DevStudioProcessor.getOutputFileSwitch(outPath);
     }
+
     public static void getUndefineSwitch(StringBuffer buffer, String define) {
         DevStudioProcessor.getUndefineSwitch(buffer, define);
     }
+
     public static boolean isCaseSensitive() {
         return false;
     }
+
     private IntelProcessor() {
     }
 }

@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2001-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,23 +15,28 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.devstudio;
+
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
+
 /**
  * Adapter for the Microsoft (r) Incremental Linker
- * 
+ *
  * @author Adam Murdoch
  * @author Curt Arnold
  */
 public final class DevStudioLinker extends DevStudioCompatibleLinker {
     private static final DevStudioLinker dllLinker = new DevStudioLinker(".dll");
     private static final DevStudioLinker instance = new DevStudioLinker(".exe");
+
     public static DevStudioLinker getInstance() {
         return instance;
     }
+
     private DevStudioLinker(String outputSuffix) {
         super("link", "/DLL", outputSuffix);
     }
+
     public Linker getLinker(LinkType type) {
         if (type.isSharedLibrary()) {
             return dllLinker;

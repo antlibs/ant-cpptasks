@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +15,7 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.compiler;
+
 import java.io.File;
 
 import net.sf.antcontrib.cpptasks.CCTask;
@@ -26,7 +27,7 @@ import net.sf.antcontrib.cpptasks.VersionInfo;
 
 /**
  * Test for abstract compiler class
- * 
+ * <p>
  * Override create to test concrete compiler implementions
  */
 public class TestAbstractLinker extends TestAbstractProcessor {
@@ -34,43 +35,53 @@ public class TestAbstractLinker extends TestAbstractProcessor {
         public DummyAbstractLinker() {
             super(new String[]{".obj", ".lib"}, new String[]{".map", ".exp"});
         }
-        public LinkerConfiguration createConfiguration(final CCTask task,
-                final LinkType linkType, 
-				final ProcessorDef[] def1, 
-				final LinkerDef def2,
-				final TargetDef targetPlatform,
-				final VersionInfo versionInfo) {
+
+        public LinkerConfiguration createConfiguration(final CCTask task, final LinkType linkType,
+                                                       final ProcessorDef[] def1,
+                                                       final LinkerDef def2,
+                                                       final TargetDef targetPlatform,
+                                                       final VersionInfo versionInfo) {
             return null;
         }
+
         public String getIdentifier() {
             return "dummy";
         }
+
         public File[] getLibraryPath() {
             return new File[0];
         }
+
         public String[] getLibraryPatterns(String[] libnames, LibraryTypeEnum libType) {
             return libnames;
         }
+
         public Linker getLinker(LinkType type) {
             return null;
         }
+
         public String[] getOutputFileNames(String sourceFile, VersionInfo versionInfo) {
             return new String[0];
         }
+
         public String[][] getRuntimeLibraries(boolean debug,
-                boolean multithreaded, boolean staticLink) {
+                                              boolean multithreaded, boolean staticLink) {
             return new String[2][0];
         }
+
         public boolean isCaseSensitive() {
             return true;
         }
     }
+
     public TestAbstractLinker(String name) {
         super(name);
     }
+
     protected AbstractProcessor create() {
         return new DummyAbstractLinker();
     }
+
     public void testBid() {
         AbstractProcessor compiler = create();
         int bid = compiler.bid("c:/foo\\bar\\hello.obj");

@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,35 +15,38 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.devstudio;
+
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 import net.sf.antcontrib.cpptasks.compiler.Processor;
-
 import org.apache.tools.ant.types.Environment;
+
 /**
  * Adapter for the Microsoft(r) C/C++ Optimizing Compiler
- * 
+ *
  * @author Adam Murdoch
  */
 public final class DevStudioCCompiler extends DevStudioCompatibleCCompiler {
-    private static final DevStudioCCompiler instance = new DevStudioCCompiler(
-            "cl", false, null);
+    private static final DevStudioCCompiler instance = new DevStudioCCompiler("cl", false, null);
     public static DevStudioCCompiler getInstance() {
         return instance;
     }
-    private DevStudioCCompiler(String command, boolean newEnvironment,
-            Environment env) {
+
+    private DevStudioCCompiler(String command, boolean newEnvironment, Environment env) {
         super(command, "/bogus", newEnvironment, env);
     }
+
     public Processor changeEnvironment(boolean newEnvironment, Environment env) {
         if (newEnvironment || env != null) {
             return new DevStudioCCompiler(getCommand(), newEnvironment, env);
         }
         return this;
     }
+
     public Linker getLinker(LinkType type) {
         return DevStudioLinker.getInstance().getLinker(type);
     }
+
     public int getMaximumCommandLength() {
         return 32767;
     }

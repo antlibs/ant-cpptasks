@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2007 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,29 +15,29 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.devstudio;
+
 import java.util.Vector;
 
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 import net.sf.antcontrib.cpptasks.compiler.Processor;
-
 import org.apache.tools.ant.types.Environment;
 
 /**
  * Adapter for the Microsoft(r) C/C++ 8 Optimizing Compiler
- * 
+ *
  * @author David Haney
  */
 public final class DevStudio2005CCompiler extends DevStudioCompatibleCCompiler {
-    private static final DevStudio2005CCompiler instance = new DevStudio2005CCompiler(
-            "cl", false, null);
+    private static final DevStudio2005CCompiler instance = new DevStudio2005CCompiler("cl", false, null);
     public static DevStudio2005CCompiler getInstance() {
         return instance;
     }
-    private DevStudio2005CCompiler(String command, boolean newEnvironment,
-            Environment env) {
+
+    private DevStudio2005CCompiler(String command, boolean newEnvironment, Environment env) {
         super(command, "/bogus", newEnvironment, env);
     }
+
     /**
      * Override the default debug flags to use VC 8 compatible versions.
      */
@@ -47,15 +47,18 @@ public final class DevStudio2005CCompiler extends DevStudioCompatibleCCompiler {
         args.addElement("/RTC1");
         args.addElement("/D_DEBUG");
     }
+
     public Processor changeEnvironment(boolean newEnvironment, Environment env) {
         if (newEnvironment || env != null) {
             return new DevStudio2005CCompiler(getCommand(), newEnvironment, env);
         }
         return this;
     }
+
     public Linker getLinker(LinkType type) {
         return DevStudioLinker.getInstance().getLinker(type);
     }
+
     public int getMaximumCommandLength() {
         return 32767;
     }

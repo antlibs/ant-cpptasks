@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2001-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,22 +15,26 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.parser;
+
 import java.io.IOException;
 import java.io.Reader;
+
 /**
  * An abstract base class for simple parsers
- * 
+ *
  * @author Curt Arnold
  */
 public abstract class AbstractParser {
     /**
-     * 
-     *  
+     *
      */
     protected AbstractParser() {
     }
+
     protected abstract void addFilename(String filename);
+
     public abstract AbstractParserState getNewLineState();
+
     protected void parse(Reader reader) throws IOException {
         char[] buf = new char[4096];
         AbstractParserState newLineState = getNewLineState();

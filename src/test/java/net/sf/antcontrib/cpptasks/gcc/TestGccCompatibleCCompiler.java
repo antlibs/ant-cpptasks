@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2003-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,32 +15,35 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.gcc;
+
 import java.util.Vector;
 
 import junit.framework.TestCase;
+
 /**
  * Tests for gcc compatible compilers
- * 
+ *
  * @author CurtA
  */
 public abstract class TestGccCompatibleCCompiler extends TestCase {
     /**
      * Constructor
-     * 
-     * @param name
-     *            test case name
+     *
+     * @param name test case name
      */
     public TestGccCompatibleCCompiler(String name) {
         super(name);
     }
+
     /**
      * Compiler creation method
-     * 
+     * <p>
      * Must be overriden by extending classes
-     * 
+     *
      * @return GccCompatibleCCompiler
      */
     protected abstract GccCompatibleCCompiler create();
+
     /**
      * Tests command lines switches for warning = 0
      */
@@ -51,6 +54,7 @@ public abstract class TestGccCompatibleCCompiler extends TestCase {
         assertEquals(1, args.size());
         assertEquals("-w", args.elementAt(0));
     }
+
     /**
      * Tests command lines switches for warning = 1
      */
@@ -60,6 +64,7 @@ public abstract class TestGccCompatibleCCompiler extends TestCase {
         compiler.addWarningSwitch(args, 1);
         assertEquals(0, args.size());
     }
+
     /**
      * Tests command lines switches for warning = 2
      */
@@ -69,6 +74,7 @@ public abstract class TestGccCompatibleCCompiler extends TestCase {
         compiler.addWarningSwitch(args, 2);
         assertEquals(0, args.size());
     }
+
     /**
      * Tests command lines switches for warning = 3
      */
@@ -79,6 +85,7 @@ public abstract class TestGccCompatibleCCompiler extends TestCase {
         assertEquals(1, args.size());
         assertEquals("-Wall", args.elementAt(0));
     }
+
     /**
      * Tests command lines switches for warning = 4
      */
@@ -90,6 +97,7 @@ public abstract class TestGccCompatibleCCompiler extends TestCase {
         assertEquals("-W", args.elementAt(0));
         assertEquals("-Wall", args.elementAt(1));
     }
+
     /**
      * Tests command lines switches for warning = 5
      */

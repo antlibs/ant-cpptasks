@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2008 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +15,7 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.gcc;
+
 import java.io.File;
 import java.util.Vector;
 
@@ -27,42 +28,47 @@ import net.sf.antcontrib.cpptasks.parser.Parser;
 import net.sf.antcontrib.cpptasks.OptimizationEnum;
 
 import org.apache.tools.ant.types.Environment;
+
 /**
  * Adapter for the GNU windres resource compiler.
- * 
+ *
  * @author Curt Arnold
  */
 public final class WindresResourceCompiler extends CommandLineCompiler {
-    private static final WindresResourceCompiler instance = new WindresResourceCompiler(
-            false, null);
+    private static final WindresResourceCompiler instance = new WindresResourceCompiler(false, null);
     public static WindresResourceCompiler getInstance() {
         return instance;
     }
+
     private WindresResourceCompiler(boolean newEnvironment, Environment env) {
-        super("windres", null, new String[]{".rc"}, new String[]{".h", ".hpp",
-                ".inl"}, ".o", false, null, newEnvironment, env);
+        super("windres", null, new String[]{".rc"}, new String[]{".h", ".hpp", ".inl"},
+                ".o", false, null, newEnvironment, env);
     }
-    protected void addImpliedArgs(final Vector args, 
-    		final boolean debug,
-            final boolean multithreaded, 
-			final boolean exceptions, 
-			final LinkType linkType,
-			final Boolean rtti,
-			final OptimizationEnum optimization) {
+
+    protected void addImpliedArgs(final Vector args,
+                                  final boolean debug,
+                                  final boolean multithreaded,
+                                  final boolean exceptions,
+                                  final LinkType linkType,
+                                  final Boolean rtti,
+                                  final OptimizationEnum optimization) {
         if (debug) {
             args.addElement("-D_DEBUG");
         } else {
             args.addElement("-DNDEBUG");
         }
     }
+
     protected void addWarningSwitch(Vector args, int level) {
     }
+
     public Processor changeEnvironment(boolean newEnvironment, Environment env) {
         if (newEnvironment || env != null) {
             return new WindresResourceCompiler(newEnvironment, env);
         }
         return this;
     }
+
     /**
      * The include parser for C will work just fine, but we didn't want to
      * inherit from CommandLineCCompiler
@@ -70,11 +76,13 @@ public final class WindresResourceCompiler extends CommandLineCompiler {
     protected Parser createParser(File source) {
         return new CParser();
     }
+
     protected int getArgumentCountPerInputFile() {
         return 2;
     }
+
     protected void getDefineSwitch(StringBuffer buffer, String define,
-            String value) {
+                                   String value) {
         buffer.append("-D");
         buffer.append(define);
         if (value != null && value.length() > 0) {
@@ -82,40 +90,47 @@ public final class WindresResourceCompiler extends CommandLineCompiler {
             buffer.append(value);
         }
     }
+
     protected File[] getEnvironmentIncludePath() {
         return new File[0];
     }
+
     protected String getIncludeDirSwitch(String includeDir) {
         return "-I" + includeDir;
     }
-    protected String getInputFileArgument(File outputDir, String filename,
-            int index) {
+
+    protected String getInputFileArgument(File outputDir, String filename, int index) {
         if (index == 0) {
             String outputFileName = getOutputFileNames(filename, null)[0];
             return "-o" + outputFileName;
         }
         return filename;
     }
+
     public Linker getLinker(LinkType type) {
         return GccLinker.getInstance().getLinker(type);
     }
+
     public int getMaximumCommandLength() {
         return 32767;
     }
+
     protected int getMaximumInputFilesPerCommand() {
         return 1;
     }
-    protected int getTotalArgumentLengthForInputFile(File outputDir,
-            String inputFile) {
+
+    protected int getTotalArgumentLengthForInputFile(File outputDir, String inputFile) {
         String arg1 = getInputFileArgument(outputDir, inputFile, 0);
         String arg2 = getInputFileArgument(outputDir, inputFile, 1);
         return arg1.length() + arg2.length() + 2;
     }
+
     protected void getUndefineSwitch(StringBuffer buffer, String define) {
         buffer.append("-U");
         buffer.append(define);
     }
+
     public String getIdentifier() {
-    	return "GNU windres";
+        return "GNU windres";
     }
 }

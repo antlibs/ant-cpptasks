@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2001-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,19 +15,23 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks;
+
 import java.io.IOException;
 
 import net.sf.antcontrib.cpptasks.compiler.ProcessorConfiguration;
 import net.sf.antcontrib.cpptasks.compiler.ProgressMonitor;
+
 public class CCTaskProgressMonitor implements ProgressMonitor {
     private ProcessorConfiguration config;
     private TargetHistoryTable history;
     private VersionInfo versionInfo;
     private long lastCommit = -1;
+
     public CCTaskProgressMonitor(TargetHistoryTable history, VersionInfo versionInfo) {
         this.history = history;
         this.versionInfo = versionInfo;
     }
+
     public void finish(ProcessorConfiguration config, boolean normal) {
         long current = System.currentTimeMillis();
         if ((current - lastCommit) > 120000) {
@@ -38,6 +42,7 @@ public class CCTaskProgressMonitor implements ProgressMonitor {
             }
         }
     }
+
     public void progress(String[] sources) {
         history.update(config, sources, versionInfo);
         long current = System.currentTimeMillis();
@@ -49,6 +54,7 @@ public class CCTaskProgressMonitor implements ProgressMonitor {
             }
         }
     }
+
     public void start(ProcessorConfiguration config) {
         if (lastCommit < 0) {
             lastCommit = System.currentTimeMillis();

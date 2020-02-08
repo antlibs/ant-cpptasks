@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,17 +15,21 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.borland;
+
 import net.sf.antcontrib.cpptasks.parser.AbstractParser;
 import net.sf.antcontrib.cpptasks.parser.AbstractParserState;
+
 public class QuoteBranchState extends AbstractParserState {
     private AbstractParserState quote;
     private AbstractParserState unquote;
+
     public QuoteBranchState(AbstractParser parser, AbstractParserState quote,
-            AbstractParserState unquote) {
+                            AbstractParserState unquote) {
         super(parser);
         this.quote = quote;
         this.unquote = unquote;
     }
+
     public AbstractParserState consume(char ch) {
         if (ch == '"') {
             return quote;

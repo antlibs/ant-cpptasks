@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2001-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,29 +15,33 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.types;
+
 import org.apache.tools.ant.Project;
+
 /**
  * A system include path.
- * 
+ * <p>
  * Files located using a system include path will not participate in dependency
  * analysis.
- * 
+ * <p>
  * Standard include paths for a compiler should not be specified since these
  * should be determined from environment variables or configuration files by
  * the compiler adapter.
- * 
+ * <p>
  * Works like other paths in Ant with with the addition of "if" and "unless"
  * conditions.
- * 
+ *
  * @author Curt Arnold
  */
 public class SystemIncludePath extends ConditionalPath {
     public SystemIncludePath(Project project) {
         super(project);
     }
+
     public SystemIncludePath(Project p, String path) {
         super(p, path);
     }
+
     public void execute() throws org.apache.tools.ant.BuildException {
         throw new org.apache.tools.ant.BuildException(
                 "Not an actual task, but looks like one for documentation purposes");

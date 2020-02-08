@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2001-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,59 +15,62 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.types;
-import net.sf.antcontrib.cpptasks.CUtil;
 
+import net.sf.antcontrib.cpptasks.CUtil;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.Path;
+
 /**
  * An Ant Path object augmented with if and unless conditionals
- * 
+ *
  * @author Curt Arnold
  */
 public class ConditionalPath extends Path {
     private String ifCond;
     private String unlessCond;
+
     public ConditionalPath(Project project) {
         super(project);
     }
+
     public ConditionalPath(Project p, String path) {
         super(p, path);
     }
+
     /**
      * Returns true if the Path's if and unless conditions (if any) are
      * satisfied.
      */
-    public boolean isActive(org.apache.tools.ant.Project p)
-            throws BuildException {
+    public boolean isActive(org.apache.tools.ant.Project p) throws BuildException {
         return CUtil.isActive(p, ifCond, unlessCond);
     }
+
     /**
      * Sets the property name for the 'if' condition.
-     * 
+     * <p>
      * The path will be ignored unless the property is defined.
-     * 
+     * <p>
      * The value of the property is insignificant, but values that would imply
      * misinterpretation ("false", "no") will throw an exception when
      * evaluated.
-     * 
-     * @param propName
-     *            property name
+     *
+     * @param propName property name
      */
     public void setIf(String propName) {
         ifCond = propName;
     }
+
     /**
      * Set the property name for the 'unless' condition.
-     * 
+     * <p>
      * If named property is set, the path will be ignored.
-     * 
+     * <p>
      * The value of the property is insignificant, but values that would imply
      * misinterpretation ("false", "no") of the behavior will throw an
      * exception when evaluated.
-     * 
-     * @param propName
-     *            name of property
+     *
+     * @param propName name of property
      */
     public void setUnless(String propName) {
         unlessCond = propName;

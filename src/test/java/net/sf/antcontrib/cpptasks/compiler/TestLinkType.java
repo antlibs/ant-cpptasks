@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2003-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,26 +15,28 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.compiler;
+
 import junit.framework.TestCase;
 import net.sf.antcontrib.cpptasks.OutputTypeEnum;
+
 /**
  * Tests for LinkType
- * 
+ *
  * @author CurtA
  */
 public class TestLinkType extends TestCase {
     /**
      * Constructor
-     * 
-     * @param name
-     *            test case name
+     *
+     * @param name test case name
      */
     public TestLinkType(String name) {
         super(name);
     }
+
     /**
      * Tests if isPluginModule returns true when set to plugin output type
-     * 
+     * <p>
      * See patch [ 676276 ] Enhanced support for Mac OS X
      */
     public void testIsPluginFalse() {
@@ -44,9 +46,10 @@ public class TestLinkType extends TestCase {
         type.setOutputType(pluginType);
         assertTrue(!type.isPluginModule());
     }
+
     /**
      * Tests if isPluginModule returns true when set to plugin output type
-     * 
+     * <p>
      * See patch [ 676276 ] Enhanced support for Mac OS X
      */
     public void testIsPluginTrue() {

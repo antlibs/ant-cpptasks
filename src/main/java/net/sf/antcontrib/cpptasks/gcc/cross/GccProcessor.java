@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +15,7 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.gcc.cross;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -26,8 +27,6 @@ import net.sf.antcontrib.cpptasks.compiler.CaptureStreamHandler;
 
 /**
  * A add-in class for Gcc processors
- * 
- *  
  */
 public class GccProcessor {
     //   the results from gcc -dumpmachine
@@ -35,8 +34,9 @@ public class GccProcessor {
     private static String[] specs;
     //   the results from gcc -dumpversion
     private static String version;
-    private static int addLibraryPatterns(String[] libnames, StringBuffer buf,
-            String prefix, String extension, String[] patterns, int offset) {
+
+    private static int addLibraryPatterns(String[] libnames, StringBuffer buf, String prefix,
+                                          String extension, String[] patterns, int offset) {
         for (int i = 0; i < libnames.length; i++) {
             buf.setLength(0);
             buf.append(prefix);
@@ -46,13 +46,13 @@ public class GccProcessor {
         }
         return offset + libnames.length;
     }
+
     /**
      * Converts absolute Cygwin file or directory names to the corresponding
      * Win32 name.
-     * 
-     * @param names
-     *            array of names, some elements may be null, will be changed in
-     *            place.
+     *
+     * @param names array of names, some elements may be null, will be changed in
+     *              place.
      */
     public static void convertCygwinFilenames(String[] names) {
         if (names == null) {
@@ -73,7 +73,7 @@ public class GccProcessor {
             }
         }
     }
-    
+
     public static String getMachine() {
         if (machine == null) {
             String[] args = new String[]{"gcc", "-dumpmachine"};
@@ -86,6 +86,7 @@ public class GccProcessor {
         }
         return machine;
     }
+
     public static String[] getOutputFileSwitch(String letter, String outputFile) {
         StringBuffer buf = new StringBuffer();
         if (outputFile.indexOf(' ') >= 0) {
@@ -98,14 +99,15 @@ public class GccProcessor {
         String[] retval = new String[]{letter, buf.toString()};
         return retval;
     }
+
     /**
      * Returns the contents of the gcc specs file.
-     * 
+     * <p>
      * The implementation locates gcc.exe in the executable path and then
      * builds a relative path name from the results of -dumpmachine and
      * -dumpversion. Attempts to use gcc -dumpspecs to provide this information
      * resulted in stalling on the Execute.run
-     * 
+     *
      * @return contents of the specs file
      */
     public static String[] getSpecs() {
@@ -133,8 +135,7 @@ public class GccProcessor {
                     //
                     //  read the lines in the file
                     //
-                    BufferedReader reader = new BufferedReader(new FileReader(
-                            specsFile));
+                    BufferedReader reader = new BufferedReader(new FileReader(specsFile));
                     Vector lines = new Vector(100);
                     String line = reader.readLine();
                     while (line != null) {
@@ -152,6 +153,7 @@ public class GccProcessor {
         }
         return specs;
     }
+
     public static String getVersion() {
         if (version == null) {
             String[] args = new String[]{"gcc", "-dumpversion"};
@@ -164,17 +166,20 @@ public class GccProcessor {
         }
         return version;
     }
+
     public static boolean isCaseSensitive() {
         return true;
     }
+
     /**
      * Determines if task is running with cygwin
-     * 
+     *
      * @return true if cygwin was detected
      */
     public static boolean isCygwin() {
         return getMachine().indexOf("cygwin") > 0;
     }
+
     private static boolean isHPUX() {
         String osname = System.getProperty("os.name").toLowerCase();
         if (osname.indexOf("hp") >= 0 && osname.indexOf("ux") >= 0) {
@@ -182,20 +187,17 @@ public class GccProcessor {
         }
         return false;
     }
+
     /**
-     * 
      * Parses the results of the specs file for a specific processor and
      * options
-     * 
-     * @param specsContent
-     *            Contents of specs file as returned from getSpecs
-     * @param specSectionStart
-     *            start of spec section, for example "*cpp:"
-     * @param options
-     *            command line switches such as "-istart"
+     *
+     * @param specsContent     Contents of specs file as returned from getSpecs
+     * @param specSectionStart start of spec section, for example "*cpp:"
+     * @param options          command line switches such as "-istart"
      */
     public static String[][] parseSpecs(String[] specsContent,
-            String specSectionStart, String[] options) {
+                                        String specSectionStart, String[] options) {
         if (specsContent == null) {
             throw new NullPointerException("specsContent");
         }
@@ -253,8 +255,7 @@ public class GccProcessor {
                             //  transition back to whitespace
                             //     value is over, add it to vector
                             if (hasNonBlank) {
-                                optionVectors[j].addElement(optionValue
-                                        .toString());
+                                optionVectors[j].addElement(optionValue.toString());
                             }
                             //
                             //  find next occurance on line
@@ -283,6 +284,7 @@ public class GccProcessor {
         }
         return optionValues;
     }
+
     private GccProcessor() {
     }
 }

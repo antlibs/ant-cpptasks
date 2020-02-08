@@ -61,45 +61,42 @@ import org.apache.tools.ant.types.EnumeratedAttribute;
  * </table>
  *
  * @author Curt Arnold
- *
  */
-public final class ProjectWriterEnum
-    extends EnumeratedAttribute {
-  /**
-   * Enumeration values.
-   */
-  private static String[] values = new String[] {
-      "cbuilderx", "msvc5",
-      "msvc6", "msvc7", "msvc71", "msvc8", "msvc9", "xcode"};
+public final class ProjectWriterEnum extends EnumeratedAttribute {
+    /**
+     * Enumeration values.
+     */
+    private static final String[] values = new String[]{"cbuilderx", "msvc5", "msvc6", "msvc7",
+            "msvc71", "msvc8", "msvc9", "xcode"};
 
-  /**
-   * Project writers associated with enumeration values.
-   */
-  private static ProjectWriter[] writers = new ProjectWriter[] {
-      new CBuilderXProjectWriter(), new DevStudioProjectWriter("5.00"),
-      new DevStudioProjectWriter("6.00"),
-      new VisualStudioNETProjectWriter("7.00", "TRUE", "FALSE"),
-      new VisualStudioNETProjectWriter("7.10", "TRUE", "FALSE"),
-      new VisualStudioNETProjectWriter("8.00", "true", "false"),
-      new VisualStudioNETProjectWriter("9.00", "true", "false"),
-      new XcodeProjectWriter()};
+    /**
+     * Project writers associated with enumeration values.
+     */
+    private static ProjectWriter[] writers = new ProjectWriter[]{
+            new CBuilderXProjectWriter(), new DevStudioProjectWriter("5.00"),
+            new DevStudioProjectWriter("6.00"),
+            new VisualStudioNETProjectWriter("7.00", "TRUE", "FALSE"),
+            new VisualStudioNETProjectWriter("7.10", "TRUE", "FALSE"),
+            new VisualStudioNETProjectWriter("8.00", "true", "false"),
+            new VisualStudioNETProjectWriter("9.00", "true", "false"),
+            new XcodeProjectWriter()};
 
-  /**
-   * Gets ProjectWriter associated with enumeration value.
-   *
-   * @return project writer
-   */
-  public ProjectWriter getProjectWriter() {
-    return writers[this.getIndex()];
-  }
+    /**
+     * Gets ProjectWriter associated with enumeration value.
+     *
+     * @return project writer
+     */
+    public ProjectWriter getProjectWriter() {
+        return writers[this.getIndex()];
+    }
 
-  /**
-   * Gets acceptible values for enumeration.
-   *
-   * @return acceptible values
-   */
-  public String[] getValues() {
-    return (String[]) values.clone();
-  }
+    /**
+     * Gets acceptible values for enumeration.
+     *
+     * @return acceptible values
+     */
+    public String[] getValues() {
+        return (String[]) values.clone();
+    }
 }
 
