@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2008 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +15,7 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks;
+
 import net.sf.antcontrib.cpptasks.arm.ADSCCompiler;
 import net.sf.antcontrib.cpptasks.borland.BorlandCCompiler;
 import net.sf.antcontrib.cpptasks.borland.BorlandResourceCompiler;
@@ -46,9 +47,10 @@ import net.sf.antcontrib.cpptasks.openwatcom.OpenWatcomCCompiler;
 import net.sf.antcontrib.cpptasks.openwatcom.OpenWatcomFortranCompiler;
 
 import org.apache.tools.ant.types.EnumeratedAttribute;
+
 /**
  * Enumeration of supported compilers
- * 
+ *
  * <table width="100%" border="1"> <thead>Supported compilers </thead>
  * <tr>
  * <td>gcc (default)</td>
@@ -158,7 +160,7 @@ import org.apache.tools.ant.types.EnumeratedAttribute;
  * <td>tcc</td>
  * <td>ARM 16-bit C compiler</td>
  * </tr>
- *      * <tr>
+ * <tr>
  * <td>uic</td>
  * <td>Qt user interface compiler</td>
  * </tr>
@@ -183,9 +185,8 @@ import org.apache.tools.ant.types.EnumeratedAttribute;
  * <td>GNU windres resource compiler</td>
  * </tr>
  * </table>
- * 
+ *
  * @author Curt Arnold
- *  
  */
 public class CompilerEnum extends EnumeratedAttribute {
     private final static ProcessorEnumValue[] compilers = new ProcessorEnumValue[]{
@@ -196,11 +197,9 @@ public class CompilerEnum extends EnumeratedAttribute {
             new ProcessorEnumValue("msvc", DevStudioCCompiler.getInstance()),
             new ProcessorEnumValue("msvc8", DevStudio2005CCompiler.getInstance()),
             new ProcessorEnumValue("bcc", BorlandCCompiler.getInstance()),
-            new ProcessorEnumValue("msrc", DevStudioResourceCompiler
-                    .getInstance()),
+            new ProcessorEnumValue("msrc", DevStudioResourceCompiler.getInstance()),
             new ProcessorEnumValue("brc", BorlandResourceCompiler.getInstance()),
-            new ProcessorEnumValue("df", CompaqVisualFortranCompiler
-                    .getInstance()),
+            new ProcessorEnumValue("df", CompaqVisualFortranCompiler.getInstance()),
             new ProcessorEnumValue("midl", DevStudioMIDLCompiler.getInstance()),
             new ProcessorEnumValue("icl", IntelWin32CCompiler.getInstance()),
             new ProcessorEnumValue("ecl", IntelWin64CCompiler.getInstance()),
@@ -221,45 +220,39 @@ public class CompilerEnum extends EnumeratedAttribute {
             new ProcessorEnumValue("hp", HPCompiler.getInstance()),
             new ProcessorEnumValue("xlc_r", XlcCompiler.getInstance()),
             // GCC Cross Compilers
-            new ProcessorEnumValue(
-                    "sparc-sun-solaris2-gcc",
+            new ProcessorEnumValue("sparc-sun-solaris2-gcc",
                     net.sf.antcontrib.cpptasks.gcc.cross.sparc_sun_solaris2.GccCCompiler
                             .getInstance()),
-            new ProcessorEnumValue(
-                    "sparc-sun-solaris2-g++",
+            new ProcessorEnumValue("sparc-sun-solaris2-g++",
                     net.sf.antcontrib.cpptasks.gcc.cross.sparc_sun_solaris2.GccCCompiler
                             .getGppInstance()),
-            new ProcessorEnumValue(
-                    "sparc-sun-solaris2-c++",
+            new ProcessorEnumValue("sparc-sun-solaris2-c++",
                     net.sf.antcontrib.cpptasks.gcc.cross.sparc_sun_solaris2.GccCCompiler
                             .getCppInstance()),
-            new ProcessorEnumValue(
-                    "sparc-sun-solaris2-g77",
+            new ProcessorEnumValue("sparc-sun-solaris2-g77",
                     net.sf.antcontrib.cpptasks.gcc.cross.sparc_sun_solaris2.GccCCompiler
                             .getG77Instance()),
             // GCC Cross Compilers
             new ProcessorEnumValue("gcc-cross",
-                    net.sf.antcontrib.cpptasks.gcc.cross.GccCCompiler
-                            .getInstance()),
+                    net.sf.antcontrib.cpptasks.gcc.cross.GccCCompiler.getInstance()),
             new ProcessorEnumValue("g++-cross",
-                    net.sf.antcontrib.cpptasks.gcc.cross.GccCCompiler
-                            .getGppInstance()),
+                    net.sf.antcontrib.cpptasks.gcc.cross.GccCCompiler.getGppInstance()),
             new ProcessorEnumValue("c++-cross",
-                    net.sf.antcontrib.cpptasks.gcc.cross.GccCCompiler
-                            .getCppInstance()),
+                    net.sf.antcontrib.cpptasks.gcc.cross.GccCCompiler.getCppInstance()),
             new ProcessorEnumValue("g77-cross",
-                    net.sf.antcontrib.cpptasks.gcc.cross.GccCCompiler
-                            .getG77Instance()),
-			new ProcessorEnumValue("uic", UserInterfaceCompiler.getInstance()),
-			new ProcessorEnumValue("moc", MetaObjectCompiler.getInstance()),
-			new ProcessorEnumValue("xpidl", XpidlCompiler.getInstance()),
-			new ProcessorEnumValue("wcl", OpenWatcomCCompiler.getInstance()),
-			new ProcessorEnumValue("wfl", OpenWatcomFortranCompiler.getInstance()),
+                    net.sf.antcontrib.cpptasks.gcc.cross.GccCCompiler.getG77Instance()),
+            new ProcessorEnumValue("uic", UserInterfaceCompiler.getInstance()),
+            new ProcessorEnumValue("moc", MetaObjectCompiler.getInstance()),
+            new ProcessorEnumValue("xpidl", XpidlCompiler.getInstance()),
+            new ProcessorEnumValue("wcl", OpenWatcomCCompiler.getInstance()),
+            new ProcessorEnumValue("wfl", OpenWatcomFortranCompiler.getInstance()),
             new ProcessorEnumValue("windres", WindresResourceCompiler.getInstance())
-                            };
+    };
+
     public Compiler getCompiler() {
         return (Compiler) compilers[getIndex()].getProcessor();
     }
+
     public String[] getValues() {
         return ProcessorEnumValue.getValues(compilers);
     }

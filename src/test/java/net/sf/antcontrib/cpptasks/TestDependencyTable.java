@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2003-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,30 +15,32 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks;
+
 import java.io.File;
 import java.io.IOException;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
+
 /**
  * DependencyTable tests
- * 
+ *
  * @author curta
  */
 public class TestDependencyTable extends TestXMLConsumer {
     /**
      * Constructor
-     * 
-     * @param testName
-     *            test name
+     *
+     * @param testName test name
      */
     public TestDependencyTable(String testName) {
         super(testName);
     }
+
     /**
      * Loads a dependency file from OpenSHORE (http://www.openshore.org)
-     * 
+     *
      * @throws IOException
      */
     public void testLoadOpenshore() throws IOException,
@@ -53,9 +55,10 @@ public class TestDependencyTable extends TestXMLConsumer {
             deleteTmpFile("dependencies.xml");
         }
     }
+
     /**
      * Loads a dependency file from Xerces-C (http://xml.apache.org)
-     * 
+     *
      * @throws IOException
      */
     public void testLoadXerces() throws IOException,

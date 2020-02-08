@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,27 +15,29 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.compiler;
+
 import java.io.File;
 
 import net.sf.antcontrib.cpptasks.parser.FortranParser;
 import net.sf.antcontrib.cpptasks.parser.Parser;
-
 import org.apache.tools.ant.types.Environment;
+
 /**
  * An abstract Compiler implementation which uses an external program to
  * perform the compile.
- * 
+ *
  * @author Curt Arnold
  */
 public abstract class CommandLineFortranCompiler extends CommandLineCompiler {
     protected CommandLineFortranCompiler(String command, String identifierArg,
-            String[] sourceExtensions, String[] headerExtensions,
-            String outputSuffix, boolean libtool,
-            CommandLineFortranCompiler libtoolCompiler, boolean newEnvironment,
-            Environment env) {
+                                         String[] sourceExtensions, String[] headerExtensions,
+                                         String outputSuffix, boolean libtool,
+                                         CommandLineFortranCompiler libtoolCompiler, boolean newEnvironment,
+                                         Environment env) {
         super(command, identifierArg, sourceExtensions, headerExtensions,
                 outputSuffix, libtool, libtoolCompiler, newEnvironment, env);
     }
+
     protected Parser createParser(File source) {
         return new FortranParser();
     }

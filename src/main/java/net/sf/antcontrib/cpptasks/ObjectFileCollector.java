@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2001-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,24 +15,25 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks;
+
 import java.io.File;
 import java.util.Vector;
 
 import net.sf.antcontrib.cpptasks.compiler.Linker;
-
 import org.apache.tools.ant.BuildException;
+
 /**
  * Collects object files for the link step.
- * 
- *  
  */
 public final class ObjectFileCollector implements FileVisitor {
     private final Vector files;
     private final Linker linker;
+
     public ObjectFileCollector(Linker linker, Vector files) {
         this.linker = linker;
         this.files = files;
     }
+
     public void visit(File parentDir, String filename) throws BuildException {
         int bid = linker.bid(filename);
         if (bid >= 1) {

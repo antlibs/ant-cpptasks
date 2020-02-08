@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2003-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +15,7 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.gcc.cross.sparc_sun_solaris2;
+
 import java.io.File;
 import java.util.Vector;
 
@@ -25,45 +26,45 @@ import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 import net.sf.antcontrib.cpptasks.gcc.AbstractLdLinker;
 import net.sf.antcontrib.cpptasks.types.LibrarySet;
+
 /**
  * Adapter for the g++ variant of the GCC linker
- * 
+ *
  * @author Stephen M. Webb <stephen.webb@bregmasoft.com>
  */
 public class GppLinker extends AbstractLdLinker {
     protected static final String[] discardFiles = new String[0];
-    protected static final String[] objFiles = new String[]{".o", ".a", ".lib",
-            ".dll", ".so", ".sl"};
+    protected static final String[] objFiles = new String[]{".o", ".a", ".lib", ".dll", ".so", ".sl"};
     private final static String libPrefix = "libraries: =";
-    protected static final String[] libtoolObjFiles = new String[]{".fo", ".a",
-            ".lib", ".dll", ".so", ".sl"};
-    private static String[] linkerOptions = new String[]{"-bundle", "-dylib",
-            "-dynamic", "-dynamiclib", "-nostartfiles", "-nostdlib",
-            "-prebind", "-s", "-static", "-shared", "-symbolic", "-Xlinker"};
-    private static final GppLinker dllLinker = new GppLinker(
-            GccCCompiler.CMD_PREFIX + "gcc", objFiles, discardFiles, "lib",
-            ".so", false, new GppLinker(GccCCompiler.CMD_PREFIX + "gcc",
-                    objFiles, discardFiles, "lib", ".so", true, null));
-    private static final GppLinker instance = new GppLinker(
-            GccCCompiler.CMD_PREFIX + "gcc", objFiles, discardFiles, "", "",
-            false, null);
-    private static final GppLinker machDllLinker = new GppLinker(
-            GccCCompiler.CMD_PREFIX + "gcc", objFiles, discardFiles, "lib",
-            ".dylib", false, null);
-    private static final GppLinker machPluginLinker = new GppLinker(
-            GccCCompiler.CMD_PREFIX + "gcc", objFiles, discardFiles, "lib",
-            ".bundle", false, null);
+    protected static final String[] libtoolObjFiles = new String[]{".fo", ".a", ".lib", ".dll", ".so", ".sl"};
+    private static final String[] linkerOptions = new String[]{"-bundle", "-dylib", "-dynamic",
+            "-dynamiclib", "-nostartfiles", "-nostdlib", "-prebind", "-s", "-static", "-shared",
+            "-symbolic", "-Xlinker"};
+    private static final GppLinker dllLinker = new GppLinker(GccCCompiler.CMD_PREFIX + "gcc",
+            objFiles, discardFiles, "lib", ".so", false,
+            new GppLinker(GccCCompiler.CMD_PREFIX + "gcc",
+            objFiles, discardFiles, "lib", ".so", true, null));
+    private static final GppLinker instance = new GppLinker(GccCCompiler.CMD_PREFIX + "gcc",
+            objFiles, discardFiles, "", "", false, null);
+    private static final GppLinker machDllLinker = new GppLinker(GccCCompiler.CMD_PREFIX + "gcc",
+            objFiles, discardFiles, "lib", ".dylib", false, null);
+    private static final GppLinker machPluginLinker = new GppLinker(GccCCompiler.CMD_PREFIX + "gcc",
+            objFiles, discardFiles, "lib", ".bundle", false, null);
+
     public static GppLinker getInstance() {
         return instance;
     }
+
     private File[] libDirs;
     private String runtimeLibrary;
+
     protected GppLinker(String command, String[] extensions,
-            String[] ignoredExtensions, String outputPrefix,
-            String outputSuffix, boolean isLibtool, GppLinker libtoolLinker) {
+                        String[] ignoredExtensions, String outputPrefix,
+                        String outputSuffix, boolean isLibtool, GppLinker libtoolLinker) {
         super(command, "-dumpversion", extensions, ignoredExtensions,
                 outputPrefix, outputSuffix, isLibtool, libtoolLinker);
     }
+
     protected void addImpliedArgs(boolean debug, LinkType linkType, Vector args) {
         super.addImpliedArgs(debug, linkType, args);
         if (getIdentifier().indexOf("mingw") >= 0) {
@@ -87,8 +88,9 @@ public class GppLinker extends AbstractLdLinker {
             runtimeLibrary = "-lstdc++";
         }
     }
+
     public String[] addLibrarySets(CCTask task, LibrarySet[] libsets,
-            Vector preargs, Vector midargs, Vector endargs) {
+                                   Vector preargs, Vector midargs, Vector endargs) {
         String[] rs = super.addLibrarySets(task, libsets, preargs, midargs,
                 endargs);
         if (runtimeLibrary != null) {
@@ -96,15 +98,14 @@ public class GppLinker extends AbstractLdLinker {
         }
         return rs;
     }
+
     /**
      * Allows drived linker to decorate linker option. Override by GppLinker to
      * prepend a "-Wl," to pass option to through gcc to linker.
-     * 
-     * @param buf
-     *            buffer that may be used and abused in the decoration process,
+     *
+     * @param buf buffer that may be used and abused in the decoration process,
      *            must not be null.
-     * @param arg
-     *            linker argument
+     * @param arg linker argument
      */
     public String decorateLinkerOption(StringBuffer buf, String arg) {
         String decoratedArg = arg;
@@ -113,18 +114,18 @@ public class GppLinker extends AbstractLdLinker {
                 //
                 //   passed automatically by GCC
                 //
-                case 'g' :
-                case 'f' :
-                case 'F' :
-                /* Darwin */
-                case 'm' :
-                case 'O' :
-                case 'W' :
-                case 'l' :
-                case 'L' :
-                case 'u' :
+                case 'g':
+                case 'f':
+                case 'F':
+                    /* Darwin */
+                case 'm':
+                case 'O':
+                case 'W':
+                case 'l':
+                case 'L':
+                case 'u':
                     break;
-                default :
+                default:
                     boolean known = false;
                     for (int i = 0; i < linkerOptions.length; i++) {
                         if (linkerOptions[i].equals(arg)) {
@@ -143,9 +144,9 @@ public class GppLinker extends AbstractLdLinker {
         }
         return decoratedArg;
     }
+
     /**
      * Returns library path.
-     *  
      */
     public File[] getLibraryPath() {
         if (libDirs == null) {
@@ -187,6 +188,7 @@ public class GppLinker extends AbstractLdLinker {
         }
         return libDirs;
     }
+
     public Linker getLinker(LinkType type) {
         if (type.isStaticLibrary()) {
             return GccLibrarian.getInstance();

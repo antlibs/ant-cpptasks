@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,19 +15,21 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks;
+
 /**
  * A description of a file built or to be built
  */
 public final class TargetHistory {
-    private/* final */String config;
-    private/* final */String output;
-    private/* final */long outputLastModified;
-    private/* final */SourceHistory[] sources;
+    private/* final */ String config;
+    private/* final */ String output;
+    private/* final */ long outputLastModified;
+    private/* final */ SourceHistory[] sources;
+
     /**
      * Constructor from build step
      */
     public TargetHistory(String config, String output, long outputLastModified,
-            SourceHistory[] sources) {
+                         SourceHistory[] sources) {
         if (config == null) {
             throw new NullPointerException("config");
         }
@@ -42,15 +44,19 @@ public final class TargetHistory {
         this.outputLastModified = outputLastModified;
         this.sources = (SourceHistory[]) sources.clone();
     }
+
     public String getOutput() {
         return output;
     }
+
     public long getOutputLastModified() {
         return outputLastModified;
     }
+
     public String getProcessorConfiguration() {
         return config;
     }
+
     public SourceHistory[] getSources() {
         SourceHistory[] clone = (SourceHistory[]) sources.clone();
         return clone;

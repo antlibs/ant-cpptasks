@@ -15,6 +15,7 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Enumeration;
@@ -43,6 +44,7 @@ public class CUtil {
      */
     public static final class StringArrayBuilder {
         private String[] _value;
+
         public StringArrayBuilder(String value) {
             // Split the defines up
             StringTokenizer tokens = new StringTokenizer(value, ", ");
@@ -57,10 +59,12 @@ public class CUtil {
             _value = new String[vallist.size()];
             vallist.copyInto(_value);
         }
+
         public String[] getValue() {
             return _value;
         }
     }
+
     /**
      * Adds the elements of the array to the given vector
      */
@@ -72,6 +76,7 @@ public class CUtil {
             dest.addElement(src[i]);
         }
     }
+
     /**
      * Checks a array of names for non existent or non directory entries and
      * nulls them out.
@@ -92,6 +97,7 @@ public class CUtil {
         }
         return count;
     }
+
     /**
      * Extracts the basename of a file, removing the extension, if present
      */
@@ -105,12 +111,12 @@ public class CUtil {
         }
         return basename;
     }
+
     /**
      * Gets the parent directory for the executable file name using the current
      * directory and system executable path
      *
-     * @param exeName
-     *            Name of executable such as "cl.exe"
+     * @param exeName Name of executable such as "cl.exe"
      * @return parent directory or null if not located
      */
     public static File getExecutableLocation(String exeName) {
@@ -130,6 +136,7 @@ public class CUtil {
         }
         return null;
     }
+
     /**
      * Extracts the parent of a file
      */
@@ -140,24 +147,24 @@ public class CUtil {
         }
         return path.substring(0, pos);
     }
+
     /**
      * Returns an array of File for each existing directory in the specified
      * environment variable
      *
-     * @param envVariable
-     *            environment variable name such as "LIB" or "INCLUDE"
-     * @param delim
-     *            delimitor used to separate parts of the path, typically ";"
-     *            or ":"
+     * @param envVariable environment variable name such as "LIB" or "INCLUDE"
+     * @param delim       delimitor used to separate parts of the path, typically ";"
+     *                    or ":"
      * @return array of File's for each part that is an existing directory
      */
     public static File[] getPathFromEnvironment(String envVariable, String delim) {
         // OS/4000 does not support the env command.
-        if (System.getProperty("os.name").equals("OS/400"))
+        if (System.getProperty("os.name").equals("OS/400")) {
             return new File[]{};
+        }
         Vector osEnv = Execute.getProcEnvironment();
         String match = envVariable.concat("=");
-        for (Enumeration e = osEnv.elements(); e.hasMoreElements();) {
+        for (Enumeration e = osEnv.elements(); e.hasMoreElements(); ) {
             String entry = ((String) e.nextElement()).trim();
             if (entry.length() > match.length()) {
                 String entryFrag = entry.substring(0, match.length());
@@ -170,17 +177,15 @@ public class CUtil {
         File[] noPath = new File[0];
         return noPath;
     }
+
     /**
      * Returns a relative path for the targetFile relative to the base
      * directory.
      *
-     * @param base
-     *            base directory as returned by File.getCanonicalPath()
-     * @param targetFile
-     *            target file
+     * @param base       base directory as returned by File.getCanonicalPath()
+     * @param targetFile target file
      * @return relative path of target file. Returns targetFile if there were
-     *         no commonalities between the base and the target
-     *
+     * no commonalities between the base and the target
      */
     public static String getRelativePath(final String base, final File targetFile) {
         try {
@@ -195,10 +200,11 @@ public class CUtil {
             //   get canonical name of target
             //
             String canonicalTarget;
-            if (System.getProperty("os.name").equals("OS/400"))
+            if (System.getProperty("os.name").equals("OS/400")) {
                 canonicalTarget = targetFile.getPath();
-            else
+            } else {
                 canonicalTarget = targetFile.getCanonicalPath();
+            }
             if (canonicalBase.startsWith(canonicalTarget + File.separatorChar)) {
                 canonicalTarget = canonicalTarget + File.separator;
             }
@@ -276,8 +282,9 @@ public class CUtil {
         }
         return targetFile.toString();
     }
-    public static boolean isActive(Project p, String ifCond, String unlessCond)
-            throws BuildException {
+
+    public static boolean isActive(Project p, String ifCond,
+                                   String unlessCond) throws BuildException {
         if (ifCond != null) {
             String ifValue = p.getProperty(ifCond);
             if (ifValue == null) {
@@ -301,19 +308,17 @@ public class CUtil {
         }
         return true;
     }
+
     /**
      * Parse a string containing directories into an File[]
      *
-     * @param path
-     *            path string, for example ".;c:\something\include"
-     * @param delim
-     *            delimiter, typically ; or :
+     * @param path  path string, for example ".;c:\something\include"
+     * @param delim delimiter, typically ; or :
      */
     public static File[] parsePath(String path, String delim) {
         Vector libpaths = new Vector();
         int delimPos = 0;
-        for (int startPos = 0; startPos < path.length(); startPos = delimPos
-                + delim.length()) {
+        for (int startPos = 0; startPos < path.length(); startPos = delimPos + delim.length()) {
             delimPos = path.indexOf(delim, startPos);
             if (delimPos < 0) {
                 delimPos = path.length();
@@ -333,19 +338,20 @@ public class CUtil {
         libpaths.copyInto(paths);
         return paths;
     }
+
     /**
      * This method is exposed so test classes can overload and test the
      * arguments without actually spawning the compiler
      */
-    public static int runCommand(CCTask task, File workingDir,
-            String[] cmdline, boolean newEnvironment, Environment env)
-            throws BuildException {
+    public static int runCommand(CCTask task, File workingDir, String[] cmdline,
+                                 boolean newEnvironment, Environment env) throws BuildException {
         try {
             task.log(Commandline.toString(cmdline), Project.MSG_VERBOSE);
             Execute exe = new Execute(new LogStreamHandler(task,
                     Project.MSG_INFO, Project.MSG_ERR));
-            if (System.getProperty("os.name").equals("OS/390"))
+            if (System.getProperty("os.name").equals("OS/390")) {
                 exe.setVMLauncher(false);
+            }
             exe.setAntRun(task.getProject());
             exe.setCommandline(cmdline);
             exe.setWorkingDirectory(workingDir);
@@ -353,8 +359,7 @@ public class CUtil {
                 String[] environment = env.getVariables();
                 if (environment != null) {
                     for (int i = 0; i < environment.length; i++) {
-                        task.log("Setting environment variable: "
-                                + environment[i], Project.MSG_VERBOSE);
+                        task.log("Setting environment variable: " + environment[i], Project.MSG_VERBOSE);
                     }
                 }
                 exe.setEnvironment(environment);
@@ -362,10 +367,11 @@ public class CUtil {
             exe.setNewenvironment(newEnvironment);
             return exe.execute();
         } catch (java.io.IOException exc) {
-            throw new BuildException("Could not launch " + cmdline[0] + ": "
-                    + exc, task.getLocation());
+            throw new BuildException("Could not launch " + cmdline[0] + ": " + exc,
+                    task.getLocation());
         }
     }
+
     /**
      * Compares the contents of 2 arrays for equality.
      */
@@ -380,6 +386,7 @@ public class CUtil {
         }
         return true;
     }
+
     /**
      * Compares the contents of an array and a Vector for equality.
      */
@@ -395,6 +402,7 @@ public class CUtil {
         }
         return true;
     }
+
     /**
      * Compares the contents of an array and a Vector for set equality. Assumes
      * input array and vector are sets (i.e. no duplicate entries)
@@ -419,6 +427,7 @@ public class CUtil {
         }
         return (t.size() == 0);
     }
+
     /**
      * Converts a vector to a string array.
      */
@@ -427,41 +436,41 @@ public class CUtil {
         src.copyInto(retval);
         return retval;
     }
+
     /**
      * Replaces any embedded quotes in the string so that the value can be
      * placed in an attribute in an XML file
      *
-     * @param attrValue
-     *            value to be expressed
+     * @param attrValue value to be expressed
      * @return equivalent attribute literal
-     *
      */
     public static String xmlAttribEncode(String attrValue) {
-    	StringBuffer buf = new StringBuffer (attrValue);
-    	int quotePos;
-    	
-        for (quotePos = -1; (quotePos = buf.toString().indexOf("\"", quotePos + 1)) >= 0;) {
-        	buf.deleteCharAt(quotePos);
-        	buf.insert (quotePos, "&quot;");
-        	quotePos += 5;
+        StringBuffer buf = new StringBuffer(attrValue);
+        int quotePos;
+
+        for (quotePos = -1; (quotePos = buf.toString().indexOf("\"", quotePos + 1)) >= 0; ) {
+            buf.deleteCharAt(quotePos);
+            buf.insert(quotePos, "&quot;");
+            quotePos += 5;
         }
-        
-        for (quotePos = -1; (quotePos = buf.toString().indexOf("<", quotePos + 1)) >= 0;) {
-        	buf.deleteCharAt(quotePos);
-        	buf.insert (quotePos, "&lt;");
-        	quotePos += 3;
+
+        for (quotePos = -1; (quotePos = buf.toString().indexOf("<", quotePos + 1)) >= 0; ) {
+            buf.deleteCharAt(quotePos);
+            buf.insert(quotePos, "&lt;");
+            quotePos += 3;
         }
-        
-        for (quotePos = -1; (quotePos = buf.toString().indexOf(">", quotePos + 1)) >= 0;) {
-        	buf.deleteCharAt(quotePos);
-        	buf.insert (quotePos, "&gt;");
-        	quotePos += 3;
+
+        for (quotePos = -1; (quotePos = buf.toString().indexOf(">", quotePos + 1)) >= 0; ) {
+            buf.deleteCharAt(quotePos);
+            buf.insert(quotePos, "&gt;");
+            quotePos += 3;
         }
-        
+
         return buf.toString();
     }
 
     public final static int FILETIME_EPSILON = 500;
+
     /**
      * Determines whether time1 is earlier than time2
      * to a degree that file system time truncation is not significant.
@@ -472,8 +481,9 @@ public class CUtil {
      * If the values are within the rounding error of the file system return false.
      */
     public static boolean isSignificantlyBefore(long time1, long time2) {
-      return (time1 + FILETIME_EPSILON) < time2;
+        return (time1 + FILETIME_EPSILON) < time2;
     }
+
     /**
      * Determines whether time1 is later than time2
      * to a degree that file system time truncation is not significant.
@@ -484,40 +494,39 @@ public class CUtil {
      * If the values are within the rounding error of the file system return false.
      */
     public static boolean isSignificantlyAfter(long time1, long time2) {
-      return time1 > (time2 + FILETIME_EPSILON);
+        return time1 > (time2 + FILETIME_EPSILON);
     }
 
 
     public static String toWindowsPath(final String path) {
-      if (File.separatorChar != '\\' && path.indexOf(File.separatorChar) != -1) {
-          return StringUtils.replace(path, File.separator, "\\");
-      }
-      return path;
+        if (File.separatorChar != '\\' && path.indexOf(File.separatorChar) != -1) {
+            return StringUtils.replace(path, File.separator, "\\");
+        }
+        return path;
     }
-    
+
     public static String toUnixPath(final String path) {
-      if (File.separatorChar != '/' && path.indexOf(File.separatorChar) != -1) {
-          return StringUtils.replace(path, File.separator, "/");
-      }
-      return path;
+        if (File.separatorChar != '/' && path.indexOf(File.separatorChar) != -1) {
+            return StringUtils.replace(path, File.separator, "/");
+        }
+        return path;
     }
 
     /**
-     *  Determines if source file has a system path,
-     *    that is part of the compiler or platform.
-     *   @param source source, may not be null.
-     *   @return true is source file appears to be system library
-     *         and its path should be discarded.
+     * Determines if source file has a system path,
+     * that is part of the compiler or platform.
+     *
+     * @param source source, may not be null.
+     * @return true is source file appears to be system library
+     * and its path should be discarded.
      */
-     public static boolean isSystemPath(final File source) {
-         String lcPath = source.getAbsolutePath().toLowerCase(java.util.Locale.US);
-         return lcPath.indexOf("platformsdk") != -1
-             || lcPath.indexOf("microsoft") != -1 ||
-                lcPath == "/usr/include" ||
-                lcPath == "/usr/lib" ||
-                lcPath == "/usr/local/include" ||
-                lcPath == "/usr/local/lib";
-     }
-
-
+    public static boolean isSystemPath(final File source) {
+        String lcPath = source.getAbsolutePath().toLowerCase(java.util.Locale.US);
+        return lcPath.indexOf("platformsdk") != -1
+                || lcPath.indexOf("microsoft") != -1
+                || lcPath == "/usr/include"
+                || lcPath == "/usr/lib"
+                || lcPath == "/usr/local/include"
+                || lcPath == "/usr/local/lib";
+    }
 }

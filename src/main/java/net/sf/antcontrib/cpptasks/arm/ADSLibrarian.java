@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2003-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,13 +34,12 @@ public class ADSLibrarian extends CommandLineLinker {
     private static final ADSLibrarian instance = new ADSLibrarian();
 
     public static ADSLibrarian getInstance() {
-      return instance;
+        return instance;
     }
 
-    private ADSLibrarian()
-    {
-        super("armar",null,
-          new String[] { ".o" }, new String[0], ".lib", false, null);
+    private ADSLibrarian() {
+        super("armar", null,
+                new String[]{".o"}, new String[0], ".lib", false, null);
     }
 
     /* (non-Javadoc)
@@ -48,7 +47,6 @@ public class ADSLibrarian extends CommandLineLinker {
      */
     protected void addBase(long base, Vector args) {
         // TODO Auto-generated method stub
-
     }
 
     /* (non-Javadoc)
@@ -56,18 +54,13 @@ public class ADSLibrarian extends CommandLineLinker {
      */
     protected void addFixed(Boolean fixed, Vector args) {
         // TODO Auto-generated method stub
-
     }
 
     /* (non-Javadoc)
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineLinker#addImpliedArgs(boolean, net.sf.antcontrib.cpptasks.compiler.LinkType, java.util.Vector)
      */
-    protected void addImpliedArgs(
-        boolean debug,
-        LinkType linkType,
-        Vector args) {
+    protected void addImpliedArgs(boolean debug, LinkType linkType, Vector args) {
         // TODO Auto-generated method stub
-
     }
 
     /* (non-Javadoc)
@@ -75,7 +68,6 @@ public class ADSLibrarian extends CommandLineLinker {
      */
     protected void addIncremental(boolean incremental, Vector args) {
         // TODO Auto-generated method stub
-
     }
 
     /* (non-Javadoc)
@@ -83,7 +75,6 @@ public class ADSLibrarian extends CommandLineLinker {
      */
     protected void addMap(boolean map, Vector args) {
         // TODO Auto-generated method stub
-
     }
 
     /* (non-Javadoc)
@@ -91,14 +82,13 @@ public class ADSLibrarian extends CommandLineLinker {
      */
     protected void addStack(int stack, Vector args) {
         // TODO Auto-generated method stub
-
     }
+
     /* (non-Javadoc)
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineLinker#addEntry(int, java.util.Vector)
      */
     protected void addEntry(String entry, Vector args) {
         // TODO Auto-generated method stub
-
     }
 
     /* (non-Javadoc)

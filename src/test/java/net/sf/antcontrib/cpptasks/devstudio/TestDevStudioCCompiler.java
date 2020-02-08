@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2007 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,19 +15,21 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.devstudio;
+
 import java.util.Vector;
 
 import junit.framework.TestCase;
 
 import net.sf.antcontrib.cpptasks.compiler.AbstractProcessor;
+
 /**
  * Test Microsoft C/C++ compiler adapter
- *  
  */
 public class TestDevStudioCCompiler extends TestCase {
     public TestDevStudioCCompiler(String name) {
         super(name);
     }
+
     public void testDebug() {
         DevStudioCCompiler compiler = DevStudioCCompiler.getInstance();
         Vector args = new Vector();

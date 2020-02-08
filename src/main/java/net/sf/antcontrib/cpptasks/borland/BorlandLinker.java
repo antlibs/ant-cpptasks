@@ -15,6 +15,7 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.borland;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Enumeration;
@@ -38,21 +39,26 @@ import net.sf.antcontrib.cpptasks.types.LibraryTypeEnum;
 public final class BorlandLinker extends CommandLineLinker {
     private static final BorlandLinker dllLinker = new BorlandLinker(".dll");
     private static final BorlandLinker instance = new BorlandLinker(".exe");
+
     public static BorlandLinker getInstance() {
         return instance;
     }
+
     private BorlandLinker(String outputSuffix) {
         super("ilink32", "-r", new String[]{".obj", ".lib", ".res"},
                 new String[]{".map", ".pdb", ".lnk"}, outputSuffix, false, null);
     }
+
     protected void addBase(long base, Vector args) {
         if (base >= 0) {
             String baseAddr = Long.toHexString(base);
             args.addElement("-b:" + baseAddr);
         }
     }
+
     protected void addFixed(Boolean fixed, Vector args) {
     }
+
     protected void addImpliedArgs(boolean debug, LinkType linkType, Vector args) {
         if (linkType.isExecutable()) {
             if (linkType.isSubsystemConsole()) {
@@ -68,22 +74,26 @@ public final class BorlandLinker extends CommandLineLinker {
             args.addElement("/Gi");
         }
         if (debug) {
-          args.addElement("-v");
+            args.addElement("-v");
         }
     }
+
     protected void addIncremental(boolean incremental, Vector args) {
     }
+
     protected void addMap(boolean map, Vector args) {
         if (!map) {
             args.addElement("-x");
         }
     }
+
     protected void addStack(int stack, Vector args) {
         if (stack >= 0) {
             String stackStr = Integer.toHexString(stack);
             args.addElement("-S:" + stackStr);
         }
     }
+
     /* (non-Javadoc)
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineLinker#addEntry(int, java.util.Vector)
      */
@@ -93,16 +103,20 @@ public final class BorlandLinker extends CommandLineLinker {
     public String getCommandFileSwitch(String commandFile) {
         return "@" + commandFile;
     }
+
     public String getIdentifier() {
         return "Borland Linker";
     }
+
     public File[] getLibraryPath() {
         return BorlandProcessor.getEnvironmentPath("ilink32", 'L',
                 new String[]{"..\\lib"});
     }
+
     public String[] getLibraryPatterns(String[] libnames, LibraryTypeEnum libType) {
         return BorlandProcessor.getLibraryPatterns(libnames, libType);
     }
+
     public Linker getLinker(LinkType type) {
         if (type.isStaticLibrary()) {
             return BorlandLibrarian.getInstance();
@@ -112,12 +126,15 @@ public final class BorlandLinker extends CommandLineLinker {
         }
         return instance;
     }
+
     public int getMaximumCommandLength() {
         return 1024;
     }
+
     public String[] getOutputFileSwitch(String outFile) {
         return BorlandProcessor.getOutputFileSwitch(outFile);
     }
+
     protected String getStartupObject(LinkType linkType) {
         if (linkType.isSharedLibrary()) {
             return "c0d32.obj";
@@ -130,26 +147,23 @@ public final class BorlandLinker extends CommandLineLinker {
         }
         return null;
     }
+
     public boolean isCaseSensitive() {
         return BorlandProcessor.isCaseSensitive();
     }
+
     /**
      * Prepares argument list for exec command.
      *
-     * @param outputDir linker output directory
-     * @param outputName linker output name
-     * @param sourceFiles
-     *            linker input files (.obj, .o, .res)
-     * @param config
-     *            linker configuration
+     * @param outputDir   linker output directory
+     * @param outputName  linker output name
+     * @param sourceFiles linker input files (.obj, .o, .res)
+     * @param config      linker configuration
      * @return arguments for runTask
      */
-    protected String[] prepareArguments(
-                    CCTask task,
-                    String outputDir,
-                        String outputName,
-            String[] sourceFiles,
-                        CommandLineLinkerConfiguration config) {
+    protected String[] prepareArguments(CCTask task, String outputDir, String outputName,
+                                        String[] sourceFiles,
+                                        CommandLineLinkerConfiguration config) {
         String[] preargs = config.getPreArguments();
         String[] endargs = config.getEndArguments();
         Vector execArgs = new Vector(preargs.length + endargs.length + 10
@@ -185,8 +199,7 @@ public final class BorlandLinker extends CommandLineLinker {
         String defFile = null;
         StringBuffer buf = new StringBuffer();
         for (int i = 0; i < sourceFiles.length; i++) {
-            String last4 = sourceFiles[i]
-                    .substring(sourceFiles[i].length() - 4).toLowerCase();
+            String last4 = sourceFiles[i].substring(sourceFiles[i].length() - 4).toLowerCase();
             if (last4.equals(".def")) {
                 defFile = quoteFilename(buf, sourceFiles[i]);
             } else {
@@ -227,18 +240,18 @@ public final class BorlandLinker extends CommandLineLinker {
         while (libEnum.hasMoreElements()) {
             String libName = (String) libEnum.nextElement();
             if (libName.equalsIgnoreCase("import32.lib")) {
-                    hasImport32 = true;
+                hasImport32 = true;
             }
             if (libName.equalsIgnoreCase("cw32.lib")) {
-                    hasImport32 = true;
+                hasImport32 = true;
             }
             execArgs.addElement(quoteFilename(buf, libName));
         }
         if (!hasCw32) {
-                execArgs.addElement(quoteFilename(buf, "cw32.lib"));
+            execArgs.addElement(quoteFilename(buf, "cw32.lib"));
         }
         if (!hasImport32) {
-                execArgs.addElement(quoteFilename(buf, "import32.lib"));
+            execArgs.addElement(quoteFilename(buf, "import32.lib"));
         }
         if (defFile == null) {
             execArgs.addElement(",,");
@@ -254,19 +267,17 @@ public final class BorlandLinker extends CommandLineLinker {
         execArgs.copyInto(execArguments);
         return execArguments;
     }
+
     /**
      * Prepares argument list to execute the linker using a response file.
      *
-     * @param outputFile
-     *            linker output file
-     * @param args
-     *            output of prepareArguments
+     * @param outputFile linker output file
+     * @param args       output of prepareArguments
      * @return arguments for runTask
      */
-    protected String[] prepareResponseFile(File outputFile, String[] args)
-            throws IOException {
-            String cmdargs[] = BorlandProcessor.prepareResponseFile(outputFile, args, " + \n");
-        cmdargs[cmdargs.length - 1] = getCommandFileSwitch(cmdargs[cmdargs.length -1]);
+    protected String[] prepareResponseFile(File outputFile, String[] args) throws IOException {
+        String cmdargs[] = BorlandProcessor.prepareResponseFile(outputFile, args, " + \n");
+        cmdargs[cmdargs.length - 1] = getCommandFileSwitch(cmdargs[cmdargs.length - 1]);
         return cmdargs;
     }
 
@@ -275,19 +286,19 @@ public final class BorlandLinker extends CommandLineLinker {
      * support version information.
      *
      * @param versionInfo version information
-     * @param linkType link type
-     * @param isDebug true if debug build
-     * @param outputFile name of generated executable
-     * @param objDir directory for generated files
-     * @param matcher bidded fileset
+     * @param linkType    link type
+     * @param isDebug     true if debug build
+     * @param outputFile  name of generated executable
+     * @param objDir      directory for generated files
+     * @param matcher     bidded fileset
      */
-        public void addVersionFiles(final VersionInfo versionInfo,
-                        final LinkType linkType,
-                        final File outputFile,
-                        final boolean isDebug,
-                        final File objDir,
-                        final TargetMatcher matcher) throws IOException {
-                WindowsPlatform.addVersionFiles(versionInfo, linkType, outputFile, isDebug, objDir, matcher);
-        }
+    public void addVersionFiles(final VersionInfo versionInfo,
+                                final LinkType linkType,
+                                final File outputFile,
+                                final boolean isDebug,
+                                final File objDir,
+                                final TargetMatcher matcher) throws IOException {
+        WindowsPlatform.addVersionFiles(versionInfo, linkType, outputFile, isDebug, objDir, matcher);
+    }
 
 }

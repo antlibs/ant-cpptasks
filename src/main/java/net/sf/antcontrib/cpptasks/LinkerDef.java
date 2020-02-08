@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +15,7 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks;
+
 import java.io.File;
 import java.util.Enumeration;
 import java.util.Vector;
@@ -29,15 +30,15 @@ import net.sf.antcontrib.cpptasks.types.FlexLong;
 import net.sf.antcontrib.cpptasks.types.LibrarySet;
 import net.sf.antcontrib.cpptasks.types.LinkerArgument;
 import net.sf.antcontrib.cpptasks.types.SystemLibrarySet;
-
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.FlexInteger;
+
 /**
  * A linker definition. linker elements may be placed either as children of a
  * cc element or the project element. A linker element with an id attribute may
  * be referenced by linker elements with refid or extends attributes.
- * 
+ *
  * @author Adam Murdoch
  * @author Curt Arnold
  */
@@ -50,17 +51,19 @@ public class LinkerDef extends ProcessorDef {
     private Boolean map;
     private int stack;
     private final Vector sysLibrarySets = new Vector();
+
     /**
      * Default constructor
-     * 
+     *
      * @see java.lang.Object#Object()
      */
     public LinkerDef() {
         base = -1;
         stack = -1;
     }
+
     private void addActiveLibrarySet(Project project, Vector libsets,
-            Vector srcSets) {
+                                     Vector srcSets) {
         Enumeration srcenum = srcSets.elements();
         while (srcenum.hasMoreElements()) {
             LibrarySet set = (LibrarySet) srcenum.nextElement();
@@ -69,18 +72,22 @@ public class LinkerDef extends ProcessorDef {
             }
         }
     }
+
     private void addActiveSystemLibrarySets(Project project, Vector libsets) {
         addActiveLibrarySet(project, libsets, sysLibrarySets);
     }
+
     private void addActiveUserLibrarySets(Project project, Vector libsets) {
         addActiveLibrarySet(project, libsets, librarySets);
     }
+
     /**
      * Adds a linker command-line arg.
      */
     public void addConfiguredLinkerArg(LinkerArgument arg) {
         addConfiguredProcessorArg(arg);
     }
+
     /**
      * Adds a compiler command-line arg.
      */
@@ -90,6 +97,7 @@ public class LinkerDef extends ProcessorDef {
         }
         addConfiguredProcessorParam(param);
     }
+
     /**
      * Adds a system library set.
      */
@@ -102,6 +110,7 @@ public class LinkerDef extends ProcessorDef {
         }
         librarySets.addElement(libset);
     }
+
     /**
      * Adds a system library set.
      */
@@ -114,19 +123,19 @@ public class LinkerDef extends ProcessorDef {
         }
         sysLibrarySets.addElement(libset);
     }
-    
+
     public void execute() throws org.apache.tools.ant.BuildException {
         throw new org.apache.tools.ant.BuildException(
                 "Not an actual task, but looks like one for documentation purposes");
     }
+
     /**
      * Returns an array of active library sets for this linker definition.
      */
-    public LibrarySet[] getActiveLibrarySets(LinkerDef[] defaultProviders,
-            int index) {    	
+    public LibrarySet[] getActiveLibrarySets(LinkerDef[] defaultProviders, int index) {
         if (isReference()) {
-            return ((LinkerDef) getCheckedRef(LinkerDef.class, "LinkerDef"))
-                    .getActiveUserLibrarySets(defaultProviders, index);
+            return ((LinkerDef) getCheckedRef(LinkerDef.class,
+                    "LinkerDef")).getActiveUserLibrarySets(defaultProviders, index);
         }
         Project p = getProject();
         Vector libsets = new Vector();
@@ -142,14 +151,14 @@ public class LinkerDef extends ProcessorDef {
         libsets.copyInto(sets);
         return sets;
     }
+
     /**
      * Returns an array of active library sets for this linker definition.
      */
-    public LibrarySet[] getActiveSystemLibrarySets(
-            LinkerDef[] defaultProviders, int index) {
+    public LibrarySet[] getActiveSystemLibrarySets(LinkerDef[] defaultProviders, int index) {
         if (isReference()) {
-            return ((LinkerDef) getCheckedRef(LinkerDef.class, "LinkerDef"))
-                    .getActiveUserLibrarySets(defaultProviders, index);
+            return ((LinkerDef) getCheckedRef(LinkerDef.class,
+                    "LinkerDef")).getActiveUserLibrarySets(defaultProviders, index);
         }
         Project p = getProject();
         Vector libsets = new Vector();
@@ -161,14 +170,14 @@ public class LinkerDef extends ProcessorDef {
         libsets.copyInto(sets);
         return sets;
     }
+
     /**
      * Returns an array of active library sets for this linker definition.
      */
-    public LibrarySet[] getActiveUserLibrarySets(LinkerDef[] defaultProviders,
-            int index) {
+    public LibrarySet[] getActiveUserLibrarySets(LinkerDef[] defaultProviders, int index) {
         if (isReference()) {
-            return ((LinkerDef) getCheckedRef(LinkerDef.class, "LinkerDef"))
-                    .getActiveUserLibrarySets(defaultProviders, index);
+            return ((LinkerDef) getCheckedRef(LinkerDef.class,
+                    "LinkerDef")).getActiveUserLibrarySets(defaultProviders, index);
         }
         Project p = getProject();
         Vector libsets = new Vector();
@@ -180,23 +189,24 @@ public class LinkerDef extends ProcessorDef {
         libsets.copyInto(sets);
         return sets;
     }
+
     public long getBase(LinkerDef[] defaultProviders, int index) {
         if (isReference()) {
-            return ((LinkerDef) getCheckedRef(LinkerDef.class, "LinkerDef"))
-                    .getBase(defaultProviders, index);
+            return ((LinkerDef) getCheckedRef(LinkerDef.class,
+                    "LinkerDef")).getBase(defaultProviders, index);
         }
         if (base <= 0) {
             if (defaultProviders != null && index < defaultProviders.length) {
-                return defaultProviders[index].getBase(defaultProviders,
-                        index + 1);
+                return defaultProviders[index].getBase(defaultProviders, index + 1);
             }
         }
         return base;
     }
+
     public Boolean getFixed(LinkerDef[] defaultProviders, int index) {
         if (isReference()) {
-            return ((LinkerDef) getCheckedRef(LinkerDef.class, "LinkerDef"))
-                    .getFixed(defaultProviders, index);
+            return ((LinkerDef) getCheckedRef(LinkerDef.class,
+                    "LinkerDef")).getFixed(defaultProviders, index);
         }
         if (fixed == null) {
             if (defaultProviders != null && index < defaultProviders.length) {
@@ -206,10 +216,11 @@ public class LinkerDef extends ProcessorDef {
         }
         return fixed;
     }
+
     public boolean getIncremental(LinkerDef[] defaultProviders, int index) {
         if (isReference()) {
-            return ((LinkerDef) getCheckedRef(LinkerDef.class, "LinkerDef"))
-                    .getIncremental(defaultProviders, index);
+            return ((LinkerDef) getCheckedRef(LinkerDef.class,
+                    "LinkerDef")).getIncremental(defaultProviders, index);
         }
         if (incremental != null) {
             return incremental.booleanValue();
@@ -219,10 +230,11 @@ public class LinkerDef extends ProcessorDef {
         }
         return false;
     }
+
     public boolean getMap(LinkerDef[] defaultProviders, int index) {
         if (isReference()) {
-            return ((LinkerDef) getCheckedRef(LinkerDef.class, "LinkerDef"))
-                    .getMap(defaultProviders, index);
+            return ((LinkerDef) getCheckedRef(LinkerDef.class,
+                    "LinkerDef")).getMap(defaultProviders, index);
         }
         if (map != null) {
             return map.booleanValue();
@@ -232,10 +244,11 @@ public class LinkerDef extends ProcessorDef {
         }
         return false;
     }
+
     public String getEntry(LinkerDef[] defaultProviders, int index) {
         if (isReference()) {
-            return ((LinkerDef) getCheckedRef(LinkerDef.class, "LinkerDef"))
-                    .getEntry(defaultProviders, index);
+            return ((LinkerDef) getCheckedRef(LinkerDef.class,
+                    "LinkerDef")).getEntry(defaultProviders, index);
         }
         if (entry != null) {
             return entry;
@@ -257,31 +270,29 @@ public class LinkerDef extends ProcessorDef {
         }
         return linker;
     }
-    
+
     public Processor getProcessor(LinkType linkType) {
-      Processor proc = getProcessor();
-      return proc.getLinker(linkType);
+        Processor proc = getProcessor();
+        return proc.getLinker(linkType);
     }
-   
+
     public int getStack(LinkerDef[] defaultProviders, int index) {
         if (isReference()) {
-            return ((LinkerDef) getCheckedRef(LinkerDef.class, "LinkerDef"))
-                    .getStack(defaultProviders, index);
+            return ((LinkerDef) getCheckedRef(LinkerDef.class,
+                    "LinkerDef")).getStack(defaultProviders, index);
         }
         if (stack < 0) {
             if (defaultProviders != null && index < defaultProviders.length) {
-                return defaultProviders[index].getStack(defaultProviders,
-                        index + 1);
+                return defaultProviders[index].getStack(defaultProviders, index + 1);
             }
         }
         return stack;
     }
+
     /**
      * Sets the base address. May be specified in either decimal or hex.
-     * 
-     * @param base
-     *            base address
-     *  
+     *
+     * @param base base address
      */
     public void setBase(FlexLong base) {
         if (isReference()) {
@@ -289,11 +300,11 @@ public class LinkerDef extends ProcessorDef {
         }
         this.base = base.longValue();
     }
+
     /**
      * Sets the starting address.
-     * 
-     * @param entry
-     *            function name
+     *
+     * @param entry function name
      */
     public void setEntry(String entry) {
         if (isReference()) {
@@ -301,6 +312,7 @@ public class LinkerDef extends ProcessorDef {
         }
         this.entry = entry;
     }
+
     /**
      * If true, marks the file to be loaded only at its preferred address.
      */
@@ -310,9 +322,9 @@ public class LinkerDef extends ProcessorDef {
         }
         this.fixed = booleanValueOf(fixed);
     }
+
     /**
      * If true, allows incremental linking.
-     *  
      */
     public void setIncremental(boolean incremental) {
         if (isReference()) {
@@ -320,6 +332,7 @@ public class LinkerDef extends ProcessorDef {
         }
         this.incremental = booleanValueOf(incremental);
     }
+
     /**
      * If set to true, a map file will be produced.
      */
@@ -329,10 +342,11 @@ public class LinkerDef extends ProcessorDef {
         }
         this.map = booleanValueOf(map);
     }
+
     /**
      * Sets linker type.
-     * 
-     * 
+     *
+     *
      * <table width="100%" border="1"> <thead>Supported linkers </thead>
      * <tr>
      * <td>gcc</td>
@@ -406,16 +420,15 @@ public class LinkerDef extends ProcessorDef {
      * <td>xlC</td>
      * <td>VisualAge Linker</td>
      * </tr>
-	 * <tr>
-	 * <td>wcl</td>
-	 * <td>OpenWatcom C/C++ linker</td>
-	 * </tr>
-	 * <tr>
-	 * <td>wfl</td>
-	 * <td>OpenWatcom FORTRAN linker</td>
-	 * </tr>
+     * <tr>
+     * <td>wcl</td>
+     * <td>OpenWatcom C/C++ linker</td>
+     * </tr>
+     * <tr>
+     * <td>wfl</td>
+     * <td>OpenWatcom FORTRAN linker</td>
+     * </tr>
      * </table>
-     *  
      */
     public void setName(LinkerEnum name) throws BuildException {
         if (isReference()) {
@@ -424,6 +437,7 @@ public class LinkerDef extends ProcessorDef {
         Linker linker = name.getLinker();
         super.setProcessor(linker);
     }
+
     protected void setProcessor(Processor proc) throws BuildException {
         Linker linker = null;
         if (proc instanceof Linker) {
@@ -434,6 +448,7 @@ public class LinkerDef extends ProcessorDef {
         }
         super.setProcessor(linker);
     }
+
     /**
      * Sets stack size in bytes.
      */
@@ -443,8 +458,9 @@ public class LinkerDef extends ProcessorDef {
         }
         this.stack = stack.intValue();
     }
+
     public void visitSystemLibraries(Linker linker, FileVisitor libraryVisitor) {
-    	Project p = getProject();
+        Project p = getProject();
         if (p == null) {
             throw new java.lang.IllegalStateException("project must be set");
         }
@@ -466,16 +482,16 @@ public class LinkerDef extends ProcessorDef {
                 for (int i = 0; i < sysLibrarySets.size(); i++) {
                     LibrarySet set = (LibrarySet) sysLibrarySets.elementAt(i);
                     if (set.isActive(p)) {
-                        set.visitLibraries(p, linker, libpath,
-                                libraryVisitor);
+                        set.visitLibraries(p, linker, libpath, libraryVisitor);
                     }
                 }
             }
         }
     }
+
     public void visitUserLibraries(Linker linker, FileVisitor libraryVisitor) {
-    	Project p = getProject();
-    	if (p == null) {
+        Project p = getProject();
+        if (p == null) {
             throw new java.lang.IllegalStateException("project must be set");
         }
         if (isReference()) {
@@ -499,8 +515,7 @@ public class LinkerDef extends ProcessorDef {
                 for (int i = 0; i < librarySets.size(); i++) {
                     LibrarySet set = (LibrarySet) librarySets.elementAt(i);
                     if (set.isActive(p)) {
-                        set.visitLibraries(p, linker, libpath,
-                                libraryVisitor);
+                        set.visitLibraries(p, linker, libpath, libraryVisitor);
                     }
                 }
             }

@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,21 +15,26 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.devstudio;
+
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
+
 /**
  * Adapter for the Microsoft (r) Library Manager
- * 
+ *
  * @author Curt Arnold
  */
 public final class DevStudioLibrarian extends DevStudioCompatibleLibrarian {
     private static final DevStudioLibrarian instance = new DevStudioLibrarian();
+
     public static DevStudioLibrarian getInstance() {
         return instance;
     }
+
     private DevStudioLibrarian() {
         super("lib", "/bogus");
     }
+
     public Linker getLinker(LinkType type) {
         return DevStudioLinker.getInstance().getLinker(type);
     }

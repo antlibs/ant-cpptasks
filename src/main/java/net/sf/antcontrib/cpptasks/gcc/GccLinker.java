@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,46 +15,48 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.gcc;
+
 import java.io.File;
 import java.util.Vector;
 
 import net.sf.antcontrib.cpptasks.CUtil;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
+
 /**
  * Adapter for the GCC linker
- * 
+ *
  * @author Adam Murdoch
  */
 public class GccLinker extends AbstractLdLinker {
     private static final String[] discardFiles = new String[0];
-    private static final String[] objFiles = new String[]{".o", ".a", ".lib",
-            ".dll", ".so", ".sl"};
-    private static final String[] libtoolObjFiles = new String[]{".fo", ".a",
-            ".lib", ".dll", ".so", ".sl"};
-    private static String[] linkerOptions = new String[]{"-bundle",
-            "-dynamiclib", "-nostartfiles", "-nostdlib", "-prebind", "-s",
-            "-static", "-shared", "-symbolic", "-Xlinker",
-            "--export-all-symbols", "-static-libgcc", "-arch"};
-    private static final GccLinker dllLinker = new GccLinker("gcc", objFiles,
-            discardFiles, "lib", ".so", false, new GccLinker("gcc", objFiles,
-                    discardFiles, "lib", ".so", true, null));
-    private static final GccLinker instance = new GccLinker("gcc", objFiles,
-            discardFiles, "", "", false, null);
-    private static final GccLinker machBundleLinker = new GccLinker("gcc",
-            objFiles, discardFiles, "lib", ".bundle", false, null);
-    private static final GccLinker machDllLinker = new GccLinker("gcc",
-            objFiles, discardFiles, "lib", ".dylib", false, null);
+    private static final String[] objFiles = new String[]{".o", ".a", ".lib", ".dll", ".so", ".sl"};
+    private static final String[] libtoolObjFiles = new String[]{".fo", ".a", ".lib", ".dll", ".so", ".sl"};
+    private static String[] linkerOptions = new String[]{"-bundle", "-dynamiclib",
+            "-nostartfiles", "-nostdlib", "-prebind", "-s", "-static", "-shared", "-symbolic",
+            "-Xlinker", "--export-all-symbols", "-static-libgcc", "-arch"};
+    private static final GccLinker dllLinker = new GccLinker("gcc", objFiles, discardFiles,
+            "lib", ".so", false,
+            new GccLinker("gcc", objFiles, discardFiles, "lib", ".so", true, null));
+    private static final GccLinker instance = new GccLinker("gcc", objFiles, discardFiles,
+            "", "", false, null);
+    private static final GccLinker machBundleLinker = new GccLinker("gcc", objFiles, discardFiles,
+            "lib", ".bundle", false, null);
+    private static final GccLinker machDllLinker = new GccLinker("gcc", objFiles, discardFiles,
+            "lib", ".dylib", false, null);
     public static GccLinker getInstance() {
         return instance;
     }
+
     private File[] libDirs;
+
     protected GccLinker(String command, String[] extensions,
-            String[] ignoredExtensions, String outputPrefix,
-            String outputSuffix, boolean isLibtool, GccLinker libtoolLinker) {
+                        String[] ignoredExtensions, String outputPrefix,
+                        String outputSuffix, boolean isLibtool, GccLinker libtoolLinker) {
         super(command, "-dumpversion", extensions, ignoredExtensions,
                 outputPrefix, outputSuffix, isLibtool, libtoolLinker);
     }
+
     protected void addImpliedArgs(boolean debug, LinkType linkType, Vector args) {
         super.addImpliedArgs(debug, linkType, args);
         if (getIdentifier().indexOf("mingw") >= 0) {
@@ -66,15 +68,14 @@ public class GccLinker extends AbstractLdLinker {
             }
         }
     }
+
     /**
      * Allows drived linker to decorate linker option. Override by GccLinker to
      * prepend a "-Wl," to pass option to through gcc to linker.
-     * 
-     * @param buf
-     *            buffer that may be used and abused in the decoration process,
+     *
+     * @param buf buffer that may be used and abused in the decoration process,
      *            must not be null.
-     * @param arg
-     *            linker argument
+     * @param arg linker argument
      */
     public String decorateLinkerOption(StringBuffer buf, String arg) {
         String decoratedArg = arg;
@@ -83,19 +84,19 @@ public class GccLinker extends AbstractLdLinker {
                 //
                 //   passed automatically by GCC
                 //
-                case 'g' :
-                case 'f' :
-                case 'F' :
-                /* Darwin */
-                case 'm' :
-                case 'O' :
-                case 'W' :
-                case 'l' :
-                case 'L' :
-                case 'u' :
-                case 'v' :
+                case 'g':
+                case 'f':
+                case 'F':
+                    /* Darwin */
+                case 'm':
+                case 'O':
+                case 'W':
+                case 'l':
+                case 'L':
+                case 'u':
+                case 'v':
                     break;
-                default :
+                default:
                     boolean known = false;
                     for (int i = 0; i < linkerOptions.length; i++) {
                         if (linkerOptions[i].equals(arg)) {
@@ -114,9 +115,9 @@ public class GccLinker extends AbstractLdLinker {
         }
         return decoratedArg;
     }
+
     /**
      * Returns library path.
-     *  
      */
     public File[] getLibraryPath() {
         if (libDirs == null) {
@@ -152,9 +153,8 @@ public class GccLinker extends AbstractLdLinker {
                 //
                 //   if a failure to find any matches then
                 //      use some default values for lib path entries
-                libpath = new String[]{"/usr/local/lib/mingw",
-                        "/usr/local/lib", "/usr/lib/w32api", "/usr/lib/mingw",
-                        "/usr/lib", buf.toString(), "/lib/w32api", "/lib"};
+                libpath = new String[]{"/usr/local/lib/mingw", "/usr/local/lib", "/usr/lib/w32api",
+                        "/usr/lib/mingw", "/usr/lib", buf.toString(), "/lib/w32api", "/lib"};
             }
             for (int i = 0; i < libpath.length; i++) {
                 if (libpath[i].indexOf("mingw") >= 0) {
@@ -187,6 +187,7 @@ public class GccLinker extends AbstractLdLinker {
         }
         return libDirs;
     }
+
     public Linker getLinker(LinkType type) {
         if (type.isStaticLibrary()) {
             return GccLibrarian.getInstance();

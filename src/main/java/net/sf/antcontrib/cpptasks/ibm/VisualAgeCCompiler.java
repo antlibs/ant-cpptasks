@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2001-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +15,7 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.ibm;
+
 import java.io.File;
 import java.util.Vector;
 
@@ -24,44 +25,45 @@ import net.sf.antcontrib.cpptasks.gcc.GccCompatibleCCompiler;
 import net.sf.antcontrib.cpptasks.OptimizationEnum;
 
 import org.apache.tools.ant.types.Environment;
+
 /**
  * Adapter for the IBM(r) Visual Age(tm) C++ compiler for AIX(tm)
- * 
+ *
  * @author Curt Arnold
  */
 public final class VisualAgeCCompiler extends GccCompatibleCCompiler {
-    private final static String[] headerExtensions = new String[]{".h", ".hpp",
-            ".inl"};
-    private final static String[] sourceExtensions = new String[]{".c", ".cc",
-            ".cxx", ".cpp", ".i", ".s"};
-    
-    private static final VisualAgeCCompiler instance = new VisualAgeCCompiler(
-            "xlC", sourceExtensions, headerExtensions, false, null);
+    private final static String[] headerExtensions = new String[]{".h", ".hpp", ".inl"};
+    private final static String[] sourceExtensions = new String[]{".c", ".cc", ".cxx", ".cpp", ".i", ".s"};
+
+    private static final VisualAgeCCompiler instance = new VisualAgeCCompiler("xlC", sourceExtensions,
+            headerExtensions, false, null);
     /**
      * Gets singleton instance of this class
      */
     public static VisualAgeCCompiler getInstance() {
         return instance;
     }
+
     private String identifier;
     private File[] includePath;
+
     /**
      * Private constructor. Use getInstance() to get singleton instance of this
      * class.
      */
-    private VisualAgeCCompiler(String command, String[] sourceExtensions, 
-            String[] headerExtensions, boolean newEnvironment, 
-            Environment env) {
-        super(command, "-help", sourceExtensions, headerExtensions, false, 
+    private VisualAgeCCompiler(String command, String[] sourceExtensions, String[] headerExtensions,
+                               boolean newEnvironment, Environment env) {
+        super(command, "-help", sourceExtensions, headerExtensions, false,
                 null, newEnvironment, env);
     }
-    public void addImpliedArgs(final Vector args, 
-    		final boolean debug,
-            final boolean multithreaded, 
-			final boolean exceptions, 
-			final LinkType linkType,
-			final Boolean rtti,
-			final OptimizationEnum optimization) {
+
+    public void addImpliedArgs(final Vector args,
+                               final boolean debug,
+                               final boolean multithreaded,
+                               final boolean exceptions,
+                               final LinkType linkType,
+                               final Boolean rtti,
+                               final OptimizationEnum optimization) {
         args.addElement("-c");
         if (debug) {
             args.addElement("-g");
@@ -70,49 +72,52 @@ public final class VisualAgeCCompiler extends GccCompatibleCCompiler {
             args.addElement("-fpic");
         }
         if (rtti != null) {
-        	if (rtti.booleanValue()) {
-        		args.addElement("-qrtti=all");
-        	} else {
-        		args.addElement("-qnortti");
-        	}
+            if (rtti.booleanValue()) {
+                args.addElement("-qrtti=all");
+            } else {
+                args.addElement("-qnortti");
+            }
         }
     }
+
     public void addWarningSwitch(Vector args, int level) {
         switch (level) {
-            case 0 :
+            case 0:
                 args.addElement("-w");
                 break;
-            case 1 :
+            case 1:
                 args.addElement("-qflag=s:s");
                 break;
-            case 2 :
+            case 2:
                 args.addElement("-qflag=e:e");
                 break;
-            case 3 :
+            case 3:
                 args.addElement("-qflag=w:w");
                 break;
-            case 4 :
+            case 4:
                 args.addElement("-qflag=i:i");
                 break;
-            case 5 :
+            case 5:
                 args.addElement("-qhalt=w:w");
                 break;
         }
     }
+
     public Linker getLinker(LinkType linkType) {
         return VisualAgeLinker.getInstance().getLinker(linkType);
     }
+
     public int getMaximumCommandLength() {
         return Integer.MAX_VALUE;
     }
+
     /**
      * Gets identifier for the compiler.
-     * 
+     * <p>
      * Initial attempt at extracting version information
      * would lock up.  Using a stock response.
      */
     public String getIdentifier() {
-    	return "VisualAge compiler - unidentified version";
+        return "VisualAge compiler - unidentified version";
     }
-    
 }

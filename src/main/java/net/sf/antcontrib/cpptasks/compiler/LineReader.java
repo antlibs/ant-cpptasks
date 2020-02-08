@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2008 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,9 +32,8 @@ public class LineReader implements Runnable {
 
     /**
      * Create a new line reader.
-     * 
-     * @param is
-     *            input stream to read data from
+     *
+     * @param is input stream to read data from
      */
     public LineReader(InputStream is) {
         this.is = is;
@@ -49,8 +48,7 @@ public class LineReader implements Runnable {
      */
     public void run() {
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    this.is));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(this.is));
 
             Vector lines = new Vector(10);
             String line = null;

@@ -16,12 +16,12 @@
 
 -->
 <project name="hello" default="compile">
-    <taskdef resource="cpptasks.tasks"/>
-    <target name="compile">
-        <mkdir dir="target/main/obj"/>
-        <cc outtype="static" subsystem="console" outfile="target/hello" objdir="target/main/obj">
-           <fileset dir="src/main/c" includes="*.c"/>
-           <project type="xcode" outfile="hello" overwrite="true"/>
-        </cc>
-    </target>
+  <taskdef resource="cpptasks.tasks"/>
+  <target name="compile">
+    <mkdir dir="target/main/obj"/>
+    <cc outtype="static" subsystem="console" outfile="target/hello" objdir="target/main/obj">
+      <fileset dir="src/main/c" includes="*.c"/>
+      <project type="xcode" outfile="hello" overwrite="true"/>
+    </cc>
+  </target>
 </project>

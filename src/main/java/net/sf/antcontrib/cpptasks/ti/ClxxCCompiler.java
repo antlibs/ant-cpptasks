@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2001-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +15,7 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.ti;
+
 import java.io.File;
 import java.util.Vector;
 
@@ -23,12 +24,11 @@ import net.sf.antcontrib.cpptasks.compiler.CommandLineCCompiler;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 import net.sf.antcontrib.cpptasks.OptimizationEnum;
-
-
 import org.apache.tools.ant.types.Environment;
+
 /**
  * Adapter for TI DSP compilers with cl** commands
- * 
+ *
  * @author CurtA
  */
 public class ClxxCCompiler extends CommandLineCCompiler {
@@ -52,63 +52,65 @@ public class ClxxCCompiler extends CommandLineCCompiler {
      */
     private static final ClxxCCompiler cl6x = new ClxxCCompiler("cl6x", false,
             null);
+
     public static ClxxCCompiler getCl55Instance() {
         return cl55;
     }
+
     public static ClxxCCompiler getCl6xInstance() {
         return cl6x;
     }
+
     /**
      * Private constructor
-     * 
-     * @param command
-     *            executable name
-     * @param newEnvironment
-     *            Change environment
-     * @param env
-     *            New environment
+     *
+     * @param command        executable name
+     * @param newEnvironment Change environment
+     * @param env            New environment
      */
     private ClxxCCompiler(String command, boolean newEnvironment,
-            Environment env) {
+                          Environment env) {
         super(command, "-h", sourceExtensions, headerExtensions, ".o", false,
                 null, newEnvironment, env);
     }
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineCompiler#addImpliedArgs(java.util.Vector,
      *      boolean, boolean, boolean,
      *      net.sf.antcontrib.cpptasks.compiler.LinkType)
      */
-    protected void addImpliedArgs(
-    		final Vector args, 
-			final boolean debug,
-            final boolean multithreaded, 
-			final boolean exceptions, 
-			final LinkType linkType,
-			final Boolean rtti,
-			final OptimizationEnum optimization) {
+    protected void addImpliedArgs(final Vector args,
+                                  final boolean debug,
+                                  final boolean multithreaded,
+                                  final boolean exceptions,
+                                  final LinkType linkType,
+                                  final Boolean rtti,
+                                  final OptimizationEnum optimization) {
         if (debug) {
             args.addElement("-gw");
         }
     }
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineCompiler#addWarningSwitch(java.util.Vector,
      *      int)
      */
     protected void addWarningSwitch(Vector args, int warnings) {
         // TODO Auto-generated method stub
     }
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineCompiler#getDefineSwitch(java.lang.StringBuffer,
      *      java.lang.String, java.lang.String)
      */
     protected void getDefineSwitch(StringBuffer buffer, String define,
-            String value) {
+                                   String value) {
         buffer.append("-d");
         buffer.append(define);
         if (value != null) {
@@ -116,9 +118,10 @@ public class ClxxCCompiler extends CommandLineCCompiler {
             buffer.append(value);
         }
     }
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineCompiler#getEnvironmentIncludePath()
      */
     protected File[] getEnvironmentIncludePath() {
@@ -139,17 +142,19 @@ public class ClxxCCompiler extends CommandLineCCompiler {
         }
         return combo;
     }
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineCompiler#getIncludeDirSwitch(java.lang.String)
      */
     protected String getIncludeDirSwitch(String source) {
         return "-I" + source;
     }
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see net.sf.antcontrib.cpptasks.compiler.Processor#getLinker(net.sf.antcontrib.cpptasks.compiler.LinkType)
      */
     public Linker getLinker(LinkType type) {
@@ -170,17 +175,19 @@ public class ClxxCCompiler extends CommandLineCCompiler {
         }
         return ClxxLinker.getCl55Instance();
     }
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineCompiler#getMaximumCommandLength()
      */
     public int getMaximumCommandLength() {
         return 1024;
     }
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineCompiler#getUndefineSwitch(java.lang.StringBuffer,
      *      java.lang.String)
      */

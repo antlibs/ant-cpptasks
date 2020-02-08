@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,27 +15,32 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.compaq;
+
 import java.util.Vector;
 
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 import net.sf.antcontrib.cpptasks.devstudio.DevStudioCompatibleLinker;
+
 /**
  * Adapter for the Compaq(r) Visual Fortran linker.
- * 
+ *
  * @author Curt Arnold
  */
 public final class CompaqVisualFortranLinker extends DevStudioCompatibleLinker {
-    private static final CompaqVisualFortranLinker dllLinker = new CompaqVisualFortranLinker(
-            ".dll");
-    private static final CompaqVisualFortranLinker instance = new CompaqVisualFortranLinker(
-            ".exe");
+    private static final CompaqVisualFortranLinker dllLinker =
+            new CompaqVisualFortranLinker(".dll");
+    private static final CompaqVisualFortranLinker instance =
+            new CompaqVisualFortranLinker(".exe");
+
     public static CompaqVisualFortranLinker getInstance() {
         return instance;
     }
+
     private CompaqVisualFortranLinker(String outputSuffix) {
         super("DF", "__bogus__.xxx", outputSuffix);
     }
+
     protected void addImpliedArgs(boolean debug, LinkType linkType, Vector args) {
         args.addElement("/NOLOGO");
         boolean staticRuntime = linkType.isStaticRuntime();
@@ -46,7 +51,6 @@ public final class CompaqVisualFortranLinker extends DevStudioCompatibleLinker {
         }
         if (debug) {
             args.addElement("/debug");
-        } else {
         }
         if (linkType.isSharedLibrary()) {
             args.addElement("/dll");
@@ -54,6 +58,7 @@ public final class CompaqVisualFortranLinker extends DevStudioCompatibleLinker {
             args.addElement("/exe");
         }
     }
+
     public Linker getLinker(LinkType type) {
         if (type.isStaticLibrary()) {
             return CompaqVisualFortranLibrarian.getInstance();
@@ -63,6 +68,7 @@ public final class CompaqVisualFortranLinker extends DevStudioCompatibleLinker {
         }
         return instance;
     }
+
     public String[] getOutputFileSwitch(String outputFile) {
         StringBuffer buf = new StringBuffer("/OUT:");
         if (outputFile.indexOf(' ') >= 0) {

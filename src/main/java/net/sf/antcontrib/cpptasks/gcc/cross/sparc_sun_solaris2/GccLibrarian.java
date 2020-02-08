@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,28 +15,31 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.gcc.cross.sparc_sun_solaris2;
+
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 import net.sf.antcontrib.cpptasks.gcc.AbstractArLibrarian;
+
 /**
  * Adapter for the 'ar' archiver
- * 
+ *
  * @author Adam Murdoch
  */
 public final class GccLibrarian extends AbstractArLibrarian {
-    private static String[] objFileExtensions = new String[]{".o"};
-    private static GccLibrarian instance = new GccLibrarian(
-            GccCCompiler.CMD_PREFIX + "ar", objFileExtensions, false,
-            new GccLibrarian(GccCCompiler.CMD_PREFIX + "ar", objFileExtensions,
-                    true, null));
+    private static final String[] objFileExtensions = new String[]{".o"};
+    private static final GccLibrarian instance = new GccLibrarian(GccCCompiler.CMD_PREFIX + "ar",
+            objFileExtensions, false,
+            new GccLibrarian(GccCCompiler.CMD_PREFIX + "ar", objFileExtensions, true, null));
     public static GccLibrarian getInstance() {
         return instance;
     }
-    private GccLibrarian(String command, String[] inputExtensions,
-            boolean isLibtool, GccLibrarian libtoolLibrarian) {
+
+    private GccLibrarian(String command, String[] inputExtensions, boolean isLibtool,
+                         GccLibrarian libtoolLibrarian) {
         super(command, "V", inputExtensions, new String[0], "lib", ".a",
                 isLibtool, libtoolLibrarian);
     }
+
     public Linker getLinker(LinkType type) {
         return GccLinker.getInstance().getLinker(type);
     }

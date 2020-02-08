@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,27 +15,29 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks;
+
 import org.apache.tools.ant.types.EnumeratedAttribute;
+
 /**
  * Enumeration of supported subsystems
- * 
+ *
  * @author Curt Arnold
- *  
  */
 public class OutputTypeEnum extends EnumeratedAttribute {
     /**
      * Constructor
-     * 
+     * <p>
      * Set by default to "executable"
-     * 
+     *
      * @see java.lang.Object#Object()
      */
     public OutputTypeEnum() {
         setValue("executable");
     }
+
     /**
      * Gets list of acceptable values
-     * 
+     *
      * @see org.apache.tools.ant.types.EnumeratedAttribute#getValues()
      */
     public String[] getValues() {

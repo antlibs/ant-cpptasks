@@ -15,14 +15,15 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks;
+
 import java.io.File;
 import java.util.Hashtable;
 import java.util.Vector;
 
 import net.sf.antcontrib.cpptasks.compiler.LinkerConfiguration;
 import net.sf.antcontrib.cpptasks.compiler.ProcessorConfiguration;
-
 import org.apache.tools.ant.BuildException;
+
 /**
  * This class matches each visited file with an appropriate compiler
  *
@@ -37,10 +38,11 @@ public final class TargetMatcher implements FileVisitor {
     private Hashtable targets;
     private VersionInfo versionInfo;
     private CCTask task;
+
     public TargetMatcher(CCTask task, File outputDir,
-            ProcessorConfiguration[] processors, LinkerConfiguration linker,
-            Vector objectFiles, Hashtable targets,
-			VersionInfo versionInfo) {
+                         ProcessorConfiguration[] processors, LinkerConfiguration linker,
+                         Vector objectFiles, Hashtable targets,
+                         VersionInfo versionInfo) {
         this.task = task;
         this.outputDir = outputDir;
         this.processors = processors;
@@ -49,6 +51,7 @@ public final class TargetMatcher implements FileVisitor {
         this.objectFiles = objectFiles;
         this.versionInfo = versionInfo;
     }
+
     public void visit(File parentDir, String filename) throws BuildException {
         File fullPath = new File(parentDir, filename);
         //
@@ -83,8 +86,7 @@ public final class TargetMatcher implements FileVisitor {
             //
             //  get output file name
             //
-            String[] outputFileNames = selectedCompiler
-                    .getOutputFileNames(filename, versionInfo);
+            String[] outputFileNames = selectedCompiler.getOutputFileNames(filename, versionInfo);
             sourceFiles[0] = fullPath;
             //
             //   if there is some output for this task
@@ -94,21 +96,17 @@ public final class TargetMatcher implements FileVisitor {
                 //
                 //   see if the same output file has already been registered
                 //
-                TargetInfo previousTarget = (TargetInfo) targets
-                        .get(outputFileNames[i]);
+                TargetInfo previousTarget = (TargetInfo) targets.get(outputFileNames[i]);
                 if (previousTarget == null) {
-                    targets.put(outputFileNames[i], new TargetInfo(
-                            selectedCompiler, sourceFiles, null, new File(
-                                    outputDir, outputFileNames[i]),
+                    targets.put(outputFileNames[i], new TargetInfo(selectedCompiler, sourceFiles,
+                            null, new File(outputDir, outputFileNames[i]),
                             selectedCompiler.getRebuild()));
                 } else {
                     if (!previousTarget.getSources()[0].equals(sourceFiles[0])) {
-                        StringBuffer builder = new StringBuffer(
-                                "Output filename conflict: ");
+                        StringBuffer builder = new StringBuffer("Output filename conflict: ");
                         builder.append(outputFileNames[i]);
                         builder.append(" would be produced from ");
-                        builder.append(previousTarget.getSources()[0]
-                                .toString());
+                        builder.append(previousTarget.getSources()[0].toString());
                         builder.append(" and ");
                         builder.append(filename);
                         throw new BuildException(builder.toString());

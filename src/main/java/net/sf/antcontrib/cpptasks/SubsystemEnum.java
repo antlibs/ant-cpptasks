@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2001-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,19 +15,21 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks;
+
 import org.apache.tools.ant.types.EnumeratedAttribute;
+
 /**
  * Enumeration of supported subsystems
- * 
+ *
  * @author Curt Arnold
- *  
  */
 public final class SubsystemEnum extends EnumeratedAttribute {
-    private final static String[] values = new String[]{"gui", "console",
-            "other"};
+    private static final String[] values = new String[]{"gui", "console", "other"};
+
     public SubsystemEnum() {
         setValue("gui");
     }
+
     public String[] getValues() {
         return values;
     }

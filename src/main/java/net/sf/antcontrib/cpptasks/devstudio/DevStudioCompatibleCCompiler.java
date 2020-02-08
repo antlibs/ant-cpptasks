@@ -15,8 +15,10 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.devstudio;
+
 import java.io.File;
 import java.util.Vector;
+
 import net.sf.antcontrib.cpptasks.CUtil;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineCompilerConfiguration;
 import net.sf.antcontrib.cpptasks.compiler.CompilerConfiguration;
@@ -32,29 +34,28 @@ import net.sf.antcontrib.cpptasks.OptimizationEnum;
  *
  * @author Curt Arnold
  */
-public abstract class DevStudioCompatibleCCompiler
-        extends
-            PrecompilingCommandLineCCompiler {
-    private static String[] mflags = new String[]{
-    //
+public abstract class DevStudioCompatibleCCompiler extends PrecompilingCommandLineCCompiler {
+    private static final String[] mflags = new String[]{
+            //
             //   first four are single-threaded
             //      (runtime=static,debug=false), (..,debug=true),
             //      (runtime=dynamic,debug=true), (..,debug=false), (not supported)
             //    next four are multi-threaded, same sequence
             "/ML", "/MLd", null, null, "/MT", "/MTd", "/MD", "/MDd"};
-    protected DevStudioCompatibleCCompiler(String command,
-            String identifierArg, boolean newEnvironment, Environment env) {
-        super(command, identifierArg, new String[]{".c", ".cc", ".cpp", ".cxx",
-                ".c++"}, new String[]{".h", ".hpp", ".inl"}, ".obj", false,
-                null, newEnvironment, env);
+
+    protected DevStudioCompatibleCCompiler(String command, String identifierArg,
+                                           boolean newEnvironment, Environment env) {
+        super(command, identifierArg, new String[]{".c", ".cc", ".cpp", ".cxx", ".c++"},
+                new String[]{".h", ".hpp", ".inl"}, ".obj", false, null, newEnvironment, env);
     }
+
     protected void addImpliedArgs(final Vector args,
-                    final boolean debug,
-            final boolean multithreaded,
-                        final boolean exceptions,
-                        final LinkType linkType,
-                        final Boolean rtti,
-                        final OptimizationEnum optimization) {
+                                  final boolean debug,
+                                  final boolean multithreaded,
+                                  final boolean exceptions,
+                                  final LinkType linkType,
+                                  final Boolean rtti,
+                                  final OptimizationEnum optimization) {
         args.addElement("/c");
         args.addElement("/nologo");
         if (exceptions) {
@@ -74,62 +75,67 @@ public abstract class DevStudioCompatibleCCompiler
             mindex += 1;
             addDebugSwitch(args);
         } else {
-                if (optimization != null) {
-                   if (optimization.isSize()) {
-                     args.addElement("/O1");
-                   }
-                   if (optimization.isSpeed()) {
-                     args.addElement("/O2");
-                   }
+            if (optimization != null) {
+                if (optimization.isSize()) {
+                    args.addElement("/O1");
                 }
+                if (optimization.isSpeed()) {
+                    args.addElement("/O2");
+                }
+            }
             args.addElement("/DNDEBUG");
         }
         String mflag = mflags[mindex];
         if (mflag == null) {
-            throw new BuildException(
-                    "multithread='false' and runtime='dynamic' not supported");
+            throw new BuildException("multithread='false' and runtime='dynamic' not supported");
         }
         args.addElement(mflag);
         if (rtti != null && rtti.booleanValue()) {
-                args.addElement("/GR");
+            args.addElement("/GR");
         }
     }
+
     protected void addDebugSwitch(Vector args) {
         args.addElement("/Zi");
         args.addElement("/Od");
         args.addElement("/GZ");
         args.addElement("/D_DEBUG");
     }
+
     protected void addWarningSwitch(Vector args, int level) {
         DevStudioProcessor.addWarningSwitch(args, level);
     }
+
     protected CompilerConfiguration createPrecompileGeneratingConfig(
             CommandLineCompilerConfiguration baseConfig, File prototype,
             String lastInclude) {
-        String[] additionalArgs = new String[]{
-                "/Fp" + CUtil.getBasename(prototype) + ".pch", "/Yc"};
+        String[] additionalArgs = new String[]{"/Fp" + CUtil.getBasename(prototype) + ".pch", "/Yc"};
         return new CommandLineCompilerConfiguration(baseConfig, additionalArgs,
                 null, true);
     }
+
     protected CompilerConfiguration createPrecompileUsingConfig(
             CommandLineCompilerConfiguration baseConfig, File prototype,
             String lastInclude, String[] exceptFiles) {
-        String[] additionalArgs = new String[]{
-                "/Fp" + CUtil.getBasename(prototype) + ".pch",
+        String[] additionalArgs = new String[]{"/Fp" + CUtil.getBasename(prototype) + ".pch",
                 "/Yu" + lastInclude};
         return new CommandLineCompilerConfiguration(baseConfig, additionalArgs,
                 exceptFiles, false);
     }
+
     protected void getDefineSwitch(StringBuffer buffer, String define,
-            String value) {
+                                   String value) {
         DevStudioProcessor.getDefineSwitch(buffer, define, value);
     }
+
     protected File[] getEnvironmentIncludePath() {
         return CUtil.getPathFromEnvironment("INCLUDE", ";");
     }
+
     protected String getIncludeDirSwitch(String includeDir) {
         return DevStudioProcessor.getIncludeDirSwitch(includeDir);
     }
+
     protected void getUndefineSwitch(StringBuffer buffer, String define) {
         DevStudioProcessor.getUndefineSwitch(buffer, define);
     }

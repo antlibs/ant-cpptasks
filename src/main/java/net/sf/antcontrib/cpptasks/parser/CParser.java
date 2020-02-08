@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2005 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,21 +15,23 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.parser;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.util.Vector;
+
 /**
  * A parser that extracts #include statements from a Reader.
- * 
+ *
  * @author Adam Murdoch
  * @author Curt Arnold
  */
 public final class CParser extends AbstractParser implements Parser {
     private final Vector includes = new Vector();
     private AbstractParserState newLineState;
+
     /**
-     * 
-     *  
+     *
      */
     public CParser() {
         AbstractParserState quote = new FilenameState(this, new char[]{'"'});
@@ -60,17 +62,21 @@ public final class CParser extends AbstractParser implements Parser {
         AbstractParserState i = new WhitespaceOrLetterState(this, 'i', n_m);
         newLineState = new WhitespaceOrLetterState(this, '#', i);
     }
+
     public void addFilename(String include) {
         includes.addElement(include);
     }
+
     public String[] getIncludes() {
         String[] retval = new String[includes.size()];
         includes.copyInto(retval);
         return retval;
     }
+
     public AbstractParserState getNewLineState() {
         return newLineState;
     }
+
     public void parse(Reader reader) throws IOException {
         includes.setSize(0);
         super.parse(reader);

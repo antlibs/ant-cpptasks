@@ -34,7 +34,7 @@ cpptasks for Apache Ant
 
      * Add type and task definitions in build file using either taskdef or antlib.
 
-     * Add {{{antdocs/CCTask.html}cc}} element to some target in your build file.
+     * Add {{{./antdocs/CCTask.html}cc}} element to some target in your build file.
 
      * Set path and environment variables to be able to run compiler from command line.
 
@@ -48,7 +48,7 @@ cpptasks for Apache Ant
     <target name="compile">
         <mkdir dir="target/main/obj"/>
         <cc outtype="executable" subsystem="console" outfile="target/hello" objdir="target/main/obj">
-           <fileset dir="src/main/c" includes="*.c"/>
+            <fileset dir="src/main/c" includes="*.c"/>
         </cc>
     </target>
 </project>
@@ -61,7 +61,7 @@ cpptasks for Apache Ant
     <target name="compile">
         <mkdir dir="target/main/obj"/>
         <cpptasks:cc outtype="executable" subsystem="console" outfile="target/hello" objdir="target/main/obj">
-           <fileset dir="src/main/c" includes="*.c"/>
+            <fileset dir="src/main/c" includes="*.c"/>
         </cpptasks:cc>
     </target>
 </project>

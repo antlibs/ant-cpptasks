@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2001-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,17 +15,19 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks;
+
 /*******************************************************************************
  * Place class description here.
- * 
+ *
  * @author inger
  * @author <additional author>
- * 
- * @since  
+ *
+ * @since
  ******************************************************************************/
 public class CompilerParam extends ProcessorParam {
     public CompilerParam() {
     }
+
     public void execute() throws org.apache.tools.ant.BuildException {
         throw new org.apache.tools.ant.BuildException(
                 "Not an actual task, but looks like one for documentation purposes");

@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,13 +15,16 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.parser;
+
 public class FilenameState extends AbstractParserState {
     private final StringBuffer buf = new StringBuffer();
     private final char[] terminators;
+
     public FilenameState(AbstractParser parser, char[] terminators) {
         super(parser);
         this.terminators = (char[]) terminators.clone();
     }
+
     public AbstractParserState consume(char ch) {
         for (int i = 0; i < terminators.length; i++) {
             if (ch == terminators[i]) {

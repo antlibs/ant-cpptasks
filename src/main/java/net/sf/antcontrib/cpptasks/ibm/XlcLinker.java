@@ -60,23 +60,20 @@ import net.sf.antcontrib.cpptasks.gcc.GccLibrarian;
  *
  * @author Curt Arnold
  */
-public final class XlcLinker extends AbstractLdLinker
-{
-    private static final String[] objFiles = new String[]
-      { ".o", ".a", ".lib",".dll", ".so", ".sl"};
-    private static final String[] discardFiles = new String[]
-      { };
+public final class XlcLinker extends AbstractLdLinker {
+    private static final String[] objFiles = new String[]{".o", ".a", ".lib", ".dll", ".so", ".sl"};
+    private static final String[] discardFiles = new String[]{};
 
     private static final XlcLinker instance =
-      new XlcLinker("ld", objFiles, discardFiles, "", "");
+            new XlcLinker("ld", objFiles, discardFiles, "", "");
     private static final XlcLinker dllLinker =
-      new XlcLinker("ld", objFiles, discardFiles, "lib", ".so");
+            new XlcLinker("ld", objFiles, discardFiles, "lib", ".so");
 
     private XlcLinker(String command, String[] extensions,
-        String[] ignoredExtensions, String outputPrefix,
-        String outputSuffix) {
+                      String[] ignoredExtensions, String outputPrefix,
+                      String outputSuffix) {
         super(command, "-qversion", extensions, ignoredExtensions,
-          outputPrefix, outputSuffix,false,null);
+                outputPrefix, outputSuffix, false, null);
     }
 
     public static XlcLinker getInstance() {
@@ -84,26 +81,26 @@ public final class XlcLinker extends AbstractLdLinker
     }
 
     public void addImpliedArgs(boolean debug, LinkType linkType, Vector args) {
-      if(debug) {
-        //args.addElement("-g");
-      }
-      if(linkType.isSharedLibrary()) {
-        args.addElement("-bdynamic");
-        args.addElement("-G");
-        args.addElement("-bnoentry");
-        args.addElement("-bexpall");
-        args.addElement("-lc_r");
-      }
+        if (debug) {
+            //args.addElement("-g");
+        }
+        if (linkType.isSharedLibrary()) {
+            args.addElement("-bdynamic");
+            args.addElement("-G");
+            args.addElement("-bnoentry");
+            args.addElement("-bexpall");
+            args.addElement("-lc_r");
+        }
     }
 
 
     public Linker getLinker(LinkType type) {
-      if(type.isStaticLibrary()) {
-        return GccLibrarian.getInstance();
-      }
-      if(type.isSharedLibrary()) {
-        return dllLinker;
-      }
-      return instance;
+        if (type.isStaticLibrary()) {
+            return GccLibrarian.getInstance();
+        }
+        if (type.isSharedLibrary()) {
+            return dllLinker;
+        }
+        return instance;
     }
 }

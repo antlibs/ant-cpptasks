@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +15,10 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.borland;
+
 import java.io.File;
 import java.util.Vector;
+
 import net.sf.antcontrib.cpptasks.CCTask;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineCompiler;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineCompilerConfiguration;
@@ -30,49 +32,57 @@ import net.sf.antcontrib.cpptasks.OptimizationEnum;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.types.Environment;
+
 /**
  * Adapter for the Borland(r) brc32 Resource compiler.
- * 
+ *
  * @author Curt Arnold
  */
 public class BorlandResourceCompiler extends CommandLineCompiler {
-    private static final BorlandResourceCompiler instance = new BorlandResourceCompiler(
-            false, null);
+    private static final BorlandResourceCompiler instance = new BorlandResourceCompiler(false,
+            null);
+
     public static BorlandResourceCompiler getInstance() {
         return instance;
     }
+
     private BorlandResourceCompiler(boolean newEnvironment, Environment env) {
         super("brc32", "c:\\__bogus\\__bogus.rc", new String[]{".rc"},
                 new String[]{".h", ".hpp", ".inl"}, ".res", false, null,
                 newEnvironment, env);
     }
-    protected void addImpliedArgs(final Vector args, 
-    		final boolean debug,
-            final boolean multithreaded, 
-			final boolean exceptions, 
-			final LinkType linkType,
-			final Boolean rtti,
-			final OptimizationEnum optimization) {
+
+    protected void addImpliedArgs(final Vector args,
+                                  final boolean debug,
+                                  final boolean multithreaded,
+                                  final boolean exceptions,
+                                  final LinkType linkType,
+                                  final Boolean rtti,
+                                  final OptimizationEnum optimization) {
         //
         //  compile only
         //
         args.addElement("-r");
     }
+
     protected void addWarningSwitch(Vector args, int level) {
     }
+
     public Processor changeEnvironment(boolean newEnvironment, Environment env) {
         if (newEnvironment || env != null) {
             return new BorlandResourceCompiler(newEnvironment, env);
         }
         return this;
     }
+
     public void compile(CCTask task, File outputDir, String[] sourceFiles,
-            String[] args, String[] endArgs, boolean relentless,
-            CommandLineCompilerConfiguration config, ProgressMonitor monitor)
-            throws BuildException {
+                        String[] args, String[] endArgs, boolean relentless,
+                        CommandLineCompilerConfiguration config,
+                        ProgressMonitor monitor) throws BuildException {
         super.compile(task, outputDir, sourceFiles, args, endArgs, relentless,
                 config, monitor);
     }
+
     /**
      * The include parser for C will work just fine, but we didn't want to
      * inherit from CommandLineCCompiler
@@ -80,11 +90,13 @@ public class BorlandResourceCompiler extends CommandLineCompiler {
     protected Parser createParser(File source) {
         return new CParser();
     }
+
     protected int getArgumentCountPerInputFile() {
         return 2;
     }
+
     protected void getDefineSwitch(StringBuffer buffer, String define,
-            String value) {
+                                   String value) {
         buffer.append("-d");
         buffer.append(define);
         if (value != null && value.length() > 0) {
@@ -92,38 +104,45 @@ public class BorlandResourceCompiler extends CommandLineCompiler {
             buffer.append(value);
         }
     }
+
     protected File[] getEnvironmentIncludePath() {
         return BorlandProcessor.getEnvironmentPath("brc32", 'i',
                 new String[]{"..\\include"});
     }
+
     protected String getIncludeDirSwitch(String includeDir) {
         return BorlandProcessor.getIncludeDirSwitch("-i", includeDir);
     }
+
     protected String getInputFileArgument(File outputDir, String filename,
-            int index) {
+                                          int index) {
         if (index == 0) {
             String[] outputFileNames = getOutputFileNames(filename, null);
-            String fullOutputName = new File(outputDir, outputFileNames[0])
-                    .toString();
+            String fullOutputName = new File(outputDir, outputFileNames[0]).toString();
             return "-fo" + fullOutputName;
         }
         return filename;
     }
+
     public Linker getLinker(LinkType type) {
         return BorlandLinker.getInstance().getLinker(type);
     }
+
     public int getMaximumCommandLength() {
         return 1024;
     }
+
     protected int getMaximumInputFilesPerCommand() {
         return 1;
     }
+
     protected int getTotalArgumentLengthForInputFile(File outputDir,
-            String inputFile) {
+                                                     String inputFile) {
         String arg1 = getInputFileArgument(outputDir, inputFile, 0);
         String arg2 = getInputFileArgument(outputDir, inputFile, 1);
         return arg1.length() + arg2.length() + 2;
     }
+
     protected void getUndefineSwitch(StringBuffer buffer, String define) {
     }
 }

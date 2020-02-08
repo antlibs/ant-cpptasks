@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2001-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +15,7 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.gcc.cross;
+
 import java.io.File;
 
 import net.sf.antcontrib.cpptasks.CCTask;
@@ -23,38 +24,43 @@ import net.sf.antcontrib.cpptasks.compiler.CommandLineLinkerConfiguration;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 import net.sf.antcontrib.cpptasks.gcc.AbstractLdLinker;
-
 import org.apache.tools.ant.BuildException;
+
 /**
  * Adapter for the 'ld' linker
- * 
+ *
  * @author Curt Arnold
  */
 public final class LdLinker extends AbstractLdLinker {
-    private static final String[] libtoolObjFiles = new String[]{".fo", ".a",
-            ".lib", ".dll", ".so", ".sl"};
-    private static final String[] objFiles = new String[]{".o", ".a", ".lib",
-            ".dll", ".so", ".sl"};
+    private static final String[] libtoolObjFiles = new String[]{".fo", ".a", ".lib", ".dll",
+            ".so", ".sl"};
+    private static final String[] objFiles = new String[]{".o", ".a", ".lib", ".dll", ".so",
+            ".sl"};
     private static final String[] discardFiles = new String[0];
     private static final LdLinker dllLinker = new LdLinker("ld", objFiles,
-            discardFiles, "lib", ".so", false, new LdLinker("ld", objFiles,
-                    discardFiles, "lib", ".so", true, null));
+            discardFiles, "lib", ".so", false,
+            new LdLinker("ld", objFiles, discardFiles, "lib", ".so", true, null));
     private static final LdLinker instance = new LdLinker("ld", objFiles,
             discardFiles, "", "", false, null);
+
     public static LdLinker getInstance() {
         return instance;
     }
+
     private File[] libDirs;
+
     private LdLinker(String command, String[] extensions,
-            String[] ignoredExtensions, String outputPrefix,
-            String outputSuffix, boolean isLibtool, LdLinker libtoolLinker) {
+                     String[] ignoredExtensions, String outputPrefix,
+                     String outputSuffix, boolean isLibtool, LdLinker libtoolLinker) {
         super(command, "-version", extensions, ignoredExtensions, outputPrefix,
                 outputSuffix, isLibtool, libtoolLinker);
     }
+
     protected Object clone() throws CloneNotSupportedException {
         LdLinker clone = (LdLinker) super.clone();
         return clone;
     }
+
     public Linker getLinker(LinkType type) {
         if (type.isStaticLibrary()) {
             return GccLibrarian.getInstance();
@@ -64,20 +70,23 @@ public final class LdLinker extends AbstractLdLinker {
         }
         return instance;
     }
+
     public void link(CCTask task, File outputFile, String[] sourceFiles,
-            CommandLineLinkerConfiguration config) throws BuildException {
+                     CommandLineLinkerConfiguration config) throws BuildException {
         try {
             LdLinker clone = (LdLinker) this.clone();
             LinkerParam param = config.getParam("target");
-            if (param != null)
+            if (param != null) {
                 clone.setCommand(param.getValue() + "-" + this.getCommand());
+            }
             clone.superlink(task, outputFile, sourceFiles, config);
         } catch (CloneNotSupportedException e) {
             superlink(task, outputFile, sourceFiles, config);
         }
     }
+
     private void superlink(CCTask task, File outputFile, String[] sourceFiles,
-            CommandLineLinkerConfiguration config) throws BuildException {
+                           CommandLineLinkerConfiguration config) throws BuildException {
         super.link(task, outputFile, sourceFiles, config);
     }
 }

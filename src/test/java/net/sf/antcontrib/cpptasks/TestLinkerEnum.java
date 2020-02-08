@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2003-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,11 +15,12 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks;
+
 import junit.framework.TestCase;
+
 /**
- * 
  * Tests for LinkerEnum
- * 
+ *
  * @author CurtA
  */
 public class TestLinkerEnum extends TestCase {
@@ -29,9 +30,10 @@ public class TestLinkerEnum extends TestCase {
     public TestLinkerEnum(String name) {
         super(name);
     }
+
     /**
      * Test checks that enumeration contains value g++
-     * 
+     * <p>
      * See patch [ 676276 ] Enhanced support for Mac OS X
      */
     public void testContainsValueGpp() {

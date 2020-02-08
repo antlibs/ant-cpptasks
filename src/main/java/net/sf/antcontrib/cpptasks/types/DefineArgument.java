@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2001-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,23 +15,31 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.types;
+
 /**
  * Preprocessor macro definition.
- * 
+ *
  * @author Mark A Russell <a
- *         href="mailto:mark_russell@csgsystems.com">mark_russell@csg_systems.com
- *         </a>
+ * href="mailto:mark_russell@csgsystems.com">mark_russell@csg_systems.com
+ * </a>
  */
 public class DefineArgument extends UndefineArgument {
     private String value;
+
     public DefineArgument() {
         super(true);
     }
-    /** Returns the value of the define */
+
+    /**
+     * Returns the value of the define
+     */
     public final String getValue() {
         return value;
     }
-    /** Set the value attribute */
+
+    /**
+     * Set the value attribute
+     */
     public final void setValue(String value) {
         this.value = value;
     }

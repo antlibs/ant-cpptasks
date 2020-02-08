@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,32 +15,34 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.intel;
+
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 import net.sf.antcontrib.cpptasks.compiler.Processor;
 import net.sf.antcontrib.cpptasks.gcc.GccCompatibleCCompiler;
-
 import org.apache.tools.ant.types.Environment;
+
 /**
  * Adapter for the Intel (r) C/C++ compiler for IA-64 Linux (r)
- * 
+ * <p>
  * The Intel C/C++ compiler for IA-64 Linux mimics the command options for gcc
  * compiler.
- * 
+ *
  * @author Curt Arnold
  */
 public final class IntelLinux64CCompiler extends GccCompatibleCCompiler {
-    private static final IntelLinux64CCompiler instance = new IntelLinux64CCompiler(
-            false, new IntelLinux64CCompiler(true, null, false, null), false,
-            null);
+    private static final IntelLinux64CCompiler instance = new IntelLinux64CCompiler(false,
+            new IntelLinux64CCompiler(true, null, false, null), false, null);
+
     public static IntelLinux64CCompiler getInstance() {
         return instance;
     }
-    private IntelLinux64CCompiler(boolean isLibtool,
-            IntelLinux64CCompiler libtoolCompiler, boolean newEnvironment,
-            Environment env) {
+
+    private IntelLinux64CCompiler(boolean isLibtool, IntelLinux64CCompiler libtoolCompiler,
+                                  boolean newEnvironment, Environment env) {
         super("ecc", "-V", isLibtool, libtoolCompiler, newEnvironment, env);
     }
+
     public Processor changeEnvironment(boolean newEnvironment, Environment env) {
         if (newEnvironment || env != null) {
             return new IntelLinux64CCompiler(getLibtool(),
@@ -49,9 +51,11 @@ public final class IntelLinux64CCompiler extends GccCompatibleCCompiler {
         }
         return this;
     }
+
     public Linker getLinker(LinkType type) {
         return IntelLinux64Linker.getInstance().getLinker(type);
     }
+
     public int getMaximumCommandLength() {
         return Integer.MAX_VALUE;
     }

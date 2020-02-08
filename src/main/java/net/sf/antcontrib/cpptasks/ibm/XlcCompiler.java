@@ -63,76 +63,69 @@ import org.apache.tools.ant.types.Environment;
  * @author Curt Arnold
  */
 public final class XlcCompiler extends GccCompatibleCCompiler {
-	private String identifier;
-	private File[] includePath;
-	private static final XlcCompiler instance =
-		new XlcCompiler("xlc_r", false, null);
+    private String identifier;
+    private File[] includePath;
+    private static final XlcCompiler instance = new XlcCompiler("xlc_r", false, null);
 
-	/**
-	 * Private constructor.  Use getInstance() to get
-	 * singleton instance of this class.
-	 */
-	private XlcCompiler(String command, boolean newEnvironment, Environment env) {
-		super(command, "-qversion", false, null, newEnvironment, env);
-	}
-
-    public int getMaximumCommandLength() {
-    	return Integer.MAX_VALUE;
+    /**
+     * Private constructor.  Use getInstance() to get
+     * singleton instance of this class.
+     */
+    private XlcCompiler(String command, boolean newEnvironment, Environment env) {
+        super(command, "-qversion", false, null, newEnvironment, env);
     }
 
-	/**
-	 * Gets singleton instance of this class
-	 */
-	public static XlcCompiler getInstance() {
-		return instance;
-	}
+    public int getMaximumCommandLength() {
+        return Integer.MAX_VALUE;
+    }
 
-	public void addImpliedArgs(
-		Vector args,
-		boolean debug,
-		boolean multithreaded,
-		boolean exceptions,
-		LinkType linkType) {
-		args.addElement("-c");
-		if (debug) {
-			args.addElement("-g");
-		}
-		if (linkType.isSharedLibrary()) {
-			args.addElement("-fpic");
-			args.addElement("-qmkshrobj");
+    /**
+     * Gets singleton instance of this class
+     */
+    public static XlcCompiler getInstance() {
+        return instance;
+    }
 
-		}
-	}
+    public void addImpliedArgs(Vector args,
+                               boolean debug,
+                               boolean multithreaded,
+                               boolean exceptions,
+                               LinkType linkType) {
+        args.addElement("-c");
+        if (debug) {
+            args.addElement("-g");
+        }
+        if (linkType.isSharedLibrary()) {
+            args.addElement("-fpic");
+            args.addElement("-qmkshrobj");
 
-	public void addWarningSwitch(Vector args, int level) {
-		switch (level) {
-			case 0 :
-				args.addElement("-w");
-				break;
+        }
+    }
 
-			case 1 :
-				args.addElement("-qflag=s:s");
-				break;
+    public void addWarningSwitch(Vector args, int level) {
+        switch (level) {
+            case 0:
+                args.addElement("-w");
+                break;
+            case 1:
+                args.addElement("-qflag=s:s");
+                break;
+            case 2:
+                args.addElement("-qflag=e:e");
+                break;
+            case 3:
+                args.addElement("-qflag=w:w");
+                break;
+            case 4:
+                args.addElement("-qflag=i:i");
+                break;
+            case 5:
+                args.addElement("-qhalt=w:w");
+                break;
+        }
+    }
 
-			case 2 :
-				args.addElement("-qflag=e:e");
-				break;
-
-			case 3 :
-				args.addElement("-qflag=w:w");
-				break;
-
-			case 4 :
-				args.addElement("-qflag=i:i");
-				break;
-
-			case 5 :
-				args.addElement("-qhalt=w:w");
-				break;
-		}
-	}
-
-	public Linker getLinker(LinkType linkType) {
-		return VisualAgeLinker.getInstance().getLinker(linkType);
-	}
+    public Linker getLinker(LinkType linkType) {
+        return VisualAgeLinker.getInstance().getLinker(linkType);
+    }
 }

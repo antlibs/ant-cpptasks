@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2001-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,9 +15,10 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.compiler;
+
 /**
  * A compiler.
- * 
+ *
  * @author Adam Murdoch
  */
 public interface Compiler extends Processor {

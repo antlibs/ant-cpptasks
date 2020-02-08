@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2003-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +15,7 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.gcc;
+
 import java.io.File;
 import java.util.Vector;
 
@@ -25,26 +26,31 @@ import net.sf.antcontrib.cpptasks.OutputTypeEnum;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.types.LibrarySet;
 import net.sf.antcontrib.cpptasks.types.LibraryTypeEnum;
+
 /**
  * Test ld linker adapter abstract base class
- * 
+ * <p>
  * Override create to test concrete compiler implementions
  */
 public class TestAbstractLdLinker extends TestCase {
     private final String realOSName;
+
     public TestAbstractLdLinker(String name) {
         super(name);
         realOSName = System.getProperty("os.name");
     }
+
     protected AbstractLdLinker getLinker() {
         return GccLinker.getInstance();
     }
-    protected void tearDown() throws java.lang.Exception {
+
+    protected void tearDown() {
         System.setProperty("os.name", realOSName);
     }
+
     /**
      * Checks for proper arguments for plugin generation on Darwin
-     * 
+     * <p>
      * See [ 676276 ] Enhanced support for Mac OS X
      */
     public void testAddImpliedArgsDarwinPlugin() {
@@ -59,9 +65,10 @@ public class TestAbstractLdLinker extends TestCase {
         assertEquals(1, args.size());
         assertEquals("-bundle", args.elementAt(0));
     }
+
     /**
      * Checks for proper arguments for shared generation on Darwin
-     * 
+     * <p>
      * See [ 676276 ] Enhanced support for Mac OS X
      */
     public void testAddImpliedArgsDarwinShared() {
@@ -77,9 +84,10 @@ public class TestAbstractLdLinker extends TestCase {
         assertEquals("-prebind", args.elementAt(0));
         assertEquals("-dynamiclib", args.elementAt(1));
     }
+
     /**
      * Checks for proper arguments for plugin generation on Darwin
-     * 
+     * <p>
      * See [ 676276 ] Enhanced support for Mac OS X
      */
     public void testAddImpliedArgsNonDarwinPlugin() {
@@ -94,9 +102,10 @@ public class TestAbstractLdLinker extends TestCase {
         assertEquals(1, args.size());
         assertEquals("-shared", args.elementAt(0));
     }
+
     /**
      * Checks for proper arguments for shared generation on Darwin
-     * 
+     * <p>
      * See [ 676276 ] Enhanced support for Mac OS X
      */
     public void testAddImpliedArgsNonDarwinShared() {
@@ -111,6 +120,7 @@ public class TestAbstractLdLinker extends TestCase {
         assertEquals(1, args.size());
         assertEquals("-shared", args.elementAt(0));
     }
+
     public void testAddLibrarySetDirSwitch() {
         AbstractLdLinker linker = getLinker();
         CCTask task = new CCTask();
@@ -132,6 +142,7 @@ public class TestAbstractLdLinker extends TestCase {
         assertTrue(!libdirSwitch.substring(2, 3).equals(" "));
         assertEquals(libdirSwitch.substring(libdirSwitch.length() - 3), "foo");
     }
+
     public void testAddLibrarySetLibSwitch() {
         AbstractLdLinker linker = getLinker();
         CCTask task = new CCTask();
@@ -150,6 +161,7 @@ public class TestAbstractLdLinker extends TestCase {
         assertEquals("-ldart", (String) endargs.elementAt(3));
         assertEquals(endargs.size(), 4);
     }
+
     public void testAddLibrarySetLibFrameworkNonDarwin() {
         System.setProperty("os.name", "VAX/VMS");
         AbstractLdLinker linker = getLinker();
@@ -174,6 +186,7 @@ public class TestAbstractLdLinker extends TestCase {
         assertEquals("-ldart", (String) endargs.elementAt(4));
         assertEquals(endargs.size(), 5);
     }
+
     public void testAddLibrarySetLibFrameworkDarwin() {
         System.setProperty("os.name", "Mac OS X");
         AbstractLdLinker linker = getLinker();
@@ -197,13 +210,14 @@ public class TestAbstractLdLinker extends TestCase {
         assertEquals("-framework dart", (String) endargs.elementAt(3));
         assertEquals(endargs.size(), 4);
     }
+
     public void testAddLibraryStatic() {
         AbstractLdLinker linker = getLinker();
         CCTask task = new CCTask();
         LibrarySet[] sets = new LibrarySet[]{
-        		new LibrarySet(), 
-				new LibrarySet(),
-				new LibrarySet()};
+                new LibrarySet(),
+                new LibrarySet(),
+                new LibrarySet()};
         /* throws an Exception in setLibs otherwise */
         sets[0].setProject(new org.apache.tools.ant.Project());
         sets[0].setLibs(new CUtil.StringArrayBuilder("bart"));
@@ -226,6 +240,7 @@ public class TestAbstractLdLinker extends TestCase {
         assertEquals("-ldart", (String) endargs.elementAt(4));
         assertEquals(endargs.size(), 5);
     }
+
     public void testLibReturnValue() {
         AbstractLdLinker linker = getLinker();
         CCTask task = new CCTask();

@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2001-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,15 +26,14 @@ import org.apache.tools.ant.taskdefs.ExecuteStreamHandler;
 /**
  * Implements ExecuteStreamHandler to capture the output of a Execute to an
  * array of strings
- * 
+ *
  * @author Curt Arnold
  */
 public class CaptureStreamHandler implements ExecuteStreamHandler {
     /**
      * Runs an executable and captures the output in a String array
-     * 
-     * @param cmdline
-     *            command line arguments
+     *
+     * @param cmdline command line arguments
      * @return output of process
      */
     public static String[] run(String[] cmdline) {
@@ -69,9 +68,8 @@ public class CaptureStreamHandler implements ExecuteStreamHandler {
 
     /**
      * Install a handler for the error stream of the subprocess.
-     * 
-     * @param is
-     *            input stream to read from the error stream from the subprocess
+     *
+     * @param is input stream to read from the error stream from the subprocess
      */
     public void setProcessErrorStream(InputStream is) throws IOException {
         errorStream = is;
@@ -79,10 +77,9 @@ public class CaptureStreamHandler implements ExecuteStreamHandler {
 
     /**
      * Install a handler for the input stream of the subprocess.
-     * 
-     * @param os
-     *            output stream to write to the standard input stream of the
-     *            subprocess
+     *
+     * @param os output stream to write to the standard input stream of the
+     *           subprocess
      */
     public void setProcessInputStream(OutputStream os) throws IOException {
         os.close();
@@ -90,9 +87,8 @@ public class CaptureStreamHandler implements ExecuteStreamHandler {
 
     /**
      * Install a handler for the output stream of the subprocess.
-     * 
-     * @param is
-     *            input stream to read from the error stream from the subprocess
+     *
+     * @param is input stream to read from the error stream from the subprocess
      */
     public void setProcessOutputStream(InputStream is) throws IOException {
         fromProcess = is;

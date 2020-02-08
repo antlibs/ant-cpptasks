@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,34 +15,35 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.devstudio;
+
 import java.util.Vector;
+
 /**
  * A add-in class for Microsoft Developer Studio processors
- * 
- *  
  */
 public class DevStudioProcessor {
     public static void addWarningSwitch(Vector args, int level) {
         switch (level) {
-            case 0 :
+            case 0:
                 args.addElement("/W0");
                 break;
-            case 1 :
+            case 1:
                 args.addElement("/W1");
                 break;
-            case 2 :
+            case 2:
                 break;
-            case 3 :
+            case 3:
                 args.addElement("/W3");
                 break;
-            case 4 :
+            case 4:
                 args.addElement("/W4");
                 break;
-            case 5 :
+            case 5:
                 args.addElement("/WX");
                 break;
         }
     }
+
     public static String getCommandFileSwitch(String cmdFile) {
         StringBuffer buf = new StringBuffer("@");
         if (cmdFile.indexOf(' ') >= 0) {
@@ -54,8 +55,8 @@ public class DevStudioProcessor {
         }
         return buf.toString();
     }
-    public static void getDefineSwitch(StringBuffer buffer, String define,
-            String value) {
+
+    public static void getDefineSwitch(StringBuffer buffer, String define, String value) {
         buffer.append("/D");
         buffer.append(define);
         if (value != null && value.length() > 0) {
@@ -63,9 +64,11 @@ public class DevStudioProcessor {
             buffer.append(value);
         }
     }
+
     public static String getIncludeDirSwitch(String includeDir) {
         return "/I" + includeDir.replace('/', '\\');
     }
+
     public static String[] getOutputFileSwitch(String outPath) {
         StringBuffer buf = new StringBuffer("/Fo");
         if (outPath.indexOf(' ') >= 0) {
@@ -78,13 +81,16 @@ public class DevStudioProcessor {
         String[] retval = new String[]{buf.toString()};
         return retval;
     }
+
     public static void getUndefineSwitch(StringBuffer buffer, String define) {
         buffer.append("/U");
         buffer.append(define);
     }
+
     public static boolean isCaseSensitive() {
         return false;
     }
+
     private DevStudioProcessor() {
     }
 }

@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,23 +15,28 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.borland;
+
 import net.sf.antcontrib.cpptasks.compiler.AbstractProcessor;
 import net.sf.antcontrib.cpptasks.compiler.TestAbstractCompiler;
+
 /**
  * Borland C++ Compiler adapter tests
- * 
+ * <p>
  * Override create to test concrete compiler implementions
  */
 public class TestBorlandCCompiler extends TestAbstractCompiler {
     public TestBorlandCCompiler(String name) {
         super(name);
     }
+
     protected AbstractProcessor create() {
         return BorlandCCompiler.getInstance();
     }
+
     protected String getObjectExtension() {
         return ".obj";
     }
+
     public void testGetIdentfier() {
     }
 }

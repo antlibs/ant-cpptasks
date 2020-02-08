@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +15,7 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.compiler;
+
 import java.io.File;
 
 import net.sf.antcontrib.cpptasks.CCTask;
@@ -22,35 +23,36 @@ import net.sf.antcontrib.cpptasks.CompilerParam;
 import net.sf.antcontrib.cpptasks.DependencyInfo;
 import net.sf.antcontrib.cpptasks.ProcessorParam;
 import net.sf.antcontrib.cpptasks.VersionInfo;
-
 import org.apache.tools.ant.BuildException;
+
 /**
  * A configuration for a C++ compiler
- * 
+ *
  * @author Curt Arnold
  */
 public final class CommandLineCompilerConfiguration
         implements
-            CompilerConfiguration {
-    private/* final */String[] args;
-    private/* final */CommandLineCompiler compiler;
+        CompilerConfiguration {
+    private/* final */ String[] args;
+    private/* final */ CommandLineCompiler compiler;
     private String[] endArgs;
     //
     //    include path from environment variable not
     //       explicitly stated in Ant script
-    private/* final */File[] envIncludePath;
+    private/* final */ File[] envIncludePath;
     private String[] exceptFiles;
-    private/* final */String identifier;
-    private/* final */File[] includePath;
-    private/* final */String includePathIdentifier;
+    private/* final */ String identifier;
+    private/* final */ File[] includePath;
+    private/* final */ String includePathIdentifier;
     private boolean isPrecompiledHeaderGeneration;
-    private/* final */ProcessorParam[] params;
-    private/* final */boolean rebuild;
-    private/* final */File[] sysIncludePath;
+    private/* final */ ProcessorParam[] params;
+    private/* final */ boolean rebuild;
+    private/* final */ File[] sysIncludePath;
+
     public CommandLineCompilerConfiguration(CommandLineCompiler compiler,
-            String identifier, File[] includePath, File[] sysIncludePath,
-            File[] envIncludePath, String includePathIdentifier, String[] args,
-            ProcessorParam[] params, boolean rebuild, String[] endArgs) {
+                                            String identifier, File[] includePath, File[] sysIncludePath,
+                                            File[] envIncludePath, String includePathIdentifier, String[] args,
+                                            ProcessorParam[] params, boolean rebuild, String[] endArgs) {
         if (compiler == null) {
             throw new NullPointerException("compiler");
         }
@@ -89,9 +91,10 @@ public final class CommandLineCompilerConfiguration
         exceptFiles = null;
         isPrecompiledHeaderGeneration = false;
     }
-    public CommandLineCompilerConfiguration(
-            CommandLineCompilerConfiguration base, String[] additionalArgs,
-            String[] exceptFiles, boolean isPrecompileHeaderGeneration) {
+
+    public CommandLineCompilerConfiguration(CommandLineCompilerConfiguration base,
+                                            String[] additionalArgs, String[] exceptFiles,
+                                            boolean isPrecompileHeaderGeneration) {
         compiler = base.compiler;
         identifier = base.identifier;
         rebuild = base.rebuild;
@@ -113,6 +116,7 @@ public final class CommandLineCompilerConfiguration
             args[index++] = additionalArgs[i];
         }
     }
+
     public int bid(String inputFile) {
         int compilerBid = compiler.bid(inputFile);
         if (compilerBid > 0 && exceptFiles != null) {
@@ -124,8 +128,9 @@ public final class CommandLineCompilerConfiguration
         }
         return compilerBid;
     }
+
     public void compile(CCTask task, File outputDir, String[] sourceFiles,
-            boolean relentless, ProgressMonitor monitor) throws BuildException {
+                        boolean relentless, ProgressMonitor monitor) throws BuildException {
         if (monitor != null) {
             monitor.start(this);
         }
@@ -142,34 +147,32 @@ public final class CommandLineCompilerConfiguration
             throw ex;
         }
     }
+
     /**
-     * 
      * This method may be used to get two distinct compiler configurations, one
      * for compiling the specified file and producing a precompiled header
      * file, and a second for compiling other files using the precompiled
      * header file.
-     * 
+     * <p>
      * The last (preferrably only) include directive in the prototype file will
      * be used to mark the boundary between pre-compiled and normally compiled
      * headers.
-     * 
-     * @param prototype
-     *            A source file (for example, stdafx.cpp) that is used to build
-     *            the precompiled header file. @returns null if precompiled
-     *            headers are not supported or a two element array containing
-     *            the precompiled header generation configuration and the
-     *            consuming configuration
-     *  
+     *
+     * @param prototype A source file (for example, stdafx.cpp) that is used to build
+     *                  the precompiled header file. @returns null if precompiled
+     *                  headers are not supported or a two element array containing
+     *                  the precompiled header generation configuration and the
+     *                  consuming configuration
      */
-    public CompilerConfiguration[] createPrecompileConfigurations(
-            File prototype, String[] nonPrecompiledFiles) {
+    public CompilerConfiguration[] createPrecompileConfigurations(File prototype,
+                                                                  String[] nonPrecompiledFiles) {
         if (compiler instanceof PrecompilingCompiler) {
-            return ((PrecompilingCompiler) compiler)
-                    .createPrecompileConfigurations(this, prototype,
-                            nonPrecompiledFiles);
+            return ((PrecompilingCompiler) compiler).createPrecompileConfigurations(this,
+                    prototype, nonPrecompiledFiles);
         }
         return null;
     }
+
     /**
      * Returns a string representation of this configuration. Should be
      * canonical so that equivalent configurations will have equivalent string
@@ -178,49 +181,63 @@ public final class CommandLineCompilerConfiguration
     public String getIdentifier() {
         return identifier;
     }
+
     public String getIncludePathIdentifier() {
         return includePathIdentifier;
     }
+
     public String[] getOutputFileNames(String inputFile, VersionInfo versionInfo) {
         return compiler.getOutputFileNames(inputFile, versionInfo);
     }
+
     public CompilerParam getParam(String name) {
         for (int i = 0; i < params.length; i++) {
-            if (name.equals(params[i].getName()))
+            if (name.equals(params[i].getName())) {
                 return (CompilerParam) params[i];
+            }
         }
         return null;
     }
+
     public ProcessorParam[] getParams() {
         return params;
     }
+
     public boolean getRebuild() {
         return rebuild;
     }
+
     public boolean isPrecompileGeneration() {
         return isPrecompiledHeaderGeneration;
     }
+
     public DependencyInfo parseIncludes(CCTask task, File baseDir, File source) {
         return compiler.parseIncludes(task, source, includePath,
                 sysIncludePath, envIncludePath, baseDir,
                 getIncludePathIdentifier());
     }
+
     public String toString() {
         return identifier;
     }
+
     public String[] getPreArguments() {
-    	return (String[]) args.clone();
+        return (String[]) args.clone();
     }
+
     public String[] getEndArguments() {
-    	return (String[]) endArgs.clone();
+        return (String[]) endArgs.clone();
     }
+
     public File[] getIncludePath() {
-    	return (File[]) includePath.clone();
+        return (File[]) includePath.clone();
     }
+
     public Compiler getCompiler() {
-    	return compiler;
+        return compiler;
     }
+
     public String getCommand() {
-    	return compiler.getCommand();
+        return compiler.getCommand();
     }
 }

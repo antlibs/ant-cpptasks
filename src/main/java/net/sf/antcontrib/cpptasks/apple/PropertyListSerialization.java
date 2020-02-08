@@ -48,19 +48,18 @@ public final class PropertyListSerialization {
 
     /**
      * Serializes a property list into a Cocoa XML Property List document.
+     *
      * @param propertyList property list.
-     * @param file destination.
-     * @param comments comments to insert into document.
-     * @throws SAXException if exception during serialization.
+     * @param file         destination.
+     * @param comments     comments to insert into document.
+     * @throws SAXException                      if exception during serialization.
      * @throws TransformerConfigurationException if exception creating serializer.
      */
     public static void serialize(final Map propertyList,
                                  final List comments,
                                  final File file)
-           throws IOException, SAXException,
-               TransformerConfigurationException {
-        SAXTransformerFactory sf = (SAXTransformerFactory)
-                SAXTransformerFactory.newInstance();
+            throws IOException, SAXException, TransformerConfigurationException {
+        SAXTransformerFactory sf = (SAXTransformerFactory) SAXTransformerFactory.newInstance();
         TransformerHandler handler = sf.newTransformerHandler();
 
         FileOutputStream os = new FileOutputStream(file);
@@ -68,7 +67,7 @@ public final class PropertyListSerialization {
         handler.setResult(result);
 
         handler.startDocument();
-        for(Iterator iter = comments.iterator(); iter.hasNext();) {
+        for (Iterator iter = comments.iterator(); iter.hasNext(); ) {
             char[] comment = String.valueOf(iter.next()).toCharArray();
             handler.comment(comment, 0, comment.length);
         }
@@ -82,13 +81,13 @@ public final class PropertyListSerialization {
 
     /**
      * Serialize a map as a dict element.
-     * @param map map to serialize.
+     *
+     * @param map     map to serialize.
      * @param handler destination of serialization events.
      * @throws SAXException if exception during serialization.
      */
     private static void serializeMap(final Map map,
-                                     final ContentHandler handler)
-         throws SAXException {
+                                     final ContentHandler handler) throws SAXException {
         AttributesImpl attributes = new AttributesImpl();
         handler.startElement(null, "dict", "dict", attributes);
 
@@ -99,7 +98,7 @@ public final class PropertyListSerialization {
             //
             Object[] keys = map.keySet().toArray();
             Arrays.sort(keys);
-            for(int i = 0; i < keys.length; i++) {
+            for (int i = 0; i < keys.length; i++) {
                 String key = String.valueOf(keys[i]);
                 handler.startElement(null, "key", "key", attributes);
                 handler.characters(key.toCharArray(), 0, key.length());
@@ -112,16 +111,16 @@ public final class PropertyListSerialization {
 
     /**
      * Serialize a list as an array element.
-     * @param list list to serialize.
+     *
+     * @param list    list to serialize.
      * @param handler destination of serialization events.
      * @throws SAXException if exception during serialization.
      */
     private static void serializeList(final List list,
-                                      final ContentHandler handler)
-         throws SAXException {
+                                      final ContentHandler handler) throws SAXException {
         AttributesImpl attributes = new AttributesImpl();
         handler.startElement(null, "array", "array", attributes);
-        for(Iterator iter = list.iterator();iter.hasNext();) {
+        for (Iterator iter = list.iterator(); iter.hasNext(); ) {
             serializeObject(iter.next(), handler);
         }
         handler.endElement(null, "array", "array");
@@ -129,15 +128,15 @@ public final class PropertyListSerialization {
 
     /**
      * Creates an element with the specified tag name and character content.
-     * @param tag tag name.
+     *
+     * @param tag     tag name.
      * @param content character content.
      * @param handler destination of serialization events.
      * @throws SAXException if exception during serialization.
      */
     private static void serializeElement(final String tag,
-                                  final String content,
-                                  final ContentHandler handler)
-         throws SAXException {
+                                         final String content,
+                                         final ContentHandler handler) throws SAXException {
         AttributesImpl attributes = new AttributesImpl();
         handler.startElement(null, tag, tag, attributes);
         handler.characters(content.toCharArray(), 0, content.length());
@@ -147,41 +146,37 @@ public final class PropertyListSerialization {
 
     /**
      * Serialize a Number as an integer element.
+     *
      * @param integer number to serialize.
      * @param handler destination of serialization events.
      * @throws SAXException if exception during serialization.
      */
     private static void serializeInteger(final Number integer,
-                                         final ContentHandler handler)
-         throws SAXException {
-        serializeElement("integer", String.valueOf(integer.longValue()),
-                handler);
+                                         final ContentHandler handler) throws SAXException {
+        serializeElement("integer", String.valueOf(integer.longValue()), handler);
     }
 
     /**
      * Serialize a Number as a real element.
-     * @param real number to serialize.
+     *
+     * @param real    number to serialize.
      * @param handler destination of serialization events.
      * @throws SAXException if exception during serialization.
      */
     private static void serializeReal(final Number real,
-                                      final ContentHandler handler)
-         throws SAXException {
-        serializeElement("real",
-                String.valueOf(real.doubleValue()),
-                handler);
+                                      final ContentHandler handler) throws SAXException {
+        serializeElement("real", String.valueOf(real.doubleValue()), handler);
     }
-
 
     /**
      * Serialize a Boolean as a true or false element.
-     * @param val boolean to serialize.
+     *
+     * @param val     boolean to serialize.
      * @param handler destination of serialization events.
      * @throws SAXException if exception during serialization.
      */
     private static void serializeBoolean(final Boolean val,
-                                         final ContentHandler handler)
-         throws SAXException {
+                                         final ContentHandler handler) throws SAXException {
         String tag = "false";
         if (val.booleanValue()) {
             tag = "true";
@@ -193,35 +188,32 @@ public final class PropertyListSerialization {
 
     /**
      * Serialize a string as a string element.
-     * @param val string to serialize.
+     *
+     * @param val     string to serialize.
      * @param handler destination of serialization events.
      * @throws SAXException if exception during serialization.
      */
     private static void serializeString(final String val,
-                                        final ContentHandler handler)
-         throws SAXException {
-        serializeElement("string",
-                val,
-                handler);
+                                        final ContentHandler handler) throws SAXException {
+        serializeElement("string", val, handler);
     }
 
 
     /**
      * Serialize an object using the best available element.
-     * @param obj object to serialize.
+     *
+     * @param obj     object to serialize.
      * @param handler destination of serialization events.
      * @throws SAXException if exception during serialization.
      */
     private static void serializeObject(final Object obj,
-                                        final ContentHandler handler)
-        throws SAXException {
+                                        final ContentHandler handler) throws SAXException {
         if (obj instanceof Map) {
             serializeMap((Map) obj, handler);
         } else if (obj instanceof List) {
-            serializeList((List) obj, handler);      
+            serializeList((List) obj, handler);
         } else if (obj instanceof Number) {
-            if(obj instanceof Double
-                ||obj instanceof Float) {
+            if (obj instanceof Double || obj instanceof Float) {
                 serializeReal((Number) obj, handler);
             } else {
                 serializeInteger((Number) obj, handler);

@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,25 +15,28 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks;
+
 import java.util.Vector;
+
 /**
  * @author Curt Arnold
  */
 public final class DependencyInfo {
     /**
      * Last modified time of this file or anything that it depends on.
-     * 
+     * <p>
      * Not persisted since almost any change could invalidate it. Initialized
      * to long.MIN_VALUE on construction.
      */
     private long compositeLastModified;
-    private/* final */String includePathIdentifier;
-    private/* final */String[] includes;
-    private/* final */String source;
-    private/* final */long sourceLastModified;
-    private/* final */String[] sysIncludes;
+    private/* final */ String includePathIdentifier;
+    private/* final */ String[] includes;
+    private/* final */ String source;
+    private/* final */ long sourceLastModified;
+    private/* final */ String[] sysIncludes;
+
     public DependencyInfo(String includePathIdentifier, String source,
-            long sourceLastModified, Vector includes, Vector sysIncludes) {
+                          long sourceLastModified, Vector includes, Vector sysIncludes) {
         if (source == null) {
             throw new NullPointerException("source");
         }
@@ -53,33 +56,40 @@ public final class DependencyInfo {
         this.sysIncludes = new String[sysIncludes.size()];
         sysIncludes.copyInto(this.sysIncludes);
     }
+
     /**
      * Returns the latest modification date of the source or anything that it
      * depends on.
-     * 
+     *
      * @return the composite lastModified time, returns Long.MIN_VALUE if not
      * set
      */
     public long getCompositeLastModified() {
         return compositeLastModified;
     }
+
     public String getIncludePathIdentifier() {
         return includePathIdentifier;
     }
+
     public String[] getIncludes() {
         String[] includesClone = (String[]) includes.clone();
         return includesClone;
     }
+
     public String getSource() {
         return source;
     }
+
     public long getSourceLastModified() {
         return sourceLastModified;
     }
+
     public String[] getSysIncludes() {
         String[] sysIncludesClone = (String[]) sysIncludes.clone();
         return sysIncludesClone;
     }
+
     public void setCompositeLastModified(long lastMod) {
         compositeLastModified = lastMod;
     }

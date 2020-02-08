@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,19 +15,23 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.compiler;
+
 import net.sf.antcontrib.cpptasks.CCTask;
 import net.sf.antcontrib.cpptasks.LinkerParam;
 import net.sf.antcontrib.cpptasks.TargetInfo;
-
 import org.apache.tools.ant.BuildException;
+
 /**
  * A configuration for a linker
- * 
+ *
  * @author Curt Arnold
  */
 public interface LinkerConfiguration extends ProcessorConfiguration {
     public LinkerParam getParam(String name);
+
     void link(CCTask task, TargetInfo linkTarget) throws BuildException;
+
     Linker getLinker();
+
     boolean isDebug();
 }

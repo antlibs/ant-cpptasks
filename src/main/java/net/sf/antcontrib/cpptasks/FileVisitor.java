@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,9 +15,11 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks;
+
 import java.io.File;
 
 import org.apache.tools.ant.BuildException;
+
 /**
  * An abstract class implemented to walk over the fileset members of a
  * ProcessorDef

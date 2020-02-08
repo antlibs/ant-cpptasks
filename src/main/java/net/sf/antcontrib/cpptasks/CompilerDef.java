@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2001-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +15,7 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks;
+
 import java.util.Enumeration;
 import java.util.Vector;
 
@@ -28,18 +29,20 @@ import net.sf.antcontrib.cpptasks.types.DefineSet;
 import net.sf.antcontrib.cpptasks.types.IncludePath;
 import net.sf.antcontrib.cpptasks.types.SystemIncludePath;
 import net.sf.antcontrib.cpptasks.types.UndefineArgument;
-
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
+
 /**
  * A compiler definition. compiler elements may be placed either as children of
  * a cc element or the project element. A compiler element with an id attribute
  * may be referenced from compiler elements with refid or extends attributes.
- * 
+ *
  * @author Adam Murdoch
  */
 public final class CompilerDef extends ProcessorDef {
-    /** The source file sets. */
+    /**
+     * The source file sets.
+     */
     private final Vector defineSets = new Vector();
     private Boolean exceptions;
     private Boolean rtti;
@@ -49,8 +52,10 @@ public final class CompilerDef extends ProcessorDef {
     private final Vector sysIncludePaths = new Vector();
     private OptimizationEnum optimization;
     private int warnings = -1;
+
     public CompilerDef() {
     }
+
     /**
      * Adds a compiler command-line arg.
      */
@@ -60,6 +65,7 @@ public final class CompilerDef extends ProcessorDef {
         }
         addConfiguredProcessorArg(arg);
     }
+
     /**
      * Adds a compiler command-line arg.
      */
@@ -69,6 +75,7 @@ public final class CompilerDef extends ProcessorDef {
         }
         addConfiguredProcessorParam(param);
     }
+
     /**
      * Adds a defineset.
      */
@@ -81,11 +88,12 @@ public final class CompilerDef extends ProcessorDef {
         }
         defineSets.addElement(defs);
     }
+
     /**
      * Creates an include path.
      */
     public IncludePath createIncludePath() {
-    	Project p = getProject();
+        Project p = getProject();
         if (p == null) {
             throw new java.lang.IllegalStateException("project must be set");
         }
@@ -96,12 +104,12 @@ public final class CompilerDef extends ProcessorDef {
         includePaths.addElement(path);
         return path;
     }
+
     /**
      * Specifies precompilation prototype file and exclusions.
-     *  
      */
     public PrecompileDef createPrecompile() throws BuildException {
-    	Project p = getProject();
+        Project p = getProject();
         if (isReference()) {
             throw noChildrenAllowed();
         }
@@ -110,17 +118,18 @@ public final class CompilerDef extends ProcessorDef {
         precompileDefs.addElement(precomp);
         return precomp;
     }
+
     /**
      * Creates a system include path. Locations and timestamps of files located
      * using the system include paths are not used in dependency analysis.
-     * 
-     * 
+     * <p>
+     * <p>
      * Standard include locations should not be specified. The compiler
      * adapters should recognized the settings from the appropriate environment
      * variables or configuration files.
      */
     public SystemIncludePath createSysIncludePath() {
-    	Project p = getProject();
+        Project p = getProject();
         if (p == null) {
             throw new java.lang.IllegalStateException("project must be set");
         }
@@ -131,15 +140,16 @@ public final class CompilerDef extends ProcessorDef {
         sysIncludePaths.addElement(path);
         return path;
     }
+
     public void execute() throws org.apache.tools.ant.BuildException {
         throw new org.apache.tools.ant.BuildException(
                 "Not an actual task, but looks like one for documentation purposes");
     }
+
     public UndefineArgument[] getActiveDefines() {
-    	Project p = getProject();
+        Project p = getProject();
         if (p == null) {
-            throw new java.lang.IllegalStateException(
-                    "project must be set before this call");
+            throw new java.lang.IllegalStateException("project must be set before this call");
         }
         if (isReference()) {
             return ((CompilerDef) getCheckedRef(CompilerDef.class,
@@ -159,6 +169,7 @@ public final class CompilerDef extends ProcessorDef {
         actives.copyInto(retval);
         return retval;
     }
+
     /**
      * Returns the compiler-specific include path.
      */
@@ -169,8 +180,9 @@ public final class CompilerDef extends ProcessorDef {
         }
         return getActivePaths(includePaths);
     }
+
     private String[] getActivePaths(Vector paths) {
-    	Project p = getProject();
+        Project p = getProject();
         if (p == null) {
             throw new java.lang.IllegalStateException("project not set");
         }
@@ -188,6 +200,7 @@ public final class CompilerDef extends ProcessorDef {
         activePaths.copyInto(pathNames);
         return pathNames;
     }
+
     public PrecompileDef getActivePrecompile(CompilerDef ccElement) {
         if (isReference()) {
             return ((CompilerDef) getCheckedRef(CompilerDef.class,
@@ -213,6 +226,7 @@ public final class CompilerDef extends ProcessorDef {
         }
         return null;
     }
+
     public String[] getActiveSysIncludePaths() {
         if (isReference()) {
             return ((CompilerDef) getCheckedRef(CompilerDef.class,
@@ -220,6 +234,7 @@ public final class CompilerDef extends ProcessorDef {
         }
         return getActivePaths(sysIncludePaths);
     }
+
     public final boolean getExceptions(CompilerDef[] defaultProviders, int index) {
         if (isReference()) {
             return ((CompilerDef) getCheckedRef(CompilerDef.class,
@@ -235,6 +250,7 @@ public final class CompilerDef extends ProcessorDef {
         }
         return false;
     }
+
     public final Boolean getRtti(CompilerDef[] defaultProviders, int index) {
         if (isReference()) {
             return ((CompilerDef) getCheckedRef(CompilerDef.class,
@@ -250,6 +266,7 @@ public final class CompilerDef extends ProcessorDef {
         }
         return null;
     }
+
     public final OptimizationEnum getOptimization(CompilerDef[] defaultProviders, int index) {
         if (isReference()) {
             return ((CompilerDef) getCheckedRef(CompilerDef.class,
@@ -265,7 +282,7 @@ public final class CompilerDef extends ProcessorDef {
         }
         return null;
     }
-    
+
     public boolean getMultithreaded(CompilerDef[] defaultProviders, int index) {
         if (isReference()) {
             return ((CompilerDef) getCheckedRef(CompilerDef.class,
@@ -275,12 +292,12 @@ public final class CompilerDef extends ProcessorDef {
             return multithreaded.booleanValue();
         } else {
             if (defaultProviders != null && index < defaultProviders.length) {
-                return defaultProviders[index].getMultithreaded(
-                        defaultProviders, index + 1);
+                return defaultProviders[index].getMultithreaded(defaultProviders, index + 1);
             }
         }
         return true;
     }
+
     public Processor getProcessor() {
         Processor processor = super.getProcessor();
         if (processor == null) {
@@ -292,6 +309,7 @@ public final class CompilerDef extends ProcessorDef {
         }
         return processor;
     }
+
     public int getWarnings(CompilerDef[] defaultProviders, int index) {
         if (isReference()) {
             return ((CompilerDef) getCheckedRef(CompilerDef.class,
@@ -299,18 +317,17 @@ public final class CompilerDef extends ProcessorDef {
         }
         if (warnings == -1) {
             if (defaultProviders != null && index < defaultProviders.length) {
-                return defaultProviders[index].getWarnings(defaultProviders,
-                        index + 1);
+                return defaultProviders[index].getWarnings(defaultProviders, index + 1);
             }
         }
         return warnings;
     }
+
     /**
      * Sets the default compiler adapter. Use the "name" attribute when the
      * compiler is a supported compiler.
-     * 
-     * @param classname
-     *            fully qualified classname which implements CompilerAdapter
+     *
+     * @param classname fully qualified classname which implements CompilerAdapter
      */
     public void setClassname(String classname) throws BuildException {
         if (isReference()) {
@@ -322,12 +339,11 @@ public final class CompilerDef extends ProcessorDef {
             throw new BuildException(classname + " does not implement Compiler");
         }
     }
+
     /**
      * Enables or disables exception support.
-     * 
-     * @param exceptions
-     *            if true, exceptions are supported.
-     *  
+     *
+     * @param exceptions if true, exceptions are supported.
      */
     public void setExceptions(boolean exceptions) {
         if (isReference()) {
@@ -338,10 +354,8 @@ public final class CompilerDef extends ProcessorDef {
 
     /**
      * Enables or disables run-time type information.
-     * 
-     * @param rtti
-     *            if true, run-time type information is supported.
-     *  
+     *
+     * @param rtti if true, run-time type information is supported.
      */
     public void setRtti(boolean rtti) {
         if (isReference()) {
@@ -349,13 +363,12 @@ public final class CompilerDef extends ProcessorDef {
         }
         this.rtti = booleanValueOf(rtti);
     }
-    
+
     /**
      * Enables or disables generation of multithreaded code. Unless specified,
      * multithreaded code generation is enabled.
-     * 
-     * @param multithreaded
-     *            If true, generated code may be multithreaded.
+     *
+     * @param multithreaded If true, generated code may be multithreaded.
      */
     public void setMultithreaded(boolean multithreaded) {
         if (isReference()) {
@@ -363,10 +376,11 @@ public final class CompilerDef extends ProcessorDef {
         }
         this.multithreaded = booleanValueOf(multithreaded);
     }
+
     /**
      * Sets compiler type.
-     * 
-     * 
+     *
+     *
      * <table width="100%" border="1"> <thead>Supported compilers </thead>
      * <tr>
      * <td>gcc (default)</td>
@@ -456,16 +470,15 @@ public final class CompilerDef extends ProcessorDef {
      * <td>moc</td>
      * <td>Qt meta-object compiler</td>
      * </tr>
-	 * <tr>
-	 * <td>wcl</td>
-	 * <td>OpenWatcom C/C++ compiler</td>
-	 * </tr>
-	 * <tr>
-	 * <td>wfl</td>
-	 * <td>OpenWatcom FORTRAN compiler</td>
-	 * </tr>
+     * <tr>
+     * <td>wcl</td>
+     * <td>OpenWatcom C/C++ compiler</td>
+     * </tr>
+     * <tr>
+     * <td>wfl</td>
+     * <td>OpenWatcom FORTRAN compiler</td>
+     * </tr>
      * </table>
-     *  
      */
     public void setName(CompilerEnum name) throws BuildException {
         if (isReference()) {
@@ -474,6 +487,7 @@ public final class CompilerDef extends ProcessorDef {
         Compiler compiler = name.getCompiler();
         setProcessor(compiler);
     }
+
     protected void setProcessor(Processor proc) throws BuildException {
         try {
             super.setProcessor((Compiler) proc);
@@ -481,6 +495,7 @@ public final class CompilerDef extends ProcessorDef {
             throw new BuildException(ex);
         }
     }
+
     /**
      * Enumerated attribute with the values "none", "severe", "default",
      * "production", "diagnostic", and "aserror".
@@ -488,15 +503,16 @@ public final class CompilerDef extends ProcessorDef {
     public void setWarnings(WarningLevelEnum level) {
         warnings = level.getIndex();
     }
+
     /**
      * Sets optimization level.
-     * 
+     *
      * @param value optimization level
      */
     public void setOptimize(OptimizationEnum value) {
-    	if (isReference()) {
-    		throw tooManyAttributes();
-    	}
-    	this.optimization = value;
+        if (isReference()) {
+            throw tooManyAttributes();
+        }
+        this.optimization = value;
     }
 }

@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,38 +15,43 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.intel;
+
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 import net.sf.antcontrib.cpptasks.compiler.Processor;
 import net.sf.antcontrib.cpptasks.devstudio.DevStudioCompatibleCCompiler;
-
 import org.apache.tools.ant.types.Environment;
+
 /**
  * Adapter for the Intel C++ compiler for Itanium(TM) Applications
- * 
+ *
  * @author Curt Arnold
  */
 public final class IntelWin64CCompiler extends DevStudioCompatibleCCompiler {
-    private static final IntelWin64CCompiler instance = new IntelWin64CCompiler(
-            false, null);
+    private static final IntelWin64CCompiler instance = new IntelWin64CCompiler(false, null);
+
     public static IntelWin64CCompiler getInstance() {
         return instance;
     }
+
     private IntelWin64CCompiler(boolean newEnvironment, Environment env) {
         super("ecl", "-help", newEnvironment, env);
     }
+
     public Processor changeEnvironment(boolean newEnvironment, Environment env) {
         if (newEnvironment || env != null) {
             return new IntelWin64CCompiler(newEnvironment, env);
         }
         return this;
     }
+
     public Linker getLinker(LinkType type) {
         //
         //   currently the Intel Win32 and Win64 linkers
         //      are command line equivalent
         return IntelWin32Linker.getInstance().getLinker(type);
     }
+
     public int getMaximumCommandLength() {
         return 32767;
     }

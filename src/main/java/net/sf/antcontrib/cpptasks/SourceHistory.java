@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,16 +15,19 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks;
+
 import java.io.File;
 import java.io.IOException;
+
 /**
  * The history of a source file used to build a target
- * 
+ *
  * @author Curt Arnold
  */
 public final class SourceHistory {
-    private/* final */long lastModified;
-    private/* final */String relativePath;
+    private/* final */ long lastModified;
+    private/* final */ String relativePath;
+
     /**
      * Constructor
      */
@@ -35,6 +38,7 @@ public final class SourceHistory {
         this.relativePath = relativePath;
         this.lastModified = lastModified;
     }
+
     public String getAbsolutePath(File baseDir) {
         try {
             return new File(baseDir, relativePath).getCanonicalPath();
@@ -42,9 +46,11 @@ public final class SourceHistory {
         }
         return relativePath;
     }
+
     public long getLastModified() {
         return lastModified;
     }
+
     public String getRelativePath() {
         return relativePath;
     }

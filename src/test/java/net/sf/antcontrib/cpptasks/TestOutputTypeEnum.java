@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2003-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,22 +15,25 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks;
+
 import junit.framework.TestCase;
+
 /**
  * @author CurtA
  */
 public class TestOutputTypeEnum extends TestCase {
     /**
      * Default constructor
-     * 
+     *
      * @see junit.framework.TestCase#TestCase(String)
      */
     public TestOutputTypeEnum(String name) {
         super(name);
     }
+
     /**
      * Test checks that output type enum contains "plugin"
-     * 
+     * <p>
      * See patch [ 676276 ] Enhanced support for Mac OS X
      */
     public void testContainsValuePlugin() {

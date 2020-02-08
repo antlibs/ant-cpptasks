@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Hashtable;
 import java.util.Vector;
+
 import junit.framework.TestCase;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineCompilerConfiguration;
 import net.sf.antcontrib.cpptasks.compiler.CompilerConfiguration;
@@ -28,101 +29,94 @@ import net.sf.antcontrib.cpptasks.gcc.GccCCompiler;
 
 /**
  * Tests for CCTask.
- *
  */
-public final class TestCCTask
-    extends TestCase {
-  /**
-   * Constructor.
-   * @param name test name
-   *
-   */
-  public TestCCTask(final String name) {
-    super(name);
-  }
-
-  /**
-   * Test that a target with no existing object file is
-   *    returned by getTargetsToBuildByConfiguration.
-   */
-  public void testGetTargetsToBuildByConfiguration1() {
-    CompilerConfiguration config1 = new CommandLineCompilerConfiguration(
-        (GccCCompiler) GccCCompiler.getInstance(), "dummy",
-        new File[0], new File[0], new File[0], "", new String[0],
-        new ProcessorParam[0], true, new String[0]);
-    TargetInfo target1 = new TargetInfo(config1, new File[] {new File(
-        "src/foo.bar")}
-                                        , null, new File("foo.obj"), true);
-    Hashtable targets = new Hashtable();
-    targets.put(target1.getOutput(), target1);
-    Hashtable targetsByConfig = CCTask
-        .getTargetsToBuildByConfiguration(targets);
-    Vector targetsForConfig1 = (Vector) targetsByConfig.get(config1);
-    assertNotNull(targetsForConfig1);
-    assertEquals(1, targetsForConfig1.size());
-    TargetInfo targetx = (TargetInfo) targetsForConfig1.elementAt(0);
-    assertSame(target1, targetx);
-  }
-
-  /**
-   * Test that a target that is up to date is not returned by
-   *           getTargetsToBuildByConfiguration.
-   *
-   */
-  public void testGetTargetsToBuildByConfiguration2() {
-    CompilerConfiguration config1 = new CommandLineCompilerConfiguration(
-        (GccCCompiler) GccCCompiler.getInstance(), "dummy",
-        new File[0], new File[0], new File[0], "", new String[0],
-        new ProcessorParam[0], false, new String[0]);
-    //
-    //    target doesn't need to be rebuilt
-    //
-    TargetInfo target1 = new TargetInfo(config1, new File[] {new File(
-        "src/foo.bar")}
-                                        , null, new File("foo.obj"), false);
-    Hashtable targets = new Hashtable();
-    targets.put(target1.getOutput(), target1);
-    //
-    //    no targets need to be built, return a zero-length hashtable
-    //
-    Hashtable targetsByConfig = CCTask
-        .getTargetsToBuildByConfiguration(targets);
-    assertEquals(0, targetsByConfig.size());
-  }
-
-  /**
-   * Tests that the default value of failonerror is true.
-   */
-  public void testGetFailOnError() {
-    CCTask task = new CCTask();
-    boolean failOnError = task.getFailonerror();
-    assertEquals(true, failOnError);
-  }
-
-  /**
-   * Tests that setting failonerror is effective.
-   */
-  public void testSetFailOnError() {
-    CCTask task = new CCTask();
-    task.setFailonerror(false);
-    boolean failOnError = task.getFailonerror();
-    assertEquals(false, failOnError);
-    task.setFailonerror(true);
-    failOnError = task.getFailonerror();
-    assertEquals(true, failOnError);
-  }
-
-  /**
-   * Test checks for the presence of antlib.xml.
-   * @throws IOException if stream can't be closed.
-   *
-   */
-  public void testAntlibXmlPresent() throws IOException {
-    InputStream stream = TestCCTask.class.getClassLoader()
-        .getResourceAsStream("net/sf/antcontrib/cpptasks/antlib.xml");
-    if (stream != null) {
-      stream.close();
+public final class TestCCTask extends TestCase {
+    /**
+     * Constructor.
+     *
+     * @param name test name
+     */
+    public TestCCTask(final String name) {
+        super(name);
     }
-    assertNotNull("antlib.xml missing", stream);
-  }
+
+    /**
+     * Test that a target with no existing object file is
+     * returned by getTargetsToBuildByConfiguration.
+     */
+    public void testGetTargetsToBuildByConfiguration1() {
+        CompilerConfiguration config1 =
+                new CommandLineCompilerConfiguration((GccCCompiler) GccCCompiler.getInstance(),
+                        "dummy", new File[0], new File[0], new File[0], "",
+                        new String[0], new ProcessorParam[0], true, new String[0]);
+        TargetInfo target1 = new TargetInfo(config1, new File[]{new File("src/foo.bar")},
+                null, new File("foo.obj"), true);
+        Hashtable targets = new Hashtable();
+        targets.put(target1.getOutput(), target1);
+        Hashtable targetsByConfig = CCTask.getTargetsToBuildByConfiguration(targets);
+        Vector targetsForConfig1 = (Vector) targetsByConfig.get(config1);
+        assertNotNull(targetsForConfig1);
+        assertEquals(1, targetsForConfig1.size());
+        TargetInfo targetx = (TargetInfo) targetsForConfig1.elementAt(0);
+        assertSame(target1, targetx);
+    }
+
+    /**
+     * Test that a target that is up to date is not returned by
+     * getTargetsToBuildByConfiguration.
+     */
+    public void testGetTargetsToBuildByConfiguration2() {
+        CompilerConfiguration config1 =
+                new CommandLineCompilerConfiguration((GccCCompiler) GccCCompiler.getInstance(),
+                        "dummy", new File[0], new File[0], new File[0], "",
+                        new String[0], new ProcessorParam[0], false, new String[0]);
+        //
+        //    target doesn't need to be rebuilt
+        //
+        TargetInfo target1 = new TargetInfo(config1, new File[]{new File("src/foo.bar")},
+                null, new File("foo.obj"), false);
+        Hashtable targets = new Hashtable();
+        targets.put(target1.getOutput(), target1);
+        //
+        //    no targets need to be built, return a zero-length hashtable
+        //
+        Hashtable targetsByConfig = CCTask.getTargetsToBuildByConfiguration(targets);
+        assertEquals(0, targetsByConfig.size());
+    }
+
+    /**
+     * Tests that the default value of failonerror is true.
+     */
+    public void testGetFailOnError() {
+        CCTask task = new CCTask();
+        boolean failOnError = task.getFailonerror();
+        assertEquals(true, failOnError);
+    }
+
+    /**
+     * Tests that setting failonerror is effective.
+     */
+    public void testSetFailOnError() {
+        CCTask task = new CCTask();
+        task.setFailonerror(false);
+        boolean failOnError = task.getFailonerror();
+        assertEquals(false, failOnError);
+        task.setFailonerror(true);
+        failOnError = task.getFailonerror();
+        assertEquals(true, failOnError);
+    }
+
+    /**
+     * Test checks for the presence of antlib.xml.
+     *
+     * @throws IOException if stream can't be closed.
+     */
+    public void testAntlibXmlPresent() throws IOException {
+        InputStream stream = TestCCTask.class.getClassLoader()
+                .getResourceAsStream("net/sf/antcontrib/cpptasks/antlib.xml");
+        if (stream != null) {
+            stream.close();
+        }
+        assertNotNull("antlib.xml missing", stream);
+    }
 }

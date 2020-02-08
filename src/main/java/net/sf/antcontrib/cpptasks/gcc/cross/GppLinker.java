@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2003-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +15,7 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.gcc.cross;
+
 import java.io.File;
 import java.util.Vector;
 
@@ -29,9 +30,10 @@ import net.sf.antcontrib.cpptasks.gcc.AbstractLdLinker;
 import net.sf.antcontrib.cpptasks.types.LibrarySet;
 
 import org.apache.tools.ant.BuildException;
+
 /**
  * Adapter for the g++ variant of the GCC linker
- * 
+ *
  * @author Stephen M. Webb <stephen.webb@bregmasoft.com>
  */
 public class GppLinker extends AbstractLdLinker {
@@ -40,7 +42,7 @@ public class GppLinker extends AbstractLdLinker {
             ".dll", ".so", ".sl"};
     private static final GppLinker dllLinker = new GppLinker("gcc", objFiles,
             discardFiles, "lib", ".so", false, new GppLinker("gcc", objFiles,
-                    discardFiles, "lib", ".so", true, null));
+            discardFiles, "lib", ".so", true, null));
     private final static String libPrefix = "libraries: =";
     protected static final String[] libtoolObjFiles = new String[]{".fo", ".a",
             ".lib", ".dll", ".so", ".sl"};
@@ -53,17 +55,21 @@ public class GppLinker extends AbstractLdLinker {
             objFiles, discardFiles, "lib", ".dylib", false, null);
     private static final GppLinker machPluginLinker = new GppLinker("gcc",
             objFiles, discardFiles, "lib", ".bundle", false, null);
+
     public static GppLinker getInstance() {
         return instance;
     }
+
     private File[] libDirs;
     private String runtimeLibrary;
+
     protected GppLinker(String command, String[] extensions,
-            String[] ignoredExtensions, String outputPrefix,
-            String outputSuffix, boolean isLibtool, GppLinker libtoolLinker) {
+                        String[] ignoredExtensions, String outputPrefix,
+                        String outputSuffix, boolean isLibtool, GppLinker libtoolLinker) {
         super(command, "-dumpversion", extensions, ignoredExtensions,
                 outputPrefix, outputSuffix, isLibtool, libtoolLinker);
     }
+
     protected void addImpliedArgs(boolean debug, LinkType linkType, Vector args) {
         super.addImpliedArgs(debug, linkType, args);
         if (getIdentifier().indexOf("mingw") >= 0) {
@@ -86,8 +92,9 @@ public class GppLinker extends AbstractLdLinker {
             runtimeLibrary = "-lstdc++";
         }
     }
+
     public String[] addLibrarySets(CCTask task, LibrarySet[] libsets,
-            Vector preargs, Vector midargs, Vector endargs) {
+                                   Vector preargs, Vector midargs, Vector endargs) {
         String[] rs = super.addLibrarySets(task, libsets, preargs, midargs,
                 endargs);
         if (runtimeLibrary != null) {
@@ -95,19 +102,19 @@ public class GppLinker extends AbstractLdLinker {
         }
         return rs;
     }
+
     protected Object clone() throws CloneNotSupportedException {
         GppLinker clone = (GppLinker) super.clone();
         return clone;
     }
+
     /**
      * Allows drived linker to decorate linker option. Override by GppLinker to
      * prepend a "-Wl," to pass option to through gcc to linker.
-     * 
-     * @param buf
-     *            buffer that may be used and abused in the decoration process,
+     *
+     * @param buf buffer that may be used and abused in the decoration process,
      *            must not be null.
-     * @param arg
-     *            linker argument
+     * @param arg linker argument
      */
     public String decorateLinkerOption(StringBuffer buf, String arg) {
         String decoratedArg = arg;
@@ -116,18 +123,18 @@ public class GppLinker extends AbstractLdLinker {
                 //
                 //   passed automatically by GCC
                 //
-                case 'g' :
-                case 'f' :
-                case 'F' :
-                /* Darwin */
-                case 'm' :
-                case 'O' :
-                case 'W' :
-                case 'l' :
-                case 'L' :
-                case 'u' :
+                case 'g':
+                case 'f':
+                case 'F':
+                    /* Darwin */
+                case 'm':
+                case 'O':
+                case 'W':
+                case 'l':
+                case 'L':
+                case 'u':
                     break;
-                default :
+                default:
                     boolean known = false;
                     for (int i = 0; i < linkerOptions.length; i++) {
                         if (linkerOptions[i].equals(arg)) {
@@ -146,9 +153,9 @@ public class GppLinker extends AbstractLdLinker {
         }
         return decoratedArg;
     }
+
     /**
      * Returns library path.
-     *  
      */
     public File[] getLibraryPath() {
         if (libDirs == null) {
@@ -189,6 +196,7 @@ public class GppLinker extends AbstractLdLinker {
         }
         return libDirs;
     }
+
     public Linker getLinker(LinkType type) {
         if (type.isStaticLibrary()) {
             return GccLibrarian.getInstance();
@@ -209,20 +217,23 @@ public class GppLinker extends AbstractLdLinker {
         }
         return instance;
     }
+
     public void link(CCTask task, File outputFile, String[] sourceFiles,
-            CommandLineLinkerConfiguration config) throws BuildException {
+                     CommandLineLinkerConfiguration config) throws BuildException {
         try {
             GppLinker clone = (GppLinker) this.clone();
             LinkerParam param = config.getParam("target");
-            if (param != null)
+            if (param != null) {
                 clone.setCommand(param.getValue() + "-" + this.getCommand());
+            }
             clone.superlink(task, outputFile, sourceFiles, config);
         } catch (CloneNotSupportedException e) {
             superlink(task, outputFile, sourceFiles, config);
         }
     }
+
     private void superlink(CCTask task, File outputFile, String[] sourceFiles,
-            CommandLineLinkerConfiguration config) throws BuildException {
+                           CommandLineLinkerConfiguration config) throws BuildException {
         super.link(task, outputFile, sourceFiles, config);
     }
 }

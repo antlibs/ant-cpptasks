@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,15 +15,19 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.borland;
+
 import net.sf.antcontrib.cpptasks.parser.AbstractParser;
 import net.sf.antcontrib.cpptasks.parser.AbstractParserState;
 import net.sf.antcontrib.cpptasks.parser.FilenameState;
+
 public class CfgFilenameState extends FilenameState {
     private char terminator;
+
     public CfgFilenameState(AbstractParser parser, char[] terminators) {
         super(parser, terminators);
         terminator = terminators[0];
     }
+
     public AbstractParserState consume(char ch) {
         //
         //   if a ';' is encountered then

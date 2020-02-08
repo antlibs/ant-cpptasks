@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,14 +15,15 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks;
+
 import net.sf.antcontrib.cpptasks.compiler.Processor;
+
 /**
  * One entry in the arrays used by the CompilerEnum and LinkerEnum classes.
- * 
+ *
  * @author Curt Arnold
  * @see CompilerEnum
  * @see LinkerEnum
- *  
  */
 public class ProcessorEnumValue {
     public static String[] getValues(ProcessorEnumValue[] processors) {
@@ -32,15 +33,19 @@ public class ProcessorEnumValue {
         }
         return values;
     }
+
     private String name;
     private Processor processor;
+
     public ProcessorEnumValue(String name, Processor processor) {
         this.name = name;
         this.processor = processor;
     }
+
     public String getName() {
         return name;
     }
+
     public Processor getProcessor() {
         return processor;
     }

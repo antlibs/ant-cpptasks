@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2001-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +15,7 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.ti;
+
 import java.io.File;
 import java.util.Vector;
 
@@ -24,135 +25,151 @@ import net.sf.antcontrib.cpptasks.compiler.Linker;
 import net.sf.antcontrib.cpptasks.types.LibraryTypeEnum;
 
 /**
- * 
  * Adapter for TI DSP librarian
- *  *
+ * *
+ *
  * @author CurtA
  */
 public class ClxxLibrarian extends CommandLineLinker {
     private static final ClxxLibrarian cl55Instance = new ClxxLibrarian("ar55");
     private static final ClxxLibrarian cl6xInstance = new ClxxLibrarian("ar6x");
+
     public static final ClxxLibrarian getCl55Instance() {
         return cl55Instance;
     }
+
     public static final ClxxLibrarian getCl6xInstance() {
         return cl6xInstance;
     }
+
     private ClxxLibrarian(String command) {
         super(command, null, new String[]{".o"}, new String[0], ".lib", false,
                 null);
     }
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineLinker#addBase(long,
      *      java.util.Vector)
      */
     protected void addBase(long base, Vector args) {
         // TODO Auto-generated method stub
     }
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineLinker#addFixed(java.lang.Boolean,
      *      java.util.Vector)
      */
     protected void addFixed(Boolean fixed, Vector args) {
         // TODO Auto-generated method stub
     }
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineLinker#addImpliedArgs(boolean,
      *      net.sf.antcontrib.cpptasks.compiler.LinkType, java.util.Vector)
      */
     protected void addImpliedArgs(boolean debug, LinkType linkType, Vector args) {
         // TODO Auto-generated method stub
     }
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineLinker#addIncremental(boolean,
      *      java.util.Vector)
      */
     protected void addIncremental(boolean incremental, Vector args) {
         // TODO Auto-generated method stub
     }
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineLinker#addMap(boolean,
      *      java.util.Vector)
      */
     protected void addMap(boolean map, Vector args) {
         // TODO Auto-generated method stub
     }
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineLinker#addStack(int,
      *      java.util.Vector)
      */
     protected void addStack(int stack, Vector args) {
         // TODO Auto-generated method stub
     }
+
     /* (non-Javadoc)
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineLinker#addEntry(int, java.util.Vector)
      */
     protected void addEntry(String entry, Vector args) {
     }
-    
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineLinker#getCommandFileSwitch(java.lang.String)
      */
     protected String getCommandFileSwitch(String commandFile) {
         return "@" + commandFile;
     }
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see net.sf.antcontrib.cpptasks.compiler.Linker#getLibraryPath()
      */
     public File[] getLibraryPath() {
         return new File[0];
     }
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see net.sf.antcontrib.cpptasks.compiler.Linker#getLibraryPatterns(java.lang.String[])
      */
     public String[] getLibraryPatterns(String[] libnames, LibraryTypeEnum libType) {
         return new String[0];
     }
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see net.sf.antcontrib.cpptasks.compiler.Processor#getLinker(net.sf.antcontrib.cpptasks.compiler.LinkType)
      */
     public Linker getLinker(LinkType linkType) {
         return null;
     }
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineLinker#getMaximumCommandLength()
      */
     protected int getMaximumCommandLength() {
         return 1024;
     }
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineLinker#getOutputFileSwitch(java.lang.String)
      */
     protected String[] getOutputFileSwitch(String outputFile) {
         return new String[]{"-o", outputFile};
     }
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see net.sf.antcontrib.cpptasks.compiler.Linker#isCaseSensitive()
      */
     public boolean isCaseSensitive() {

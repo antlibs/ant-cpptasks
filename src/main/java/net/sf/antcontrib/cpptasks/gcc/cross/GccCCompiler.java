@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2001-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +15,10 @@
  *  limitations under the License.
  */
 package net.sf.antcontrib.cpptasks.gcc.cross;
+
 import java.io.File;
 import java.util.Vector;
+
 import net.sf.antcontrib.cpptasks.CCTask;
 import net.sf.antcontrib.cpptasks.CUtil;
 import net.sf.antcontrib.cpptasks.CompilerParam;
@@ -35,12 +37,12 @@ import net.sf.antcontrib.cpptasks.OptimizationEnum;
 
 /**
  * Adapter for the GCC C/C++ compiler
- * 
+ *
  * @author Adam Murdoch
  */
 public final class GccCCompiler extends GccCompatibleCCompiler {
     private final static String[] headerExtensions = new String[]{".h", ".hpp",
-    ".inl"};
+            ".inl"};
     private final static String[] sourceExtensions = new String[]{".c", /* C */
             ".cc", /* C++ */
             ".cpp", /* C++ */
@@ -70,58 +72,66 @@ public final class GccCCompiler extends GccCompatibleCCompiler {
             sourceExtensions, headerExtensions, false,
             new GccCCompiler("gcc", sourceExtensions, headerExtensions, true,
                     null, false, null), false, null);
+
     /**
      * Gets c++ adapter
      */
     public static GccCCompiler getCppInstance() {
         return cppInstance;
     }
+
     /**
      * Gets g77 adapter
      */
     public static GccCCompiler getG77Instance() {
         return g77Instance;
     }
+
     /**
      * Gets gpp adapter
      */
     public static GccCCompiler getGppInstance() {
         return gppInstance;
     }
+
     /**
      * Gets gcc adapter
      */
     public static GccCCompiler getInstance() {
         return instance;
     }
+
     private String identifier;
     private File[] includePath;
     private boolean isPICMeaningful = true;
+
     /**
      * Private constructor. Use GccCCompiler.getInstance() to get singleton
      * instance of this class.
      */
     private GccCCompiler(String command, String[] sourceExtensions,
-            String[] headerExtensions, boolean isLibtool,
-            GccCCompiler libtoolCompiler, boolean newEnvironment,
-            Environment env) {
+                         String[] headerExtensions, boolean isLibtool,
+                         GccCCompiler libtoolCompiler, boolean newEnvironment,
+                         Environment env) {
         super(command, null, sourceExtensions, headerExtensions, isLibtool,
                 libtoolCompiler, newEnvironment, env);
         isPICMeaningful = System.getProperty("os.name").indexOf("Windows") < 0;
     }
-    public void addImpliedArgs(final Vector args, 
-    		final boolean debug,
-            final boolean multithreaded, 
-			final boolean exceptions, 
-			final LinkType linkType,
-			final Boolean rtti,
-			final OptimizationEnum optimization) {
-        super.addImpliedArgs(args, debug, multithreaded, 
-        		exceptions, linkType, rtti, optimization);
+
+    public void addImpliedArgs(final Vector args,
+                               final boolean debug,
+                               final boolean multithreaded,
+                               final boolean exceptions,
+                               final LinkType linkType,
+                               final Boolean rtti,
+                               final OptimizationEnum optimization) {
+        super.addImpliedArgs(args, debug, multithreaded,
+                exceptions, linkType, rtti, optimization);
         if (isPICMeaningful && linkType.isSharedLibrary()) {
             args.addElement("-fPIC");
         }
     }
+
     public Processor changeEnvironment(boolean newEnvironment, Environment env) {
         if (newEnvironment || env != null) {
             return new GccCCompiler(getCommand(), this.getSourceExtensions(),
@@ -131,19 +141,22 @@ public final class GccCCompiler extends GccCompatibleCCompiler {
         }
         return this;
     }
+
     protected Object clone() throws CloneNotSupportedException {
         GccCCompiler clone = (GccCCompiler) super.clone();
         return clone;
     }
+
     public void compile(CCTask task, File outputDir, String[] sourceFiles,
-            String[] args, String[] endArgs, boolean relentless,
-            CommandLineCompilerConfiguration config, ProgressMonitor monitor)
-            throws BuildException {
+                        String[] args, String[] endArgs, boolean relentless,
+                        CommandLineCompilerConfiguration config,
+                        ProgressMonitor monitor) throws BuildException {
         try {
             GccCCompiler clone = (GccCCompiler) this.clone();
             CompilerParam param = config.getParam("target");
-            if (param != null)
+            if (param != null) {
                 clone.setCommand(param.getValue() + "-" + this.getCommand());
+            }
             clone.supercompile(task, outputDir, sourceFiles, args, endArgs,
                     relentless, config, monitor);
         } catch (CloneNotSupportedException e) {
@@ -151,11 +164,11 @@ public final class GccCCompiler extends GccCompatibleCCompiler {
                     relentless, config, monitor);
         }
     }
+
     /**
      * Create parser to determine dependencies.
-     * 
+     * <p>
      * Will create appropriate parser (C++, FORTRAN) based on file extension.
-     *  
      */
     protected Parser createParser(File source) {
         if (source != null) {
@@ -170,6 +183,7 @@ public final class GccCCompiler extends GccCompatibleCCompiler {
         }
         return new CParser();
     }
+
     public File[] getEnvironmentIncludePath() {
         if (includePath == null) {
             //
@@ -239,6 +253,7 @@ public final class GccCCompiler extends GccCompatibleCCompiler {
         }
         return (File[]) includePath.clone();
     }
+
     public String getIdentifier() throws BuildException {
         if (identifier == null) {
             StringBuffer buf;
@@ -256,16 +271,19 @@ public final class GccCCompiler extends GccCompatibleCCompiler {
         }
         return identifier;
     }
+
     public Linker getLinker(LinkType linkType) {
         return GccLinker.getInstance().getLinker(linkType);
     }
+
     public int getMaximumCommandLength() {
         return Integer.MAX_VALUE;
     }
+
     private void supercompile(CCTask task, File outputDir,
-            String[] sourceFiles, String[] args, String[] endArgs,
-            boolean relentless, CommandLineCompilerConfiguration config,
-            ProgressMonitor monitor) throws BuildException {
+                              String[] sourceFiles, String[] args, String[] endArgs,
+                              boolean relentless, CommandLineCompilerConfiguration config,
+                              ProgressMonitor monitor) throws BuildException {
         super.compile(task, outputDir, sourceFiles, args, endArgs, relentless,
                 config, monitor);
     }
