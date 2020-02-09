@@ -49,10 +49,16 @@ public abstract class AbstractCompiler extends AbstractProcessor implements Comp
     }
 
     /**
+     * <p>
      * Checks file name to see if parse should be attempted
+     * </p>
      * <p>
      * Default implementation returns false for files with extensions '.dll',
-     * 'tlb', '.res'
+     * '.tlb', '.res'
+     * </p>
+     *
+     * @param sourceFile File
+     * @return boolean
      */
     protected boolean canParse(File sourceFile) {
         String sourceName = sourceFile.toString();
@@ -125,6 +131,7 @@ public abstract class AbstractCompiler extends AbstractProcessor implements Comp
      * @param baseDir               used to produce relative paths in DependencyInfo
      * @param includePathIdentifier used to distinguish DependencyInfo's from different include
      *                              path settings
+     * @return DependencyInfo
      */
     public final DependencyInfo parseIncludes(CCTask task, File source, File[] includePath,
                                               File[] sysIncludePath, File[] envIncludePath,

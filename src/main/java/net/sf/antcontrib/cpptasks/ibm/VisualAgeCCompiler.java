@@ -39,6 +39,8 @@ public final class VisualAgeCCompiler extends GccCompatibleCCompiler {
             headerExtensions, false, null);
     /**
      * Gets singleton instance of this class
+     *
+     * @return VisualAgeCCompiler
      */
     public static VisualAgeCCompiler getInstance() {
         return instance;
@@ -50,6 +52,12 @@ public final class VisualAgeCCompiler extends GccCompatibleCCompiler {
     /**
      * Private constructor. Use getInstance() to get singleton instance of this
      * class.
+     *
+     * @param command String
+     * @param sourceExtensions an array of String
+     * @param headerExtensions an array of String
+     * @param newEnvironment boolean
+     * @param env Environment
      */
     private VisualAgeCCompiler(String command, String[] sourceExtensions, String[] headerExtensions,
                                boolean newEnvironment, Environment env) {
@@ -112,10 +120,15 @@ public final class VisualAgeCCompiler extends GccCompatibleCCompiler {
     }
 
     /**
+     * <p>
      * Gets identifier for the compiler.
+     * </p>
      * <p>
      * Initial attempt at extracting version information
      * would lock up.  Using a stock response.
+     * </p>
+     *
+     * @return String
      */
     public String getIdentifier() {
         return "VisualAge compiler - unidentified version";

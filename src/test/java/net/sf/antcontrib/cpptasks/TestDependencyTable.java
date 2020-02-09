@@ -41,7 +41,9 @@ public class TestDependencyTable extends TestXMLConsumer {
     /**
      * Loads a dependency file from OpenSHORE (http://www.openshore.org)
      *
-     * @throws IOException
+     * @throws IOException if something goes wrong
+     * @throws ParserConfigurationException if parser configuration is wrong
+     * @throws SAXException if parser input is incorrect
      */
     public void testLoadOpenshore() throws IOException,
             ParserConfigurationException, SAXException {
@@ -59,7 +61,9 @@ public class TestDependencyTable extends TestXMLConsumer {
     /**
      * Loads a dependency file from Xerces-C (http://xml.apache.org)
      *
-     * @throws IOException
+     * @throws IOException if something goes wrong
+     * @throws ParserConfigurationException if parser configuration is wrong
+     * @throws SAXException if parser input is incorrect
      */
     public void testLoadXerces() throws IOException,
             ParserConfigurationException, SAXException {

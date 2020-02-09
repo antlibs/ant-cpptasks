@@ -23,7 +23,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Defines a dependency
+ * <p>
+ * Defines a dependency.
+ * </p>
  */
 public final class DependencyDef {
     private String id;

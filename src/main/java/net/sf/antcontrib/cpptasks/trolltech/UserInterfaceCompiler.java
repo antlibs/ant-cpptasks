@@ -96,7 +96,7 @@ public final class UserInterfaceCompiler extends CommandLineCompiler {
     }
 
     /**
-     * Change enviroment (deprecated).
+     * Change environment (deprecated).
      *
      * @param newEnvironment boolean use new environment.
      * @param env            Environment environment
@@ -316,7 +316,7 @@ public final class UserInterfaceCompiler extends CommandLineCompiler {
             //
             //   if the process returned a failure code and
             //      we aren't holding an exception from an earlier
-            //      interation
+            //      interaction
             if (retval != 0 && exc == null) {
                 //
                 //   construct the exception

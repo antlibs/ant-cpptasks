@@ -28,7 +28,7 @@ import org.xml.sax.SAXException;
 /**
  * Project writer interface.
  *
- * @author curta
+ * @author Curt Arnold
  */
 public interface ProjectWriter {
     /**

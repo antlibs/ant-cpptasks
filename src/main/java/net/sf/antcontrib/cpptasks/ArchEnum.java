@@ -25,9 +25,12 @@ import org.apache.tools.ant.types.EnumeratedAttribute;
  */
 public final class ArchEnum extends EnumeratedAttribute {
     /**
+     * <p>
      * Constructor.
+     * </p>
      * <p>
      * Set by default to "pentium3"
+     * </p>
      *
      * @see java.lang.Object#Object()
      */
@@ -38,12 +41,10 @@ public final class ArchEnum extends EnumeratedAttribute {
     /**
      * Gets list of acceptable values.
      *
+     * @return String[]
      * @see org.apache.tools.ant.types.EnumeratedAttribute#getValues()
      */
     public String[] getValues() {
-        /**
-         * Class initializer.
-         */
         return new String[]{
                 "i386",
                 "i486",

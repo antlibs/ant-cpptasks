@@ -31,7 +31,7 @@ import net.sf.antcontrib.cpptasks.VersionInfo;
 /**
  * Adapter for the Sun C89 Linker
  *
- * @author Hiram Chirino (cojonudo14@hotmail.com)
+ * @author Hiram Chirino {@literal <cojonudo14@hotmail.com>}
  */
 public final class C89Linker extends CommandLineLinker {
     private static final C89Linker dllLinker = new C89Linker("lib", ".so");

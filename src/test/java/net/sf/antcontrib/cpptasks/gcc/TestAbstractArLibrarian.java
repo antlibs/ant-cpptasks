@@ -22,7 +22,7 @@ import net.sf.antcontrib.cpptasks.compiler.TestAbstractLinker;
 /**
  * Tests for classes that derive from AbstractArLibrarian
  *
- * @author CurtA
+ * @author Curt Arnold
  */
 public class TestAbstractArLibrarian extends TestAbstractLinker {
     /**
@@ -36,8 +36,9 @@ public class TestAbstractArLibrarian extends TestAbstractLinker {
     }
 
     /**
-     * Creates item under test @returns item under test
+     * Creates item under test
      *
+     * @return item under test
      * @see net.sf.antcontrib.cpptasks.compiler.TestAbstractProcessor#create()
      */
     protected AbstractProcessor create() {
@@ -65,6 +66,7 @@ public class TestAbstractArLibrarian extends TestAbstractLinker {
      * Tests for library patterns
      * <p>
      * See patch [ 676276 ] Enhanced support for Mac OS X
+     * </p>
      */
     public void testGetLibraryPatterns() {
         String[] libnames = new String[]{"foo"};
@@ -76,6 +78,7 @@ public class TestAbstractArLibrarian extends TestAbstractLinker {
      * Tests output file for ar library
      * <p>
      * See bug [ 687732 ] Filenames for gcc static library does start with lib
+     * </p>
      */
     public void testOutputFileName() {
         String[] outputFiles = GccLibrarian.getInstance().getOutputFileNames("x", null);

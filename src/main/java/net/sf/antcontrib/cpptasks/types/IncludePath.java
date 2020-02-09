@@ -19,10 +19,13 @@ package net.sf.antcontrib.cpptasks.types;
 import org.apache.tools.ant.Project;
 
 /**
+ * <p>
  * An include path.
+ * </p>
  * <p>
  * Works like other paths in Ant with with the addition of "if" and "unless"
  * conditions.
+ * </p>
  *
  * @author Curt Arnold
  */

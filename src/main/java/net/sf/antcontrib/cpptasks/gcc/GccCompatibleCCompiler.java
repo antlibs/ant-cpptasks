@@ -39,6 +39,13 @@ public abstract class GccCompatibleCCompiler extends CommandLineCCompiler {
     /**
      * Private constructor. Use GccCCompiler.getInstance() to get singleton
      * instance of this class.
+     *
+     * @param command String
+     * @param identifierArg String
+     * @param libtool boolean
+     * @param libtoolCompiler GccCompatibleCCompiler
+     * @param newEnvironment boolean
+     * @param env Environment
      */
     protected GccCompatibleCCompiler(String command, String identifierArg,
                                      boolean libtool, GccCompatibleCCompiler libtoolCompiler,
@@ -50,6 +57,15 @@ public abstract class GccCompatibleCCompiler extends CommandLineCCompiler {
     /**
      * Private constructor. Use GccCCompiler.getInstance() to get singleton
      * instance of this class.
+     *
+     * @param command String
+     * @param identifierArg String
+     * @param sourceExtensions an array of String
+     * @param headerExtensions an array of String
+     * @param libtool boolean
+     * @param libtoolCompiler GccCompatibleCCompiler
+     * @param newEnvironment boolean
+     * @param env Environment
      */
     protected GccCompatibleCCompiler(String command, String identifierArg,
                                      String[] sourceExtensions, String[] headerExtensions,
@@ -107,6 +123,9 @@ public abstract class GccCompatibleCCompiler extends CommandLineCCompiler {
 
     /**
      * Adds an include path to the command.
+     *
+     * @param path String
+     * @param cmd a list of String
      */
     public void addIncludePath(String path, Vector cmd) {
         cmd.addElement("-I" + path);

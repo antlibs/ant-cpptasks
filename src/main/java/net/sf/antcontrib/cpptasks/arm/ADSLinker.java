@@ -28,7 +28,7 @@ import net.sf.antcontrib.cpptasks.types.LibraryTypeEnum;
 /**
  * Adapter for the ARM Linker
  *
- * @author CurtA
+ * @author Curt Arnold
  */
 public class ADSLinker extends CommandLineLinker {
     private static final ADSLinker dllInstance = new ADSLinker(".o");

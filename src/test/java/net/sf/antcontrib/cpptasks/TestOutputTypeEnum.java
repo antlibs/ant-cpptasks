@@ -19,7 +19,7 @@ package net.sf.antcontrib.cpptasks;
 import junit.framework.TestCase;
 
 /**
- * @author CurtA
+ * @author Curt Arnold
  */
 public class TestOutputTypeEnum extends TestCase {
     /**
@@ -35,6 +35,7 @@ public class TestOutputTypeEnum extends TestCase {
      * Test checks that output type enum contains "plugin"
      * <p>
      * See patch [ 676276 ] Enhanced support for Mac OS X
+     * </p>
      */
     public void testContainsValuePlugin() {
         assertTrue(new OutputTypeEnum().containsValue("plugin"));

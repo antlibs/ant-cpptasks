@@ -17,11 +17,11 @@
 package net.sf.antcontrib.cpptasks.types;
 
 /**
+ * <p>
  * Preprocessor macro definition.
+ * </p>
  *
- * @author Mark A Russell <a
- * href="mailto:mark_russell@csgsystems.com">mark_russell@csg_systems.com
- * </a>
+ * @author Mark A Russell {@literal <mark_russell@csgsystems.com>}
  */
 public class DefineArgument extends UndefineArgument {
     private String value;
@@ -32,6 +32,8 @@ public class DefineArgument extends UndefineArgument {
 
     /**
      * Returns the value of the define
+     *
+     * @return String
      */
     public final String getValue() {
         return value;
@@ -39,6 +41,8 @@ public class DefineArgument extends UndefineArgument {
 
     /**
      * Set the value attribute
+     *
+     * @param value String
      */
     public final void setValue(String value) {
         this.value = value;

@@ -22,7 +22,9 @@ import org.apache.tools.ant.types.Reference;
 import java.util.Vector;
 
 /**
+ * <p>
  * Distributed build information (Non-functional prototype).
+ * </p>
  */
 public final class DistributerDef extends DataType {
     /**
@@ -97,13 +99,17 @@ public final class DistributerDef extends DataType {
     }
 
     /**
+     * <p>
      * Sets the property name for the 'if' condition.
+     * </p>
      * <p>
      * The define will be ignored unless the property is defined.
+     * </p>
      * <p>
      * The value of the property is insignificant, but values that would imply
      * misinterpretation ("false", "no") will throw an exception when
      * evaluated.
+     * </p>
      *
      * @param propName property name
      */
@@ -123,13 +129,17 @@ public final class DistributerDef extends DataType {
     }
 
     /**
+     * <p>
      * Set the property name for the 'unless' condition.
+     * </p>
      * <p>
      * If named property is set, the define will be ignored.
+     * </p>
      * <p>
      * The value of the property is insignificant, but values that would imply
      * misinterpretation ("false", "no") of the behavior will throw an
      * exception when evaluated.
+     * </p>
      *
      * @param propName name of property
      */

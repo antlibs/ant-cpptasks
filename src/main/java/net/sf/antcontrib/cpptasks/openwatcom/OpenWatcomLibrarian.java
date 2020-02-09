@@ -186,7 +186,7 @@ public final class OpenWatcomLibrarian extends CommandLineLinker {
     }
 
     /**
-     * Gets case-sensisitivity of processor.
+     * Gets case-sensitivity of processor.
      *
      * @return boolean true if case sensitive
      */

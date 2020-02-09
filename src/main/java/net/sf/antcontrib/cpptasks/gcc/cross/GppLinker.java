@@ -28,13 +28,12 @@ import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 import net.sf.antcontrib.cpptasks.gcc.AbstractLdLinker;
 import net.sf.antcontrib.cpptasks.types.LibrarySet;
-
 import org.apache.tools.ant.BuildException;
 
 /**
  * Adapter for the g++ variant of the GCC linker
  *
- * @author Stephen M. Webb <stephen.webb@bregmasoft.com>
+ * @author Stephen M. Webb {@literal <stephen.webb@bregmasoft.com>}
  */
 public class GppLinker extends AbstractLdLinker {
     protected static final String[] discardFiles = new String[0];
@@ -109,7 +108,7 @@ public class GppLinker extends AbstractLdLinker {
     }
 
     /**
-     * Allows drived linker to decorate linker option. Override by GppLinker to
+     * Allows derived linker to decorate linker option. Override by GppLinker to
      * prepend a "-Wl," to pass option to through gcc to linker.
      *
      * @param buf buffer that may be used and abused in the decoration process,

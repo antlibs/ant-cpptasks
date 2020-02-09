@@ -52,6 +52,7 @@ public final class PropertyListSerialization {
      * @param propertyList property list.
      * @param file         destination.
      * @param comments     comments to insert into document.
+     * @throws IOException                       if exception during I/O.
      * @throws SAXException                      if exception during serialization.
      * @throws TransformerConfigurationException if exception creating serializer.
      */
@@ -94,7 +95,7 @@ public final class PropertyListSerialization {
         if (map.size() > 0) {
             //
             //   need to output with sorted keys to maintain
-            //     reproducability
+            //     reproducibility
             //
             Object[] keys = map.keySet().toArray();
             Arrays.sort(keys);

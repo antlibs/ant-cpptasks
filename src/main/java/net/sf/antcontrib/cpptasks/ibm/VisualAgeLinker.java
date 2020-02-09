@@ -68,10 +68,15 @@ public final class VisualAgeLinker extends AbstractLdLinker {
     }
 
     /**
+     * <p>
      * Gets identifier for the compiler.
+     * </p>
      * <p>
      * Initial attempt at extracting version information
      * would lock up.  Using a stock response.
+     * </p>
+     *
+     * @return String
      */
     public String getIdentifier() {
         return "VisualAge linker - unidentified version";

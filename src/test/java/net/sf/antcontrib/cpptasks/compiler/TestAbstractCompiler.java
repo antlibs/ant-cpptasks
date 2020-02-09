@@ -30,7 +30,8 @@ import org.apache.tools.ant.BuildException;
 /**
  * Test for abstract compiler class
  * <p>
- * Override create to test concrete compiler implementions
+ * Override create to test concrete compiler implementations
+ * </p>
  */
 public class TestAbstractCompiler extends TestAbstractProcessor {
     private class DummyAbstractCompiler extends AbstractCompiler {

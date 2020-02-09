@@ -77,9 +77,9 @@ public final class WindowsPlatform {
             throw new NullPointerException("objDir");
         }
 
-        /**
-         * Fully resolve version info
-         */
+        //
+        // Fully resolve version info
+        //
         VersionInfo mergedInfo = versionInfo.merge();
 
         File versionResource = new File(objDir, "versioninfo.rc");
@@ -119,9 +119,12 @@ public final class WindowsPlatform {
     }
 
     /**
+     * <p>
      * Compare two input streams for duplicate content
+     * </p>
      * <p>
      * Naive implementation, but should not be performance issue.
+     * </p>
      *
      * @param stream1 stream
      * @param stream2 stream

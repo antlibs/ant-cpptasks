@@ -17,7 +17,9 @@
 package net.sf.antcontrib.cpptasks.types;
 
 /**
+ * <p>
  * A compiler command line argument.
+ * </p>
  */
 public class CompilerArgument extends CommandLineArgument {
     public CompilerArgument() {

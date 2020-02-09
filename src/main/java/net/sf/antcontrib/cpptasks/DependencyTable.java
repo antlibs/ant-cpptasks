@@ -56,8 +56,8 @@ public final class DependencyTable {
         /**
          * Constructor
          *
-         * @param history     hashtable of TargetHistory keyed by output name
-         * @param outputFiles existing files in output directory
+         * @param dependencyTable hashtable of TargetHistory keyed by output name
+         * @param baseDir         existing files in output directory
          */
         private DependencyTableHandler(DependencyTable dependencyTable, File baseDir) {
             this.dependencyTable = dependencyTable;
@@ -145,11 +145,16 @@ public final class DependencyTable {
 
     public abstract class DependencyVisitor {
         /**
+         * <p>
          * Previews all the children of this source file.
+         * </p>
          * <p>
          * May be called multiple times as DependencyInfo's for children are
          * filled in.
+         * </p>
          *
+         * @param parent DependencyInfo
+         * @param children array of DependencyInfo
          * @return true to continue towards recursion into included files
          */
         public abstract boolean preview(DependencyInfo parent,
@@ -163,6 +168,7 @@ public final class DependencyTable {
         /**
          * Visits the dependency info.
          *
+         * @param dependInfo DependencyInfo
          * @return true to continue towards recursion into included files
          */
         public abstract boolean visit(DependencyInfo dependInfo);
@@ -236,21 +242,24 @@ public final class DependencyTable {
 
     private/* final */ File baseDir;
     private String baseDirPath;
+
     /**
      * a hashtable of DependencyInfo[] keyed by output file name
      */
     private final Hashtable dependencies = new Hashtable();
+
     /**
      * The file the cache was loaded from.
      */
     private/* final */ File dependenciesFile;
+
     /**
      * Flag indicating whether the cache should be written back to file.
      */
     private boolean dirty;
 
     /**
-     * Creates a target history table from dependencies.xml in the prject
+     * Creates a target history table from dependencies.xml in the project
      * directory, if it exists. Otherwise, initializes the dependencies empty.
      *
      * @param baseDir output directory for task
@@ -321,6 +330,8 @@ public final class DependencyTable {
 
     /**
      * Returns an enumerator of DependencyInfo's
+     *
+     * @return an Enumeration of arrays of DependencyInfo
      */
     public Enumeration elements() {
         return dependencies.elements();
@@ -329,6 +340,10 @@ public final class DependencyTable {
     /**
      * This method returns a DependencyInfo for the specific source file and
      * include path identifier
+     *
+     * @param sourceRelativeName String
+     * @param includePathIdentifier String
+     * @return DependencyInfo
      */
     public DependencyInfo getDependencyInfo(String sourceRelativeName,
                                             String includePathIdentifier) {
@@ -383,10 +398,18 @@ public final class DependencyTable {
     }
 
     /**
+     * <p>
      * Determines if the specified target needs to be rebuilt.
+     * </p>
      * <p>
      * This task may result in substantial IO as files are parsed to determine
-     * their dependencies
+     * their dependencies.
+     * </p>
+     *
+     * @param task CCTask
+     * @param target TargetInfo
+     * @param dependencyDepth int
+     * @return boolean
      */
     public boolean needsRebuild(CCTask task, TargetInfo target,
                                 int dependencyDepth) {
@@ -556,9 +579,9 @@ public final class DependencyTable {
         String[] includes = dependInfo.getIncludes();
         String[] sysIncludes = dependInfo.getSysIncludes();
         //
-        //   if the includes have not been evaluted then
+        //   if the includes have not been evaluated then
         //       it is not worth our time saving it
-        //       and trying to distiguish between files with
+        //       and trying to distinguish between files with
         //       no dependencies and those with undetermined dependencies
         buf.setLength(0);
         buf.append("      <source file=\"");

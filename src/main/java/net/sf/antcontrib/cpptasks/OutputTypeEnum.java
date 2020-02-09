@@ -25,9 +25,12 @@ import org.apache.tools.ant.types.EnumeratedAttribute;
  */
 public class OutputTypeEnum extends EnumeratedAttribute {
     /**
+     * <p>
      * Constructor
+     * </p>
      * <p>
      * Set by default to "executable"
+     * </p>
      *
      * @see java.lang.Object#Object()
      */
@@ -38,6 +41,7 @@ public class OutputTypeEnum extends EnumeratedAttribute {
     /**
      * Gets list of acceptable values
      *
+     * @return an array of String
      * @see org.apache.tools.ant.types.EnumeratedAttribute#getValues()
      */
     public String[] getValues() {

@@ -38,9 +38,12 @@ public abstract class AbstractLinker extends AbstractProcessor implements Linker
     }
 
     /**
+     * <p>
      * Returns the bid of the processor for the file.
+     * </p>
      * <p>
      * A linker will bid 1 on any unrecognized file type.
+     * </p>
      *
      * @param inputFile filename of input file
      * @return bid for the file, 0 indicates no interest, 1 indicates that the

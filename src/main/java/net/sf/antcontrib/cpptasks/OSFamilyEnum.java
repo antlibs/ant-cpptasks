@@ -25,9 +25,12 @@ import org.apache.tools.ant.types.EnumeratedAttribute;
  */
 public final class OSFamilyEnum extends EnumeratedAttribute {
     /**
+     * <p>
      * Constructor.
+     * </p>
      * <p>
      * Set by default to "pentium3"
+     * </p>
      *
      * @see java.lang.Object#Object()
      */
@@ -38,6 +41,7 @@ public final class OSFamilyEnum extends EnumeratedAttribute {
     /**
      * Gets list of acceptable values.
      *
+     * @return an array of String
      * @see org.apache.tools.ant.types.EnumeratedAttribute#getValues()
      */
     public String[] getValues() {

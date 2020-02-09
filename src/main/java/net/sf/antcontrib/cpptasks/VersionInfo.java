@@ -23,20 +23,25 @@ import org.apache.tools.ant.types.DataType;
 import org.apache.tools.ant.types.Reference;
 
 /**
+ * <p>
  * Version Information.
+ * </p>
  * <p>
  * This information is applied in a platform specific manner
  * to embed version information into executable images.  This
  * behavior is new and subject to change.
+ * </p>
  * <p>
  * On the Microsoft Windows platform, a resource is generated and added
  * to the set of files to be compiled.  A resource compiler must
  * be specified to compile the generated file.
+ * </p>
  * <p>
  * On Unix platforms, versioninfo is currently not used.
  * Future versions may append fileversion to the output file name,
  * use compatibility version for -soname and possibly create
  * symbolic links.
+ * </p>
  */
 public final class VersionInfo extends DataType {
     /**
@@ -112,12 +117,12 @@ public final class VersionInfo extends DataType {
     private String compatibilityVersion;
 
     /**
-     * prerease build.
+     * prerelease build.
      */
     private Boolean prerelease;
 
     /**
-     * prerease build.
+     * prerelease build.
      */
     private Boolean patched;
 
@@ -239,7 +244,7 @@ public final class VersionInfo extends DataType {
      * Methods is required for documentation generation, throws
      * exception if called.
      *
-     * @throws org.apache.tools.ant.BuildException if called
+     * @throws BuildException if called
      */
     public void execute() throws org.apache.tools.ant.BuildException {
         throw new org.apache.tools.ant.BuildException(
@@ -250,6 +255,7 @@ public final class VersionInfo extends DataType {
      * Returns true if the define's if and unless conditions (if any) are
      * satisfied.
      *
+     * @return boolean
      * @throws BuildException throws build exception if name is not set
      */
     public final boolean isActive() throws BuildException {
@@ -298,13 +304,17 @@ public final class VersionInfo extends DataType {
     }
 
     /**
+     * <p>
      * Sets the property name for the 'if' condition.
+     * </p>
      * <p>
      * The define will be ignored unless the property is defined.
+     * </p>
      * <p>
      * The value of the property is insignificant, but values that would imply
      * misinterpretation ("false", "no") will throw an exception when
      * evaluated.
+     * </p>
      *
      * @param propName property name
      */
@@ -319,6 +329,9 @@ public final class VersionInfo extends DataType {
      * Specifies that this element should behave as if the content of the
      * element with the matching id attribute was inserted at this location. If
      * specified, no other attributes should be specified.
+     *
+     * @param r Reference
+     * @throws BuildException if something goes wrong
      */
     public void setRefid(Reference r) throws BuildException {
         super.setRefid(r);
@@ -334,13 +347,17 @@ public final class VersionInfo extends DataType {
     }
 
     /**
+     * <p>
      * Set the property name for the 'unless' condition.
+     * </p>
      * <p>
      * If named property is set, the define will be ignored.
+     * </p>
      * <p>
      * The value of the property is insignificant, but values that would imply
      * misinterpretation ("false", "no") of the behavior will throw an
      * exception when evaluated.
+     * </p>
      *
      * @param propName name of property
      */

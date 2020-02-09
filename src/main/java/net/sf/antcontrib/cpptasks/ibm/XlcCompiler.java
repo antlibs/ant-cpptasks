@@ -17,11 +17,11 @@
  *    distribution.
  *
  * 3. The end-user documentation included with the redistribution, if
- *    any, must include the following acknowlegement:
+ *    any, must include the following acknowledgement:
  *       "This product includes software developed by the
  *        Ant-Contrib project (http://sourceforge.net/projects/ant-contrib)."
- *    Alternately, this acknowlegement may appear in the software itself,
- *    if and wherever such third-party acknowlegements normally appear.
+ *    Alternately, this acknowledgement may appear in the software itself,
+ *    if and wherever such third-party acknowledgements normally appear.
  *
  * 4. The names "Ant-Contrib"
  *    must not be used to endorse or promote products derived
@@ -70,6 +70,10 @@ public final class XlcCompiler extends GccCompatibleCCompiler {
     /**
      * Private constructor.  Use getInstance() to get
      * singleton instance of this class.
+     *
+     * @param command String
+     * @param newEnvironment boolean
+     * @param env Environment
      */
     private XlcCompiler(String command, boolean newEnvironment, Environment env) {
         super(command, "-qversion", false, null, newEnvironment, env);
@@ -81,6 +85,8 @@ public final class XlcCompiler extends GccCompatibleCCompiler {
 
     /**
      * Gets singleton instance of this class
+     *
+     * @return XlcCompiler
      */
     public static XlcCompiler getInstance() {
         return instance;

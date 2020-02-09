@@ -45,7 +45,9 @@ import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.Environment;
 
 /**
+ * <p>
  * Compile and link task.
+ * </p>
  *
  * <p>
  * This task can compile various source languages and produce executables,
@@ -74,6 +76,7 @@ import org.apache.tools.ant.types.Environment;
  * </p>
  * <p>
  * To use:
+ * </p>
  * <ol>
  * <li>
  * Place cpptasks.jar into Ant's classpath by placing it in Ant's lib
@@ -169,6 +172,9 @@ public class CCTask extends Task {
     /**
      * Builds a Hashtable to targets needing to be rebuilt keyed by compiler
      * configuration
+     *
+     * @param targets Hashtable of String, TargetInfo
+     * @return Hashtable of ProcessorConfiguration, Vector of TargetInfo
      */
     public static Hashtable getTargetsToBuildByConfiguration(Hashtable targets) {
         Hashtable targetsByConfig = new Hashtable();
@@ -195,6 +201,7 @@ public class CCTask extends Task {
      */
     private Vector _compilers = new Vector();
     /**
+     *
      * The library sets.
      */
     private Vector _libsets = new Vector();
@@ -229,7 +236,7 @@ public class CCTask extends Task {
     protected boolean failOnError = true;
 
     /**
-     * Content that appears in <cc>and also in <compiler>are maintained by a
+     * Content that appears in &lt;cc&gt; as well as in &lt;compiler&gt; is maintained by a
      * captive CompilerDef instance
      */
     private final CompilerDef compilerDef = new CompilerDef();
@@ -238,15 +245,18 @@ public class CCTask extends Task {
      */
     private String dataset;
     /**
-     * Depth of dependency checking
      * <p>
-     * Values < 0 indicate full dependency checking Values >= 0 indicate
+     * Depth of dependency checking
+     * </p>
+     * <p>
+     * Values &lt; 0 indicate full dependency checking Values &gt;= 0 indicate
      * partial dependency checking and for superficial compilation checks. Will
      * throw BuildException before attempting link
+     * </p>
      */
     private int dependencyDepth = -1;
     /**
-     * Content that appears in <cc>and also in <linker>are maintained by a
+     * Content that appears in &lt;cc&gt; as well as in &lt;linker&gt; is maintained by a
      * captive CompilerDef instance
      */
     private final LinkerDef linkerDef = new LinkerDef();
@@ -285,6 +295,8 @@ public class CCTask extends Task {
     /**
      * Adds a compiler command-line arg. Argument will be inherited by all
      * nested compiler elements that do not have inherit="false".
+     *
+     * @param arg CompilerArgument
      */
     public void addConfiguredCompilerArg(CompilerArgument arg) {
         compilerDef.addConfiguredCompilerArg(arg);
@@ -303,7 +315,7 @@ public class CCTask extends Task {
     /**
      * Adds a linker definition. The first linker that is not disqualified by
      * its "if" and "unless" attributes will perform the link. If no child
-     * linker element is active, the linker implied by the cc elements name or
+     * linker element is active, the linker implied by the name of cc element or
      * classname attribute will be used.
      *
      * @param linker linker
@@ -320,6 +332,8 @@ public class CCTask extends Task {
     /**
      * Adds a linker command-line arg. Argument will be inherited by all nested
      * linker elements that do not have inherit="false".
+     *
+     * @param arg LinkerArgument
      */
     public void addConfiguredLinkerArg(LinkerArgument arg) {
         linkerDef.addConfiguredLinkerArg(arg);
@@ -327,6 +341,8 @@ public class CCTask extends Task {
 
     /**
      * Add an environment variable to the launched process.
+     *
+     * @param var Environment.Variable
      */
     public void addEnv(Environment.Variable var) {
         compilerDef.addEnv(var);
@@ -334,25 +350,34 @@ public class CCTask extends Task {
     }
 
     /**
+     * <p>
      * Adds a source file set.
+     * </p>
      * <p>
      * Files in these filesets will be auctioned to the available compiler
      * configurations, with the default compiler implied by the cc element
      * bidding last. If no compiler is interested in the file, it will be
      * passed to the linker.
+     * </p>
      * <p>
      * To have a file be processed by a particular compiler configuration, add
      * a fileset to the corresponding compiler element.
+     * </p>
+     *
+     * @param srcSet ConditionalFileSet
      */
     public void addFileset(ConditionalFileSet srcSet) {
         compilerDef.addFileset(srcSet);
     }
 
     /**
+     * <p>
      * Adds a library set.
+     * </p>
      * <p>
      * Library sets will be inherited by all linker elements that do not have
      * inherit="false".
+     * </p>
      *
      * @param libset library set
      * @throws NullPointerException if libset is null.
@@ -365,15 +390,19 @@ public class CCTask extends Task {
     }
 
     /**
+     * <p>
      * Adds a system library set. Timestamps and locations of system library
      * sets are not used in dependency analysis.
+     * </p>
      * <p>
      * Essential libraries (such as C Runtime libraries) should not be
      * specified since the task will attempt to identify the correct libraries
      * based on the multithread, debug and runtime attributes.
+     * </p>
      * <p>
      * System library sets will be inherited by all linker elements that do not
      * have inherit="false".
+     * </p>
      *
      * @param libset library set
      * @throws NullPointerException if libset is null.
@@ -405,6 +434,7 @@ public class CCTask extends Task {
      * Checks all targets that are not forced to be rebuilt or are missing
      * object files to be checked for modified include files
      *
+     * @param targets Hashtable of String, TargetInfo
      * @return total number of targets to be rebuilt
      */
     protected int checkForChangedIncludeFiles(Hashtable targets) {
@@ -550,10 +580,15 @@ public class CCTask extends Task {
     }
 
     /**
+     * <p>
      * Adds an include path.
+     * </p>
      * <p>
      * Include paths will be inherited by nested compiler elements that do not
      * have inherit="false".
+     * </p>
+     *
+     * @return IncludePath
      */
     public IncludePath createIncludePath() {
         return compilerDef.createIncludePath();
@@ -562,22 +597,29 @@ public class CCTask extends Task {
     /**
      * Specifies precompilation prototype file and exclusions. Inherited by all
      * compilers that do not have inherit="false".
+     *
+     * @return PrecompiledDef
      */
     public PrecompileDef createPrecompile() throws BuildException {
         return compilerDef.createPrecompile();
     }
 
     /**
+     * <p>
      * Adds a system include path. Locations and timestamps of files located
      * using the system include paths are not used in dependency analysis.
-     * <p>
+     * </p>
      * <p>
      * Standard include locations should not be specified. The compiler
      * adapters should recognized the settings from the appropriate environment
      * variables or configuration files.
+     * </p>
      * <p>
      * System include paths will be inherited by nested compiler elements that
      * do not have inherit="false".
+     * </p>
+     *
+     * @return SystemIncludePath
      */
     public SystemIncludePath createSysIncludePath() {
         return compilerDef.createSysIncludePath();
@@ -586,7 +628,7 @@ public class CCTask extends Task {
     /**
      * Executes the task. Compiles the given files.
      *
-     * @throws BuildException if someting goes wrong with the build
+     * @throws BuildException if something goes wrong with the build
      */
     public void execute() throws BuildException {
         //
@@ -622,8 +664,6 @@ public class CCTask extends Task {
                 versionInfo = null;
             }
         }
-
-
         //
         //  determine the eventual linker configuration
         //      (may be null) and collect any explicit
@@ -632,7 +672,6 @@ public class CCTask extends Task {
         Vector sysObjectFiles = new Vector();
         LinkerConfiguration linkerConfig = collectExplicitObjectFiles(objectFiles, sysObjectFiles,
                 versionInfo);
-
 
         //
         //   Assemble hashtable of all files
@@ -661,7 +700,6 @@ public class CCTask extends Task {
                 }
             }
             compilerDef.visitFiles(matcher);
-
 
             Enumeration iter = projects.elements();
             while (iter.hasMoreElements()) {
@@ -785,7 +823,6 @@ public class CCTask extends Task {
         //      since we really didn't do what we
         //      should have done
         //
-        //
         if (dependencyDepth >= 0) {
             throw new BuildException("All files at depth " + Integer.toString(dependencyDepth)
                     + " from changes successfully compiled.\n"
@@ -907,7 +944,7 @@ public class CCTask extends Task {
     /**
      * This method collects a Hashtable, keyed by output file name, of
      * TargetInfo's for every source file that is specified in the filesets of
-     * the <cc>and nested <compiler>elements. The TargetInfo's contain the
+     * the &lt;cc&gt; and nested &lt;compiler&gt; elements. The TargetInfo's contain the
      * appropriate compiler configurations for their possible compilation
      */
     private Hashtable getTargets(LinkerConfiguration linkerConfig,
@@ -1037,6 +1074,8 @@ public class CCTask extends Task {
 
     /**
      * Enables or disables generation of debug info.
+     *
+     * @param debug boolean
      */
     public void setDebug(boolean debug) {
         compilerDef.setDebug(debug);
@@ -1057,15 +1096,20 @@ public class CCTask extends Task {
      * <p>
      * Controls the depth of the dependency evaluation. Used to do a quick
      * check of changes before a full build.
+     * </p>
      * <p>
      * Any negative value which will perform full dependency checking. Positive
      * values will truncate dependency checking. A value of 0 will cause only
      * those files that changed to be recompiled, a value of 1 which cause
      * files that changed or that explicitly include a file that changed to be
      * recompiled.
+     * </p>
      * <p>
      * Any non-negative value will cause a BuildException to be thrown before
      * attempting a link or completing the task.
+     * </p>
+     *
+     * @param depth int
      */
     public void setDependencyDepth(int depth) {
         dependencyDepth = depth;
@@ -1073,6 +1117,8 @@ public class CCTask extends Task {
 
     /**
      * Enables generation of exception handling code
+     *
+     * @param exceptions boolean
      */
     public void setExceptions(boolean exceptions) {
         compilerDef.setExceptions(exceptions);
@@ -1080,6 +1126,8 @@ public class CCTask extends Task {
 
     /**
      * Enables run-time type information.
+     *
+     * @param rtti boolean
      */
     public void setRtti(boolean rtti) {
         compilerDef.setRtti(rtti);
@@ -1098,10 +1146,13 @@ public class CCTask extends Task {
     }
 
     /**
+     * <p>
      * Set use of libtool.
+     * </p>
      * <p>
      * If set to true, the "libtool " will be prepended to the command line for
      * compatible processors
+     * </p>
      *
      * @param libtool If true, use libtool.
      */
@@ -1114,7 +1165,8 @@ public class CCTask extends Task {
      * Sets the output file type. Supported values "executable", "shared", and
      * "static".  Deprecated, specify outtype instead.
      *
-     * @deprecated
+     * @param outputType OutputTypeEnum
+     * @deprecated specify outtype instead.
      */
     public void setLink(OutputTypeEnum outputType) {
         linkType.setOutputType(outputType);
@@ -1133,9 +1185,13 @@ public class CCTask extends Task {
     //
 
     /**
+     * <p>
      * Sets type of the default compiler and linker.
-     *
-     * <table width="100%" border="1"> <thead>Supported compilers </thead>
+     * </p>
+     * <table style="width:100%;border-collapse:collapse;border:1px solid black;">
+     * <caption></caption>
+     * <thead><tr><th>Supported compilers</th></tr></thead>
+     * <tbody>
      * <tr>
      * <td>gcc (default)</td>
      * <td>GCC C++ compiler</td>
@@ -1236,7 +1292,10 @@ public class CCTask extends Task {
      * <td>wfl</td>
      * <td>OpenWatcom FORTRAN compiler</td>
      * </tr>
+     * </tbody>
      * </table>
+     *
+     * @param name CompilerEnum
      */
     public void setName(CompilerEnum name) {
         compilerDef.setName(name);
@@ -1248,6 +1307,8 @@ public class CCTask extends Task {
     /**
      * Do not propagate old environment when new environment variables are
      * specified.
+     *
+     * @param newenv boolean
      */
     public void setNewenvironment(boolean newenv) {
         compilerDef.setNewenvironment(newenv);
@@ -1255,10 +1316,13 @@ public class CCTask extends Task {
     }
 
     /**
+     * <p>
      * Sets the destination directory for object files.
+     * </p>
      * <p>
      * Generally this should be a property expression that evaluates to
      * distinct debug and release object file directories.
+     * </p>
      *
      * @param dir object directory
      */
@@ -1289,6 +1353,8 @@ public class CCTask extends Task {
     /**
      * Specifies the name of a property to set with the physical filename that
      * is produced by the linker
+     *
+     * @param outputFileProperty String
      */
     public void setOutputFileProperty(String outputFileProperty) {
         this.outputFileProperty = outputFileProperty;
@@ -1297,6 +1363,8 @@ public class CCTask extends Task {
     /**
      * Sets the output file type. Supported values "executable", "shared", and
      * "static".
+     *
+     * @param outputType OutputTypeEnum
      */
     public void setOuttype(OutputTypeEnum outputType) {
         linkType.setOutputType(outputType);
@@ -1313,6 +1381,8 @@ public class CCTask extends Task {
 
     /**
      * Sets the project.
+     *
+     * @param project Project
      */
     public void setProject(Project project) {
         super.setProject(project);
@@ -1343,16 +1413,22 @@ public class CCTask extends Task {
 
     /**
      * Sets the type of runtime library, possible values "dynamic", "static".
+     *
+     * @param rtlType RuntimeType
      */
     public void setRuntime(RuntimeType rtlType) {
         linkType.setStaticRuntime((rtlType.getIndex() == 1));
     }
 
     /**
+     * <p>
      * Sets the nature of the subsystem under which that the program will
      * execute.
-     *
-     * <table width="100%" border="1"> <thead>Supported subsystems </thead>
+     * </p>
+     * <table style="width:100%;border-collapse:collapse;border:1px solid black;">
+     * <caption></caption>
+     * <thead><tr><th>Supported subsystems</th></tr></thead>
+     * <tbody>
      * <tr>
      * <td>gui</td>
      * <td>Graphical User Interface</td>
@@ -1365,6 +1441,7 @@ public class CCTask extends Task {
      * <td>other</td>
      * <td>Other</td>
      * </tr>
+     * </tbody>
      * </table>
      *
      * @param subsystem subsystem
@@ -1389,6 +1466,8 @@ public class CCTask extends Task {
     /**
      * Enumerated attribute with the values "none", "severe", "default",
      * "production", "diagnostic", and "aserror".
+     *
+     * @param level WarningLevelEnum
      */
     public void setWarnings(WarningLevelEnum level) {
         compilerDef.setWarnings(level);
@@ -1444,16 +1523,18 @@ public class CCTask extends Task {
     /**
      * Sets optimization.
      *
-     * @param optimization
+     * @param optimization OptimizationEnum
      */
     public void setOptimize(OptimizationEnum optimization) {
         compilerDef.setOptimize(optimization);
     }
 
     /**
-     * Adds desriptive version information to be included in the
+     * Adds descriptive version information to be included in the
      * generated file.  The first active version info block will
      * be used.
+     *
+     * @param newVersionInfo VersionInfo
      */
     public void addConfiguredVersioninfo(VersionInfo newVersionInfo) {
         newVersionInfo.setProject(this.getProject());

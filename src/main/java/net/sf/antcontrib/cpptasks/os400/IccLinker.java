@@ -35,7 +35,7 @@ import org.apache.tools.ant.BuildException;
 /**
  * Adapter for the IBM (R) OS/390 (tm) Linker
  *
- * @author Hiram Chirino (cojonudo14@hotmail.com)
+ * @author Hiram Chirino {@literal <cojonudo14@hotmail.com>}
  */
 public final class IccLinker extends CommandLineLinker {
     private static final IccLinker datasetLinker = new IccLinker();
@@ -97,7 +97,7 @@ public final class IccLinker extends CommandLineLinker {
         // <libset dir="." libs="//'MQM.V5R2M0.SCSQLOAD'"/>
         //
         // We have to have special handling here because the file is not
-        // on the normal filesystem so the task will not noramly include it
+        // on the normal filesystem so the task will not normally include it
         // as part of the link command.
         if (libsets != null) {
             for (int i = 0; i < libsets.length; i++) {

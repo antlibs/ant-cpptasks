@@ -28,6 +28,7 @@ public interface ProcessorConfiguration {
     /**
      * An indication of how much this compiler would like to process this file
      *
+     * @param filename name of the file
      * @return 0 is no interest to process, 100 is strong interest to process
      */
     int bid(String filename);
@@ -36,6 +37,8 @@ public interface ProcessorConfiguration {
      * Returns a string representation of this configuration. Should be
      * canonical so that equivalent configurations will have equivalent string
      * representations
+     *
+     * @return String
      */
     String getIdentifier();
 
@@ -43,6 +46,7 @@ public interface ProcessorConfiguration {
      * Output file name (no path components) corresponding to source file
      *
      * @param inputFile input file
+     * @param versionInfo VersionInfo
      * @return output file names or zero-length array if no output file or name not
      * determined by input file
      */
@@ -53,6 +57,8 @@ public interface ProcessorConfiguration {
     /**
      * If true, all files using this configuration should be rebuilt and any
      * existing output files should be ignored
+     *
+     * @return boolean
      */
     boolean getRebuild();
 }

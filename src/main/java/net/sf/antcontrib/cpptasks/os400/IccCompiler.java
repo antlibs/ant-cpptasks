@@ -31,7 +31,7 @@ import org.apache.tools.ant.types.Environment;
 /**
  * Adapter for the IBM (R) OS/390 (tm) C++ Compiler
  *
- * @author Hiram Chirino (cojonudo14@hotmail.com)
+ * @author Hiram Chirino {@literal <cojonudo14@hotmail.com>}
  */
 public class IccCompiler extends CommandLineCCompiler {
     private static final AbstractCompiler instance = new IccCompiler(false,

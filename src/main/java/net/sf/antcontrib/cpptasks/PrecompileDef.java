@@ -27,8 +27,10 @@ import org.apache.tools.ant.DirectoryScanner;
 import org.apache.tools.ant.types.DataType;
 
 /**
+ * <p>
  * An element that specifies a prototype file and rules for source files that
- * should not use precompiled headers
+ * should not use precompiled headers.
+ * </p>
  *
  * @author Curt Arnold
  */
@@ -50,6 +52,8 @@ public final class PrecompileDef extends DataType {
     /**
      * Method used by PrecompileExceptDef to add exception set to
      * PrecompileDef.
+     *
+     * @param exceptSet ConditionalFileSet
      */
     public void appendExceptFileSet(ConditionalFileSet exceptSet) {
         exceptSet.setProject(getProject());
@@ -59,6 +63,8 @@ public final class PrecompileDef extends DataType {
     /**
      * Adds filesets that specify files that should not be processed with
      * precompiled headers enabled.
+     *
+     * @return PrecompileExceptDef
      */
     public PrecompileExceptDef createExcept() {
         return new PrecompileExceptDef(this);
@@ -111,6 +117,8 @@ public final class PrecompileDef extends DataType {
 
     /**
      * Gets prototype source file
+     *
+     * @return File
      */
     public File getPrototype() {
         PrecompileDef ref = getRef();
@@ -141,6 +149,8 @@ public final class PrecompileDef extends DataType {
 
     /**
      * Sets a description of the current data type.
+     *
+     * @param desc String
      */
     public void setDescription(String desc) {
         super.setDescription(desc);
@@ -159,13 +169,17 @@ public final class PrecompileDef extends DataType {
     }
 
     /**
+     * <p>
      * Set the 'if' condition.
+     * </p>
      * <p>
      * The processor will be ignored unless the property is defined.
+     * </p>
      * <p>
      * The value of property is insignificant, but values that would imply
      * misinterpretation ("false", "no") will throw an exception when
      * isActive() is evaluated.
+     * </p>
      *
      * @param propName name of property
      */
@@ -174,10 +188,13 @@ public final class PrecompileDef extends DataType {
     }
 
     /**
+     * <p>
      * Sets file to precompile.
+     * </p>
      * <p>
      * Should be a source file that includes only one unguarded header file.
      * Default value is "stdafx.cpp".
+     * </p>
      *
      * @param prototype file path for prototype source file
      */
@@ -202,12 +219,15 @@ public final class PrecompileDef extends DataType {
     }
 
     /**
+     * <p>
      * Set the 'unless' condition. If named property exists at execution time,
      * the processor will be ignored.
+     * </p>
      * <p>
      * Value of property is insignificant, but values that would imply
      * misinterpretation ("false", "no") of the behavior will throw an
      * exception when isActive is called.
+     * </p>
      *
      * @param propName name of property
      */

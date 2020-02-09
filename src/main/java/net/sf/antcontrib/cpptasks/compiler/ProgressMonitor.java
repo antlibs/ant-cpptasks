@@ -26,8 +26,15 @@ public interface ProgressMonitor {
 
     /**
      * Called to notify monitor of progress
+     *
+     * @param sources array of String
      */
     void progress(String[] sources);
 
+    /**
+     * Called to start the processor with a given configuration.
+     *
+     * @param config ProcessorConfiguration
+     */
     public void start(ProcessorConfiguration config);
 }

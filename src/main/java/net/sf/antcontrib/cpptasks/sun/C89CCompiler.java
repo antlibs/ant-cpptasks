@@ -31,7 +31,7 @@ import org.apache.tools.ant.types.Environment;
 /**
  * Adapter for the Sun C89 C++ Compiler
  *
- * @author Hiram Chirino (cojonudo14@hotmail.com)
+ * @author Hiram Chirino {@literal <cojonudo14@hotmail.com>}
  */
 public class C89CCompiler extends CommandLineCCompiler {
     private static final AbstractCompiler instance = new C89CCompiler(false,

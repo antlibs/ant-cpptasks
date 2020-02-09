@@ -23,10 +23,13 @@ import java.util.Vector;
  */
 public final class DependencyInfo {
     /**
+     * <p>
      * Last modified time of this file or anything that it depends on.
+     * </p>
      * <p>
      * Not persisted since almost any change could invalidate it. Initialized
      * to long.MIN_VALUE on construction.
+     * </p>
      */
     private long compositeLastModified;
     private/* final */ String includePathIdentifier;

@@ -22,7 +22,8 @@ import java.io.File;
 /**
  * Test for Microsoft Developer Studio linker
  * <p>
- * Override create to test concrete compiler implementions
+ * Override create to test concrete compiler implementations
+ * </p>
  */
 public class TestInstalledDevStudioLinker extends TestDevStudioLinker {
     public TestInstalledDevStudioLinker(String name) {
@@ -33,7 +34,7 @@ public class TestInstalledDevStudioLinker extends TestDevStudioLinker {
         File[] libpath = DevStudioLinker.getInstance().getLibraryPath();
         //
         //  unless you tweak the library path
-        //       it should have more thean three entries
+        //       it should have more than three entries
         assertTrue(libpath.length >= 2);
         //
         //   check if these files can be found         

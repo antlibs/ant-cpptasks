@@ -24,11 +24,11 @@ import org.apache.tools.ant.types.DataType;
 import org.apache.tools.ant.types.Reference;
 
 /**
+ * <p>
  * Set of preprocessor macro defines and undefines.
+ * </p>
  *
- * @author Mark A Russell <a
- * href="mailto:mark_russell@csgsystems.com">mark_russell@csg_systems.com
- * </a>
+ * @author Mark A Russell {@literal <mark_russell@csgsystems.com>}
  * @author Adam Murdoch
  */
 public class DefineSet extends DataType {
@@ -39,6 +39,7 @@ public class DefineSet extends DataType {
     /**
      * Adds a define element.
      *
+     * @param arg DefineArgument
      * @throws BuildException if reference
      */
     public void addDefine(DefineArgument arg) throws BuildException {
@@ -50,6 +51,9 @@ public class DefineSet extends DataType {
 
     /**
      * Adds defines/undefines.
+     *
+     * @param defs an array of String
+     * @param isDefine boolean
      */
     private void addDefines(String[] defs, boolean isDefine) {
         for (int i = 0; i < defs.length; i++) {
@@ -67,6 +71,7 @@ public class DefineSet extends DataType {
     /**
      * Adds an undefine element.
      *
+     * @param arg UndefineArgument
      * @throws BuildException if reference
      */
     public void addUndefine(UndefineArgument arg) throws BuildException {
@@ -83,6 +88,8 @@ public class DefineSet extends DataType {
 
     /**
      * Returns the defines and undefines in this set.
+     *
+     * @return an array of UndefineArgument
      */
     public UndefineArgument[] getDefines() throws BuildException {
         if (isReference()) {
@@ -104,6 +111,7 @@ public class DefineSet extends DataType {
      * Returns true if the define's if and unless conditions (if any) are
      * satisfied.
      *
+     * @return boolean
      * @throws BuildException throws build exception if name is not set
      */
     public final boolean isActive() throws BuildException {
@@ -126,6 +134,8 @@ public class DefineSet extends DataType {
 
     /**
      * Sets a description of the current data type.
+     *
+     * @param desc String
      */
     public void setDescription(String desc) {
         super.setDescription(desc);
@@ -144,13 +154,17 @@ public class DefineSet extends DataType {
     }
 
     /**
+     * <p>
      * Sets the property name for the 'if' condition.
+     * </p>
      * <p>
      * The define will be ignored unless the property is defined.
+     * </p>
      * <p>
      * The value of the property is insignificant, but values that would imply
      * misinterpretation ("false", "no") will throw an exception when
      * evaluated.
+     * </p>
      *
      * @param propName property name
      */
@@ -163,6 +177,8 @@ public class DefineSet extends DataType {
      * element with the matching id attribute was inserted at this location. If
      * specified, no other attributes or child content should be specified,
      * other than "description".
+     *
+     * @param r Reference
      */
     public void setRefid(Reference r) throws BuildException {
         if (!defineList.isEmpty()) {
@@ -185,13 +201,17 @@ public class DefineSet extends DataType {
     }
 
     /**
+     * <p>
      * Set the property name for the 'unless' condition.
+     * </p>
      * <p>
      * If named property is set, the define will be ignored.
+     * </p>
      * <p>
      * The value of the property is insignificant, but values that would imply
      * misinterpretation ("false", "no") of the behavior will throw an
      * exception when evaluated.
+     * </p>
      *
      * @param propName name of property
      */

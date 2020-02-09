@@ -22,11 +22,14 @@ import java.io.Reader;
 import net.sf.antcontrib.cpptasks.parser.Parser;
 
 /**
+ * <p>
  * Dependency scanner for Trolltech Qt User Interface definition files.
+ * </p>
  * <p>
  * .ui files are XML documents that may contain an include elements,
  * however the includes are just copied to the generated files and
  * and changes to the includes do not need to trigger rerunning uic.
+ * </p>
  *
  * @author Curt Arnold
  */

@@ -101,12 +101,15 @@ public class GccProcessor {
     }
 
     /**
+     * <p>
      * Returns the contents of the gcc specs file.
+     * </p>
      * <p>
      * The implementation locates gcc.exe in the executable path and then
      * builds a relative path name from the results of -dumpmachine and
      * -dumpversion. Attempts to use gcc -dumpspecs to provide this information
      * resulted in stalling on the Execute.run
+     * </p>
      *
      * @return contents of the specs file
      */
@@ -195,6 +198,7 @@ public class GccProcessor {
      * @param specsContent     Contents of specs file as returned from getSpecs
      * @param specSectionStart start of spec section, for example "*cpp:"
      * @param options          command line switches such as "-istart"
+     * @return an array of arrays of String
      */
     public static String[][] parseSpecs(String[] specsContent,
                                         String specSectionStart, String[] options) {
@@ -258,7 +262,7 @@ public class GccProcessor {
                                 optionVectors[j].addElement(optionValue.toString());
                             }
                             //
-                            //  find next occurance on line
+                            //  find next occurrence on line
                             //
                             optionStart = specLine.indexOf(options[j], k);
                         }

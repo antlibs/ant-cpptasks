@@ -23,7 +23,7 @@ import net.sf.antcontrib.cpptasks.types.LibraryTypeEnum;
 /**
  * A add-in class for Sun C89 compilers and linkers
  *
- * @author Hiram Chirino (cojonudo14@hotmail.com)
+ * @author Hiram Chirino {@literal <cojonudo14@hotmail.com>}
  */
 public class C89Processor {
     private static int addLibraryPatterns(String[] libnames, StringBuffer buf,

@@ -153,7 +153,7 @@ public final class OpenWatcomProcessor {
     }
 
     /**
-     * Gets whether processor tratement of file names is case-sensitive.
+     * Gets whether processor treatment of file names is case-sensitive.
      *
      * @return boolean true if case sensitive
      */

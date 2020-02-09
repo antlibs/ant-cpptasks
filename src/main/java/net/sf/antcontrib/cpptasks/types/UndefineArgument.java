@@ -22,19 +22,26 @@ import net.sf.antcontrib.cpptasks.CUtil;
 import org.apache.tools.ant.BuildException;
 
 /**
+ * <p>
  * Preprocessor macro undefinition.
+ * </p>
  *
- * @author Mark A Russell <a
- * href="mailto:mark_russell@csgsystems.com">mark_russell@csg_systems.com
- * </a>
+ * @author Mark A Russell {@literal <mark_russell@csgsystems.com>}
  */
 public class UndefineArgument {
     /**
+     * <p>
      * This method returns an array of UndefineArgument and DefineArgument's by
      * merging a base list with an override list.
+     * </p>
      * <p>
      * Any define in the base list with a name that appears in the override
-     * list is suppressed. All entries in the override list are preserved
+     * list is suppressed. All entries in the override list are preserved.
+     * </p>
+     *
+     * @param base an array of UndefineArgument
+     * @param override an array of UndefineArgument
+     * @return an array of UndefineArgument
      */
     public static UndefineArgument[] merge(UndefineArgument[] base,
                                            UndefineArgument[] override) {
@@ -96,6 +103,8 @@ public class UndefineArgument {
 
     /**
      * Returns the name of the define
+     *
+     * @return String
      */
     public final String getName() {
         return name;
@@ -103,6 +112,8 @@ public class UndefineArgument {
 
     /**
      * Returns the value of the define
+     *
+     * @return String
      */
     public String getValue() {
         return null;
@@ -112,6 +123,8 @@ public class UndefineArgument {
      * Returns true if the define's if and unless conditions (if any) are
      * satisfied.
      *
+     * @param p Project
+     * @return boolean
      * @throws BuildException throws build exception if name is not set
      */
     public final boolean isActive(org.apache.tools.ant.Project p) throws BuildException {
@@ -123,19 +136,25 @@ public class UndefineArgument {
 
     /**
      * Returns true if this is a define, false if an undefine.
+     *
+     * @return boolean
      */
     public final boolean isDefine() {
         return define;
     }
 
     /**
+     * <p>
      * Sets the property name for the 'if' condition.
+     * </p>
      * <p>
      * The define will be ignored unless the property is defined.
+     * </p>
      * <p>
      * The value of the property is insignificant, but values that would imply
      * misinterpretation ("false", "no") will throw an exception when
      * evaluated.
+     * </p>
      *
      * @param propName property name
      */
@@ -145,19 +164,25 @@ public class UndefineArgument {
 
     /**
      * Set the name attribute
+     *
+     * @param name String
      */
     public final void setName(String name) {
         this.name = name;
     }
 
     /**
+     * <p>
      * Set the property name for the 'unless' condition.
+     * </p>
      * <p>
      * If named property is set, the define will be ignored.
+     * </p>
      * <p>
      * The value of the property is insignificant, but values that would imply
      * misinterpretation ("false", "no") of the behavior will throw an
      * exception when evaluated.
+     * </p>
      *
      * @param propName name of property
      */

@@ -19,7 +19,7 @@ package net.sf.antcontrib.cpptasks.parser;
 /**
  * An base class for objects that represent the state of an AbstractParser.
  *
- * @author CurtArnold
+ * @author Curt Arnold
  * @see AbstractParser
  */
 public abstract class AbstractParserState {
@@ -35,6 +35,7 @@ public abstract class AbstractParserState {
     /**
      * Consume a character
      *
+     * @param ch the character
      * @return new state, may be null to ignore the rest of the line
      */
     public abstract AbstractParserState consume(char ch);

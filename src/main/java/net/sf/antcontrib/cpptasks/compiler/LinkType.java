@@ -31,9 +31,12 @@ public class LinkType {
     private SubsystemEnum subsystem = new SubsystemEnum();
 
     /**
+     * <p>
      * Constructor
+     * </p>
      * <p>
      * By default, an gui executable with a dynamically linked runtime
+     * </p>
      */
     public LinkType() {
     }
@@ -109,7 +112,7 @@ public class LinkType {
     }
 
     /**
-     * Sets the output type (execuable, shared, etc).
+     * Sets the output type (executable, shared, etc).
      *
      * @param outputType may not be null
      */

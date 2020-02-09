@@ -22,7 +22,8 @@ import net.sf.antcontrib.cpptasks.compiler.TestAbstractCompiler;
 /**
  * Borland C++ Compiler adapter tests
  * <p>
- * Override create to test concrete compiler implementions
+ * Override create to test concrete compiler implementations
+ * </p>
  */
 public class TestBorlandCCompiler extends TestAbstractCompiler {
     public TestBorlandCCompiler(String name) {

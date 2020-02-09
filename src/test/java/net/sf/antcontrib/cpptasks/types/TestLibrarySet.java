@@ -297,6 +297,7 @@ public class TestLibrarySet extends TestCase {
      * a build exception will be raised.
      * <p>
      * See bug 1380366
+     * </p>
      */
     public final void testBadLibname() {
         LibrarySet libset = new LibrarySet();

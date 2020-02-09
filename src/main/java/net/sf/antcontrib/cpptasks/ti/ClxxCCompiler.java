@@ -29,7 +29,7 @@ import org.apache.tools.ant.types.Environment;
 /**
  * Adapter for TI DSP compilers with cl** commands
  *
- * @author CurtA
+ * @author Curt Arrnold
  */
 public class ClxxCCompiler extends CommandLineCCompiler {
     /**

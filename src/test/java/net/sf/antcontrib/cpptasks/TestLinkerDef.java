@@ -119,7 +119,7 @@ public final class TestLinkerDef extends TestProcessorDef {
     /**
      * Sets the name attribute.
      *
-     * @param linker linker defintion
+     * @param linker linker definition
      * @param name   linker name
      */
     private static void setLinkerName(final LinkerDef linker, final String name) {

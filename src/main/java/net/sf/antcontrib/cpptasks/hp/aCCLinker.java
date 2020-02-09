@@ -74,6 +74,8 @@ public final class aCCLinker extends AbstractLdLinker {
 
     /**
      * Returns library path.
+     *
+     * @return an array of File
      */
     public File[] getLibraryPath() {
         if (libDirs == null) {

@@ -96,7 +96,7 @@ public final class MetaObjectCompiler extends CommandLineCompiler {
     }
 
     /**
-     * Change enviroment (deprecated).
+     * Change environment (deprecated).
      *
      * @param newEnvironment boolean use new environment.
      * @param env            Environment environment

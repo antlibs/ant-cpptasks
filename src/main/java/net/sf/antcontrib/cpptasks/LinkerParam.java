@@ -17,12 +17,12 @@
 package net.sf.antcontrib.cpptasks;
 
 /*******************************************************************************
- * Place class description here.
+ * <p>
+ * A linker parameter.
+ * </p>
  *
  * @author inger
- * @author <additional author>
  *
- * @since
  ******************************************************************************/
 public class LinkerParam extends ProcessorParam {
     public LinkerParam() {

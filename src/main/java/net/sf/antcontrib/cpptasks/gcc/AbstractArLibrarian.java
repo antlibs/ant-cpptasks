@@ -35,7 +35,8 @@ import org.apache.tools.ant.BuildException;
  * @author Curt Arnold
  */
 public abstract class AbstractArLibrarian extends CommandLineLinker {
-    private final/* final */ String outputPrefix;
+    private final String outputPrefix;
+
     protected AbstractArLibrarian(String command, String identificationArg,
                                   String[] inputExtensions, String[] ignoredExtensions,
                                   String outputPrefix, String outputExtension, boolean isLibtool,

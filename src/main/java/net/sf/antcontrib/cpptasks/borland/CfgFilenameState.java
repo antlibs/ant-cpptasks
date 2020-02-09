@@ -33,7 +33,7 @@ public class CfgFilenameState extends FilenameState {
         //   if a ';' is encountered then
         //      close the previous filename by sending a
         //         recognized terminator to our super class
-        //      and stay in this state for more filenamese
+        //      and stay in this state for more filenames
         if (ch == ';') {
             super.consume(terminator);
             return this;

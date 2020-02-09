@@ -105,11 +105,14 @@ public class BorlandLibrarian extends CommandLineLinker {
     }
 
     /**
+     * <p>
      * Gets identifier for the linker.
+     * </p>
      * <p>
      * TLIB will lockup when attempting to get version
      * information.  Since the Librarian version isn't critical
      * just return a stock response.
+     * </p>
      */
     public String getIdentifier() {
         return "TLIB 4.5 Copyright (c) 1987, 1999 Inprise Corporation";

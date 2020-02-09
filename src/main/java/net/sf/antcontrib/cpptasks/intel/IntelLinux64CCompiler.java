@@ -23,10 +23,13 @@ import net.sf.antcontrib.cpptasks.gcc.GccCompatibleCCompiler;
 import org.apache.tools.ant.types.Environment;
 
 /**
+ * <p>
  * Adapter for the Intel (r) C/C++ compiler for IA-64 Linux (r)
+ * </p>
  * <p>
  * The Intel C/C++ compiler for IA-64 Linux mimics the command options for gcc
  * compiler.
+ * </p>
  *
  * @author Curt Arnold
  */

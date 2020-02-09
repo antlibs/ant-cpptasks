@@ -70,7 +70,7 @@ public class GccLinker extends AbstractLdLinker {
     }
 
     /**
-     * Allows drived linker to decorate linker option. Override by GccLinker to
+     * Allows derived linker to decorate linker option. Override by GccLinker to
      * prepend a "-Wl," to pass option to through gcc to linker.
      *
      * @param buf buffer that may be used and abused in the decoration process,

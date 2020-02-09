@@ -28,7 +28,7 @@ import net.sf.antcontrib.cpptasks.types.LibraryTypeEnum;
  * Adapter for TI DSP librarian
  * *
  *
- * @author CurtA
+ * @author Curt Arnold
  */
 public class ClxxLibrarian extends CommandLineLinker {
     private static final ClxxLibrarian cl55Instance = new ClxxLibrarian("ar55");

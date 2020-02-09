@@ -95,7 +95,7 @@ public final class BorlandProcessor {
             //
             exeDir = new File(System.getProperty("user.dir"));
         }
-        int nonExistant = 0;
+        int nonExistent = 0;
         File[] resourcePath = new File[path.length];
         for (int i = 0; i < path.length; i++) {
             resourcePath[i] = new File(path[i]);
@@ -107,15 +107,15 @@ public final class BorlandProcessor {
             //     not directories, null them out
             if (!(resourcePath[i].exists() && resourcePath[i].isDirectory())) {
                 resourcePath[i] = null;
-                nonExistant++;
+                nonExistent++;
             }
         }
         //
-        //  if there were some non-existant or non-directory
+        //  if there were some non-existent or non-directory
         //    entries in the configuration file then
         //    create a shorter array
-        if (nonExistant > 0) {
-            File[] culled = new File[resourcePath.length - nonExistant];
+        if (nonExistent > 0) {
+            File[] culled = new File[resourcePath.length - nonExistent];
             int index = 0;
             for (int i = 0; i < resourcePath.length; i++) {
                 if (resourcePath[i] != null) {
@@ -177,7 +177,9 @@ public final class BorlandProcessor {
      *
      * @param outputFile linker output file
      * @param args       output of prepareArguments
+     * @param continuation String
      * @return arguments for runTask
+     * @throws IOException if something goes wrong
      */
     public static String[] prepareResponseFile(File outputFile,
                                                String[] args,

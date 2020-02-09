@@ -35,7 +35,7 @@ public final class BorlandCfgParser extends AbstractParser {
     private final Vector path = new Vector();
 
     /**
-     *
+     * @param switchChar a character that a switch begins with
      */
     public BorlandCfgParser(char switchChar) {
         //
