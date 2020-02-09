@@ -22,7 +22,9 @@ import net.sf.antcontrib.cpptasks.types.ConditionalFileSet;
 import org.apache.tools.ant.BuildException;
 
 /**
+ * <p>
  * Specifies files that should not be compiled using precompiled headers.
+ * </p>
  *
  * @author Curt Arnold
  */
@@ -35,6 +37,8 @@ public final class PrecompileExceptDef {
 
     /**
      * Constructor
+     *
+     * @param owner PrecompileDef
      */
     public PrecompileExceptDef(PrecompileDef owner) {
         this.owner = owner;
@@ -58,6 +62,9 @@ public final class PrecompileExceptDef {
 
     /**
      * Sets the base-directory
+     *
+     * @param dir File
+     * @throws BuildException if something goes wrong
      */
     public void setDir(File dir) throws BuildException {
         if (localSet == null) {

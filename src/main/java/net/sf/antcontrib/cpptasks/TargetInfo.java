@@ -97,7 +97,10 @@ public final class TargetInfo {
 
     /**
      * Returns an array of SourceHistory objects (contains relative path and
-     * last modified time) for the source[s] of this target
+     * last modified time) for the source[s] of this target.
+     *
+     * @param basePath String
+     * @return array of SourceHistory
      */
     public SourceHistory[] getSourceHistories(String basePath) {
         SourceHistory[] histories = new SourceHistory[sources.length];

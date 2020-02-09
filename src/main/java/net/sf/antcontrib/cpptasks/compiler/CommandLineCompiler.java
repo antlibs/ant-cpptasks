@@ -71,17 +71,21 @@ public abstract class CommandLineCompiler extends AbstractCompiler {
                                            Boolean rtti, OptimizationEnum optimization);
 
     /**
+     * <p>
      * Adds command-line arguments for include directories.
+     * </p>
      * <p>
      * If relativeArgs is not null will add corresponding relative paths
      * include switches to that vector (for use in building a configuration
      * identifier that is consistent between machines).
+     * </p>
      *
      * @param baseDirPath  Base directory path.
      * @param includeDirs  Array of include directory paths
      * @param args         Vector of command line arguments used to execute the task
      * @param relativeArgs Vector of command line arguments used to build the
      *                     configuration identifier
+     * @param includePathId StringBuffer
      */
     protected void addIncludes(String baseDirPath, File[] includeDirs,
                                Vector args, Vector relativeArgs, StringBuffer includePathId) {
@@ -130,6 +134,16 @@ public abstract class CommandLineCompiler extends AbstractCompiler {
 
     /**
      * Compiles a source file.
+     *
+     * @param task CCTask
+     * @param outputDir File
+     * @param sourceFiles array of String
+     * @param args array of String
+     * @param endArgs array of String
+     * @param relentless boolean
+     * @param config CommandLineCompilerConfiguration
+     * @param monitor ProgressMonitor
+     * @throws BuildException if something goes wrong
      */
     public void compile(CCTask task, File outputDir, String[] sourceFiles,
                         String[] args, String[] endArgs, boolean relentless,
@@ -206,7 +220,7 @@ public abstract class CommandLineCompiler extends AbstractCompiler {
             //
             //   if the process returned a failure code and
             //      we aren't holding an exception from an earlier
-            //      interation
+            //      interaction
             if (retval != 0 && exc == null) {
                 //
                 //   construct the exception
@@ -407,9 +421,14 @@ public abstract class CommandLineCompiler extends AbstractCompiler {
     }
 
     /**
+     * <p>
      * Obtains the same compiler, but with libtool set
+     * </p>
      * <p>
      * Default behavior is to ignore libtool
+     * </p>
+     *
+     * @return CommandLineCompiler
      */
     public final CommandLineCompiler getLibtoolCompiler() {
         if (libtoolCompiler != null) {
@@ -434,10 +453,16 @@ public abstract class CommandLineCompiler extends AbstractCompiler {
     /**
      * This method is exposed so test classes can overload and test the
      * arguments without actually spawning the compiler
+     *
+     * @param task CCTask
+     * @param workingDir File
+     * @param cmdLine array of String
+     * @return int
+     * @throws BuildException if something goes wrong
      */
     protected int runCommand(CCTask task, File workingDir,
-                             String[] cmdline) throws BuildException {
-        return CUtil.runCommand(task, workingDir, cmdline, newEnvironment, env);
+                             String[] cmdLine) throws BuildException {
+        return CUtil.runCommand(task, workingDir, cmdLine, newEnvironment, env);
     }
 
     protected final void setCommand(String command) {

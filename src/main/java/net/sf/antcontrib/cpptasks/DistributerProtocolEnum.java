@@ -19,7 +19,7 @@ package net.sf.antcontrib.cpptasks;
 import org.apache.tools.ant.types.EnumeratedAttribute;
 
 /**
- * Distributer prococol names (experimental).
+ * Distributer protocol names (experimental).
  *
  * @author Curt Arnold
  */

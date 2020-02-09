@@ -25,9 +25,12 @@ import org.apache.tools.ant.types.EnumeratedAttribute;
  */
 public class LibraryTypeEnum extends EnumeratedAttribute {
     /**
+     * <p>
      * Constructor
+     * </p>
      * <p>
      * Set by default to "shared"
+     * </p>
      *
      * @see java.lang.Object#Object()
      */

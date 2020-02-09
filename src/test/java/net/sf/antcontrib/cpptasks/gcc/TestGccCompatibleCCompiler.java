@@ -23,7 +23,7 @@ import junit.framework.TestCase;
 /**
  * Tests for gcc compatible compilers
  *
- * @author CurtA
+ * @author Curt Arnold
  */
 public abstract class TestGccCompatibleCCompiler extends TestCase {
     /**
@@ -38,7 +38,8 @@ public abstract class TestGccCompatibleCCompiler extends TestCase {
     /**
      * Compiler creation method
      * <p>
-     * Must be overriden by extending classes
+     * Must be overridden by extending classes
+     * </p>
      *
      * @return GccCompatibleCCompiler
      */

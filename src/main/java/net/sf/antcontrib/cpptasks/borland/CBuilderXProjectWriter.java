@@ -46,7 +46,7 @@ import org.xml.sax.helpers.AttributesImpl;
 /**
  * Writes a CBuilderX 1.0 project file.
  *
- * @author curta
+ * @author Curt Arnold
  */
 public final class CBuilderXProjectWriter implements ProjectWriter {
     /**
@@ -451,9 +451,9 @@ public final class CBuilderXProjectWriter implements ProjectWriter {
     /**
      * Writes ilink32 linker options to project file.
      *
-     * @param writer  PropertyWriter property writer
-     * @param linkID  String linker identifier
-     * @param preArgs String[] linker arguments
+     * @param writer PropertyWriter property writer
+     * @param linkID String linker identifier
+     * @param args   String[] linker arguments
      * @throws SAXException thrown if unable to write option
      */
     private void writeIlinkArgs(final PropertyWriter writer,

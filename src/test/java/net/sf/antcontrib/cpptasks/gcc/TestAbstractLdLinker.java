@@ -30,7 +30,8 @@ import net.sf.antcontrib.cpptasks.types.LibraryTypeEnum;
 /**
  * Test ld linker adapter abstract base class
  * <p>
- * Override create to test concrete compiler implementions
+ * Override create to test concrete compiler implementations
+ * </p>
  */
 public class TestAbstractLdLinker extends TestCase {
     private final String realOSName;
@@ -52,6 +53,7 @@ public class TestAbstractLdLinker extends TestCase {
      * Checks for proper arguments for plugin generation on Darwin
      * <p>
      * See [ 676276 ] Enhanced support for Mac OS X
+     * </p>
      */
     public void testAddImpliedArgsDarwinPlugin() {
         System.setProperty("os.name", "Mac OS X");
@@ -70,6 +72,7 @@ public class TestAbstractLdLinker extends TestCase {
      * Checks for proper arguments for shared generation on Darwin
      * <p>
      * See [ 676276 ] Enhanced support for Mac OS X
+     * </p>
      */
     public void testAddImpliedArgsDarwinShared() {
         System.setProperty("os.name", "Mac OS X");
@@ -89,6 +92,7 @@ public class TestAbstractLdLinker extends TestCase {
      * Checks for proper arguments for plugin generation on Darwin
      * <p>
      * See [ 676276 ] Enhanced support for Mac OS X
+     * </p>
      */
     public void testAddImpliedArgsNonDarwinPlugin() {
         System.setProperty("os.name", "VAX/VMS");
@@ -107,6 +111,7 @@ public class TestAbstractLdLinker extends TestCase {
      * Checks for proper arguments for shared generation on Darwin
      * <p>
      * See [ 676276 ] Enhanced support for Mac OS X
+     * </p>
      */
     public void testAddImpliedArgsNonDarwinShared() {
         System.setProperty("os.name", "VAX/VMS");

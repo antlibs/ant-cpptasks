@@ -160,6 +160,7 @@ public class TestCUtil extends TestCase {
      * Test of xmlAttributeEncode.
      * <p>
      * See patch 1267472 and bug 1032302.
+     * </p>
      */
     public void testXmlEncode() {
         assertEquals("&lt;&quot;boo&quot;&gt;", CUtil.xmlAttribEncode("<\"boo\">"));

@@ -27,6 +27,11 @@ public final class TargetHistory {
 
     /**
      * Constructor from build step
+     *
+     * @param config String
+     * @param output String
+     * @param outputLastModified long
+     * @param sources array of SourceHistory
      */
     public TargetHistory(String config, String output, long outputLastModified,
                          SourceHistory[] sources) {

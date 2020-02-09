@@ -69,6 +69,8 @@ public final class GccCCompiler extends GccCompatibleCCompiler {
 
     /**
      * Gets c++ adapter
+     *
+     * @return GccCCompiler
      */
     public static GccCCompiler getCppInstance() {
         return cppInstance;
@@ -76,6 +78,8 @@ public final class GccCCompiler extends GccCompatibleCCompiler {
 
     /**
      * Gets g77 adapter
+     *
+     * @return GccCCompiler
      */
     public static GccCCompiler getG77Instance() {
         return g77Instance;
@@ -83,6 +87,8 @@ public final class GccCCompiler extends GccCompatibleCCompiler {
 
     /**
      * Gets gpp adapter
+     *
+     * @return GccCCompiler
      */
     public static GccCCompiler getGppInstance() {
         return gppInstance;
@@ -90,6 +96,8 @@ public final class GccCCompiler extends GccCompatibleCCompiler {
 
     /**
      * Gets gcc adapter
+     *
+     * @return GccCCompiler
      */
     public static GccCCompiler getInstance() {
         return instance;
@@ -102,6 +110,14 @@ public final class GccCCompiler extends GccCompatibleCCompiler {
     /**
      * Private constructor. Use GccCCompiler.getInstance() to get singleton
      * instance of this class.
+     *
+     * @param command String
+     * @param sourceExtensions an array of String
+     * @param headerExtensions an array of String
+     * @param isLibtool boolean
+     * @param libtoolCompiler GccCCompiler
+     * @param newEnvironment boolean
+     * @param env Environment
      */
     private GccCCompiler(String command, String[] sourceExtensions,
                          String[] headerExtensions, boolean isLibtool,
@@ -136,9 +152,15 @@ public final class GccCCompiler extends GccCompatibleCCompiler {
     }
 
     /**
+     * <p>
      * Create parser to determine dependencies.
+     * </p>
      * <p>
      * Will create appropriate parser (C++, FORTRAN) based on file extension.
+     * </p>
+     *
+     * @param source File
+     * @return Parser
      */
     protected Parser createParser(File source) {
         if (source != null) {

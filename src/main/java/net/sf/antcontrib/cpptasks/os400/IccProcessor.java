@@ -21,7 +21,7 @@ import java.util.Vector;
 /**
  * A add-in class for IBM (r) OS/390 compilers and linkers
  *
- * @author Hiram Chirino (cojonudo14@hotmail.com)
+ * @author Hiram Chirino {@literal <cojonudo14@hotmail.com>}
  */
 public class IccProcessor {
     public static void addWarningSwitch(Vector args, int level) {

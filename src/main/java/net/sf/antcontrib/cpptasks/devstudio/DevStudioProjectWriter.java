@@ -43,12 +43,15 @@ import java.util.List;
 import java.util.Locale;
 
 /**
+ * <p>
  * Writes a Microsoft Visual Studio 97 or Visual Studio 6 project file.
+ * </p>
  * <p>
  * Status: Collects file list but does not pick
  * up libraries and settings from project.
+ * </p>
  *
- * @author curta
+ * @author Curt Arnold
  */
 public final class DevStudioProjectWriter implements ProjectWriter {
     /**
@@ -69,7 +72,7 @@ public final class DevStudioProjectWriter implements ProjectWriter {
         //
         //    some characters are apparently not allowed in VS project names
         //       but have not been able to find them documented
-        //       limiting characters to alphas, numerics and hyphens
+        //       limiting characters to letters, numbers and hyphens
         StringBuffer projectNameBuf = new StringBuffer(name);
         for (int i = 0; i < projectNameBuf.length(); i++) {
             final char ch = projectNameBuf.charAt(i);
@@ -104,7 +107,7 @@ public final class DevStudioProjectWriter implements ProjectWriter {
         //
         //    some characters are apparently not allowed in VS project names
         //       but have not been able to find them documented
-        //       limiting characters to alphas, numerics and hyphens
+        //       limiting characters to letters, numbers and hyphens
         String projectName = projectDef.getName();
         if (projectName != null) {
             projectName = toProjectName(projectName);

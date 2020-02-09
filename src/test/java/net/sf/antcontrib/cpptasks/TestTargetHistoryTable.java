@@ -26,7 +26,7 @@ import net.sf.antcontrib.cpptasks.VersionInfo;
 /**
  * Tests for TargetHistoryTable
  *
- * @author CurtA
+ * @author Curt Arnold
  */
 public class TestTargetHistoryTable extends TestXMLConsumer {
     public static class MockProcessorConfiguration
@@ -69,7 +69,7 @@ public class TestTargetHistoryTable extends TestXMLConsumer {
     /**
      * Tests loading a stock history file
      *
-     * @throws IOException
+     * @throws IOException if something goes wrong
      */
     public void testLoadOpenshore() throws IOException {
         try {
@@ -85,7 +85,7 @@ public class TestTargetHistoryTable extends TestXMLConsumer {
     /**
      * Tests loading a stock history file
      *
-     * @throws IOException
+     * @throws IOException if something goes wrong
      */
     public void testLoadXerces() throws IOException {
         try {
@@ -101,7 +101,7 @@ public class TestTargetHistoryTable extends TestXMLConsumer {
     /**
      * Tests for bug fixed by patch [ 650397 ] Fix: Needless rebuilds on Unix
      *
-     * @throws IOException
+     * @throws IOException if something goes wrong
      */
     public void testUpdateTimeResolution() throws IOException {
         File compiledFile = null;

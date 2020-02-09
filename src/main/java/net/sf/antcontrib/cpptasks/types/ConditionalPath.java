@@ -22,7 +22,9 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.Path;
 
 /**
+ * <p>
  * An Ant Path object augmented with if and unless conditionals
+ * </p>
  *
  * @author Curt Arnold
  */
@@ -41,19 +43,26 @@ public class ConditionalPath extends Path {
     /**
      * Returns true if the Path's if and unless conditions (if any) are
      * satisfied.
+     *
+     * @param p Project
+     * @return boolean
      */
     public boolean isActive(org.apache.tools.ant.Project p) throws BuildException {
         return CUtil.isActive(p, ifCond, unlessCond);
     }
 
     /**
+     * <p>
      * Sets the property name for the 'if' condition.
+     * </p>
      * <p>
      * The path will be ignored unless the property is defined.
+     * </p>
      * <p>
      * The value of the property is insignificant, but values that would imply
      * misinterpretation ("false", "no") will throw an exception when
      * evaluated.
+     * </p>
      *
      * @param propName property name
      */
@@ -62,13 +71,17 @@ public class ConditionalPath extends Path {
     }
 
     /**
+     * <p>
      * Set the property name for the 'unless' condition.
+     * </p>
      * <p>
      * If named property is set, the path will be ignored.
+     * </p>
      * <p>
      * The value of the property is insignificant, but values that would imply
      * misinterpretation ("false", "no") of the behavior will throw an
      * exception when evaluated.
+     * </p>
      *
      * @param propName name of property
      */

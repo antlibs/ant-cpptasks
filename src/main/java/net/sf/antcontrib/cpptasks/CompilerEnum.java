@@ -51,7 +51,10 @@ import org.apache.tools.ant.types.EnumeratedAttribute;
 /**
  * Enumeration of supported compilers
  *
- * <table width="100%" border="1"> <thead>Supported compilers </thead>
+ * <table style="width:100%;border-collapse:collapse;border:1px solid black;">
+ * <caption></caption>
+ * <thead><tr><th>Supported compilers</th></tr></thead>
+ * <tbody>
  * <tr>
  * <td>gcc (default)</td>
  * <td>GCC C++ compiler</td>
@@ -184,6 +187,7 @@ import org.apache.tools.ant.types.EnumeratedAttribute;
  * <td>windres</td>
  * <td>GNU windres resource compiler</td>
  * </tr>
+ * </tbody>
  * </table>
  *
  * @author Curt Arnold

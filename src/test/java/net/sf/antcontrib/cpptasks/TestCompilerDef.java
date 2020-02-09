@@ -57,16 +57,25 @@ public final class TestCompilerDef extends TestProcessorDef {
     }
 
     /**
+     * <p>
      * This method tests CompilerDef.getActiveDefines.
+     * </p>
      * <p>
      * A CompilerDef is created similar to what would be created for
-     *
-     * <cc><defineset><define name="DEBUG" if="debug"/> <define name="NDEBUG"
-     * unless="debug"/> </defineset> </cc>
+     * </p>
+     * <pre>
+     * &lt;cc&gt;
+     *   &lt;defineset&gt;
+     *     &lt;define name=&quot;DEBUG&quot; if=&quot;debug&quot;/&gt;
+     *     &lt;define name=&quot;NDEBUG&quot; unless=&quot;debug&quot;/&gt;
+     *   &lt;/defineset&gt;
+     * &lt;/cc&gt;
+     * </pre>
      * <p>
      * Then getActiveDefines is called for a project without and with the
      * "debug" property defined. Return value from getActiveDefines should
      * contain one member
+     * </p>
      */
     public void testGetActiveDefines() {
         Project project = new org.apache.tools.ant.Project();
@@ -98,13 +107,19 @@ public final class TestCompilerDef extends TestProcessorDef {
     }
 
     /**
+     * <p>
      * This method tests CompilerDef.getActiveIncludePath.
      * <p>
      * A CompilerDef is created similar to what would be created for
-     *
-     * <cc><includepath location=".." if="debug"/> </cc>
+     * </p>
+     * <pre>
+     * &lt;cc&gt;
+     *   &lt;includepath location=&quot;..&quot; if=&quot;debug&quot;/&gt;
+     * &lt;/cc&gt;
+     * </pre>
      * <p>
      * and is evaluate for a project without and without "debug" set
+     * </p>
      */
     public void testGetActiveIncludePaths() {
         Project project = new org.apache.tools.ant.Project();

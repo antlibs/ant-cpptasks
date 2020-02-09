@@ -23,10 +23,13 @@ import net.sf.antcontrib.cpptasks.devstudio.DevStudioCompatibleCCompiler;
 import org.apache.tools.ant.types.Environment;
 
 /**
+ * <p>
  * Adapter for the Intel (r) C++ compiler for 32-bit applications
+ * </p>
  * <p>
  * The Intel (r) C++ compiler for IA32 Windows mimics the command options for
  * the Microsoft (r) C++ compiler.
+ * </p>
  *
  * @author Curt Arnold
  */

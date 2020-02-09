@@ -71,7 +71,7 @@ public abstract class TestProcessorDef extends TestCase {
     }
 
     /**
-     * Tests that evaluating isActive when "if" refernces a property with the
+     * Tests that evaluating isActive when "if" references a property with the
      * value "false" throws an exception to warn of a suspicious value.
      */
     public final void testIsActive4() {
@@ -186,10 +186,8 @@ public abstract class TestProcessorDef extends TestCase {
      * the files included in an extending processor.
      *
      * @param tempFile temporary file
-     * @throws IOException if unable to delete file
      */
-    protected final void testExtendsFileSet(final File tempFile) throws
-            IOException {
+    protected final void testExtendsFileSet(final File tempFile) {
         ProcessorDef baseLinker = create();
         ConditionalFileSet fileSet = new ConditionalFileSet();
         ProcessorDef extendedLinker = createExtendedProcessorDef(baseLinker);

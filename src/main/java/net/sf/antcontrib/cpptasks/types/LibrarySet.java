@@ -29,17 +29,18 @@ import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.types.PatternSet;
 
 /**
+ * <p>
  * A set of library names. Libraries can also be added to a link by specifying
  * them in a fileset.
+ * </p>
  * <p>
  * For most Unix-like compilers, libset will result in a series of -l and -L
  * linker arguments. For Windows compilers, the library names will be used to
  * locate the appropriate library files which will be added to the linkers
  * input file list as if they had been specified in a fileset.
+ * </p>
  *
- * @author Mark A Russell <a
- * href="mailto:mark_russell@csgsystems.com">mark_russell@csg_systems.com
- * </a>
+ * @author Mark A Russell {@literal <mark_russell@csgsystems.com>}
  * @author Adam Murdoch
  * @author Curt Arnold
  */
@@ -115,6 +116,9 @@ public class LibrarySet extends DataType {
     /**
      * Returns true if the define's if and unless conditions (if any) are
      * satisfied.
+     *
+     * @param p Project
+     * @return boolean
      */
     public boolean isActive(final org.apache.tools.ant.Project p) {
         if (p == null) {
@@ -189,6 +193,7 @@ public class LibrarySet extends DataType {
      * Library directory.
      *
      * @param dir library directory
+     * @throws BuildException if something goes wrong
      */
     public void setDir(final File dir) throws BuildException {
         if (isReference()) {
@@ -198,13 +203,17 @@ public class LibrarySet extends DataType {
     }
 
     /**
+     * <p>
      * Sets the property name for the 'if' condition.
+     * </p>
      * <p>
      * The library set will be ignored unless the property is defined.
+     * </p>
      * <p>
      * The value of the property is insignificant, but values that would imply
      * misinterpretation ("false", "no") will throw an exception when
      * evaluated.
+     * </p>
      *
      * @param propName property name
      */
@@ -215,6 +224,9 @@ public class LibrarySet extends DataType {
     /**
      * Comma-separated list of library names without leading prefixes, such as
      * "lib", or extensions, such as ".so" or ".a".
+     *
+     * @param libs StringArrayBuilder
+     * @throws BuildException if something goes wrong
      */
     public void setLibs(final CUtil.StringArrayBuilder libs) throws BuildException {
         if (isReference()) {
@@ -234,13 +246,17 @@ public class LibrarySet extends DataType {
     }
 
     /**
+     * <p>
      * Set the property name for the 'unless' condition.
+     * </p>
      * <p>
      * If named property is set, the library set will be ignored.
+     * </p>
      * <p>
      * The value of the property is insignificant, but values that would imply
      * misinterpretation ("false", "no") of the behavior will throw an
      * exception when evaluated.
+     * </p>
      *
      * @param propName name of property
      */
@@ -251,6 +267,8 @@ public class LibrarySet extends DataType {
     /**
      * Sets the preferred library type. Supported values "shared", "static", and
      * "framework".  "framework" is equivalent to "shared" on non-Darwin platforms.
+     *
+     * @param type LibraryTypeEnum
      */
     public void setType(final LibraryTypeEnum type) {
         if (isReference()) {

@@ -24,7 +24,9 @@ import org.apache.tools.ant.types.DataType;
 
 
 /**
+ * <p>
  * Specifies a debugging configuration for a project.
+ * </p>
  *
  * @author Curt Arnold
  */

@@ -17,7 +17,9 @@
 package net.sf.antcontrib.cpptasks.types;
 
 /**
+ * <p>
  * A linker command line argument.
+ * </p>
  */
 public class LinkerArgument extends CommandLineArgument {
     public LinkerArgument() {

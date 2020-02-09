@@ -30,6 +30,9 @@ public final class SourceHistory {
 
     /**
      * Constructor
+     *
+     * @param relativePath String
+     * @param lastModified long
      */
     public SourceHistory(String relativePath, long lastModified) {
         if (relativePath == null) {

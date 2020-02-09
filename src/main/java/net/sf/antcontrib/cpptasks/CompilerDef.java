@@ -33,9 +33,11 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 
 /**
+ * <p>
  * A compiler definition. compiler elements may be placed either as children of
  * a cc element or the project element. A compiler element with an id attribute
  * may be referenced from compiler elements with refid or extends attributes.
+ * </p>
  *
  * @author Adam Murdoch
  */
@@ -58,6 +60,8 @@ public final class CompilerDef extends ProcessorDef {
 
     /**
      * Adds a compiler command-line arg.
+     *
+     * @param arg CompilerArgument
      */
     public void addConfiguredCompilerArg(CompilerArgument arg) {
         if (isReference()) {
@@ -68,6 +72,8 @@ public final class CompilerDef extends ProcessorDef {
 
     /**
      * Adds a compiler command-line arg.
+     *
+     * @param param CompilerParam
      */
     public void addConfiguredCompilerParam(CompilerParam param) {
         if (isReference()) {
@@ -78,6 +84,8 @@ public final class CompilerDef extends ProcessorDef {
 
     /**
      * Adds a defineset.
+     *
+     * @param defs DefineSet
      */
     public void addConfiguredDefineset(DefineSet defs) {
         if (defs == null) {
@@ -91,6 +99,8 @@ public final class CompilerDef extends ProcessorDef {
 
     /**
      * Creates an include path.
+     *
+     * @return IncludePath
      */
     public IncludePath createIncludePath() {
         Project p = getProject();
@@ -107,6 +117,8 @@ public final class CompilerDef extends ProcessorDef {
 
     /**
      * Specifies precompilation prototype file and exclusions.
+     *
+     * @return PrecompileDef
      */
     public PrecompileDef createPrecompile() throws BuildException {
         Project p = getProject();
@@ -120,13 +132,17 @@ public final class CompilerDef extends ProcessorDef {
     }
 
     /**
+     * <p>
      * Creates a system include path. Locations and timestamps of files located
      * using the system include paths are not used in dependency analysis.
-     * <p>
+     * </p>
      * <p>
      * Standard include locations should not be specified. The compiler
      * adapters should recognized the settings from the appropriate environment
      * variables or configuration files.
+     * </p>
+     *
+     * @return SystemIncludePath
      */
     public SystemIncludePath createSysIncludePath() {
         Project p = getProject();
@@ -172,6 +188,8 @@ public final class CompilerDef extends ProcessorDef {
 
     /**
      * Returns the compiler-specific include path.
+     *
+     * @return array of String
      */
     public String[] getActiveIncludePaths() {
         if (isReference()) {
@@ -378,10 +396,13 @@ public final class CompilerDef extends ProcessorDef {
     }
 
     /**
+     * <p>
      * Sets compiler type.
-     *
-     *
-     * <table width="100%" border="1"> <thead>Supported compilers </thead>
+     * </p>
+     * <table style="width:100%;border-collapse:collapse;border:1px solid black;">
+     * <caption></caption>
+     * <thead><tr><th>Supported compilers</th></tr></thead>
+     * <tbody>
      * <tr>
      * <td>gcc (default)</td>
      * <td>GCC C++ compiler</td>
@@ -478,7 +499,10 @@ public final class CompilerDef extends ProcessorDef {
      * <td>wfl</td>
      * <td>OpenWatcom FORTRAN compiler</td>
      * </tr>
+     * </tbody>
      * </table>
+     *
+     * @param name CompilerEnum
      */
     public void setName(CompilerEnum name) throws BuildException {
         if (isReference()) {
@@ -499,6 +523,8 @@ public final class CompilerDef extends ProcessorDef {
     /**
      * Enumerated attribute with the values "none", "severe", "default",
      * "production", "diagnostic", and "aserror".
+     *
+     * @param level WarningLevelEnum
      */
     public void setWarnings(WarningLevelEnum level) {
         warnings = level.getIndex();

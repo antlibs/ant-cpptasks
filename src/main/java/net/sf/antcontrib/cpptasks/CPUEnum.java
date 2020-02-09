@@ -25,9 +25,12 @@ import org.apache.tools.ant.types.EnumeratedAttribute;
  */
 public final class CPUEnum extends EnumeratedAttribute {
     /**
+     * <p>
      * Constructor.
+     * </p>
      * <p>
      * Set by default to "pentium3"
+     * </p>
      *
      * @see java.lang.Object#Object()
      */

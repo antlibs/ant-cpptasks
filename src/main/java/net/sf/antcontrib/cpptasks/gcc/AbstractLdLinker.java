@@ -195,6 +195,8 @@ public abstract class AbstractLdLinker extends CommandLineLinker {
 
     /**
      * Returns library path.
+     *
+     * @return an array of File
      */
     protected File[] getEnvironmentIncludePath() {
         return CUtil.getPathFromEnvironment("LIB", ":");
@@ -211,6 +213,8 @@ public abstract class AbstractLdLinker extends CommandLineLinker {
 
     /**
      * Returns library path.
+     *
+     * @return an array of File
      */
     public File[] getLibraryPath() {
         return new File[0];
@@ -283,6 +287,8 @@ public abstract class AbstractLdLinker extends CommandLineLinker {
      * Prepares argument list for exec command. Will return null if command
      * line would exceed allowable command line buffer.
      *
+     * @param task CCTask
+     * @param outputDir String
      * @param outputFile  linker output file
      * @param sourceFiles linker input files (.obj, .o, .res)
      * @param config      linker configuration

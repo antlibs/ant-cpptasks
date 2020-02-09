@@ -32,28 +32,39 @@ public interface Linker extends Processor {
     /**
      * Extracts the significant part of a library name to ensure there aren't
      * collisions
+     *
+     * @param libname File
+     * @return String
      */
     String getLibraryKey(File libname);
 
     /**
      * returns the library path for the linker
+     *
+     * @return an array of File
      */
     File[] getLibraryPath();
 
     /**
+     * <p>
      * Returns a set of filename patterns corresponding to library names.
+     * </p>
      * <p>
      * For example, "advapi32" would be expanded to "advapi32.dll" by
      * DevStudioLinker and to "libadvapi32.a" and "libadvapi32.so" by
      * GccLinker.
+     * </p>
      *
      * @param libnames array of library names
+     * @param libraryType LibraryTypeEnum
+     * @return an array of String
      */
     String[] getLibraryPatterns(String[] libnames, LibraryTypeEnum libraryType);
 
     /**
      * Gets the linker for the specified link type.
      *
+     * @param linkType LinkType
      * @return appropriate linker or null, will return this if this linker can
      * handle the specified link type
      */
@@ -61,6 +72,8 @@ public interface Linker extends Processor {
 
     /**
      * Returns true if the linker is case-sensitive
+     *
+     * @return boolean
      */
     boolean isCaseSensitive();
 
@@ -74,6 +87,7 @@ public interface Linker extends Processor {
      * @param outputFile  name of generated executable
      * @param objDir      directory for generated files
      * @param matcher     bidded fileset
+     * @throws IOException if something goes wrong
      */
     void addVersionFiles(final VersionInfo versionInfo,
                          final LinkType linkType,

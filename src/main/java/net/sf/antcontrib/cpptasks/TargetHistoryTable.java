@@ -58,8 +58,8 @@ public final class TargetHistoryTable {
         /**
          * Constructor
          *
-         * @param history     hashtable of TargetHistory keyed by output name
-         * @param outputFiles existing files in output directory
+         * @param history hashtable of TargetHistory keyed by output name
+         * @param baseDir existing files in output directory
          */
         private TargetHistoryTableHandler(Hashtable history, File baseDir) {
             this.history = history;
@@ -116,6 +116,12 @@ public final class TargetHistoryTable {
 
         /**
          * startElement handler
+         *
+         * @param namespaceURI String
+         * @param localName String
+         * @param qName String
+         * @param atts Attributes
+         * @throws SAXException if something goes wrong
          */
         public void startElement(String namespaceURI, String localName,
                                  String qName, Attributes atts) throws SAXException {
@@ -170,6 +176,7 @@ public final class TargetHistoryTable {
      *
      * @param task      task used for logging history load errors
      * @param outputDir output directory for task
+     * @throws BuildException if something goes wrong
      */
     public TargetHistoryTable(CCTask task, File outputDir) throws BuildException {
         if (outputDir == null) {
@@ -209,9 +216,9 @@ public final class TargetHistoryTable {
             //
             // create empty history file for identifying new files by last
             // modified
-            //   timestamp comperation (to compare with
+            //   timestamp comparison (to compare with
             //   System.currentTimeMillis() don't work on Unix, because it
-            //   maesure timestamps only in seconds).
+            //   measure timestamps only in seconds).
             //
             try {
                 FileOutputStream outputStream = new FileOutputStream(historyFile);

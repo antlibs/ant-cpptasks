@@ -33,8 +33,9 @@ public abstract class TestXMLConsumer extends TestCase {
     /**
      * copies a resource to a temporary directory.
      *
-     * @param resourceName resouce name, such as "files/openshore/history.xml".
-     * @param tmpFile      name for temporary file created in /tmp or similar.
+     * @param source resource name, such as "files/openshore/history.xml".
+     * @param dest   temporary file created by TesmporaryFoolder rule.
+     * @throws IOException if something goes wrong
      */
     public static final void copyResourceToTmpDir(String resourceName,
                                                   String tmpFile) throws IOException {

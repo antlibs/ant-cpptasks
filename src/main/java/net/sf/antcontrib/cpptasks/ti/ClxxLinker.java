@@ -28,7 +28,7 @@ import net.sf.antcontrib.cpptasks.types.LibraryTypeEnum;
  * Adapter for TI DSP linkers
  * *
  *
- * @author CurtA
+ * @author Curt Arnold
  */
 public class ClxxLinker extends CommandLineLinker {
     private static final ClxxLinker cl55DllInstance = new ClxxLinker("lnk55", ".dll");

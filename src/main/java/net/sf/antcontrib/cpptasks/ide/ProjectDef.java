@@ -30,12 +30,15 @@ import java.util.Hashtable;
 import java.util.List;
 
 /**
+ * <p>
  * Requests the creation of an IDE project file.  Experimental.
+ * </p>
  * <p>
  * Implementation status: msdev5, msdev6 and cbuilderx
  * generate reasonable project files for simple projects,
  * xcode and msdev7 and msdev71 capture source file lists and
  * a few settings.
+ * </p>
  *
  * @author Curt Arnold
  */
@@ -99,10 +102,13 @@ public final class ProjectDef extends DataType {
     }
 
     /**
+     * <p>
      * Set project type.
-     *
-     *
-     * <table width="100%" border="1"> <thead>Supported project formats </thead>
+     * </p>
+     * <table style="width:100%;border-collapse:collapse;border:1px solid black;">
+     * <caption></caption>
+     * <thead><tr><th>Supported project formats</th></tr></thead>
+     * <tbody>
      * <tr>
      * <td>cbuilderx</td>
      * <td>Borland C++BuilderX</td>
@@ -135,6 +141,7 @@ public final class ProjectDef extends DataType {
      * <td>xcode</td>
      * <td>Apple Xcode</td>
      * </tr>
+     * </tbody>
      * </table>
      *
      * @param value new value
@@ -190,11 +197,14 @@ public final class ProjectDef extends DataType {
     }
 
     /**
+     * <p>
      * Determine if this def should be used.
+     * </p>
      * <p>
      * Definition will be active if the "if" variable (if specified) is set and
      * the "unless" variable (if specified) is not set and that all reference
      * or extended definitions are active
+     * </p>
      *
      * @return true if processor is active
      */
@@ -229,13 +239,17 @@ public final class ProjectDef extends DataType {
     }
 
     /**
+     * <p>
      * Sets the property name for the 'if' condition.
+     * </p>
      * <p>
      * The configuration will be ignored unless the property is defined.
+     * </p>
      * <p>
      * The value of the property is insignificant, but values that would imply
      * misinterpretation ("false", "no") will throw an exception when
      * evaluated.
+     * </p>
      *
      * @param propName name of property
      */
@@ -244,13 +258,17 @@ public final class ProjectDef extends DataType {
     }
 
     /**
+     * <p>
      * Set the property name for the 'unless' condition.
+     * </p>
      * <p>
      * If named property is set, the configuration will be ignored.
+     * </p>
      * <p>
      * The value of the property is insignificant, but values that would imply
      * misinterpretation ("false", "no") of the behavior will throw an
      * exception when evaluated.
+     * </p>
      *
      * @param propName name of property
      */

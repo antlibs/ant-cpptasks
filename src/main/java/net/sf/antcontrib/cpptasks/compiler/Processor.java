@@ -40,14 +40,18 @@ public interface Processor {
     Processor changeEnvironment(boolean newEnvironment, Environment env);
 
     /**
-     * Returns the compiler configuration for <cc>or <compiler>element.
+     * Returns the compiler configuration for &lt;cc&gt; or &lt;compiler&gt; element.
      *
-     * @param defaultProviders When specificConfig corresponds to a <compiler>or linker
+     * @param task CCTask
+     * @param linkType LinkType
+     * @param defaultProviders When specificConfig corresponds to a &lt;compiler&gt; or &lt;linker&gt;
      *                         element, defaultProvider will be a zero to two element array.
      *                         If there is an extends attribute, the first element will be
      *                         the referenced ProcessorDef, unless inherit = false, the last
-     *                         element will be the containing <cc>element
-     * @param specificConfig   A <cc>or <compiler>element.
+     *                         element will be the containing &lt;cc&gt; element
+     * @param specificConfig   A &lt;cc&gt; or &lt;compiler&gt; element.
+     * @param targetPlatform LinkType
+     * @param versionInfo VersionInfo
      * @return resulting configuration
      */
     ProcessorConfiguration createConfiguration(CCTask task, LinkType linkType,
@@ -58,11 +62,16 @@ public interface Processor {
      * Retrieve an identifier that identifies the specific version of the
      * compiler. Compilers with the same identifier should produce the same
      * output files for the same input files and command line switches.
+     *
+     * @return String
      */
     String getIdentifier();
 
     /**
      * Gets the linker that is associated with this processors
+     *
+     * @param type LinkType
+     * @return Linker
      */
     Linker getLinker(LinkType type);
 
@@ -70,6 +79,7 @@ public interface Processor {
      * Output file name (no path components) corresponding to source file
      *
      * @param inputFile input file
+     * @param versionInfo VersionInfo
      * @return output file name or null if no output file or name not
      * determined by input file
      */

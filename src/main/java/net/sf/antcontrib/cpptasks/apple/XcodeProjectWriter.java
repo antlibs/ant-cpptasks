@@ -63,6 +63,7 @@ public final class XcodeProjectWriter implements ProjectWriter {
      * @param fileName   File name base, writer may append appropriate extension
      * @param task       cc task for which to write project
      * @param projectDef project element
+     * @param sources    list of source files
      * @param targets    compilation targets
      * @param linkTarget link target
      * @throws IOException if error writing project file
@@ -210,11 +211,11 @@ public final class XcodeProjectWriter implements ProjectWriter {
     /**
      * Adds a dependency to the object graph.
      *
-     * @param objects
-     * @param project
-     * @param mainGroupChildren
-     * @param baseDir
-     * @param dependency
+     * @param objects String - Object map
+     * @param project PBXObjectRef
+     * @param mainGroupChildren PBXObjectRef list
+     * @param baseDir String
+     * @param dependency DependencyDef
      * @return PBXBuildFile to add to PBXFrameworksBuildPhase.
      */
     private PBXObjectRef addDependency(final Map objects,
@@ -392,7 +393,9 @@ public final class XcodeProjectWriter implements ProjectWriter {
      *
      * @param objects        map of objects.
      * @param baseDir        base directory.
+     * @param dependencies   a list of dependencies.
      * @param compilerConfig compiler configuration.
+     * @param linkerConfig   linker configuration.
      * @return project configuration object.
      */
     private PBXObjectRef addProjectConfigurationList(final Map objects,
@@ -529,6 +532,7 @@ public final class XcodeProjectWriter implements ProjectWriter {
      * @param product             product.
      * @param projectName         project name.
      * @param sourceGroupChildren source files needed to build product.
+     * @param frameworkBuildFiles framework files needed to build product.
      * @return native target.
      */
     private PBXObjectRef addNativeTarget(final Map objects,

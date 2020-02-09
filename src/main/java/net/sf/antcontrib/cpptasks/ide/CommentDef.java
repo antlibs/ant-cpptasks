@@ -23,7 +23,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * <p>
  * Defines a comment to place in the generated project files.
+ * </p>
  */
 public final class CommentDef {
     private String text;

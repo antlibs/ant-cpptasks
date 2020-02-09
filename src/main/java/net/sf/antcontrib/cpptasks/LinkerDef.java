@@ -35,9 +35,11 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.FlexInteger;
 
 /**
+ * <p>
  * A linker definition. linker elements may be placed either as children of a
  * cc element or the project element. A linker element with an id attribute may
  * be referenced by linker elements with refid or extends attributes.
+ * </p>
  *
  * @author Adam Murdoch
  * @author Curt Arnold
@@ -83,6 +85,8 @@ public class LinkerDef extends ProcessorDef {
 
     /**
      * Adds a linker command-line arg.
+     *
+     * @param arg LinkerArgument
      */
     public void addConfiguredLinkerArg(LinkerArgument arg) {
         addConfiguredProcessorArg(arg);
@@ -90,6 +94,8 @@ public class LinkerDef extends ProcessorDef {
 
     /**
      * Adds a compiler command-line arg.
+     *
+     * @param param LinkerParam
      */
     public void addConfiguredLinkerParam(LinkerParam param) {
         if (isReference()) {
@@ -100,6 +106,8 @@ public class LinkerDef extends ProcessorDef {
 
     /**
      * Adds a system library set.
+     *
+     * @param libset LibrarySet
      */
     public void addLibset(LibrarySet libset) {
         if (isReference()) {
@@ -113,6 +121,8 @@ public class LinkerDef extends ProcessorDef {
 
     /**
      * Adds a system library set.
+     *
+     * @param libset SystemLibrarySet
      */
     public void addSyslibset(SystemLibrarySet libset) {
         if (isReference()) {
@@ -131,6 +141,10 @@ public class LinkerDef extends ProcessorDef {
 
     /**
      * Returns an array of active library sets for this linker definition.
+     *
+     * @param defaultProviders an array of LinkerDef
+     * @param index int
+     * @return an array of LibrarySet
      */
     public LibrarySet[] getActiveLibrarySets(LinkerDef[] defaultProviders, int index) {
         if (isReference()) {
@@ -154,6 +168,10 @@ public class LinkerDef extends ProcessorDef {
 
     /**
      * Returns an array of active library sets for this linker definition.
+     *
+     * @param defaultProviders an array of LinkerDef
+     * @param index int
+     * @return an array of LibrarySet
      */
     public LibrarySet[] getActiveSystemLibrarySets(LinkerDef[] defaultProviders, int index) {
         if (isReference()) {
@@ -173,6 +191,10 @@ public class LinkerDef extends ProcessorDef {
 
     /**
      * Returns an array of active library sets for this linker definition.
+     *
+     * @param defaultProviders an array of LinkerDef
+     * @param index int
+     * @return an array of LibrarySet
      */
     public LibrarySet[] getActiveUserLibrarySets(LinkerDef[] defaultProviders, int index) {
         if (isReference()) {
@@ -315,6 +337,8 @@ public class LinkerDef extends ProcessorDef {
 
     /**
      * If true, marks the file to be loaded only at its preferred address.
+     *
+     * @param fixed boolean
      */
     public void setFixed(boolean fixed) {
         if (isReference()) {
@@ -325,6 +349,8 @@ public class LinkerDef extends ProcessorDef {
 
     /**
      * If true, allows incremental linking.
+     *
+     * @param incremental boolean
      */
     public void setIncremental(boolean incremental) {
         if (isReference()) {
@@ -335,6 +361,8 @@ public class LinkerDef extends ProcessorDef {
 
     /**
      * If set to true, a map file will be produced.
+     *
+     * @param map boolean
      */
     public void setMap(boolean map) {
         if (isReference()) {
@@ -344,10 +372,13 @@ public class LinkerDef extends ProcessorDef {
     }
 
     /**
+     * <p>
      * Sets linker type.
-     *
-     *
-     * <table width="100%" border="1"> <thead>Supported linkers </thead>
+     * </p>
+     * <table style="width:100%;border-collapse:collapse;border:1px solid black;">
+     * <caption></caption>
+     * <thead><tr><th>Supported linkers</th></tr></thead>
+     * <tbody>
      * <tr>
      * <td>gcc</td>
      * <td>Gcc Linker</td>
@@ -428,7 +459,11 @@ public class LinkerDef extends ProcessorDef {
      * <td>wfl</td>
      * <td>OpenWatcom FORTRAN linker</td>
      * </tr>
+     * </tbody>
      * </table>
+     *
+     * @param name LinkerEnum
+     * @throws BuildException if something goes wrong
      */
     public void setName(LinkerEnum name) throws BuildException {
         if (isReference()) {
@@ -451,6 +486,8 @@ public class LinkerDef extends ProcessorDef {
 
     /**
      * Sets stack size in bytes.
+     *
+     * @param stack FlexInteger
      */
     public void setStack(FlexInteger stack) {
         if (isReference()) {

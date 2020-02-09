@@ -22,7 +22,7 @@ import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 
 /**
- * @author CurtA
+ * @author Curt Arnold
  */
 public class TestGccLinker extends TestCase {
     private final String realOSName;

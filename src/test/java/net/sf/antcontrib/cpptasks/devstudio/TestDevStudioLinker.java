@@ -23,7 +23,8 @@ import org.apache.tools.ant.taskdefs.condition.Os;
 /**
  * Test for Microsoft Developer Studio linker
  * <p>
- * Override create to test concrete compiler implementions
+ * Override create to test concrete compiler implementations
+ * </p>
  */
 public class TestDevStudioLinker extends TestAbstractLinker {
     public TestDevStudioLinker(String name) {

@@ -25,7 +25,10 @@ import org.apache.tools.ant.types.EnumeratedAttribute;
 /**
  * Enumeration of supported project file generators.
  *
- * <table width="100%" border="1"> <thead>Supported project generators </thead>
+ * <table style="width:100%;border-collapse:collapse;border:1px solid black;">
+ * <caption></caption>
+ * <thead><tr><th>Supported project generators</th></tr></thead>
+ * <tbody>
  * <tr>
  * <td>cbuilderx</td>
  * <td>Borland C++BuilderX</td>
@@ -58,6 +61,7 @@ import org.apache.tools.ant.types.EnumeratedAttribute;
  * <td>xcode</td>
  * <td>Apple Xcode</td>
  * </tr>
+ * </tbody>
  * </table>
  *
  * @author Curt Arnold
@@ -91,9 +95,9 @@ public final class ProjectWriterEnum extends EnumeratedAttribute {
     }
 
     /**
-     * Gets acceptible values for enumeration.
+     * Gets acceptable values for enumeration.
      *
-     * @return acceptible values
+     * @return acceptable values
      */
     public String[] getValues() {
         return (String[]) values.clone();

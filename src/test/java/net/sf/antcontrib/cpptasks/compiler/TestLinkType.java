@@ -22,7 +22,7 @@ import net.sf.antcontrib.cpptasks.OutputTypeEnum;
 /**
  * Tests for LinkType
  *
- * @author CurtA
+ * @author Curt Arnold
  */
 public class TestLinkType extends TestCase {
     /**
@@ -38,6 +38,7 @@ public class TestLinkType extends TestCase {
      * Tests if isPluginModule returns true when set to plugin output type
      * <p>
      * See patch [ 676276 ] Enhanced support for Mac OS X
+     * </p>
      */
     public void testIsPluginFalse() {
         LinkType type = new LinkType();
@@ -51,6 +52,7 @@ public class TestLinkType extends TestCase {
      * Tests if isPluginModule returns true when set to plugin output type
      * <p>
      * See patch [ 676276 ] Enhanced support for Mac OS X
+     * </p>
      */
     public void testIsPluginTrue() {
         LinkType type = new LinkType();

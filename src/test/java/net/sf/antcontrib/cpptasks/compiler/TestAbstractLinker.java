@@ -28,7 +28,8 @@ import net.sf.antcontrib.cpptasks.VersionInfo;
 /**
  * Test for abstract compiler class
  * <p>
- * Override create to test concrete compiler implementions
+ * Override create to test concrete compiler implementations
+ * </p>
  */
 public class TestAbstractLinker extends TestAbstractProcessor {
     private class DummyAbstractLinker extends AbstractLinker {

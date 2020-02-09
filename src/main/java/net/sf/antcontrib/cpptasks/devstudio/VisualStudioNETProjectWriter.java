@@ -47,7 +47,7 @@ import java.util.Map;
 /**
  * Writes a Visual Studio.NET project file.
  *
- * @author curta
+ * @author Curt Arnold
  */
 public final class VisualStudioNETProjectWriter implements ProjectWriter {
     /**

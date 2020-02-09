@@ -17,15 +17,19 @@
 package net.sf.antcontrib.cpptasks.types;
 
 /**
+ * <p>
  * A set of system library names. Timestamp or location of system libraries are
  * not considered in dependency analysis.
+ * </p>
  * <p>
  * Libraries can also be added to a link by specifying them in a fileset.
+ * </p>
  * <p>
  * For most Unix-like compilers, syslibset will result in a series of -l and -L
  * linker arguments. For Windows compilers, the library names will be used to
  * locate the appropriate library files which will be added to the linkers
  * input file list as if they had been specified in a fileset.
+ * </p>
  */
 public class SystemLibrarySet extends LibrarySet {
     public SystemLibrarySet() {

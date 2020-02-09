@@ -33,6 +33,8 @@ public class FlexLong {
     /**
      * Constructor used by Ant's introspection mechanism for attribute
      * population
+     *
+     * @param value String
      */
     public FlexLong(String value) {
         // Java 1.1 did not support Long.decode().. so we call it by
@@ -49,6 +51,8 @@ public class FlexLong {
 
     /**
      * Returns the decimal integer value
+     *
+     * @return long
      */
     public long longValue() {
         return value.longValue();
@@ -56,6 +60,8 @@ public class FlexLong {
 
     /**
      * Overridden method to return the decimal value for display
+     *
+     * @return String
      */
     public String toString() {
         return value.toString();

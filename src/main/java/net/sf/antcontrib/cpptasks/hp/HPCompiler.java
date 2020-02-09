@@ -17,11 +17,11 @@
  *    distribution.
  *
  * 3. The end-user documentation included with the redistribution, if
- *    any, must include the following acknowlegement:
+ *    any, must include the following acknowledgement:
  *       "This product includes software developed by the
  *        Apache Software Foundation (http://www.apache.org/)."
- *    Alternately, this acknowlegement may appear in the software itself,
- *    if and wherever such third-party acknowlegements normally appear.
+ *    Alternately, this acknowledgement may appear in the software itself,
+ *    if and wherever such third-party acknowledgements normally appear.
  *
  * 4. The names "The Jakarta Project", "Ant", and "Apache Software
  *    Foundation" must not be used to endorse or promote products derived
@@ -76,6 +76,10 @@ public final class HPCompiler extends GccCompatibleCCompiler {
     /**
      * Private constructor.  Use GccCCompiler.getInstance() to get
      * singleton instance of this class.
+     *
+     * @param command String
+     * @param newEnvironment boolean
+     * @param env Environment
      */
     private HPCompiler(String command, boolean newEnvironment, Environment env) {
         super(command, "-help", false, null, newEnvironment, env);
@@ -87,6 +91,8 @@ public final class HPCompiler extends GccCompatibleCCompiler {
 
     /**
      * Gets singleton instance of this class
+     *
+     * @return HPCompiler
      */
     public static HPCompiler getInstance() {
         return instance;

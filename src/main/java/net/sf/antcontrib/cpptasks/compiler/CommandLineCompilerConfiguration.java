@@ -149,14 +149,17 @@ public final class CommandLineCompilerConfiguration
     }
 
     /**
+     * <p>
      * This method may be used to get two distinct compiler configurations, one
      * for compiling the specified file and producing a precompiled header
      * file, and a second for compiling other files using the precompiled
      * header file.
+     * </p>
      * <p>
-     * The last (preferrably only) include directive in the prototype file will
+     * The last (preferably only) include directive in the prototype file will
      * be used to mark the boundary between pre-compiled and normally compiled
      * headers.
+     * </p>
      *
      * @param prototype A source file (for example, stdafx.cpp) that is used to build
      *                  the precompiled header file. @returns null if precompiled

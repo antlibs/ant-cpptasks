@@ -21,7 +21,7 @@ import junit.framework.TestCase;
 /**
  * Tests for LinkerEnum
  *
- * @author CurtA
+ * @author Curt Arnold
  */
 public class TestLinkerEnum extends TestCase {
     /**
@@ -35,6 +35,7 @@ public class TestLinkerEnum extends TestCase {
      * Test checks that enumeration contains value g++
      * <p>
      * See patch [ 676276 ] Enhanced support for Mac OS X
+     * </p>
      */
     public void testContainsValueGpp() {
         assertTrue(new LinkerEnum().containsValue("g++"));

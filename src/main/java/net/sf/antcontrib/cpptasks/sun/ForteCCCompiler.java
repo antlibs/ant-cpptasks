@@ -40,6 +40,8 @@ public final class ForteCCCompiler extends GccCompatibleCCompiler {
 
     /**
      * Gets singleton instance of this class
+     *
+     * @return ForteCCCompiler
      */
     public static ForteCCCompiler getInstance() {
         return instance;

@@ -81,6 +81,7 @@ public class CUtil {
      * Checks a array of names for non existent or non directory entries and
      * nulls them out.
      *
+     * @param names array of String
      * @return Count of non-null elements
      */
     public static int checkDirectoryArray(String[] names) {
@@ -100,6 +101,9 @@ public class CUtil {
 
     /**
      * Extracts the basename of a file, removing the extension, if present
+     *
+     * @param file File
+     * @return String
      */
     public static String getBasename(File file) {
         String path = file.getPath();
@@ -139,6 +143,9 @@ public class CUtil {
 
     /**
      * Extracts the parent of a file
+     *
+     * @param path String
+     * @return String
      */
     public static String getParentPath(String path) {
         int pos = path.lastIndexOf(File.separator);
@@ -153,7 +160,7 @@ public class CUtil {
      * environment variable
      *
      * @param envVariable environment variable name such as "LIB" or "INCLUDE"
-     * @param delim       delimitor used to separate parts of the path, typically ";"
+     * @param delim       delimiter used to separate parts of the path, typically ";"
      *                    or ":"
      * @return array of File's for each part that is an existing directory
      */
@@ -314,6 +321,7 @@ public class CUtil {
      *
      * @param path  path string, for example ".;c:\something\include"
      * @param delim delimiter, typically ; or :
+     * @return an array of File
      */
     public static File[] parsePath(String path, String delim) {
         Vector libpaths = new Vector();
@@ -342,6 +350,14 @@ public class CUtil {
     /**
      * This method is exposed so test classes can overload and test the
      * arguments without actually spawning the compiler
+     *
+     * @param task CCTask
+     * @param workingDir File
+     * @param cmdline an array of String
+     * @param newEnvironment boolean
+     * @param env Environment
+     * @return int
+     * @throws BuildException if anything goes wrong
      */
     public static int runCommand(CCTask task, File workingDir, String[] cmdline,
                                  boolean newEnvironment, Environment env) throws BuildException {

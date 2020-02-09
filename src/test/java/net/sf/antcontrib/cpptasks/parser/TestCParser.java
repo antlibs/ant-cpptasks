@@ -35,7 +35,7 @@ public final class TestCParser extends TestCase {
     }
 
     /**
-     * Checks parsing of #include <foo.h>.
+     * Checks parsing of #include &lt;foo.h&gt;.
      *
      * @throws IOException test fails on IOException
      */
@@ -63,7 +63,7 @@ public final class TestCParser extends TestCase {
     }
 
     /**
-     * Checks parsing of #include <foo.h>.
+     * Checks parsing of #include &lt;foo.h&gt;.
      *
      * @throws IOException test fails on IOException
      */
@@ -91,7 +91,7 @@ public final class TestCParser extends TestCase {
     }
 
     /**
-     * Checks parsing of #import <foo.h.
+     * Checks parsing of #import &lt;foo.h.
      *
      * @throws IOException test fails on IOException
      */
@@ -104,7 +104,7 @@ public final class TestCParser extends TestCase {
     }
 
     /**
-     * Checks parsing of #import "foo.h.
+     * Checks parsing of #import &quot;foo.h.
      *
      * @throws IOException test fails on IOException
      */
@@ -117,7 +117,7 @@ public final class TestCParser extends TestCase {
     }
 
     /**
-     * Checks parsing of #include <foo.h.
+     * Checks parsing of #include &lt;foo.h.
      *
      * @throws IOException test fails on IOException
      */
@@ -130,7 +130,7 @@ public final class TestCParser extends TestCase {
     }
 
     /**
-     * Checks parsing of #include "foo.h.
+     * Checks parsing of #include &quot;foo.h.
      *
      * @throws IOException test fails on IOException
      */

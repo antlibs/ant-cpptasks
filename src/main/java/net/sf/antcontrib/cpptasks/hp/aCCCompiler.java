@@ -41,6 +41,8 @@ public final class aCCCompiler extends GccCompatibleCCompiler {
             headerExtensions, false, null);
     /**
      * Gets singleton instance of this class
+     *
+     * @return aCCCompiler
      */
     public static aCCCompiler getInstance() {
         return instance;
@@ -52,6 +54,12 @@ public final class aCCCompiler extends GccCompatibleCCompiler {
     /**
      * Private constructor. Use GccCCompiler.getInstance() to get singleton
      * instance of this class.
+     *
+     * @param command String
+     * @param sourceExtensions an array of String
+     * @param headerExtensions an array of String
+     * @param newEnvironment boolean
+     * @param env Environment
      */
     private aCCCompiler(String command, String[] sourceExtensions,
                         String[] headerExtensions, boolean newEnvironment,

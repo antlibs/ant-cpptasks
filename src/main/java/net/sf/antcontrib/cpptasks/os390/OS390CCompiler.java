@@ -36,7 +36,7 @@ import org.apache.tools.ant.types.Environment;
 /**
  * Adapter for the IBM (R) OS/390 (tm) C++ Compiler
  *
- * @author Hiram Chirino (cojonudo14@hotmail.com)
+ * @author Hiram Chirino {@literal <cojonudo14@hotmail.com>}
  */
 public class OS390CCompiler extends CommandLineCCompiler {
     private static final AbstractCompiler instance = new OS390CCompiler(false,
@@ -93,8 +93,11 @@ public class OS390CCompiler extends CommandLineCCompiler {
     /**
      * The buildDefineArguments implementation CommandLineCCompiler is not good
      * for us because os390 defines are give by -D definex instead of
-     * /Ddefinex, 2 args not 1! since we implement this ourslefs, we do not
+     * /Ddefinex, 2 args not 1! since we implement this ourselves, we do not
      * have to implement the getDefineSwitch() and the getUndefineSwitch().
+     *
+     * @param args an array of CompilerDef
+     * @param defs a list of String
      */
     protected void buildDefineArguments(CompilerDef[] defs, Vector args) {
         //

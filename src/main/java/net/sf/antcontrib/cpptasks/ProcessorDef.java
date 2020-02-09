@@ -39,9 +39,12 @@ import org.apache.tools.ant.types.Reference;
  */
 public abstract class ProcessorDef extends DataType {
     /**
-     * Returns the equivalent Boolean object for the specified value
+     * <p>
+     * Returns the equivalent Boolean object for the specified value.
+     * </p>
      * <p>
      * Equivalent to Boolean.valueOf in JDK 1.4
+     * </p>
      *
      * @param val boolean value
      * @return Boolean.TRUE or Boolean.FALSE
@@ -79,11 +82,11 @@ public abstract class ProcessorDef extends DataType {
      */
     private Processor processor;
     /**
-     * Collection of <compilerarg>or <linkerarg>contained by definition
+     * Collection of &lt;compilerarg&gt; or &lt;linkerarg&gt; contained by definition
      */
     private final Vector processorArgs = new Vector();
     /**
-     * Collection of <compilerparam>or <linkerparam>contained by definition
+     * Collection of &lt;compilerparam&gt; or &lt;linkerparam&gt; contained by definition
      */
     private final Vector processorParams = new Vector();
     /**
@@ -91,7 +94,7 @@ public abstract class ProcessorDef extends DataType {
      */
     private Boolean rebuild;
     /**
-     * Collection of <fileset>contained by definition
+     * Collection of &lt;fileset&gt; contained by definition
      */
     private final Vector srcSets = new Vector();
     /**
@@ -102,13 +105,15 @@ public abstract class ProcessorDef extends DataType {
 
     /**
      * Constructor
+     *
+     * @throws NullPointerException if something goes wrong
      */
     protected ProcessorDef() throws NullPointerException {
         inherit = true;
     }
 
     /**
-     * Adds a <compilerarg>or <linkerarg>
+     * Adds a &lt;compilerarg&gt; or &lt;linkerarg&gt;
      *
      * @param arg command line argument, must not be null
      * @throws NullPointerException if arg is null
@@ -126,7 +131,7 @@ public abstract class ProcessorDef extends DataType {
     }
 
     /**
-     * Adds a <compilerarg>or <linkerarg>
+     * Adds a &lt;compilerarg&gt; or &lt;linkerarg&gt;
      *
      * @param param command line argument, must not be null
      * @throws NullPointerException if arg is null
@@ -145,6 +150,8 @@ public abstract class ProcessorDef extends DataType {
 
     /**
      * Add an environment variable to the launched process.
+     *
+     * @param var Environment.Variable
      */
     public void addEnv(Environment.Variable var) {
         if (env == null) {
@@ -154,10 +161,13 @@ public abstract class ProcessorDef extends DataType {
     }
 
     /**
-     * Adds a source file set.
      * <p>
-     * Files in these set will be processed by this configuration and will not
+     * Adds a source file set.
+     * </p>
+     * <p>
+     * Files in these sets will be processed by this configuration and will not
      * participate in the auction.
+     * </p>
      *
      * @param srcSet Fileset identifying files that should be processed by this
      *               processor
@@ -174,7 +184,11 @@ public abstract class ProcessorDef extends DataType {
     /**
      * Creates a configuration
      *
+     * @param task CCTask
+     * @param linkType LinkType
      * @param baseDef reference to def from containing cc element, may be null
+     * @param targetPlatform TargetDef
+     * @param versionInfo VersionInfo
      * @return configuration
      */
     public ProcessorConfiguration createConfiguration(CCTask task, LinkType linkType,
@@ -219,7 +233,7 @@ public abstract class ProcessorDef extends DataType {
     }
 
     /**
-     * Prepares list of processor arguments ( compilerarg, linkerarg) that
+     * Prepares list of processor arguments (compilerarg, linkerarg) that
      * are active for the current project settings.
      *
      * @return active compiler arguments
@@ -246,7 +260,7 @@ public abstract class ProcessorDef extends DataType {
     }
 
     /**
-     * Gets boolean indicating debug build
+     * Gets boolean indicating debug build.
      *
      * @param defaultProviders array of ProcessorDef's in descending priority
      * @param index            index to first element in array that should be considered
@@ -292,7 +306,7 @@ public abstract class ProcessorDef extends DataType {
     }
 
     /**
-     * Gets the ProcessorDef specified by the extends attribute
+     * Gets the ProcessorDef specified by the extends attribute.
      *
      * @return Base ProcessorDef, null if extends is not specified
      * @throws BuildException if reference is not same type object
@@ -315,7 +329,7 @@ public abstract class ProcessorDef extends DataType {
      * Gets the inherit attribute. If the inherit value is true, this processor
      * definition will inherit default values from the containing cc element.
      *
-     * @return if true then properties from the containing <cc>element are
+     * @return if true then properties from the containing &lt;cc&gt; element are
      * used.
      */
     public final boolean getInherit() {
@@ -363,6 +377,7 @@ public abstract class ProcessorDef extends DataType {
      * Obtains the appropriate processor (compiler, linker) based on the
      * LinkType.
      *
+     * @param linkType LinkType
      * @return processor
      */
     protected Processor getProcessor(LinkType linkType) {
@@ -409,11 +424,14 @@ public abstract class ProcessorDef extends DataType {
     }
 
     /**
+     * <p>
      * Determine if this def should be used.
+     * </p>
      * <p>
      * Definition will be active if the "if" variable (if specified) is set and
      * the "unless" variable (if specified) is not set and that all reference
-     * or extended definitions are active
+     * or extended definitions are active.
+     * </p>
      *
      * @return true if processor is active
      * @throws IllegalStateException if not properly initialized
@@ -448,6 +466,7 @@ public abstract class ProcessorDef extends DataType {
      * tool is supported.
      *
      * @param className full class name
+     * @throws BuildException if ProcessorDef cannot be instantiated
      */
     public void setClassname(String className) throws BuildException {
         Object proc = null;
@@ -480,6 +499,8 @@ public abstract class ProcessorDef extends DataType {
 
     /**
      * Sets a description of the current data type.
+     *
+     * @param desc String
      */
     public void setDescription(String desc) {
         super.setDescription(desc);
@@ -514,13 +535,17 @@ public abstract class ProcessorDef extends DataType {
     }
 
     /**
+     * <p>
      * Sets the property name for the 'if' condition.
+     * </p>
      * <p>
      * The configuration will be ignored unless the property is defined.
+     * </p>
      * <p>
      * The value of the property is insignificant, but values that would imply
      * misinterpretation ("false", "no") will throw an exception when
      * evaluated.
+     * </p>
      *
      * @param propName name of property
      */
@@ -543,9 +568,12 @@ public abstract class ProcessorDef extends DataType {
     }
 
     /**
+     * <p>
      * Set use of libtool.
+     * </p>
      * <p>
      * If set to true, the "libtool " will be prepended to the command line
+     * </p>
      *
      * @param libtool If true, use libtool.
      */
@@ -559,6 +587,8 @@ public abstract class ProcessorDef extends DataType {
     /**
      * Do not propagate old environment when new environment variables are
      * specified.
+     *
+     * @param newenv boolean
      */
     public void setNewenvironment(boolean newenv) {
         newEnvironment = newenv;
@@ -611,13 +641,17 @@ public abstract class ProcessorDef extends DataType {
     }
 
     /**
+     * <p>
      * Set the property name for the 'unless' condition.
+     * </p>
      * <p>
      * If named property is set, the configuration will be ignored.
+     * </p>
      * <p>
      * The value of the property is insignificant, but values that would imply
      * misinterpretation ("false", "no") of the behavior will throw an
      * exception when evaluated.
+     * </p>
      *
      * @param propName name of property
      */
@@ -626,7 +660,7 @@ public abstract class ProcessorDef extends DataType {
     }
 
     /**
-     * This method calls the FileVistor's visit function for every file in the
+     * This method calls the FileVisitor's visit function for every file in the
      * processors definition
      *
      * @param visitor object whose visit method is called for every file

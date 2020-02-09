@@ -55,7 +55,15 @@ public abstract class CommandLineLinker extends AbstractLinker {
 
 
     /**
-     * Creates a comand line linker invocation
+     * Creates a command line linker invocation
+     *
+     * @param command String
+     * @param identifierArg String
+     * @param extensions array of String
+     * @param ignoredExtensions array of String
+     * @param outputSuffix String
+     * @param isLibtool boolean
+     * @param libtoolLinker CommandLineLinker
      */
     public CommandLineLinker(String command,
                              String identifierArg,
@@ -184,13 +192,14 @@ public abstract class CommandLineLinker extends AbstractLinker {
     }
 
     /**
-     * Allows drived linker to decorate linker option.
+     * Allows derived linker to decorate linker option.
      * Override by GccLinker to prepend a "-Wl," to
      * pass option to through gcc to linker.
      *
      * @param buf buffer that may be used and abused in the decoration process,
      *            must not be null.
      * @param arg linker argument
+     * @return String
      */
     protected String decorateLinkerOption(StringBuffer buf, String arg) {
         return arg;
@@ -240,6 +249,12 @@ public abstract class CommandLineLinker extends AbstractLinker {
 
     /**
      * Performs a link using a command line linker
+     *
+     * @param task CCTask
+     * @param outputFile File
+     * @param sourceFiles an array of String
+     * @param config CommandLineLinkerConfiguration
+     * @throws BuildException if something goes wrong
      */
     public void link(CCTask task,
                      File outputFile,
@@ -290,7 +305,8 @@ public abstract class CommandLineLinker extends AbstractLinker {
      * Prepares argument list for exec command.  Will return null
      * if command line would exceed allowable command line buffer.
      *
-     * @param task        compilation task.
+     * @param task        compilation task
+     * @param outputDir   linker output directory
      * @param outputFile  linker output file
      * @param sourceFiles linker input files (.obj, .o, .res)
      * @param config      linker configuration
@@ -301,7 +317,7 @@ public abstract class CommandLineLinker extends AbstractLinker {
                                         CommandLineLinkerConfiguration config) {
         String[] preargs = config.getPreArguments();
         String[] endargs = config.getEndArguments();
-        String outputSwitch[] = getOutputFileSwitch(task, outputFile);
+        String[] outputSwitch = getOutputFileSwitch(task, outputFile);
         int allArgsCount = preargs.length + 1 + outputSwitch.length + sourceFiles.length
                 + endargs.length;
         if (isLibtool) {
@@ -331,6 +347,11 @@ public abstract class CommandLineLinker extends AbstractLinker {
 
     /**
      * Processes filename into argument form
+     *
+     * @param buf StringBuffer
+     * @param outputDir String
+     * @param sourceFile String
+     * @return String
      */
     protected String prepareFilename(StringBuffer buf, String outputDir, String sourceFile) {
         String relativePath = CUtil.getRelativePath(outputDir,
@@ -345,6 +366,7 @@ public abstract class CommandLineLinker extends AbstractLinker {
      * @param outputFile linker output file
      * @param args       output of prepareArguments
      * @return arguments for runTask
+     * @throws IOException if something goes wrong
      */
     protected String[] prepareResponseFile(File outputFile, String[] args) throws IOException {
         String baseName = outputFile.getName();
@@ -392,6 +414,12 @@ public abstract class CommandLineLinker extends AbstractLinker {
      * This method is exposed so test classes can overload
      * and test the arguments without actually spawning the
      * compiler
+     *
+     * @param task CCTask
+     * @param workingDir File
+     * @param cmdline an array of String
+     * @return int
+     * @throws BuildException idf something goes wrong
      */
     protected int runCommand(CCTask task, File workingDir,
                              String[] cmdline) throws BuildException {

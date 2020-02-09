@@ -72,6 +72,9 @@ public final class WindresResourceCompiler extends CommandLineCompiler {
     /**
      * The include parser for C will work just fine, but we didn't want to
      * inherit from CommandLineCCompiler
+     *
+     * @param source File
+     * @return Parser
      */
     protected Parser createParser(File source) {
         return new CParser();

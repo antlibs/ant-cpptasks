@@ -39,7 +39,7 @@ public abstract class OpenWatcomCompiler extends CommandLineCompiler {
      * @param identifierArg    String identifier
      * @param sourceExtensions String[] source extension
      * @param headerExtensions String[] header extension
-     * @param newEnvironment   boolean use new enviroment
+     * @param newEnvironment   boolean use new environment
      * @param env              Environment environment
      */
     protected OpenWatcomCompiler(final String command,
@@ -57,7 +57,7 @@ public abstract class OpenWatcomCompiler extends CommandLineCompiler {
      *
      * @param args          Vector command line arguments
      * @param debug         boolean is debug
-     * @param multithreaded boolean multithreaderd
+     * @param multithreaded boolean multithreaded
      * @param exceptions    boolean support exceptions
      * @param linkType      LinkType link type
      * @param rtti          Boolean run time type information
@@ -108,9 +108,9 @@ public abstract class OpenWatcomCompiler extends CommandLineCompiler {
     }
 
     /**
-     * Change enviroment.
+     * Change environment.
      *
-     * @param newEnvironment boolean use new enviroment
+     * @param newEnvironment boolean use new environment
      * @param env            Environment environment
      * @return Processor modified processor
      */

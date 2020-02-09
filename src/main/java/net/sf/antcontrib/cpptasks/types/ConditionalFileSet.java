@@ -23,7 +23,9 @@ import org.apache.tools.ant.types.AbstractFileSet;
 import org.apache.tools.ant.types.FileSet;
 
 /**
+ * <p>
  * An Ant FileSet object augmented with if and unless conditions.
+ * </p>
  *
  * @author Curt Arnold
  */
@@ -42,6 +44,8 @@ public class ConditionalFileSet extends FileSet {
     /**
      * overrides FileSet's implementation which would throw an exception since
      * the referenced object isn't this type.
+     *
+     * @param p Project
      */
     protected AbstractFileSet getRef(Project p) {
         return (AbstractFileSet) ref.getReferencedObject(p);
@@ -50,6 +54,8 @@ public class ConditionalFileSet extends FileSet {
     /**
      * Returns true if the Path's if and unless conditions (if any) are
      * satisfied.
+     *
+     * @return boolean
      */
     public boolean isActive() throws BuildException {
         Project p = getProject();
@@ -60,26 +66,36 @@ public class ConditionalFileSet extends FileSet {
     }
 
     /**
+     * <p>
      * Sets the property name for the 'if' condition.
+     * </p>
      * <p>
      * The fileset will be ignored unless the property is defined.
+     * </p>
      * <p>
      * The value of the property is insignificant, but values that would imply
      * misinterpretation ("false", "no") will throw an exception when
      * evaluated.
+     * </p>
+     *
+     * @param propName String
      */
     public void setIf(String propName) {
         ifCond = propName;
     }
 
     /**
+     * <p>
      * Set the property name for the 'unless' condition.
+     * </p>
      * <p>
      * If named property is set, the fileset will be ignored.
+     * </p>
      * <p>
      * The value of the property is insignificant, but values that would imply
      * misinterpretation ("false", "no") of the behavior will throw an
      * exception when evaluated.
+     * </p>
      *
      * @param propName name of property
      */

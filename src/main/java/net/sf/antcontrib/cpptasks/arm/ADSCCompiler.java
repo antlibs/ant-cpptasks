@@ -27,10 +27,13 @@ import net.sf.antcontrib.cpptasks.compiler.Linker;
 import org.apache.tools.ant.types.Environment;
 
 /**
- * Adapter for the ARM C Compilers
+ * <p>
+ * Adapter for the ARM C Compilers.
+ * </p>
  * <p>
  * See Doc No: ARM DUI 0151A, Issued: Nov 2001 at
  * http://www.arm.com/arm/User_Guides?OpenDocument
+ * </p>
  *
  * @author Curt Arnold
  */
@@ -61,6 +64,8 @@ public class ADSCCompiler extends CommandLineCCompiler {
     private static final ADSCCompiler tcpp = new ADSCCompiler("tcpp", false, null);
     /**
      * Singleton for ARM 32-bit C compiler
+     *
+     * @return ADSCCompiler
      */
     public static ADSCCompiler getArmCC() {
         return armcc;
@@ -68,6 +73,8 @@ public class ADSCCompiler extends CommandLineCCompiler {
 
     /**
      * Singleton for ARM 32-bit C++ compiler
+     *
+     * @return ADSCCompiler
      */
     public static ADSCCompiler getArmCpp() {
         return armcpp;
@@ -75,6 +82,8 @@ public class ADSCCompiler extends CommandLineCCompiler {
 
     /**
      * Singleton for ARM 16-bit C compiler
+     *
+     * @return ADSCCompiler
      */
     public static ADSCCompiler getThumbCC() {
         return tcc;
@@ -82,6 +91,8 @@ public class ADSCCompiler extends CommandLineCCompiler {
 
     /**
      * Singleton for ARM 16-bit C++ compiler
+     *
+     * @return ADSCCompiler
      */
     public static ADSCCompiler getThumbCpp() {
         return tcpp;
@@ -131,12 +142,17 @@ public class ADSCCompiler extends CommandLineCCompiler {
     }
 
     /**
+     * <p>
      * Adds flags that customize the warnings reported
+     * </p>
      * <p>
      * Compiler does not appear to have warning levels but ability to turn off
      * specific errors by explicit switches, could fabricate levels by
      * prioritizing errors.
+     * </p>
      *
+     * @param args a vector of String
+     * @param warnings int
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineCompiler#addWarningSwitch(java.util.Vector,
      * int)
      */
@@ -146,6 +162,9 @@ public class ADSCCompiler extends CommandLineCCompiler {
     /**
      * Add command line options for preprocessor macro
      *
+     * @param buffer StringBuffer
+     * @param define String
+     * @param value String
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineCompiler#getDefineSwitch(java.lang.StringBuffer,
      * java.lang.String, java.lang.String)
      */
@@ -161,6 +180,7 @@ public class ADSCCompiler extends CommandLineCCompiler {
     /**
      * ARMINC environment variable contains the default include path
      *
+     * @return an array of File
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineCompiler#getEnvironmentIncludePath()
      */
     protected File[] getEnvironmentIncludePath() {
@@ -169,6 +189,9 @@ public class ADSCCompiler extends CommandLineCCompiler {
 
     /**
      * Returns command line option to specify include directory
+     *
+     * @param source String
+     * @return String
      */
     protected String getIncludeDirSwitch(String source) {
         StringBuffer buf = new StringBuffer("-I");
@@ -194,6 +217,7 @@ public class ADSCCompiler extends CommandLineCCompiler {
     /**
      * Maximum command line length
      *
+     * @return int
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineCompiler#getMaximumCommandLength()
      */
     public int getMaximumCommandLength() {
