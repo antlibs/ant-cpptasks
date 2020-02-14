@@ -21,7 +21,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -70,13 +69,10 @@ public final class CBuilderXProjectWriter implements ProjectWriter {
     public void writeProject(final File fileName,
                              final CCTask task,
                              final ProjectDef projectDef,
-                             final List sources,
-                             final Hashtable targets,
-                             final TargetInfo linkTarget) throws IOException, SAXException {
-        String projectName = projectDef.getName();
-        if (projectName == null) {
-            projectName = fileName.getName();
-        }
+                             final List<File> sources,
+                             final Hashtable<String, TargetInfo> targets,
+                             final TargetInfo linkTarget)
+            throws IOException, SAXException {
         final String basePath = fileName.getAbsoluteFile().getParent();
 
         File projectFile = new File(fileName + ".cbx");
@@ -162,12 +158,9 @@ public final class CBuilderXProjectWriter implements ProjectWriter {
                     compilerConfig.getCommand());
         }
 
-        Iterator targetIter = targets.values().iterator();
-        while (targetIter.hasNext()) {
-            TargetInfo info = (TargetInfo) targetIter.next();
-            File[] targetsources = info.getSources();
-            for (int i = 0; i < targetsources.length; i++) {
-                String relativePath = CUtil.getRelativePath(basePath, targetsources[i]);
+        for (TargetInfo info : targets.values()) {
+            for (File targetsource : info.getSources()) {
+                String relativePath = CUtil.getRelativePath(basePath, targetsource);
                 fileAttributes.setValue(0, relativePath);
                 content.startElement(null, "file", "file", fileAttributes);
 
@@ -277,7 +270,7 @@ public final class CBuilderXProjectWriter implements ProjectWriter {
      * @return representative (hopefully) compiler configuration
      */
     private CommandLineCompilerConfiguration
-    getBaseCompilerConfiguration(final Hashtable targets) {
+    getBaseCompilerConfiguration(final Hashtable<String, TargetInfo> targets) {
         //
         //   find first target with an gcc or bcc compilation
         //
@@ -285,9 +278,7 @@ public final class CBuilderXProjectWriter implements ProjectWriter {
         //
         //   get the first target and assume that it is representative
         //
-        Iterator targetIter = targets.values().iterator();
-        while (targetIter.hasNext()) {
-            TargetInfo targetInfo = (TargetInfo) targetIter.next();
+        for (TargetInfo targetInfo : targets.values()) {
             ProcessorConfiguration config = targetInfo.getConfiguration();
             String identifier = config.getIdentifier();
             //

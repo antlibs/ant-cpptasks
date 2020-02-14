@@ -18,7 +18,7 @@ package net.sf.antcontrib.cpptasks.compiler;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Enumeration;
+import java.util.Collections;
 import java.util.Vector;
 
 import net.sf.antcontrib.cpptasks.CCTask;
@@ -32,7 +32,7 @@ import net.sf.antcontrib.cpptasks.TargetDef;
 import net.sf.antcontrib.cpptasks.VersionInfo;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.types.Environment;
-import net.sf.antcontrib.cpptasks.OptimizationEnum;;
+import net.sf.antcontrib.cpptasks.OptimizationEnum;
 
 /**
  * An abstract Compiler implementation which uses an external program to
@@ -66,7 +66,7 @@ public abstract class CommandLineCompiler extends AbstractCompiler {
         this.env = env;
     }
 
-    abstract protected void addImpliedArgs(Vector args, boolean debug,
+    abstract protected void addImpliedArgs(Vector<String> args, boolean debug,
                                            boolean multithreaded, boolean exceptions, LinkType linkType,
                                            Boolean rtti, OptimizationEnum optimization);
 
@@ -87,8 +87,8 @@ public abstract class CommandLineCompiler extends AbstractCompiler {
      *                     configuration identifier
      * @param includePathId StringBuffer
      */
-    protected void addIncludes(String baseDirPath, File[] includeDirs,
-                               Vector args, Vector relativeArgs, StringBuffer includePathId) {
+    protected void addIncludes(String baseDirPath, File[] includeDirs, Vector<String> args,
+                               Vector<String> relativeArgs, StringBuffer includePathId) {
         for (int i = 0; i < includeDirs.length; i++) {
             args.addElement(getIncludeDirSwitch(includeDirs[i].getAbsolutePath()));
             if (relativeArgs != null) {
@@ -106,9 +106,9 @@ public abstract class CommandLineCompiler extends AbstractCompiler {
         }
     }
 
-    abstract protected void addWarningSwitch(Vector args, int warnings);
+    abstract protected void addWarningSwitch(Vector<String> args, int warnings);
 
-    protected void buildDefineArguments(CompilerDef[] defs, Vector args) {
+    protected void buildDefineArguments(CompilerDef[] defs, Vector<String> args) {
         //
         //   assume that we aren't inheriting defines from containing <cc>
         //
@@ -250,13 +250,13 @@ public abstract class CommandLineCompiler extends AbstractCompiler {
                                                         final CompilerDef specificDef,
                                                         final TargetDef targetPlatform,
                                                         final VersionInfo versionInfo) {
-        Vector args = new Vector();
+        Vector<String> args = new Vector<String>();
         CompilerDef[] defaultProviders = new CompilerDef[baseDefs.length + 1];
         for (int i = 0; i < baseDefs.length; i++) {
             defaultProviders[i + 1] = (CompilerDef) baseDefs[i];
         }
         defaultProviders[0] = specificDef;
-        Vector cmdArgs = new Vector();
+        Vector<CommandLineArgument> cmdArgs = new Vector<CommandLineArgument>();
         //
         //   add command line arguments inherited from <cc> element
         //     any "extends" and finally the specific CompilerDef
@@ -271,20 +271,17 @@ public abstract class CommandLineCompiler extends AbstractCompiler {
                 }
             }
         }
-        Vector params = new Vector();
+        Vector<ProcessorParam> params = new Vector<ProcessorParam>();
         //
         //   add command line arguments inherited from <cc> element
         //     any "extends" and finally the specific CompilerDef
         ProcessorParam[] paramArray;
         for (int i = defaultProviders.length - 1; i >= 0; i--) {
             paramArray = defaultProviders[i].getActiveProcessorParams();
-            for (int j = 0; j < paramArray.length; j++) {
-                params.add(paramArray[j]);
-            }
+            Collections.addAll(params, paramArray);
         }
-        paramArray = (ProcessorParam[]) (params.toArray(new ProcessorParam[params.size()]));
-        boolean multithreaded = specificDef.getMultithreaded(defaultProviders,
-                1);
+        paramArray = params.toArray(new ProcessorParam[0]);
+        boolean multithreaded = specificDef.getMultithreaded(defaultProviders, 1);
         boolean debug = specificDef.getDebug(baseDefs, 0);
         boolean exceptions = specificDef.getExceptions(defaultProviders, 1);
         Boolean rtti = specificDef.getRtti(defaultProviders, 1);
@@ -296,24 +293,17 @@ public abstract class CommandLineCompiler extends AbstractCompiler {
         buildDefineArguments(defaultProviders, args);
         int warnings = specificDef.getWarnings(defaultProviders, 0);
         addWarningSwitch(args, warnings);
-        Enumeration argEnum = cmdArgs.elements();
         int endCount = 0;
-        while (argEnum.hasMoreElements()) {
-            CommandLineArgument arg = (CommandLineArgument) argEnum.nextElement();
-            switch (arg.getLocation()) {
-                case 1:
-                    args.addElement(arg.getValue());
-                    break;
-                case 2:
-                    endCount++;
-                    break;
+        for (CommandLineArgument arg : cmdArgs) {
+            if (arg.getLocation() == 1) {
+                args.addElement(arg.getValue());
+            } else if (arg.getLocation() == 2) {
+                endCount++;
             }
         }
         String[] endArgs = new String[endCount];
-        argEnum = cmdArgs.elements();
         int index = 0;
-        while (argEnum.hasMoreElements()) {
-            CommandLineArgument arg = (CommandLineArgument) argEnum.nextElement();
+        for (CommandLineArgument arg : cmdArgs) {
             if (arg.getLocation() == 2) {
                 endArgs[index++] = arg.getValue();
             }
@@ -323,7 +313,7 @@ public abstract class CommandLineCompiler extends AbstractCompiler {
         //      path names for includes that are used to build
         //      the configuration identifier
         //
-        Vector relativeArgs = (Vector) args.clone();
+        Vector<String> relativeArgs = (Vector<String>) args.clone();
         //
         //    add all active include and sysincludes
         //
@@ -335,8 +325,8 @@ public abstract class CommandLineCompiler extends AbstractCompiler {
         } catch (IOException ex) {
             baseDirPath = baseDir.toString();
         }
-        Vector includePath = new Vector();
-        Vector sysIncludePath = new Vector();
+        Vector<String> includePath = new Vector<String>();
+        Vector<String> sysIncludePath = new Vector<String>();
         for (int i = defaultProviders.length - 1; i >= 0; i--) {
             String[] incPath = defaultProviders[i].getActiveIncludePaths();
             for (int j = 0; j < incPath.length; j++) {
@@ -349,11 +339,11 @@ public abstract class CommandLineCompiler extends AbstractCompiler {
         }
         File[] incPath = new File[includePath.size()];
         for (int i = 0; i < includePath.size(); i++) {
-            incPath[i] = new File((String) includePath.elementAt(i));
+            incPath[i] = new File(includePath.elementAt(i));
         }
         File[] sysIncPath = new File[sysIncludePath.size()];
         for (int i = 0; i < sysIncludePath.size(); i++) {
-            sysIncPath[i] = new File((String) sysIncludePath.elementAt(i));
+            sysIncPath[i] = new File(sysIncludePath.elementAt(i));
         }
         addIncludes(baseDirPath, incPath, args, relativeArgs,
                 includePathIdentifier);
@@ -368,13 +358,11 @@ public abstract class CommandLineCompiler extends AbstractCompiler {
             buf.append(endArgs[i]);
         }
         String configId = buf.toString();
-        String[] argArray = new String[args.size()];
-        args.copyInto(argArray);
         boolean rebuild = specificDef.getRebuild(baseDefs, 0);
         File[] envIncludePath = getEnvironmentIncludePath();
         return new CommandLineCompilerConfiguration(this, configId, incPath,
                 sysIncPath, envIncludePath, includePathIdentifier.toString(),
-                argArray, paramArray, rebuild, endArgs);
+                args.toArray(new String[0]), paramArray, rebuild, endArgs);
     }
 
     protected int getArgumentCountPerInputFile() {

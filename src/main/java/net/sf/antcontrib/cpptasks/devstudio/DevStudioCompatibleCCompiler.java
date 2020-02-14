@@ -49,7 +49,7 @@ public abstract class DevStudioCompatibleCCompiler extends PrecompilingCommandLi
                 new String[]{".h", ".hpp", ".inl"}, ".obj", false, null, newEnvironment, env);
     }
 
-    protected void addImpliedArgs(final Vector args,
+    protected void addImpliedArgs(final Vector<String> args,
                                   final boolean debug,
                                   final boolean multithreaded,
                                   final boolean exceptions,
@@ -95,14 +95,14 @@ public abstract class DevStudioCompatibleCCompiler extends PrecompilingCommandLi
         }
     }
 
-    protected void addDebugSwitch(Vector args) {
+    protected void addDebugSwitch(Vector<String> args) {
         args.addElement("/Zi");
         args.addElement("/Od");
         args.addElement("/GZ");
         args.addElement("/D_DEBUG");
     }
 
-    protected void addWarningSwitch(Vector args, int level) {
+    protected void addWarningSwitch(Vector<String> args, int level) {
         DevStudioProcessor.addWarningSwitch(args, level);
     }
 

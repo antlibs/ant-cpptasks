@@ -45,49 +45,49 @@ public class ADSLibrarian extends CommandLineLinker {
     /* (non-Javadoc)
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineLinker#addBase(long, java.util.Vector)
      */
-    protected void addBase(long base, Vector args) {
+    protected void addBase(long base, Vector<String> args) {
         // TODO Auto-generated method stub
     }
 
     /* (non-Javadoc)
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineLinker#addFixed(java.lang.Boolean, java.util.Vector)
      */
-    protected void addFixed(Boolean fixed, Vector args) {
+    protected void addFixed(Boolean fixed, Vector<String> args) {
         // TODO Auto-generated method stub
     }
 
     /* (non-Javadoc)
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineLinker#addImpliedArgs(boolean, net.sf.antcontrib.cpptasks.compiler.LinkType, java.util.Vector)
      */
-    protected void addImpliedArgs(boolean debug, LinkType linkType, Vector args) {
+    protected void addImpliedArgs(boolean debug, LinkType linkType, Vector<String> args) {
         // TODO Auto-generated method stub
     }
 
     /* (non-Javadoc)
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineLinker#addIncremental(boolean, java.util.Vector)
      */
-    protected void addIncremental(boolean incremental, Vector args) {
+    protected void addIncremental(boolean incremental, Vector<String> args) {
         // TODO Auto-generated method stub
     }
 
     /* (non-Javadoc)
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineLinker#addMap(boolean, java.util.Vector)
      */
-    protected void addMap(boolean map, Vector args) {
+    protected void addMap(boolean map, Vector<String> args) {
         // TODO Auto-generated method stub
     }
 
     /* (non-Javadoc)
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineLinker#addStack(int, java.util.Vector)
      */
-    protected void addStack(int stack, Vector args) {
+    protected void addStack(int stack, Vector<String> args) {
         // TODO Auto-generated method stub
     }
 
     /* (non-Javadoc)
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineLinker#addEntry(int, java.util.Vector)
      */
-    protected void addEntry(String entry, Vector args) {
+    protected void addEntry(String entry, Vector<String> args) {
         // TODO Auto-generated method stub
     }
 

@@ -32,7 +32,7 @@ public class TestCommandLineCompilerConfiguration
 
     public TestCommandLineCompilerConfiguration(String name) {
         super(name);
-        compiler = (GccCCompiler) GccCCompiler.getInstance();
+        compiler = GccCCompiler.getInstance();
         compilerId = compiler.getIdentifier();
     }
 

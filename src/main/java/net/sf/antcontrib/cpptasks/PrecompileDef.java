@@ -17,7 +17,6 @@
 package net.sf.antcontrib.cpptasks;
 
 import java.io.File;
-import java.util.Enumeration;
 import java.util.Vector;
 
 import net.sf.antcontrib.cpptasks.types.ConditionalFileSet;
@@ -35,7 +34,7 @@ import org.apache.tools.ant.types.DataType;
  * @author Curt Arnold
  */
 public final class PrecompileDef extends DataType {
-    private final Vector exceptSets = new Vector();
+    private final Vector<ConditionalFileSet> exceptSets = new Vector<ConditionalFileSet>();
     private String ifCond;
     /**
      * Directory of prototype file
@@ -85,9 +84,7 @@ public final class PrecompileDef extends DataType {
         }
         Project p = getProject();
         String[] exceptFiles = null;
-        Enumeration setEnum = exceptSets.elements();
-        while (setEnum.hasMoreElements()) {
-            ConditionalFileSet exceptSet = (ConditionalFileSet) setEnum.nextElement();
+        for (ConditionalFileSet exceptSet : exceptSets) {
             if (exceptSet.isActive()) {
                 DirectoryScanner scanner = exceptSet.getDirectoryScanner(p);
                 String[] scannerFiles = scanner.getIncludedFiles();
@@ -95,14 +92,11 @@ public final class PrecompileDef extends DataType {
                     exceptFiles = scannerFiles;
                 } else {
                     if (scannerFiles.length > 0) {
-                        String[] newFiles = new String[exceptFiles.length
-                                + scannerFiles.length];
-                        for (int i = 0; i < exceptFiles.length; i++) {
-                            newFiles[i] = exceptFiles[i];
-                        }
+                        String[] newFiles = new String[exceptFiles.length + scannerFiles.length];
+                        System.arraycopy(exceptFiles, 0, newFiles, 0, exceptFiles.length);
                         int index = exceptFiles.length;
-                        for (int i = 0; i < scannerFiles.length; i++) {
-                            newFiles[index++] = scannerFiles[i];
+                        for (String scannerFile : scannerFiles) {
+                            newFiles[index++] = scannerFile;
                         }
                         exceptFiles = newFiles;
                     }
@@ -130,8 +124,8 @@ public final class PrecompileDef extends DataType {
 
     private PrecompileDef getRef() {
         if (isReference()) {
-            return ((PrecompileDef) getCheckedRef(PrecompileDef.class,
-                    "PrecompileDef"));
+            return getCheckedRef(PrecompileDef.class,
+                    "PrecompileDef");
         }
         return null;
     }

@@ -38,7 +38,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -100,8 +99,8 @@ public final class DevStudioProjectWriter implements ProjectWriter {
     public void writeProject(final File fileName,
                              final CCTask task,
                              final ProjectDef projectDef,
-                             final List files,
-                             final Hashtable targets,
+                             final List<File> files,
+                             final Hashtable<String, TargetInfo> targets,
                              final TargetInfo linkTarget) throws IOException {
 
         //
@@ -256,11 +255,11 @@ public final class DevStudioProjectWriter implements ProjectWriter {
 
     private void writeConfig(final Writer writer,
                              boolean isDebug,
-                             final List dependencies,
+                             final List<DependencyDef> dependencies,
                              final String basePath,
                              CommandLineCompilerConfiguration compilerConfig,
                              TargetInfo linkTarget,
-                             Hashtable targets) throws IOException {
+                             Hashtable<String, TargetInfo> targets) throws IOException {
         writer.write("# PROP BASE Use_MFC 0\r\n");
 
         String configType = "Release";
@@ -308,7 +307,7 @@ public final class DevStudioProjectWriter implements ProjectWriter {
     private static void writeWorkspaceProject(final Writer writer,
                                               final String projectName,
                                               final String projectFile,
-                                              final List dependsOn) throws IOException {
+                                              final List<String> dependsOn) throws IOException {
         writer.write("############################################");
         writer.write("###################################\r\n\r\n");
         String file = projectFile;
@@ -322,9 +321,9 @@ public final class DevStudioProjectWriter implements ProjectWriter {
         writer.write("Package=<5>\r\n{{{\r\n}}}\r\n\r\n");
         writer.write("Package=<4>\r\n{{{\r\n");
         if (dependsOn != null) {
-            for (Iterator iter = dependsOn.iterator(); iter.hasNext(); ) {
+            for (String object : dependsOn) {
                 writer.write("    Begin Project Dependency\r\n");
-                writer.write("    Project_Dep_Name " + toProjectName(String.valueOf(iter.next())) + "\r\n");
+                writer.write("    Project_Dep_Name " + toProjectName(String.valueOf(object)) + "\r\n");
                 writer.write("    End Project Dependency\r\n");
             }
         }
@@ -346,11 +345,9 @@ public final class DevStudioProjectWriter implements ProjectWriter {
         writeComments(writer, project.getComments());
 
 
-        List dependencies = project.getDependencies();
-        List projectDeps = new ArrayList();
+        List<String> projectDeps = new ArrayList<String>();
         String basePath = dspFile.getParent();
-        for (Iterator iter = dependencies.iterator(); iter.hasNext(); ) {
-            DependencyDef dep = (DependencyDef) iter.next();
+        for (DependencyDef dep : project.getDependencies()) {
             if (dep.getFile() != null) {
                 String projName = toProjectName(dep.getName());
                 projectDeps.add(projName);
@@ -423,12 +420,12 @@ public final class DevStudioProjectWriter implements ProjectWriter {
      * @param sourceList list of source files
      * @return File[] source files
      */
-    private File[] getSources(final List sourceList) {
+    private File[] getSources(final List<File> sourceList) {
         File[] sortedSources = new File[sourceList.size()];
         sourceList.toArray(sortedSources);
-        Arrays.sort(sortedSources, new Comparator() {
-            public int compare(final Object o1, final Object o2) {
-                return ((File) o1).getName().compareTo(((File) o2).getName());
+        Arrays.sort(sortedSources, new Comparator<File>() {
+            public int compare(final File o1, final File o2) {
+                return o1.getName().compareTo(o2.getName());
             }
         });
         return sortedSources;
@@ -467,8 +464,8 @@ public final class DevStudioProjectWriter implements ProjectWriter {
         writer.write("!MESSAGE Possible choices for configuration are:\r\n");
         writer.write("!MESSAGE \r\n");
         String pattern = "!MESSAGE \"{0} - Win32 {1}\" (based on \"{2}\")\r\n";
-        writer.write(MessageFormat.format(pattern, new Object[]{projectName, "Release", targtype}));
-        writer.write(MessageFormat.format(pattern, new Object[]{projectName, "Debug", targtype}));
+        writer.write(MessageFormat.format(pattern, projectName, "Release", targtype));
+        writer.write(MessageFormat.format(pattern, projectName, "Debug", targtype));
         writer.write("!MESSAGE \r\n");
         writer.write("\r\n");
 
@@ -482,7 +479,7 @@ public final class DevStudioProjectWriter implements ProjectWriter {
      * @return representative (hopefully) compiler configuration
      */
     private CommandLineCompilerConfiguration
-    getBaseCompilerConfiguration(final Hashtable targets) {
+    getBaseCompilerConfiguration(final Hashtable<String, TargetInfo> targets) {
         //
         //   find first target with an DevStudio C compilation
         //
@@ -490,9 +487,7 @@ public final class DevStudioProjectWriter implements ProjectWriter {
         //
         //   get the first target and assume that it is representative
         //
-        Iterator targetIter = targets.values().iterator();
-        while (targetIter.hasNext()) {
-            TargetInfo targetInfo = (TargetInfo) targetIter.next();
+        for (TargetInfo targetInfo : targets.values()) {
             ProcessorConfiguration config = targetInfo.getConfiguration();
             //
             //   for the first cl compiler
@@ -532,7 +527,7 @@ public final class DevStudioProjectWriter implements ProjectWriter {
             options.append(CUtil.toWindowsPath(relPath));
             options.append('"');
         }
-        Hashtable optionMap = new Hashtable();
+        Hashtable<String, String> optionMap = new Hashtable<String, String>();
 
         if (isDebug) {
             //
@@ -613,10 +608,10 @@ public final class DevStudioProjectWriter implements ProjectWriter {
      */
     private void writeLinkOptions(final Writer writer,
                                   final boolean isDebug,
-                                  final List dependencies,
+                                  final List<DependencyDef> dependencies,
                                   final String basePath,
                                   final TargetInfo linkTarget,
-                                  final Hashtable targets) throws IOException {
+                                  final Hashtable<String, TargetInfo> targets) throws IOException {
 
         StringBuffer baseOptions = new StringBuffer(100);
         StringBuffer options = new StringBuffer(100);
@@ -645,8 +640,7 @@ public final class DevStudioProjectWriter implements ProjectWriter {
                     boolean fromDependency = false;
                     if (relPath.indexOf(".") > 0) {
                         String baseName = relPath.substring(0, relPath.indexOf("."));
-                        for (Iterator iter = dependencies.iterator(); iter.hasNext(); ) {
-                            DependencyDef depend = (DependencyDef) iter.next();
+                        for (DependencyDef depend : dependencies) {
                             if (baseName.compareToIgnoreCase(depend.getName()) == 0) {
                                 fromDependency = true;
                             }
@@ -694,9 +688,9 @@ public final class DevStudioProjectWriter implements ProjectWriter {
     }
 
     private static void writeComments(final Writer writer,
-                                      final List comments) throws IOException {
-        for (Iterator iter = comments.iterator(); iter.hasNext(); ) {
-            String comment = ((CommentDef) iter.next()).getText();
+                                      final List<CommentDef> comments) throws IOException {
+        for (CommentDef object : comments) {
+            String comment = object.getText();
             if (comment != null) {
                 int start = 0;
                 for (int end = comment.indexOf('\n');

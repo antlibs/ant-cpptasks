@@ -65,7 +65,7 @@ public class GppLinker extends AbstractLdLinker {
                 outputPrefix, outputSuffix, isLibtool, libtoolLinker);
     }
 
-    protected void addImpliedArgs(boolean debug, LinkType linkType, Vector args) {
+    protected void addImpliedArgs(boolean debug, LinkType linkType, Vector<String> args) {
         super.addImpliedArgs(debug, linkType, args);
         if (getIdentifier().indexOf("mingw") >= 0) {
             if (linkType.isSubsystemConsole()) {
@@ -90,7 +90,7 @@ public class GppLinker extends AbstractLdLinker {
     }
 
     public String[] addLibrarySets(CCTask task, LibrarySet[] libsets,
-                                   Vector preargs, Vector midargs, Vector endargs) {
+                                   Vector<String> preargs, Vector<String> midargs, Vector<String> endargs) {
         String[] rs = super.addLibrarySets(task, libsets, preargs, midargs,
                 endargs);
         if (runtimeLibrary != null) {
@@ -150,7 +150,7 @@ public class GppLinker extends AbstractLdLinker {
      */
     public File[] getLibraryPath() {
         if (libDirs == null) {
-            Vector dirs = new Vector();
+            Vector<String> dirs = new Vector<String>();
             // Ask GCC where it will look for its libraries.
             String[] args = new String[]{GccCCompiler.CMD_PREFIX + "g++",
                     "-print-search-dirs"};
@@ -174,8 +174,7 @@ public class GppLinker extends AbstractLdLinker {
                 }
             }
             // Eliminate all but actual directories.
-            String[] libpath = new String[dirs.size()];
-            dirs.copyInto(libpath);
+            String[] libpath = dirs.toArray(new String[0]);
             int count = CUtil.checkDirectoryArray(libpath);
             // Build return array.
             libDirs = new File[count];

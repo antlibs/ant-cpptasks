@@ -61,7 +61,7 @@ public final class OpenWatcomLibrarian extends CommandLineLinker {
      * @param base long base address
      * @param args Vector command line arguments
      */
-    protected void addBase(final long base, final Vector args) {
+    protected void addBase(final long base, final Vector<String> args) {
     }
 
     /**
@@ -70,7 +70,7 @@ public final class OpenWatcomLibrarian extends CommandLineLinker {
      * @param entry String entry point
      * @param args  Vector command line arguments
      */
-    protected void addEntry(final String entry, final Vector args) {
+    protected void addEntry(final String entry, final Vector<String> args) {
     }
 
     /**
@@ -79,7 +79,7 @@ public final class OpenWatcomLibrarian extends CommandLineLinker {
      * @param fixed Boolean true if fixed
      * @param args  Vector command line arguments
      */
-    protected void addFixed(final Boolean fixed, final Vector args) {
+    protected void addFixed(final Boolean fixed, final Vector<String> args) {
     }
 
     /**
@@ -91,7 +91,7 @@ public final class OpenWatcomLibrarian extends CommandLineLinker {
      */
     protected void addImpliedArgs(final boolean debug,
                                   final LinkType linkType,
-                                  final Vector args) {
+                                  final Vector<String> args) {
     }
 
     /**
@@ -101,7 +101,7 @@ public final class OpenWatcomLibrarian extends CommandLineLinker {
      * @param args        Vector command line arguments
      */
     protected void addIncremental(final boolean incremental,
-                                  final Vector args) {
+                                  final Vector<String> args) {
     }
 
     /**
@@ -111,7 +111,7 @@ public final class OpenWatcomLibrarian extends CommandLineLinker {
      * @param args Vector command line argument
      */
     protected void addMap(final boolean map,
-                          final Vector args) {
+                          final Vector<String> args) {
     }
 
     /**
@@ -121,7 +121,7 @@ public final class OpenWatcomLibrarian extends CommandLineLinker {
      * @param args  Vector command line arguments
      */
     protected void addStack(final int stack,
-                            final Vector args) {
+                            final Vector<String> args) {
     }
 
     /**
@@ -232,8 +232,7 @@ public final class OpenWatcomLibrarian extends CommandLineLinker {
         String[] preargs = config.getPreArguments();
         String[] endargs = config.getEndArguments();
         StringBuffer buf = new StringBuffer();
-        Vector execArgs = new Vector(preargs.length + endargs.length + 10
-                + sourceFiles.length);
+        Vector<String> execArgs = new Vector<String>();
 
         execArgs.addElement(this.getCommand());
         String outputFileName = new File(outputDir, outputName).toString();
@@ -257,9 +256,6 @@ public final class OpenWatcomLibrarian extends CommandLineLinker {
             execArgs.addElement(endargs[i]);
         }
 
-        String[] execArguments = new String[execArgs.size()];
-        execArgs.copyInto(execArguments);
-
-        return execArguments;
+        return execArgs.toArray(new String[0]);
     }
 }

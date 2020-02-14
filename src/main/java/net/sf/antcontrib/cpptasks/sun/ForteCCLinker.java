@@ -51,7 +51,7 @@ public final class ForteCCLinker extends AbstractLdLinker {
                 outputSuffix, false, null);
     }
 
-    public void addImpliedArgs(boolean debug, LinkType linkType, Vector args) {
+    public void addImpliedArgs(boolean debug, LinkType linkType, Vector<String> args) {
         if (debug) {
             args.addElement("-g");
         }
@@ -66,7 +66,7 @@ public final class ForteCCLinker extends AbstractLdLinker {
         }
     }
 
-    public void addIncremental(boolean incremental, Vector args) {
+    public void addIncremental(boolean incremental, Vector<String> args) {
         /*
          * if (incremental) { args.addElement("-xidlon"); } else {
          * args.addElement("-xidloff"); }

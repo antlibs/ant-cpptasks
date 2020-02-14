@@ -20,6 +20,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import net.sf.antcontrib.cpptasks.CUtil;
@@ -156,14 +158,13 @@ public class GccProcessor {
                     //  read the lines in the file
                     //
                     BufferedReader reader = new BufferedReader(new FileReader(specsFile));
-                    Vector lines = new Vector(100);
+                    Vector<String> lines = new Vector<String>(100);
                     String line = reader.readLine();
                     while (line != null) {
                         lines.addElement(line);
                         line = reader.readLine();
                     }
-                    specs = new String[lines.size()];
-                    lines.copyInto(specs);
+                    specs = lines.toArray(new String[0]);
                 } catch (IOException ex) {
                 }
             }
@@ -237,10 +238,7 @@ public class GccProcessor {
             //   if start of section then start paying attention
             //
             if (specLine.startsWith(specSectionStart)) {
-                Vector[] optionVectors = new Vector[options.length];
-                for (int j = 0; j < options.length; j++) {
-                    optionVectors[j] = new Vector(10);
-                }
+                List<Vector<String>> optionVectors = new ArrayList<Vector<String>>();
                 //
                 //  go to next line and examine contents
                 //     and repeat until end of file
@@ -248,6 +246,9 @@ public class GccProcessor {
                 for (i++; i < specsContent.length; i++) {
                     specLine = specsContent[i];
                     for (int j = 0; j < options.length; j++) {
+                        if (optionVectors.size() < j + 1) {
+                            optionVectors.add(new Vector<String>());
+                        }
                         int optionStart = specLine.indexOf(options[j]);
                         while (optionStart >= 0) {
                             optionValue.setLength(0);
@@ -277,7 +278,7 @@ public class GccProcessor {
                             //  transition back to whitespace
                             //     value is over, add it to vector
                             if (hasNonBlank) {
-                                optionVectors[j].addElement(optionValue.toString());
+                                optionVectors.get(j).addElement(optionValue.toString());
                             }
                             //
                             //  find next occurrence on line
@@ -290,8 +291,7 @@ public class GccProcessor {
                 //   copy vectors over to option arrays
                 //
                 for (int j = 0; j < options.length; j++) {
-                    optionValues[j] = new String[optionVectors[j].size()];
-                    optionVectors[j].copyInto(optionValues[j]);
+                    optionValues[j] = optionVectors.get(j).toArray(new String[0]);
                 }
             }
         }

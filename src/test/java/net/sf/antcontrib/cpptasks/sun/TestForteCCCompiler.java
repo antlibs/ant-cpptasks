@@ -77,7 +77,7 @@ public class TestForteCCCompiler extends TestCase {
      */
     public void testWarningLevel0() {
         ForteCCCompiler compiler = ForteCCCompiler.getInstance();
-        Vector args = new Vector();
+        Vector<String> args = new Vector<String>();
         compiler.addWarningSwitch(args, 0);
         assertEquals(1, args.size());
         assertEquals("-w", args.elementAt(0));
@@ -88,7 +88,7 @@ public class TestForteCCCompiler extends TestCase {
      */
     public void testWarningLevel1() {
         ForteCCCompiler compiler = ForteCCCompiler.getInstance();
-        Vector args = new Vector();
+        Vector<String> args = new Vector<String>();
         compiler.addWarningSwitch(args, 1);
         assertEquals(0, args.size());
     }
@@ -98,7 +98,7 @@ public class TestForteCCCompiler extends TestCase {
      */
     public void testWarningLevel2() {
         ForteCCCompiler compiler = ForteCCCompiler.getInstance();
-        Vector args = new Vector();
+        Vector<String> args = new Vector<String>();
         compiler.addWarningSwitch(args, 2);
         assertEquals(0, args.size());
     }
@@ -108,7 +108,7 @@ public class TestForteCCCompiler extends TestCase {
      */
     public void testWarningLevel3() {
         ForteCCCompiler compiler = ForteCCCompiler.getInstance();
-        Vector args = new Vector();
+        Vector<String> args = new Vector<String>();
         compiler.addWarningSwitch(args, 3);
         assertEquals(1, args.size());
         assertEquals("+w", args.elementAt(0));
@@ -119,7 +119,7 @@ public class TestForteCCCompiler extends TestCase {
      */
     public void testWarningLevel4() {
         ForteCCCompiler compiler = ForteCCCompiler.getInstance();
-        Vector args = new Vector();
+        Vector<String> args = new Vector<String>();
         compiler.addWarningSwitch(args, 4);
         assertEquals(1, args.size());
         assertEquals("+w2", args.elementAt(0));
@@ -130,7 +130,7 @@ public class TestForteCCCompiler extends TestCase {
      */
     public void testWarningLevel5() {
         ForteCCCompiler compiler = ForteCCCompiler.getInstance();
-        Vector args = new Vector();
+        Vector<String> args = new Vector<String>();
         compiler.addWarningSwitch(args, 5);
         assertEquals(2, args.size());
         assertEquals("+w2", args.elementAt(0));

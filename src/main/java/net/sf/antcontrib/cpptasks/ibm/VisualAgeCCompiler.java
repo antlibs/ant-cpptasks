@@ -65,7 +65,7 @@ public final class VisualAgeCCompiler extends GccCompatibleCCompiler {
                 null, newEnvironment, env);
     }
 
-    public void addImpliedArgs(final Vector args,
+    public void addImpliedArgs(final Vector<String> args,
                                final boolean debug,
                                final boolean multithreaded,
                                final boolean exceptions,
@@ -88,7 +88,7 @@ public final class VisualAgeCCompiler extends GccCompatibleCCompiler {
         }
     }
 
-    public void addWarningSwitch(Vector args, int level) {
+    public void addWarningSwitch(Vector<String> args, int level) {
         switch (level) {
             case 0:
                 args.addElement("-w");

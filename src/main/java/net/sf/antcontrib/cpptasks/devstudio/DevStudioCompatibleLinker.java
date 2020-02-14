@@ -40,14 +40,14 @@ public abstract class DevStudioCompatibleLinker extends CommandLineLinker {
                 new String[]{".map", ".pdb", ".lnk", ".dll"}, outputSuffix, false, null);
     }
 
-    protected void addBase(long base, Vector args) {
+    protected void addBase(long base, Vector<String> args) {
         if (base >= 0) {
             String baseAddr = Long.toHexString(base);
             args.addElement("/BASE:0x" + baseAddr);
         }
     }
 
-    protected void addFixed(Boolean fixed, Vector args) {
+    protected void addFixed(Boolean fixed, Vector<String> args) {
         if (fixed != null) {
             if (fixed.booleanValue()) {
                 args.addElement("/FIXED");
@@ -57,7 +57,7 @@ public abstract class DevStudioCompatibleLinker extends CommandLineLinker {
         }
     }
 
-    protected void addImpliedArgs(boolean debug, LinkType linkType, Vector args) {
+    protected void addImpliedArgs(boolean debug, LinkType linkType, Vector<String> args) {
         args.addElement("/NOLOGO");
         if (debug) {
             args.addElement("/DEBUG");
@@ -78,7 +78,7 @@ public abstract class DevStudioCompatibleLinker extends CommandLineLinker {
         }
     }
 
-    protected void addIncremental(boolean incremental, Vector args) {
+    protected void addIncremental(boolean incremental, Vector<String> args) {
         if (incremental) {
             args.addElement("/INCREMENTAL:YES");
         } else {
@@ -86,13 +86,13 @@ public abstract class DevStudioCompatibleLinker extends CommandLineLinker {
         }
     }
 
-    protected void addMap(boolean map, Vector args) {
+    protected void addMap(boolean map, Vector<String> args) {
         if (map) {
             args.addElement("/MAP");
         }
     }
 
-    protected void addStack(int stack, Vector args) {
+    protected void addStack(int stack, Vector<String> args) {
         if (stack >= 0) {
             String stackStr = Integer.toHexString(stack);
             args.addElement("/STACK:0x" + stackStr);
@@ -102,7 +102,7 @@ public abstract class DevStudioCompatibleLinker extends CommandLineLinker {
     /* (non-Javadoc)
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineLinker#addEntry(int, java.util.Vector)
      */
-    protected void addEntry(String entry, Vector args) {
+    protected void addEntry(String entry, Vector<String> args) {
         if (entry != null) {
             args.addElement("/ENTRY:" + entry);
         }

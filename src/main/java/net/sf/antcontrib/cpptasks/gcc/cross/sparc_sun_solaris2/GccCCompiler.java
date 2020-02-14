@@ -130,7 +130,7 @@ public final class GccCCompiler extends GccCompatibleCCompiler {
         isPICMeaningful = System.getProperty("os.name").indexOf("Windows") < 0;
     }
 
-    public void addImpliedArgs(final Vector args,
+    public void addImpliedArgs(final Vector<String> args,
                                final boolean debug,
                                final boolean multithreaded,
                                final boolean exceptions,
@@ -243,7 +243,7 @@ public final class GccCCompiler extends GccCompatibleCCompiler {
                 }
             }
         }
-        return (File[]) includePath.clone();
+        return includePath.clone();
     }
 
     public String getIdentifier() throws BuildException {

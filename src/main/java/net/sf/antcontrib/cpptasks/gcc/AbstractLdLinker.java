@@ -45,17 +45,17 @@ public abstract class AbstractLdLinker extends CommandLineLinker {
         this.outputPrefix = outputPrefix;
     }
 
-    public void addBase(long base, Vector args) {
+    public void addBase(long base, Vector<String> args) {
         if (base >= 0) {
             args.addElement("--image-base");
             args.addElement(Long.toHexString(base));
         }
     }
 
-    public void addFixed(Boolean fixed, Vector args) {
+    public void addFixed(Boolean fixed, Vector<String> args) {
     }
 
-    protected void addImpliedArgs(boolean debug, LinkType linkType, Vector args) {
+    protected void addImpliedArgs(boolean debug, LinkType linkType, Vector<String> args) {
         if (debug) {
             args.addElement("-g");
         }
@@ -82,7 +82,7 @@ public abstract class AbstractLdLinker extends CommandLineLinker {
         }
     }
 
-    public void addIncremental(boolean incremental, Vector args) {
+    public void addIncremental(boolean incremental, Vector<String> args) {
         if (incremental) {
             args.addElement("-i");
         }
@@ -101,8 +101,8 @@ public abstract class AbstractLdLinker extends CommandLineLinker {
     }
 
     public String[] addLibrarySets(CCTask task, LibrarySet[] libsets,
-                                   Vector preargs, Vector midargs, Vector endargs) {
-        Vector libnames = new Vector();
+                                   Vector<String> preargs, Vector<String> midargs, Vector<String> endargs) {
+        Vector<String> libnames = new Vector<String>();
         super.addLibrarySets(task, libsets, preargs, midargs, endargs);
         LibraryTypeEnum previousLibraryType = null;
         for (int i = 0; i < libsets.length; i++) {
@@ -159,20 +159,20 @@ public abstract class AbstractLdLinker extends CommandLineLinker {
                 endargs.addElement(buf.toString());
             }
         }
-        String rc[] = new String[libnames.size()];
+        String[] rc = new String[libnames.size()];
         for (int i = 0; i < libnames.size(); i++) {
-            rc[i] = (String) libnames.elementAt(i);
+            rc[i] = libnames.elementAt(i);
         }
         return rc;
     }
 
-    public void addMap(boolean map, Vector args) {
+    public void addMap(boolean map, Vector<String> args) {
         if (map) {
             args.addElement("-M");
         }
     }
 
-    public void addStack(int stack, Vector args) {
+    public void addStack(int stack, Vector<String> args) {
         if (stack > 0) {
             args.addElement("--stack");
             args.addElement(Integer.toString(stack));
@@ -182,7 +182,7 @@ public abstract class AbstractLdLinker extends CommandLineLinker {
     /* (non-Javadoc)
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineLinker#addEntry(int, java.util.Vector)
      */
-    protected void addEntry(String entry, Vector args) {
+    protected void addEntry(String entry, Vector<String> args) {
         if (entry != null) {
             args.addElement("-e");
             args.addElement(entry);
@@ -310,7 +310,7 @@ public abstract class AbstractLdLinker extends CommandLineLinker {
         //
         //   null out any sources that correspond to library names
         //
-        String[] localSources = (String[]) sourceFiles.clone();
+        String[] localSources = sourceFiles.clone();
         int extra = 0;
         for (int i = 0; i < libnames.length; i++) {
             String libname = libnames[i];

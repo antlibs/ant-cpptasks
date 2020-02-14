@@ -116,7 +116,7 @@ public final class HPCompiler extends GccCompatibleCCompiler {
         return includePath;
     }
 
-    public void addImpliedArgs(Vector args,
+    public void addImpliedArgs(Vector<String> args,
                                boolean debug,
                                boolean multithreaded,
                                boolean exceptions,
@@ -135,7 +135,7 @@ public final class HPCompiler extends GccCompatibleCCompiler {
         }
     }
 
-    public void addWarningSwitch(Vector args, int level) {
+    public void addWarningSwitch(Vector<String> args, int level) {
         switch (level) {
             case 0:
                 args.addElement("-w");

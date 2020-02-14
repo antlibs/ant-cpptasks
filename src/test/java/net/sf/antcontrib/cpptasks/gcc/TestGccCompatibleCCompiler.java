@@ -50,7 +50,7 @@ public abstract class TestGccCompatibleCCompiler extends TestCase {
      */
     public void testWarningLevel0() {
         GccCompatibleCCompiler compiler = create();
-        Vector args = new Vector();
+        Vector<String> args = new Vector<String>();
         compiler.addWarningSwitch(args, 0);
         assertEquals(1, args.size());
         assertEquals("-w", args.elementAt(0));
@@ -61,7 +61,7 @@ public abstract class TestGccCompatibleCCompiler extends TestCase {
      */
     public void testWarningLevel1() {
         GccCompatibleCCompiler compiler = create();
-        Vector args = new Vector();
+        Vector<String> args = new Vector<String>();
         compiler.addWarningSwitch(args, 1);
         assertEquals(0, args.size());
     }
@@ -71,7 +71,7 @@ public abstract class TestGccCompatibleCCompiler extends TestCase {
      */
     public void testWarningLevel2() {
         GccCompatibleCCompiler compiler = create();
-        Vector args = new Vector();
+        Vector<String> args = new Vector<String>();
         compiler.addWarningSwitch(args, 2);
         assertEquals(0, args.size());
     }
@@ -81,7 +81,7 @@ public abstract class TestGccCompatibleCCompiler extends TestCase {
      */
     public void testWarningLevel3() {
         GccCompatibleCCompiler compiler = create();
-        Vector args = new Vector();
+        Vector<String> args = new Vector<String>();
         compiler.addWarningSwitch(args, 3);
         assertEquals(1, args.size());
         assertEquals("-Wall", args.elementAt(0));
@@ -92,7 +92,7 @@ public abstract class TestGccCompatibleCCompiler extends TestCase {
      */
     public void testWarningLevel4() {
         GccCompatibleCCompiler compiler = create();
-        Vector args = new Vector();
+        Vector<String> args = new Vector<String>();
         compiler.addWarningSwitch(args, 4);
         assertEquals(2, args.size());
         assertEquals("-W", args.elementAt(0));
@@ -104,7 +104,7 @@ public abstract class TestGccCompatibleCCompiler extends TestCase {
      */
     public void testWarningLevel5() {
         GccCompatibleCCompiler compiler = create();
-        Vector args = new Vector();
+        Vector<String> args = new Vector<String>();
         compiler.addWarningSwitch(args, 5);
         assertEquals(3, args.size());
         assertEquals("-Werror", args.elementAt(0));

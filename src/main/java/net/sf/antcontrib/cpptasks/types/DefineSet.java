@@ -32,7 +32,7 @@ import org.apache.tools.ant.types.Reference;
  * @author Adam Murdoch
  */
 public class DefineSet extends DataType {
-    private Vector defineList = new Vector();
+    private final Vector<UndefineArgument> defineList = new Vector<UndefineArgument>();
     private String ifCond = null;
     private String unlessCond = null;
 
@@ -93,14 +93,12 @@ public class DefineSet extends DataType {
      */
     public UndefineArgument[] getDefines() throws BuildException {
         if (isReference()) {
-            DefineSet defset = (DefineSet) getCheckedRef(DefineSet.class,
+            DefineSet defset = getCheckedRef(DefineSet.class,
                     "DefineSet");
             return defset.getDefines();
         } else {
             if (isActive()) {
-                UndefineArgument[] defs = new UndefineArgument[defineList.size()];
-                defineList.copyInto(defs);
-                return defs;
+                return defineList.toArray(new UndefineArgument[0]);
             } else {
                 return new UndefineArgument[0];
             }

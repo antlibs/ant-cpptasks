@@ -88,12 +88,12 @@ public final class ProjectDef extends DataType {
     /**
      * List of dependency definitions.
      */
-    private List dependencies = new ArrayList();
+    private final List<DependencyDef> dependencies = new ArrayList<DependencyDef>();
 
     /**
      * List of comments.
      */
-    private List comments = new ArrayList();
+    private final List<CommentDef> comments = new ArrayList<CommentDef>();
 
     /**
      * Constructor.
@@ -223,19 +223,18 @@ public final class ProjectDef extends DataType {
      * @param className full class name
      */
     public void setClassname(final String className) {
-        Object proc = null;
         try {
-            Class implClass = ProjectDef.class.getClassLoader().loadClass(className);
+            Class<? extends ProjectWriter> implClass
+                    = (Class<? extends ProjectWriter>) ProjectDef.class.getClassLoader().loadClass(className);
             try {
-                Method getInstance = implClass.getMethod("getInstance", new Class[0]);
-                proc = getInstance.invoke(null, new Object[0]);
+                Method getInstance = implClass.getMethod("getInstance");
+                projectWriter = (ProjectWriter) getInstance.invoke(null);
             } catch (Exception ex) {
-                proc = implClass.newInstance();
+                projectWriter = implClass.newInstance();
             }
         } catch (Exception ex) {
             throw new BuildException(ex);
         }
-        projectWriter = (ProjectWriter) proc;
     }
 
     /**
@@ -303,8 +302,8 @@ public final class ProjectDef extends DataType {
      * @param linkTarget link target
      */
     public void execute(final CCTask task,
-                        final List sources,
-                        final Hashtable targets,
+                        final List<File> sources,
+                        final Hashtable<String, TargetInfo> targets,
                         final TargetInfo linkTarget) {
         try {
             projectWriter.writeProject(outFile, task, this, sources, targets, linkTarget);
@@ -351,8 +350,8 @@ public final class ProjectDef extends DataType {
         dependencies.add(dependency);
     }
 
-    public List getDependencies() {
-        return new ArrayList(dependencies);
+    public List<DependencyDef> getDependencies() {
+        return new ArrayList<DependencyDef>(dependencies);
     }
 
 
@@ -365,8 +364,8 @@ public final class ProjectDef extends DataType {
         comments.add(comment);
     }
 
-    public List getComments() {
-        return new ArrayList(comments);
+    public List<CommentDef> getComments() {
+        return new ArrayList<CommentDef>(comments);
     }
 
     /**

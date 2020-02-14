@@ -100,7 +100,7 @@ public final class ProjectWriterEnum extends EnumeratedAttribute {
      * @return acceptable values
      */
     public String[] getValues() {
-        return (String[]) values.clone();
+        return values.clone();
     }
 }
 

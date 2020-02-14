@@ -51,7 +51,7 @@ public class OS390CCompiler extends CommandLineCCompiler {
                 new String[]{".h", ".hpp"}, ".o", false, null, newEnvironment, env);
     }
 
-    protected void addImpliedArgs(final Vector args,
+    protected void addImpliedArgs(final Vector<String> args,
                                   final boolean debug,
                                   final boolean multithreaded,
                                   final boolean exceptions,
@@ -86,7 +86,7 @@ public class OS390CCompiler extends CommandLineCCompiler {
         }
     }
 
-    protected void addWarningSwitch(Vector args, int level) {
+    protected void addWarningSwitch(Vector<String> args, int level) {
         OS390Processor.addWarningSwitch(args, level);
     }
 
@@ -99,7 +99,7 @@ public class OS390CCompiler extends CommandLineCCompiler {
      * @param args an array of CompilerDef
      * @param defs a list of String
      */
-    protected void buildDefineArguments(CompilerDef[] defs, Vector args) {
+    protected void buildDefineArguments(CompilerDef[] defs, Vector<String> args) {
         //
         //   assume that we aren't inheriting defines from containing <cc>
         //

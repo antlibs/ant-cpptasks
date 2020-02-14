@@ -41,7 +41,7 @@ public final class DevStudio2005CCompiler extends DevStudioCompatibleCCompiler {
     /**
      * Override the default debug flags to use VC 8 compatible versions.
      */
-    protected void addDebugSwitch(Vector args) {
+    protected void addDebugSwitch(Vector<String> args) {
         args.addElement("/Zi");
         args.addElement("/Od");
         args.addElement("/RTC1");

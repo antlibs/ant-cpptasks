@@ -100,7 +100,7 @@ public final class TestLinkerDef extends TestProcessorDef {
         LinkerDef linkerDef = (LinkerDef) create();
         try {
             linkerDef.setClassname("net.sf.antcontrib.cpptasks.CCTask");
-        } catch (ClassCastException ex) {
+        } catch (BuildException ex) {
             return;
         }
         fail("should have thrown exception");

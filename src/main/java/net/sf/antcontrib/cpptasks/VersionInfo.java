@@ -138,10 +138,10 @@ public final class VersionInfo extends DataType {
      *
      * @param stack list of version infos with most significant first.
      */
-    private VersionInfo(final Vector stack) {
+    private VersionInfo(final Vector<VersionInfo> stack) {
         VersionInfo source = null;
         for (int i = stack.size() - 1; i >= 0; i--) {
-            source = (VersionInfo) stack.elementAt(i);
+            source = stack.elementAt(i);
             if (source.getIf() != null) {
                 ifCond = source.getIf();
             }
@@ -207,25 +207,23 @@ public final class VersionInfo extends DataType {
      */
     public VersionInfo merge() {
         if (isReference()) {
-            VersionInfo refVersion = (VersionInfo)
-                    getCheckedRef(VersionInfo.class,
-                            "VersionInfo");
+            VersionInfo refVersion = getCheckedRef(VersionInfo.class,
+                    "VersionInfo");
             return refVersion.merge();
         }
         Reference currentRef = this.getExtends();
         if (currentRef == null) {
             return this;
         }
-        Vector stack = new Vector(5);
+        Vector<VersionInfo> stack = new Vector<VersionInfo>(5);
         stack.addElement(this);
         while (currentRef != null) {
             Object obj = currentRef.getReferencedObject(getProject());
             if (obj instanceof VersionInfo) {
                 VersionInfo current = (VersionInfo) obj;
                 if (current.isReference()) {
-                    current = (VersionInfo)
-                            current.getCheckedRef(VersionInfo.class,
-                                    "VersionInfo");
+                    current = current.getCheckedRef(VersionInfo.class,
+                            "VersionInfo");
                 }
                 if (stack.contains(current)) {
                     throw this.circularReference();

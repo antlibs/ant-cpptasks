@@ -46,23 +46,21 @@ public class UndefineArgument {
     public static UndefineArgument[] merge(UndefineArgument[] base,
                                            UndefineArgument[] override) {
         if (base.length == 0) {
-            UndefineArgument[] overrideClone = (UndefineArgument[]) override.clone();
+            UndefineArgument[] overrideClone = override.clone();
             return overrideClone;
         }
         if (override.length == 0) {
-            UndefineArgument[] baseClone = (UndefineArgument[]) base.clone();
+            UndefineArgument[] baseClone = base.clone();
             return baseClone;
         }
-        Vector unduplicated = new Vector(base.length);
-        for (int i = 0; i < base.length; i++) {
-            UndefineArgument current = base[i];
+        Vector<UndefineArgument> unduplicated = new Vector<UndefineArgument>();
+        for (UndefineArgument current : base) {
             String currentName = current.getName();
             boolean match = false;
             if (currentName == null) {
                 match = true;
             } else {
-                for (int j = 0; j < override.length; j++) {
-                    UndefineArgument over = override[j];
+                for (UndefineArgument over : override) {
                     String overName = over.getName();
                     if (overName != null && overName.equals(currentName)) {
                         match = true;

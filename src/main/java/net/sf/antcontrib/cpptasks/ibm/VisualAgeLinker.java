@@ -48,7 +48,7 @@ public final class VisualAgeLinker extends AbstractLdLinker {
                 outputSuffix, false, null);
     }
 
-    public void addImpliedArgs(boolean debug, LinkType linkType, Vector args) {
+    public void addImpliedArgs(boolean debug, LinkType linkType, Vector<String> args) {
         if (debug) {
             //args.addElement("-g");
         }

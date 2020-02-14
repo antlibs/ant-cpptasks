@@ -45,7 +45,7 @@ public final class DevStudioMIDLCompiler extends CommandLineCompiler {
                 ".tlb", false, null, newEnvironment, env);
     }
 
-    protected void addImpliedArgs(final Vector args,
+    protected void addImpliedArgs(final Vector<String> args,
                                   final boolean debug,
                                   final boolean multithreaded,
                                   final boolean exceptions,
@@ -54,7 +54,7 @@ public final class DevStudioMIDLCompiler extends CommandLineCompiler {
                                   final OptimizationEnum optimization) {
     }
 
-    protected void addWarningSwitch(Vector args, int level) {
+    protected void addWarningSwitch(Vector<String> args, int level) {
         DevStudioProcessor.addWarningSwitch(args, level);
     }
 

@@ -79,7 +79,7 @@ public final class XpidlCompiler extends CommandLineCompiler {
      * @param rtti          Boolean enable run-time type identification if true
      * @param optimization  OptimizationEnum optimization
      */
-    protected void addImpliedArgs(final Vector args,
+    protected void addImpliedArgs(final Vector<String> args,
                                   final boolean debug,
                                   final boolean multithreaded,
                                   final boolean exceptions,
@@ -94,7 +94,7 @@ public final class XpidlCompiler extends CommandLineCompiler {
      * @param args  Vector command line arguments
      * @param level int warning level value
      */
-    protected void addWarningSwitch(final Vector args,
+    protected void addWarningSwitch(final Vector<String> args,
                                     final int level) {
     }
 
@@ -189,8 +189,8 @@ public final class XpidlCompiler extends CommandLineCompiler {
      */
     protected void addIncludes(final String baseDirPath,
                                final File[] includeDirs,
-                               final Vector args,
-                               final Vector relativeArgs,
+                               final Vector<String> args,
+                               final Vector<String> relativeArgs,
                                final StringBuffer includePathId) {
         //
         //   requires space between switch and path

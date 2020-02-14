@@ -49,10 +49,10 @@ public final class CommandLineLinkerConfiguration implements LinkerConfiguration
         if (args == null) {
             throw new NullPointerException("args");
         } else {
-            this.args = (String[][]) args.clone();
+            this.args = args.clone();
         }
         this.linker = linker;
-        this.params = (ProcessorParam[]) params.clone();
+        this.params = params.clone();
         this.rebuild = rebuild;
         this.identifier = identifier;
         this.map = map;
@@ -60,7 +60,7 @@ public final class CommandLineLinkerConfiguration implements LinkerConfiguration
         if (libraryNames == null) {
             this.libraryNames = new String[0];
         } else {
-            this.libraryNames = (String[]) libraryNames.clone();
+            this.libraryNames = libraryNames.clone();
         }
         this.startupObject = startupObject;
     }
@@ -70,7 +70,7 @@ public final class CommandLineLinkerConfiguration implements LinkerConfiguration
     }
 
     public String[] getEndArguments() {
-        String[] clone = (String[]) args[1].clone();
+        String[] clone = args[1].clone();
         return clone;
     }
 
@@ -84,7 +84,7 @@ public final class CommandLineLinkerConfiguration implements LinkerConfiguration
     }
 
     public String[] getLibraryNames() {
-        String[] clone = (String[]) libraryNames.clone();
+        String[] clone = libraryNames.clone();
         return clone;
     }
 
@@ -110,7 +110,7 @@ public final class CommandLineLinkerConfiguration implements LinkerConfiguration
     }
 
     public String[] getPreArguments() {
-        String[] clone = (String[]) args[0].clone();
+        String[] clone = args[0].clone();
         return clone;
     }
 

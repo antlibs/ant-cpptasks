@@ -31,8 +31,8 @@ import net.sf.antcontrib.cpptasks.parser.WhitespaceOrLetterState;
  * @author Curt Arnold
  */
 public final class BorlandCfgParser extends AbstractParser {
-    private AbstractParserState newLineState;
-    private final Vector path = new Vector();
+    private final AbstractParserState newLineState;
+    private final Vector<String> path = new Vector<String>();
 
     /**
      * @param switchChar a character that a switch begins with
@@ -66,8 +66,6 @@ public final class BorlandCfgParser extends AbstractParser {
     public String[] parsePath(Reader reader) throws IOException {
         path.setSize(0);
         super.parse(reader);
-        String[] retval = new String[path.size()];
-        path.copyInto(retval);
-        return retval;
+        return path.toArray(new String[0]);
     }
 }

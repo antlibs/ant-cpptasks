@@ -47,7 +47,7 @@ public final class TargetHistory {
         this.config = config;
         this.output = output;
         this.outputLastModified = outputLastModified;
-        this.sources = (SourceHistory[]) sources.clone();
+        this.sources = sources.clone();
     }
 
     public String getOutput() {
@@ -63,7 +63,7 @@ public final class TargetHistory {
     }
 
     public SourceHistory[] getSources() {
-        SourceHistory[] clone = (SourceHistory[]) sources.clone();
+        SourceHistory[] clone = sources.clone();
         return clone;
     }
 }

@@ -60,7 +60,7 @@ public final class ForteCCCompiler extends GccCompatibleCCompiler {
                 false, null);
     }
 
-    public void addImpliedArgs(final Vector args,
+    public void addImpliedArgs(final Vector<String> args,
                                final boolean debug,
                                final boolean multithreaded,
                                final boolean exceptions,
@@ -92,7 +92,7 @@ public final class ForteCCCompiler extends GccCompatibleCCompiler {
 
     }
 
-    public void addWarningSwitch(Vector args, int level) {
+    public void addWarningSwitch(Vector<String> args, int level) {
         switch (level) {
             case 0:
                 args.addElement("-w");

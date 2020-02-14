@@ -24,7 +24,7 @@ import net.sf.antcontrib.cpptasks.devstudio.DevStudioProcessor;
  * A add-in class for Intel (r) compilers and linkers
  */
 public class IntelProcessor {
-    public static void addWarningSwitch(Vector args, int level) {
+    public static void addWarningSwitch(Vector<String> args, int level) {
         DevStudioProcessor.addWarningSwitch(args, level);
     }
 

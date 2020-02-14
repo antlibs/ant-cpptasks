@@ -19,7 +19,9 @@ package net.sf.antcontrib.cpptasks.compiler;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Enumeration;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Vector;
 
 import net.sf.antcontrib.cpptasks.CCTask;
@@ -78,38 +80,41 @@ public abstract class CommandLineLinker extends AbstractLinker {
         this.libtoolLinker = libtoolLinker;
     }
 
-    protected abstract void addBase(long base, Vector args);
+    protected abstract void addBase(long base, Vector<String> args);
 
-    protected abstract void addFixed(Boolean fixed, Vector args);
+    protected abstract void addFixed(Boolean fixed, Vector<String> args);
 
     abstract protected void addImpliedArgs(boolean debug,
-                                           LinkType linkType, Vector args);
+                                           LinkType linkType, Vector<String> args);
 
-    protected abstract void addIncremental(boolean incremental, Vector args);
+    protected abstract void addIncremental(boolean incremental, Vector<String> args);
 
     //
     //  Windows processors handle these through file list
     //
-    protected String[] addLibrarySets(CCTask task, LibrarySet[] libsets, Vector preargs,
-                                      Vector midargs, Vector endargs) {
+    protected String[] addLibrarySets(CCTask task, LibrarySet[] libsets, Vector<String> preargs,
+                                      Vector<String> midargs, Vector<String> endargs) {
         return null;
     }
 
-    protected abstract void addMap(boolean map, Vector args);
+    protected abstract void addMap(boolean map, Vector<String> args);
 
-    protected abstract void addStack(int stack, Vector args);
+    protected abstract void addStack(int stack, Vector<String> args);
 
-    protected abstract void addEntry(String entry, Vector args);
+    protected abstract void addEntry(String entry, Vector<String> args);
 
     protected LinkerConfiguration createConfiguration(CCTask task, LinkType linkType,
                                                       ProcessorDef[] baseDefs,
                                                       LinkerDef specificDef,
                                                       TargetDef targetPlatform,
                                                       VersionInfo versionInfo) {
-        Vector preargs = new Vector();
-        Vector midargs = new Vector();
-        Vector endargs = new Vector();
-        Vector[] args = new Vector[]{preargs, midargs, endargs};
+        Vector<String> preargs = new Vector<String>();
+        Vector<String> midargs = new Vector<String>();
+        Vector<String> endargs = new Vector<String>();
+        List<Vector<String>> args = new ArrayList<Vector<String>>();
+        args.add(preargs);
+        args.add(midargs);
+        args.add(endargs);
 
         LinkerDef[] defaultProviders = new LinkerDef[baseDefs.length + 1];
         defaultProviders[0] = specificDef;
@@ -123,24 +128,20 @@ public abstract class CommandLineLinker extends AbstractLinker {
         for (int i = defaultProviders.length - 1; i >= 0; i--) {
             commandArgs = defaultProviders[i].getActiveProcessorArgs();
             for (int j = 0; j < commandArgs.length; j++) {
-                args[commandArgs[j].getLocation()].
-                        addElement(commandArgs[j].getValue());
+                args.get(commandArgs[j].getLocation()).addElement(commandArgs[j].getValue());
             }
         }
 
-        Vector params = new Vector();
+        Vector<ProcessorParam> params = new Vector<ProcessorParam>();
         //
         //   add command line arguments inherited from <cc> element
         //     any "extends" and finally the specific CompilerDef
         ProcessorParam[] paramArray;
         for (int i = defaultProviders.length - 1; i >= 0; i--) {
-            paramArray = defaultProviders[i].getActiveProcessorParams();
-            for (int j = 0; j < paramArray.length; j++) {
-                params.add(paramArray[j]);
-            }
+            Collections.addAll(params, defaultProviders[i].getActiveProcessorParams());
         }
 
-        paramArray = (ProcessorParam[]) (params.toArray(new ProcessorParam[params.size()]));
+        paramArray = params.toArray(new ProcessorParam[0]);
 
         boolean debug = specificDef.getDebug(baseDefs, 0);
 
@@ -161,25 +162,23 @@ public abstract class CommandLineLinker extends AbstractLinker {
             libnames = addLibrarySets(task, libsets, preargs, midargs, endargs);
         }
 
-        StringBuffer buf = new StringBuffer(getIdentifier());
-        for (int i = 0; i < 3; i++) {
-            Enumeration argenum = args[i].elements();
-            while (argenum.hasMoreElements()) {
-                buf.append(' ');
-                buf.append(argenum.nextElement().toString());
+        StringBuilder buf = new StringBuilder(getIdentifier());
+        for (Vector<String> v : args) {
+            for (String arg : v) {
+                buf.append(' ').append(arg);
             }
         }
         String configId = buf.toString();
 
         String[][] options = new String[][]{
-                new String[args[0].size() + args[1].size()],
-                new String[args[2].size()]};
-        args[0].copyInto(options[0]);
-        int offset = args[0].size();
-        for (int i = 0; i < args[1].size(); i++) {
-            options[0][i + offset] = (String) args[1].elementAt(i);
+                new String[args.get(0).size() + args.get(1).size()],
+                new String[args.get(2).size()]};
+        options[0] = args.get(0).toArray(new String[0]);
+        int offset = args.get(0).size();
+        for (int i = 0; i < args.get(1).size(); i++) {
+            options[0][i + offset] = args.get(1).elementAt(i);
         }
-        args[2].copyInto(options[1]);
+        options[1] = args.get(2).toArray(new String[0]);
 
 
         boolean rebuild = specificDef.getRebuild(baseDefs, 0);
@@ -187,8 +186,7 @@ public abstract class CommandLineLinker extends AbstractLinker {
 
         //task.log("libnames:"+libnames.length, Project.MSG_VERBOSE);
         return new CommandLineLinkerConfiguration(this, configId, options,
-                paramArray,
-                rebuild, map, debug, libnames, startupObject);
+                paramArray, rebuild, map, debug, libnames, startupObject);
     }
 
     /**

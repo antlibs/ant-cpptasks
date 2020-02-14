@@ -26,10 +26,10 @@ import org.apache.tools.ant.BuildException;
  * Collects object files for the link step.
  */
 public final class ObjectFileCollector implements FileVisitor {
-    private final Vector files;
+    private final Vector<File> files;
     private final Linker linker;
 
-    public ObjectFileCollector(Linker linker, Vector files) {
+    public ObjectFileCollector(Linker linker, Vector<File> files) {
         this.linker = linker;
         this.files = files;
     }

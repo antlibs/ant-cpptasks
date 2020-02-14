@@ -123,7 +123,7 @@ public class ADSCCompiler extends CommandLineCCompiler {
     /**
      * {@inheritDoc}
      */
-    protected void addImpliedArgs(Vector args,
+    protected void addImpliedArgs(Vector<String> args,
                                   final boolean debug,
                                   final boolean multithreaded,
                                   final boolean exceptions,
@@ -156,7 +156,7 @@ public class ADSCCompiler extends CommandLineCCompiler {
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineCompiler#addWarningSwitch(java.util.Vector,
      * int)
      */
-    protected void addWarningSwitch(Vector args, int warnings) {
+    protected void addWarningSwitch(Vector<String> args, int warnings) {
     }
 
     /**

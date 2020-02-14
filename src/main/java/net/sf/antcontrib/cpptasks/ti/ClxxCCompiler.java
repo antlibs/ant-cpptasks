@@ -81,7 +81,7 @@ public class ClxxCCompiler extends CommandLineCCompiler {
      *      boolean, boolean, boolean,
      *      net.sf.antcontrib.cpptasks.compiler.LinkType)
      */
-    protected void addImpliedArgs(final Vector args,
+    protected void addImpliedArgs(final Vector<String> args,
                                   final boolean debug,
                                   final boolean multithreaded,
                                   final boolean exceptions,
@@ -99,7 +99,7 @@ public class ClxxCCompiler extends CommandLineCCompiler {
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineCompiler#addWarningSwitch(java.util.Vector,
      *      int)
      */
-    protected void addWarningSwitch(Vector args, int warnings) {
+    protected void addWarningSwitch(Vector<String> args, int warnings) {
         // TODO Auto-generated method stub
     }
 

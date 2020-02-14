@@ -76,10 +76,10 @@ public final class DependencyDef {
         depends = val;
     }
 
-    public List getDependsList() {
-        if (depends != null) {
-            return StringUtils.split(depends, ',');
+    public List<String> getDependsList() {
+        if (depends == null) {
+            return Collections.emptyList();
         }
-        return Collections.EMPTY_LIST;
+        return StringUtils.split(depends, ',');
     }
 }

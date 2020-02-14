@@ -57,7 +57,7 @@ public class GccLinker extends AbstractLdLinker {
                 outputPrefix, outputSuffix, isLibtool, libtoolLinker);
     }
 
-    protected void addImpliedArgs(boolean debug, LinkType linkType, Vector args) {
+    protected void addImpliedArgs(boolean debug, LinkType linkType, Vector<String> args) {
         super.addImpliedArgs(debug, linkType, args);
         if (getIdentifier().indexOf("mingw") >= 0) {
             if (linkType.isSubsystemConsole()) {

@@ -92,7 +92,7 @@ public final class XlcCompiler extends GccCompatibleCCompiler {
         return instance;
     }
 
-    public void addImpliedArgs(Vector args,
+    public void addImpliedArgs(Vector<String> args,
                                boolean debug,
                                boolean multithreaded,
                                boolean exceptions,
@@ -108,7 +108,7 @@ public final class XlcCompiler extends GccCompatibleCCompiler {
         }
     }
 
-    public void addWarningSwitch(Vector args, int level) {
+    public void addWarningSwitch(Vector<String> args, int level) {
         switch (level) {
             case 0:
                 args.addElement("-w");
