@@ -16,27 +16,22 @@
  */
 package net.sf.antcontrib.cpptasks;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
+import static org.junit.Assert.assertTrue;
 /**
  * Tests for LinkerEnum
  *
  * @author Curt Arnold
  */
-public class TestLinkerEnum extends TestCase {
-    /**
-     * @param name test case name
-     */
-    public TestLinkerEnum(String name) {
-        super(name);
-    }
-
+public class TestLinkerEnum {
     /**
      * Test checks that enumeration contains value g++
      * <p>
      * See patch [ 676276 ] Enhanced support for Mac OS X
      * </p>
      */
+    @Test
     public void testContainsValueGpp() {
         assertTrue(new LinkerEnum().containsValue("g++"));
     }

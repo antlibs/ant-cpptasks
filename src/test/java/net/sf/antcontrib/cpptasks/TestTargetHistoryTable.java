@@ -16,12 +16,21 @@
  */
 package net.sf.antcontrib.cpptasks;
 
+import net.sf.antcontrib.cpptasks.compiler.ProcessorConfiguration;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.channels.FileChannel;
 
-import net.sf.antcontrib.cpptasks.compiler.ProcessorConfiguration;
-import net.sf.antcontrib.cpptasks.VersionInfo;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests for TargetHistoryTable
@@ -29,9 +38,10 @@ import net.sf.antcontrib.cpptasks.VersionInfo;
  * @author Curt Arnold
  */
 public class TestTargetHistoryTable extends TestXMLConsumer {
-    public static class MockProcessorConfiguration
-            implements
-            ProcessorConfiguration {
+    @Rule
+    public TemporaryFolder temporaryFolder = new TemporaryFolder();
+
+    public static class MockProcessorConfiguration implements ProcessorConfiguration {
         public MockProcessorConfiguration() {
         }
 
@@ -56,14 +66,11 @@ public class TestTargetHistoryTable extends TestXMLConsumer {
         }
     }
 
-    /**
-     * Constructor
-     *
-     * @param name test case name
-     * @see junit.framework.TestCase#TestCase(String)
-     */
-    public TestTargetHistoryTable(String name) {
-        super(name);
+    private File historyFile;
+
+    @Before
+    public void setUp() throws IOException {
+        historyFile = temporaryFolder.newFile("history.xml");
     }
 
     /**
@@ -71,15 +78,11 @@ public class TestTargetHistoryTable extends TestXMLConsumer {
      *
      * @throws IOException if something goes wrong
      */
-    public void testLoadOpenshore() throws IOException {
-        try {
-            copyResourceToTmpDir("openshore/history.xml", "history.xml");
-            CCTask task = new CCTask();
-            String tmpDir = System.getProperty("java.io.tmpdir");
-            TargetHistoryTable history = new TargetHistoryTable(task, new File(tmpDir));
-        } finally {
-            deleteTmpFile("history.xml");
-        }
+    @Test
+    public void testLoadOpenshore() throws IOException, URISyntaxException {
+        copyResource("openshore/history.xml", historyFile);
+        CCTask task = new CCTask();
+        TargetHistoryTable history = new TargetHistoryTable(task, temporaryFolder.getRoot());
     }
 
     /**
@@ -87,15 +90,11 @@ public class TestTargetHistoryTable extends TestXMLConsumer {
      *
      * @throws IOException if something goes wrong
      */
-    public void testLoadXerces() throws IOException {
-        try {
-            copyResourceToTmpDir("xerces-c/history.xml", "history.xml");
-            CCTask task = new CCTask();
-            String tmpDir = System.getProperty("java.io.tmpdir");
-            TargetHistoryTable history = new TargetHistoryTable(task, new File(tmpDir));
-        } finally {
-            deleteTmpFile("history.xml");
-        }
+    @Test
+    public void testLoadXerces() throws IOException, URISyntaxException {
+        copyResource("xerces-c/history.xml", historyFile);
+        CCTask task = new CCTask();
+        TargetHistoryTable history = new TargetHistoryTable(task, temporaryFolder.getRoot());
     }
 
     /**
@@ -103,46 +102,34 @@ public class TestTargetHistoryTable extends TestXMLConsumer {
      *
      * @throws IOException if something goes wrong
      */
+    @Test
     public void testUpdateTimeResolution() throws IOException {
-        File compiledFile = null;
-        try {
-            //
-            //  delete any history file that might exist
-            //   in the test output directory
-            String tempDir = System.getProperty("java.io.tmpdir");
-            File historyFile = new File(tempDir, "history.xml");
-            if (historyFile.exists()) {
-                historyFile.delete();
-            }
-            TargetHistoryTable table = new TargetHistoryTable(null, new File(tempDir));
-            //
-            //  create a dummy compiled unit
-            //
-            compiledFile = new File(tempDir, "dummy.o");
-            FileOutputStream compiledStream = new FileOutputStream(compiledFile);
-            compiledStream.close();
-            //
-            //   lastModified times can be slightly less than
-            //      task start time due to file system resolution.
-            //      Mimic this by slightly incrementing the last modification time.
-            //      
-            long startTime = compiledFile.lastModified() + 1;
-            //
-            //   update the table
-            //
-            table.update(new MockProcessorConfiguration(),
-                    new String[]{"dummy.o"}, null);
-            //
-            //   commit. If "compiled" file was judged to be
-            //   valid we should have a history file.
-            //
-            table.commit();
-            assertTrue("History file was not created", historyFile.exists());
-            assertTrue("History file was empty", historyFile.length() > 10);
-        } finally {
-            if (compiledFile != null && compiledFile.exists()) {
-                compiledFile.delete();
-            }
-        }
+        assertTrue(historyFile.exists());
+        historyFile.delete();
+
+        TargetHistoryTable table = new TargetHistoryTable(null, temporaryFolder.getRoot());
+        //
+        //  create a dummy compiled unit
+        //
+        File compiledFile = temporaryFolder.newFile("dummy.o");
+        FileOutputStream compiledStream = new FileOutputStream(compiledFile);
+        compiledStream.close();
+        //
+        //   lastModified times can be slightly less than
+        //      task start time due to file system resolution.
+        //      Mimic this by slightly incrementing the last modification time.
+        //
+        long startTime = compiledFile.lastModified() + 1;
+        //
+        //   update the table
+        //
+        table.update(new MockProcessorConfiguration(), new String[]{"dummy.o"}, null);
+        //
+        //   commit. If "compiled" file was judged to be
+        //   valid we should have a history file.
+        //
+        table.commit();
+        assertTrue("History file was not created", historyFile.exists());
+        assertTrue("History file was empty", historyFile.length() > 10);
     }
 }

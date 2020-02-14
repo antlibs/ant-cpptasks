@@ -18,6 +18,7 @@ package net.sf.antcontrib.cpptasks.borland;
 
 import net.sf.antcontrib.cpptasks.compiler.AbstractProcessor;
 import net.sf.antcontrib.cpptasks.compiler.TestAbstractCompiler;
+import org.junit.Test;
 
 /**
  * Borland C++ Compiler adapter tests
@@ -26,10 +27,6 @@ import net.sf.antcontrib.cpptasks.compiler.TestAbstractCompiler;
  * </p>
  */
 public class TestBorlandCCompiler extends TestAbstractCompiler {
-    public TestBorlandCCompiler(String name) {
-        super(name);
-    }
-
     protected AbstractProcessor create() {
         return BorlandCCompiler.getInstance();
     }
@@ -38,6 +35,7 @@ public class TestBorlandCCompiler extends TestAbstractCompiler {
         return ".obj";
     }
 
-    public void testGetIdentfier() {
+    @Test
+    public void testGetIdentifier() {
     }
 }

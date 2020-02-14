@@ -16,22 +16,19 @@
  */
 package net.sf.antcontrib.cpptasks.compiler;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 /**
  *
  */
-public abstract class TestCompilerConfiguration extends TestCase {
-    public TestCompilerConfiguration(String name) {
-        super(name);
-    }
-
-    protected abstract CompilerConfiguration create();
-
+public abstract class TestCompilerConfiguration {
+   protected abstract CompilerConfiguration create();
     public String getObjectFileExtension() {
         return ".o";
     }
 
+    @Test
     public void testBid() {
         CompilerConfiguration compiler = create();
         int bid = compiler.bid("c:/foo\\bar\\hello.c");
@@ -48,6 +45,7 @@ public abstract class TestCompilerConfiguration extends TestCase {
         assertEquals(0, bid);
     }
 
+    @Test
     public void testGetOutputFileName1() {
         CompilerConfiguration compiler = create();
         String input = "c:/foo\\bar\\hello.c";
@@ -60,6 +58,7 @@ public abstract class TestCompilerConfiguration extends TestCase {
         }
     }
 
+    @Test
     public void testGetOutputFileName2() {
         CompilerConfiguration compiler = create();
         String[] output = compiler.getOutputFileNames("c:/foo\\bar\\hello.c", null);

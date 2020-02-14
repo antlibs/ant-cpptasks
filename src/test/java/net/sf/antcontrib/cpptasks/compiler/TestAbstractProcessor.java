@@ -16,10 +16,12 @@
  */
 package net.sf.antcontrib.cpptasks.compiler;
 
-import junit.framework.TestCase;
 import net.sf.antcontrib.cpptasks.CCTask;
 import net.sf.antcontrib.cpptasks.ProcessorDef;
 import net.sf.antcontrib.cpptasks.VersionInfo;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test for abstract compiler class
@@ -27,15 +29,15 @@ import net.sf.antcontrib.cpptasks.VersionInfo;
  * Override create to test concrete compiler implementations
  * </p>
  */
-public class TestAbstractProcessor extends TestCase {
+public class TestAbstractProcessor {
     private class DummyAbstractProcessor extends AbstractProcessor {
         public DummyAbstractProcessor() {
             super(new String[]{".cpp", ".c"},
                     new String[]{".hpp", ".h", ".inl"});
         }
 
-        public ProcessorConfiguration createConfiguration(CCTask task,
-                                                          LinkType linkType, ProcessorDef[] defaultProvider,
+        public ProcessorConfiguration createConfiguration(CCTask task, LinkType linkType,
+                                                          ProcessorDef[] defaultProvider,
                                                           ProcessorDef specificProvider,
                                                           net.sf.antcontrib.cpptasks.TargetDef targetPlatform,
                                                           VersionInfo versionInfo) {
@@ -60,14 +62,11 @@ public class TestAbstractProcessor extends TestCase {
         }
     }
 
-    public TestAbstractProcessor(String name) {
-        super(name);
-    }
-
     protected AbstractProcessor create() {
         return new DummyAbstractProcessor();
     }
 
+    @Test
     public void testBid() {
         AbstractProcessor compiler = create();
         int bid = compiler.bid("c:/foo\\bar\\hello.c");
@@ -84,7 +83,8 @@ public class TestAbstractProcessor extends TestCase {
         assertEquals(0, bid);
     }
 
-    public void testGetIdentfier() {
+    @Test
+    public void testGetIdentifier() {
         AbstractProcessor compiler = create();
         String id = compiler.getIdentifier();
         assertEquals("dummy", id);

@@ -16,16 +16,20 @@
  */
 package net.sf.antcontrib.cpptasks.compiler;
 
-import java.io.File;
-
 import net.sf.antcontrib.cpptasks.CCTask;
 import net.sf.antcontrib.cpptasks.CompilerDef;
 import net.sf.antcontrib.cpptasks.ProcessorDef;
+import net.sf.antcontrib.cpptasks.TargetDef;
+import net.sf.antcontrib.cpptasks.VersionInfo;
 import net.sf.antcontrib.cpptasks.parser.CParser;
 import net.sf.antcontrib.cpptasks.parser.Parser;
-import net.sf.antcontrib.cpptasks.VersionInfo;
-
 import org.apache.tools.ant.BuildException;
+import org.junit.Test;
+
+import java.io.File;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 /**
  * Test for abstract compiler class
@@ -45,9 +49,10 @@ public class TestAbstractCompiler extends TestAbstractProcessor {
             throw new BuildException("Not implemented");
         }
 
-        public CompilerConfiguration createConfiguration(CCTask task,
-                                                         LinkType linkType, ProcessorDef[] def1, CompilerDef def2,
-                                                         net.sf.antcontrib.cpptasks.TargetDef targetPlatform,
+        public CompilerConfiguration createConfiguration(CCTask task, LinkType linkType,
+                                                         ProcessorDef[] def1,
+                                                         CompilerDef def2,
+                                                         TargetDef targetPlatform,
                                                          VersionInfo versionInfo) {
             return null;
         }
@@ -65,10 +70,6 @@ public class TestAbstractCompiler extends TestAbstractProcessor {
         }
     }
 
-    public TestAbstractCompiler(String name) {
-        super(name);
-    }
-
     protected AbstractProcessor create() {
         return new DummyAbstractCompiler();
     }
@@ -77,11 +78,13 @@ public class TestAbstractCompiler extends TestAbstractProcessor {
         return ".o";
     }
 
+    @Test
     public void testCanParseTlb() {
         AbstractCompiler compiler = (AbstractCompiler) create();
-        assertEquals(false, compiler.canParse(new File("sample.tlb")));
+        assertFalse(compiler.canParse(new File("sample.tlb")));
     }
 
+    @Test
     public void testGetOutputFileName1() {
         AbstractProcessor compiler = create();
         String[] output = compiler.getOutputFileNames("c:/foo\\bar\\hello.c", null);

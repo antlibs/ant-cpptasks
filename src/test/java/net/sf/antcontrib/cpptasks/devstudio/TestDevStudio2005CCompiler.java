@@ -16,20 +16,17 @@
  */
 package net.sf.antcontrib.cpptasks.devstudio;
 
+import org.junit.Test;
+
 import java.util.Vector;
 
-import junit.framework.TestCase;
-
-import net.sf.antcontrib.cpptasks.compiler.AbstractProcessor;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test Microsoft C/C++ compiler adapter
  */
-public class TestDevStudio2005CCompiler extends TestCase {
-    public TestDevStudio2005CCompiler(String name) {
-        super(name);
-    }
-
+public class TestDevStudio2005CCompiler {
+    @Test
     public void testDebug() {
         DevStudio2005CCompiler compiler = DevStudio2005CCompiler.getInstance();
         Vector<String> args = new Vector<String>();

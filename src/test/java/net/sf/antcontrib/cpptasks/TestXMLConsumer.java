@@ -21,15 +21,17 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.channels.FileChannel;
 
-import junit.framework.TestCase;
-
+import static org.junit.Assert.assertNotNull;
 /**
  * Base class for tests on classes that consume or public XML documents.
  *
  * @author Curt Arnold
  */
-public abstract class TestXMLConsumer extends TestCase {
+public abstract class TestXMLConsumer {
     /**
      * copies a resource to a temporary directory.
      *
@@ -37,60 +39,19 @@ public abstract class TestXMLConsumer extends TestCase {
      * @param dest   temporary file created by TesmporaryFoolder rule.
      * @throws IOException if something goes wrong
      */
-    public static final void copyResourceToTmpDir(String resourceName,
-                                                  String tmpFile) throws IOException {
-        String tmpDir = System.getProperty("java.io.tmpdir");
-        //
-        //  attempt to get resource from jar
-        //      (should succeed unless testing in IDE)
-        InputStream src = null;
-        if (TestTargetHistoryTable.class.getClassLoader().getResource(resourceName) != null) {
-            src = TestTargetHistoryTable.class.getClassLoader().getResourceAsStream(resourceName);
-        }
-        //
-        //  if not found, try to find it relative to the current directory
-        //
-        if (src == null) {
-            src = new FileInputStream(resourceName);
-        }
-        assertNotNull("Could not locate resource " + resourceName, src);
+    public static void copyResource(String source, File dest) throws IOException, URISyntaxException {
+        URL url = TestAllClasses.class.getClassLoader().getResource(source);
+        FileInputStream src = url == null ? new FileInputStream(source)
+                : new FileInputStream(new File(url.toURI()));
+        FileChannel sourceChannel = src.getChannel();
+
+        FileChannel destChannel = null;
         try {
-            File destFile = new File(tmpDir, tmpFile);
-            FileOutputStream dest = new FileOutputStream(destFile);
-            try {
-                int bytesRead = 0;
-                byte[] buffer = new byte[4096];
-                do {
-                    bytesRead = src.read(buffer);
-                    if (bytesRead > 0) {
-                        dest.write(buffer, 0, bytesRead);
-                    }
-                } while (bytesRead == buffer.length);
-            } finally {
-                dest.close();
-            }
+            destChannel = new FileOutputStream(dest).getChannel();
+            destChannel.transferFrom(sourceChannel, 0, sourceChannel.size());
         } finally {
-            src.close();
+            sourceChannel.close();
+            destChannel.close();
         }
-    }
-
-    /**
-     * Deletes a file, if it exists, from the user's temporary directory.
-     *
-     * @param tmpName file name, may not be null
-     */
-    public static void deleteTmpFile(String tmpName) throws IOException {
-        String tmpDir = System.getProperty("java.io.tmpdir");
-        File tmpFile = new File(tmpDir, tmpName);
-        if (tmpFile.exists()) {
-            tmpFile.delete();
-        }
-    }
-
-    /**
-     * @param testName
-     */
-    protected TestXMLConsumer(final String testName) {
-        super(testName);
     }
 }

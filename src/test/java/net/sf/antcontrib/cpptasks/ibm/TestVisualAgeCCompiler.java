@@ -16,52 +16,54 @@
  */
 package net.sf.antcontrib.cpptasks.ibm;
 
-import java.util.Vector;
-
-import junit.framework.TestCase;
-
 import net.sf.antcontrib.cpptasks.compiler.AbstractProcessor;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test IBM Visual Age compiler adapter
  */
 // TODO Since VisualAgeCCompiler extends GccCompatibleCCompiler, this test
 // should probably extend TestGccCompatibleCCompiler.
-public class TestVisualAgeCCompiler extends TestCase {
-    public TestVisualAgeCCompiler(String name) {
-        super(name);
-    }
-
+public class TestVisualAgeCCompiler {
+    @Test
     public void testBidC() {
         VisualAgeCCompiler compiler = VisualAgeCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.c"));
     }
 
+    @Test
     public void testBidCpp() {
         VisualAgeCCompiler compiler = VisualAgeCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.C"));
     }
 
+    @Test
     public void testBidCpp2() {
         VisualAgeCCompiler compiler = VisualAgeCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.cc"));
     }
 
+    @Test
     public void testBidCpp3() {
         VisualAgeCCompiler compiler = VisualAgeCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.cxx"));
     }
 
+    @Test
     public void testBidCpp4() {
         VisualAgeCCompiler compiler = VisualAgeCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.cpp"));
     }
 
+    @Test
     public void testBidPreprocessed() {
         VisualAgeCCompiler compiler = VisualAgeCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.i"));
     }
 
+    @Test
     public void testBidAssembly() {
         VisualAgeCCompiler compiler = VisualAgeCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.s"));

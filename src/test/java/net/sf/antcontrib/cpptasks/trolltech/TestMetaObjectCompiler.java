@@ -18,20 +18,15 @@ package net.sf.antcontrib.cpptasks.trolltech;
 
 import net.sf.antcontrib.cpptasks.compiler.AbstractProcessor;
 import net.sf.antcontrib.cpptasks.compiler.TestAbstractCompiler;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * Tests for Trolltech Meta Object Compiler.
  */
 public class TestMetaObjectCompiler extends TestAbstractCompiler {
-    /**
-     * Constructor.
-     *
-     * @param name test name
-     */
-    public TestMetaObjectCompiler(final String name) {
-        super(name);
-    }
-
     /**
      * Creates compiler for inherited tests.
      *
@@ -53,12 +48,13 @@ public class TestMetaObjectCompiler extends TestAbstractCompiler {
     /**
      * Skip testGetIdentifier.
      */
-    public void testGetIdentfier() {
+    public void testGetIdentifier() {
     }
 
     /**
      * Override inherited test.
      */
+    @Test
     public void testGetOutputFileName1() {
         AbstractProcessor compiler = MetaObjectCompiler.getInstance();
         String[] output = compiler.getOutputFileNames("c:/foo\\bar\\hello.cpp", null);

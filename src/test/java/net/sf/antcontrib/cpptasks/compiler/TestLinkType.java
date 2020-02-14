@@ -16,36 +16,31 @@
  */
 package net.sf.antcontrib.cpptasks.compiler;
 
-import junit.framework.TestCase;
 import net.sf.antcontrib.cpptasks.OutputTypeEnum;
+import org.junit.Test;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests for LinkType
  *
  * @author Curt Arnold
  */
-public class TestLinkType extends TestCase {
-    /**
-     * Constructor
-     *
-     * @param name test case name
-     */
-    public TestLinkType(String name) {
-        super(name);
-    }
-
+public class TestLinkType {
     /**
      * Tests if isPluginModule returns true when set to plugin output type
      * <p>
      * See patch [ 676276 ] Enhanced support for Mac OS X
      * </p>
      */
+    @Test
     public void testIsPluginFalse() {
         LinkType type = new LinkType();
         OutputTypeEnum pluginType = new OutputTypeEnum();
         pluginType.setValue("executable");
         type.setOutputType(pluginType);
-        assertTrue(!type.isPluginModule());
+        assertFalse(type.isPluginModule());
     }
 
     /**
@@ -54,6 +49,7 @@ public class TestLinkType extends TestCase {
      * See patch [ 676276 ] Enhanced support for Mac OS X
      * </p>
      */
+    @Test
     public void testIsPluginTrue() {
         LinkType type = new LinkType();
         OutputTypeEnum pluginType = new OutputTypeEnum();

@@ -18,6 +18,10 @@ package net.sf.antcontrib.cpptasks.gcc;
 
 import net.sf.antcontrib.cpptasks.compiler.AbstractProcessor;
 import net.sf.antcontrib.cpptasks.compiler.TestAbstractLinker;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests for classes that derive from AbstractArLibrarian
@@ -25,16 +29,6 @@ import net.sf.antcontrib.cpptasks.compiler.TestAbstractLinker;
  * @author Curt Arnold
  */
 public class TestAbstractArLibrarian extends TestAbstractLinker {
-    /**
-     * Constructor
-     *
-     * @param name test name
-     * @see junit.framework.TestCase#TestCase(String)
-     */
-    public TestAbstractArLibrarian(String name) {
-        super(name);
-    }
-
     /**
      * Creates item under test
      *
@@ -50,13 +44,15 @@ public class TestAbstractArLibrarian extends TestAbstractLinker {
      *
      * @see net.sf.antcontrib.cpptasks.compiler.TestAbstractProcessor#testBid()
      */
+    @Test
     public void testBid() {
         AbstractProcessor compiler = create();
         int bid = compiler.bid("c:/foo\\bar\\hello.o");
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, bid);
     }
 
-    public void testGetIdentfier() {
+    @Test
+    public void testGetIdentifier() {
         AbstractProcessor processor = create();
         String id = processor.getIdentifier();
         assertTrue(id.indexOf("ar") >= 0);
@@ -68,6 +64,7 @@ public class TestAbstractArLibrarian extends TestAbstractLinker {
      * See patch [ 676276 ] Enhanced support for Mac OS X
      * </p>
      */
+    @Test
     public void testGetLibraryPatterns() {
         String[] libnames = new String[]{"foo"};
         String[] patterns = ((AbstractArLibrarian) create()).getLibraryPatterns(libnames, null);
@@ -80,6 +77,7 @@ public class TestAbstractArLibrarian extends TestAbstractLinker {
      * See bug [ 687732 ] Filenames for gcc static library does start with lib
      * </p>
      */
+    @Test
     public void testOutputFileName() {
         String[] outputFiles = GccLibrarian.getInstance().getOutputFileNames("x", null);
         assertEquals("libx.a", outputFiles[0]);

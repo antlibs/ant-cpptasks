@@ -16,10 +16,14 @@
  */
 package net.sf.antcontrib.cpptasks.compiler;
 
-import java.io.File;
-
 import net.sf.antcontrib.cpptasks.ProcessorParam;
 import net.sf.antcontrib.cpptasks.gcc.GccCCompiler;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.File;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  *
@@ -27,11 +31,11 @@ import net.sf.antcontrib.cpptasks.gcc.GccCCompiler;
 public class TestCommandLineCompilerConfiguration
         extends
         TestCompilerConfiguration {
-    private final CommandLineCompiler compiler;
-    private final String compilerId;
+    private CommandLineCompiler compiler;
+    private String compilerId;
 
-    public TestCommandLineCompilerConfiguration(String name) {
-        super(name);
+    @Before
+    public void startUp() {
         compiler = GccCCompiler.getInstance();
         compilerId = compiler.getIdentifier();
     }
@@ -43,22 +47,21 @@ public class TestCommandLineCompilerConfiguration
                 new String[0]);
     }
 
+    @Test(expected = NullPointerException.class)
     public void testConstructorNullCompiler() {
-        try {
-            new CommandLineCompilerConfiguration(null, "dummy", new File[0],
-                    new File[0], new File[0], "", new String[0],
-                    new ProcessorParam[0], false, new String[0]);
-            fail("Should throw exception for null compiler");
-        } catch (NullPointerException ex) {
-        }
+        new CommandLineCompilerConfiguration(null, "dummy", new File[0],
+                new File[0], new File[0], "", new String[0],
+                new ProcessorParam[0], false, new String[0]);
     }
 
+    @Test
     public void testGetIdentifier() {
         CompilerConfiguration config = create();
         String id = config.getIdentifier();
         assertEquals("dummy", id);
     }
 
+    @Test
     public void testToString() {
         CompilerConfiguration config = create();
         String toString = config.toString();

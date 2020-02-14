@@ -16,9 +16,6 @@
  */
 package net.sf.antcontrib.cpptasks;
 
-import java.io.File;
-import java.io.IOException;
-
 import net.sf.antcontrib.cpptasks.compiler.CommandLineLinkerConfiguration;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 import net.sf.antcontrib.cpptasks.devstudio.DevStudioLinker;
@@ -27,23 +24,29 @@ import net.sf.antcontrib.cpptasks.types.FlexLong;
 import net.sf.antcontrib.cpptasks.types.LibrarySet;
 import net.sf.antcontrib.cpptasks.types.LinkerArgument;
 import net.sf.antcontrib.cpptasks.types.SystemLibrarySet;
-import org.apache.tools.ant.Project;
 import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.FlexInteger;
 import org.apache.tools.ant.types.Reference;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
+import java.io.File;
+import java.io.IOException;
+
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 
 /**
  * Tests for LinkerDef class.
  */
 public final class TestLinkerDef extends TestProcessorDef {
-    /**
-     * Constructor.
-     *
-     * @param name test name
-     */
-    public TestLinkerDef(final String name) {
-        super(name);
-    }
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     /**
      * Creates a processor.
@@ -58,6 +61,7 @@ public final class TestLinkerDef extends TestProcessorDef {
      * Test if setting the classname attribute to the name of the GCC linker
      * results in the singleton GCC linker.
      */
+    @Test
     public void testGetGcc() {
         LinkerDef linkerDef = (LinkerDef) create();
         linkerDef.setClassname("net.sf.antcontrib.cpptasks.gcc.GccLinker");
@@ -70,6 +74,7 @@ public final class TestLinkerDef extends TestProcessorDef {
      * Test if setting the classname attribute to the name of the MSVC linker
      * results in the singleton MSVC linker.
      */
+   @Test
     public void testGetMSVC() {
         LinkerDef linkerDef = (LinkerDef) create();
         linkerDef.setClassname("net.sf.antcontrib.cpptasks.devstudio.DevStudioLinker");
@@ -82,28 +87,23 @@ public final class TestLinkerDef extends TestProcessorDef {
      * Tests if setting the classname attribute to an bogus classname results in
      * a BuildException.
      */
+    @Test
     public void testUnknownClass() {
+        thrown.expect(BuildException.class);
         LinkerDef linkerDef = (LinkerDef) create();
-        try {
-            linkerDef.setClassname("net.sf.antcontrib.cpptasks.bogus.BogusLinker");
-        } catch (BuildException ex) {
-            return;
-        }
-        fail("should have thrown exception");
+        linkerDef.setClassname("net.sf.antcontrib.cpptasks.bogus.BogusLinker");
     }
 
     /**
      * Tests if setting the classname to the name of a class that doesn't
      * support Linker throws a BuildException.
      */
+    @Test
     public void testWrongType() {
+        thrown.expect(BuildException.class);
+        thrown.expectCause(is(instanceOf(ClassCastException.class)));
         LinkerDef linkerDef = (LinkerDef) create();
-        try {
-            linkerDef.setClassname("net.sf.antcontrib.cpptasks.CCTask");
-        } catch (BuildException ex) {
-            return;
-        }
-        fail("should have thrown exception");
+        linkerDef.setClassname("net.sf.antcontrib.cpptasks.CCTask");
     }
 
     /**
@@ -132,6 +132,7 @@ public final class TestLinkerDef extends TestProcessorDef {
      * Tests that linkerarg's that appear in the base linker are effective when
      * creating the command line for a linker that extends it.
      */
+    @Test
     public void testExtendsLinkerArgs() {
         LinkerDef baseLinker = new LinkerDef();
         LinkerArgument linkerArg = new LinkerArgument();
@@ -148,6 +149,7 @@ public final class TestLinkerDef extends TestProcessorDef {
      * creating the command line for a linker that extends it, even if the
      * linker is brought in through a reference.
      */
+    @Test
     public void testExtendsLinkerArgsViaReference() {
         Project project = new Project();
         LinkerDef baseLinker = new LinkerDef();
@@ -177,6 +179,7 @@ public final class TestLinkerDef extends TestProcessorDef {
      *
      * @throws IOException if unable to create or delete temporary file
      */
+    @Test
     public void testExtendsFileSet() throws IOException {
         super.testExtendsFileSet(File.createTempFile("cpptaskstest", ".o"));
     }
@@ -185,6 +188,7 @@ public final class TestLinkerDef extends TestProcessorDef {
      * Tests that libset's that appear in the base linker are effective when
      * creating the command line for a linker that extends it.
      */
+    @Test
     public void testExtendsLibSet() {
         LinkerDef baseLinker = new LinkerDef();
         LibrarySet libset = new LibrarySet();
@@ -193,8 +197,8 @@ public final class TestLinkerDef extends TestProcessorDef {
         CUtil.StringArrayBuilder libs = new CUtil.StringArrayBuilder("advapi32");
         libset.setLibs(libs);
         baseLinker.addLibset(libset);
-        CommandLineLinkerConfiguration config =
-                (CommandLineLinkerConfiguration) getConfiguration(extendedLinker);
+        CommandLineLinkerConfiguration config
+                = (CommandLineLinkerConfiguration) getConfiguration(extendedLinker);
         String[] libnames = config.getLibraryNames();
         assertEquals(1, libnames.length);
         assertEquals("advapi32", libnames[0]);
@@ -204,6 +208,7 @@ public final class TestLinkerDef extends TestProcessorDef {
      * Tests that syslibset's that appear in the base linker are effective when
      * creating the command line for a linker that extends it.
      */
+    @Test
     public void testExtendsSysLibSet() {
         LinkerDef baseLinker = new LinkerDef();
         SystemLibrarySet libset = new SystemLibrarySet();
@@ -212,8 +217,8 @@ public final class TestLinkerDef extends TestProcessorDef {
         CUtil.StringArrayBuilder libs = new CUtil.StringArrayBuilder("advapi32");
         libset.setLibs(libs);
         baseLinker.addSyslibset(libset);
-        CommandLineLinkerConfiguration config =
-                (CommandLineLinkerConfiguration) getConfiguration(extendedLinker);
+        CommandLineLinkerConfiguration config
+                = (CommandLineLinkerConfiguration) getConfiguration(extendedLinker);
         String[] libnames = config.getLibraryNames();
         assertEquals(1, libnames.length);
         assertEquals("advapi32", libnames[0]);
@@ -223,6 +228,7 @@ public final class TestLinkerDef extends TestProcessorDef {
      * Tests that the base attribute in the base linker is effective when
      * creating the command line for a linker that extends it.
      */
+    @Test
     public void testExtendsBase() {
         LinkerDef baseLinker = new LinkerDef();
         baseLinker.setBase(new FlexLong("10000"));
@@ -239,6 +245,7 @@ public final class TestLinkerDef extends TestProcessorDef {
      * Tests that the stack attribute in the base linker is effective when
      * creating the command line for a linker that extends it.
      */
+    @Test
     public void testExtendsStack() {
         LinkerDef baseLinker = new LinkerDef();
         baseLinker.setStack(new FlexInteger("10000"));
@@ -255,6 +262,7 @@ public final class TestLinkerDef extends TestProcessorDef {
      * Tests that the entry attribute in the base linker is effective when
      * creating the command line for a linker that extends it.
      */
+    @Test
     public void testExtendsEntry() {
         LinkerDef baseLinker = new LinkerDef();
         baseLinker.setEntry("foo");
@@ -268,6 +276,7 @@ public final class TestLinkerDef extends TestProcessorDef {
      * Tests that the fixed attribute in the base linker is effective when
      * creating the command line for a linker that extends it.
      */
+    @Test
     public void testExtendsFixed() {
         LinkerDef baseLinker = new LinkerDef();
         baseLinker.setFixed(true);
@@ -284,6 +293,7 @@ public final class TestLinkerDef extends TestProcessorDef {
      * Tests that the incremental attribute in the base linker is effective when
      * creating the command line for a linker that extends it.
      */
+    @Test
     public void testExtendsIncremental() {
         LinkerDef baseLinker = new LinkerDef();
         baseLinker.setIncremental(true);
@@ -299,6 +309,7 @@ public final class TestLinkerDef extends TestProcessorDef {
      * Tests that the map attribute in the base linker is effective when
      * creating the command line for a linker that extends it.
      */
+    @Test
     public void testExtendsMap() {
         LinkerDef baseLinker = new LinkerDef();
         baseLinker.setMap(true);
@@ -315,6 +326,7 @@ public final class TestLinkerDef extends TestProcessorDef {
      * Tests that the rebuild attribute in the base linker is effective when
      * creating the command line for a linker that extends it.
      */
+    @Test
     public void testExtendsRebuild() {
         testExtendsRebuild(new LinkerDef());
     }
@@ -323,6 +335,7 @@ public final class TestLinkerDef extends TestProcessorDef {
      * Tests that the name attribute in the base linker is effective when
      * creating the command line for a linker that extends it.
      */
+    @Test
     public void testExtendsName() {
         LinkerDef baseLinker = new LinkerDef();
         setLinkerName(baseLinker, "msvc");
@@ -339,6 +352,7 @@ public final class TestLinkerDef extends TestProcessorDef {
      * Tests that the classname attribute in the base linker is effective when
      * creating the command line for a linker that extends it.
      */
+    @Test
     public void testExtendsClassname() {
         LinkerDef baseLinker = new LinkerDef();
         baseLinker.setClassname("net.sf.antcontrib.cpptasks.devstudio.DevStudioLinker");

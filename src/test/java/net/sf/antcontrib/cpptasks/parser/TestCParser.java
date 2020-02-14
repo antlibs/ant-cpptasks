@@ -16,29 +16,23 @@
  */
 package net.sf.antcontrib.cpptasks.parser;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
 import java.io.CharArrayReader;
 import java.io.IOException;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  * Tests for the CParser class.
  */
-public final class TestCParser extends TestCase {
-    /**
-     * Constructor.
-     *
-     * @param name String test name
-     */
-    public TestCParser(final String name) {
-        super(name);
-    }
-
+public final class TestCParser {
     /**
      * Checks parsing of #include &lt;foo.h&gt;.
      *
      * @throws IOException test fails on IOException
      */
+    @Test
     public void testImmediateImportBracket() throws IOException {
         CharArrayReader reader = new CharArrayReader("#import <foo.h> nowhatever  ".toCharArray());
         CParser parser = new CParser();
@@ -53,6 +47,7 @@ public final class TestCParser extends TestCase {
      *
      * @throws IOException test fails on IOException
      */
+    @Test
     public void testImmediateImportQuote() throws IOException {
         CharArrayReader reader = new CharArrayReader("#import \"foo.h\"   ".toCharArray());
         CParser parser = new CParser();
@@ -67,6 +62,7 @@ public final class TestCParser extends TestCase {
      *
      * @throws IOException test fails on IOException
      */
+    @Test
     public void testImmediateIncludeBracket() throws IOException {
         CharArrayReader reader = new CharArrayReader("#include      <foo.h>   ".toCharArray());
         CParser parser = new CParser();
@@ -81,6 +77,7 @@ public final class TestCParser extends TestCase {
      *
      * @throws IOException test fails on IOException.
      */
+    @Test
     public void testImmediateIncludeQuote() throws IOException {
         CharArrayReader reader = new CharArrayReader("#include     \"foo.h\"   ".toCharArray());
         CParser parser = new CParser();
@@ -93,8 +90,10 @@ public final class TestCParser extends TestCase {
     /**
      * Checks parsing of #import &lt;foo.h.
      *
+     *
      * @throws IOException test fails on IOException
      */
+    @Test
     public void testIncompleteImmediateImportBracket() throws IOException {
         CharArrayReader reader = new CharArrayReader("#import <foo.h   ".toCharArray());
         CParser parser = new CParser();
@@ -106,8 +105,10 @@ public final class TestCParser extends TestCase {
     /**
      * Checks parsing of #import &quot;foo.h.
      *
+     *
      * @throws IOException test fails on IOException
      */
+    @Test
     public void testIncompleteImmediateImportQuote() throws IOException {
         CharArrayReader reader = new CharArrayReader("#import \"foo.h   ".toCharArray());
         CParser parser = new CParser();
@@ -119,8 +120,10 @@ public final class TestCParser extends TestCase {
     /**
      * Checks parsing of #include &lt;foo.h.
      *
+     *
      * @throws IOException test fails on IOException
      */
+    @Test
     public void testIncompleteImmediateIncludeBracket() throws IOException {
         CharArrayReader reader = new CharArrayReader("#include <foo.h   ".toCharArray());
         CParser parser = new CParser();
@@ -132,8 +135,10 @@ public final class TestCParser extends TestCase {
     /**
      * Checks parsing of #include &quot;foo.h.
      *
+     *
      * @throws IOException test fails on IOException
      */
+    @Test
     public void testIncompleteImmediateIncludeQuote() throws IOException {
         CharArrayReader reader = new CharArrayReader("#include     \"foo.h    ".toCharArray());
         CParser parser = new CParser();
@@ -147,6 +152,7 @@ public final class TestCParser extends TestCase {
      *
      * @throws IOException test fails on IOException
      */
+    @Test
     public void testNoQuoteOrBracket() throws IOException {
         CharArrayReader reader = new CharArrayReader("#include foo.h  ".toCharArray());
         CParser parser = new CParser();
@@ -160,6 +166,7 @@ public final class TestCParser extends TestCase {
      *
      * @throws IOException test fails on IOException
      */
+    @Test
     public void testNotFirstWhitespace() throws IOException {
         CharArrayReader reader = new CharArrayReader("//#include \"foo.h\"".toCharArray());
         CParser parser = new CParser();
@@ -173,6 +180,7 @@ public final class TestCParser extends TestCase {
      *
      * @throws IOException test fails on IOException.
      */
+    @Test
     public void testLeadingSpace() throws IOException {
         CharArrayReader reader = new CharArrayReader(" #include     \"foo.h\"   ".toCharArray());
         CParser parser = new CParser();
@@ -187,6 +195,7 @@ public final class TestCParser extends TestCase {
      *
      * @throws IOException test fails on IOException.
      */
+    @Test
     public void testLeadingTab() throws IOException {
         CharArrayReader reader = new CharArrayReader("\t#include     \"foo.h\"   ".toCharArray());
         CParser parser = new CParser();

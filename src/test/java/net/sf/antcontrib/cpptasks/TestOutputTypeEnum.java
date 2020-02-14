@@ -16,27 +16,20 @@
  */
 package net.sf.antcontrib.cpptasks;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
+import static org.junit.Assert.assertTrue;
 /**
  * @author Curt Arnold
  */
-public class TestOutputTypeEnum extends TestCase {
-    /**
-     * Default constructor
-     *
-     * @see junit.framework.TestCase#TestCase(String)
-     */
-    public TestOutputTypeEnum(String name) {
-        super(name);
-    }
-
+public class TestOutputTypeEnum {
     /**
      * Test checks that output type enum contains "plugin"
      * <p>
      * See patch [ 676276 ] Enhanced support for Mac OS X
      * </p>
      */
+    @Test
     public void testContainsValuePlugin() {
         assertTrue(new OutputTypeEnum().containsValue("plugin"));
     }
