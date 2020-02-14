@@ -18,7 +18,6 @@ package net.sf.antcontrib.cpptasks;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 import java.util.Vector;
@@ -43,37 +42,24 @@ public class CUtil {
      * array. Used for task attributes.
      */
     public static final class StringArrayBuilder {
-        private String[] _value;
+        private final String[] values;
 
         public StringArrayBuilder(String value) {
             // Split the defines up
             StringTokenizer tokens = new StringTokenizer(value, ", ");
-            Vector vallist = new Vector();
+            Vector<String> valueList = new Vector<String>();
             while (tokens.hasMoreTokens()) {
                 String val = tokens.nextToken().trim();
                 if (val.length() == 0) {
                     continue;
                 }
-                vallist.addElement(val);
+                valueList.addElement(val);
             }
-            _value = new String[vallist.size()];
-            vallist.copyInto(_value);
+            values = valueList.toArray(new String[0]);
         }
 
         public String[] getValue() {
-            return _value;
-        }
-    }
-
-    /**
-     * Adds the elements of the array to the given vector
-     */
-    public static void addAll(Vector dest, Object[] src) {
-        if (src == null) {
-            return;
-        }
-        for (int i = 0; i < src.length; i++) {
-            dest.addElement(src[i]);
+            return values;
         }
     }
 
@@ -169,10 +155,9 @@ public class CUtil {
         if (System.getProperty("os.name").equals("OS/400")) {
             return new File[]{};
         }
-        Vector osEnv = Execute.getProcEnvironment();
         String match = envVariable.concat("=");
-        for (Enumeration e = osEnv.elements(); e.hasMoreElements(); ) {
-            String entry = ((String) e.nextElement()).trim();
+        for (String e : Execute.getProcEnvironment()) {
+            String entry = e.trim();
             if (entry.length() > match.length()) {
                 String entryFrag = entry.substring(0, match.length());
                 if (entryFrag.equalsIgnoreCase(match)) {
@@ -324,7 +309,7 @@ public class CUtil {
      * @return an array of File
      */
     public static File[] parsePath(String path, String delim) {
-        Vector libpaths = new Vector();
+        Vector<File> libpaths = new Vector<File>();
         int delimPos = 0;
         for (int startPos = 0; startPos < path.length(); startPos = delimPos + delim.length()) {
             delimPos = path.indexOf(delim, startPos);
@@ -342,9 +327,7 @@ public class CUtil {
                 }
             }
         }
-        File[] paths = new File[libpaths.size()];
-        libpaths.copyInto(paths);
-        return paths;
+        return libpaths.toArray(new File[0]);
     }
 
     /**
@@ -406,7 +389,7 @@ public class CUtil {
     /**
      * Compares the contents of an array and a Vector for equality.
      */
-    public static boolean sameList(Vector v, Object[] a) {
+    public static boolean sameList(Vector<Object> v, Object[] a) {
         if (v == null || a == null || v.size() != a.length) {
             return false;
         }
@@ -423,7 +406,7 @@ public class CUtil {
      * Compares the contents of an array and a Vector for set equality. Assumes
      * input array and vector are sets (i.e. no duplicate entries)
      */
-    public static boolean sameSet(Object[] a, Vector b) {
+    public static boolean sameSet(Object[] a, Vector<Object> b) {
         if (a == null || b == null || a.length != b.size()) {
             return false;
         }
@@ -431,7 +414,7 @@ public class CUtil {
             return true;
         }
         // Convert the array into a set
-        Hashtable t = new Hashtable();
+        Hashtable<Object, Object> t = new Hashtable<Object, Object>();
         for (int i = 0; i < a.length; i++) {
             t.put(a[i], a[i]);
         }
@@ -447,10 +430,8 @@ public class CUtil {
     /**
      * Converts a vector to a string array.
      */
-    public static String[] toArray(Vector src) {
-        String[] retval = new String[src.size()];
-        src.copyInto(retval);
-        return retval;
+    public static String[] toArray(Vector<String> src) {
+        return src.toArray(new String[0]);
     }
 
     /**

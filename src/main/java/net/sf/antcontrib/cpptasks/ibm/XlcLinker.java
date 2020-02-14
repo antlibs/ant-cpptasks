@@ -80,7 +80,7 @@ public final class XlcLinker extends AbstractLdLinker {
         return instance;
     }
 
-    public void addImpliedArgs(boolean debug, LinkType linkType, Vector args) {
+    public void addImpliedArgs(boolean debug, LinkType linkType, Vector<String> args) {
         if (debug) {
             //args.addElement("-g");
         }

@@ -25,6 +25,7 @@ import java.util.Vector;
 import junit.framework.TestCase;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineCompilerConfiguration;
 import net.sf.antcontrib.cpptasks.compiler.CompilerConfiguration;
+import net.sf.antcontrib.cpptasks.compiler.ProcessorConfiguration;
 import net.sf.antcontrib.cpptasks.gcc.GccCCompiler;
 
 /**
@@ -46,18 +47,19 @@ public final class TestCCTask extends TestCase {
      */
     public void testGetTargetsToBuildByConfiguration1() {
         CompilerConfiguration config1 =
-                new CommandLineCompilerConfiguration((GccCCompiler) GccCCompiler.getInstance(),
+                new CommandLineCompilerConfiguration(GccCCompiler.getInstance(),
                         "dummy", new File[0], new File[0], new File[0], "",
                         new String[0], new ProcessorParam[0], true, new String[0]);
         TargetInfo target1 = new TargetInfo(config1, new File[]{new File("src/foo.bar")},
                 null, new File("foo.obj"), true);
-        Hashtable targets = new Hashtable();
-        targets.put(target1.getOutput(), target1);
-        Hashtable targetsByConfig = CCTask.getTargetsToBuildByConfiguration(targets);
-        Vector targetsForConfig1 = (Vector) targetsByConfig.get(config1);
+        Hashtable<String, TargetInfo> targets = new Hashtable<String, TargetInfo>();
+        targets.put(target1.getOutput().getName(), target1);
+        Hashtable<ProcessorConfiguration, Vector<TargetInfo>> targetsByConfig =
+                CCTask.getTargetsToBuildByConfiguration(targets);
+        Vector<TargetInfo> targetsForConfig1 = targetsByConfig.get(config1);
         assertNotNull(targetsForConfig1);
         assertEquals(1, targetsForConfig1.size());
-        TargetInfo targetx = (TargetInfo) targetsForConfig1.elementAt(0);
+        TargetInfo targetx = targetsForConfig1.elementAt(0);
         assertSame(target1, targetx);
     }
 
@@ -67,7 +69,7 @@ public final class TestCCTask extends TestCase {
      */
     public void testGetTargetsToBuildByConfiguration2() {
         CompilerConfiguration config1 =
-                new CommandLineCompilerConfiguration((GccCCompiler) GccCCompiler.getInstance(),
+                new CommandLineCompilerConfiguration(GccCCompiler.getInstance(),
                         "dummy", new File[0], new File[0], new File[0], "",
                         new String[0], new ProcessorParam[0], false, new String[0]);
         //
@@ -75,12 +77,13 @@ public final class TestCCTask extends TestCase {
         //
         TargetInfo target1 = new TargetInfo(config1, new File[]{new File("src/foo.bar")},
                 null, new File("foo.obj"), false);
-        Hashtable targets = new Hashtable();
-        targets.put(target1.getOutput(), target1);
+        Hashtable<String, TargetInfo> targets = new Hashtable<String, TargetInfo>();
+        targets.put(target1.getOutput().getName(), target1);
         //
         //    no targets need to be built, return a zero-length hashtable
         //
-        Hashtable targetsByConfig = CCTask.getTargetsToBuildByConfiguration(targets);
+        Hashtable<ProcessorConfiguration, Vector<TargetInfo>> targetsByConfig =
+                CCTask.getTargetsToBuildByConfiguration(targets);
         assertEquals(0, targetsByConfig.size());
     }
 

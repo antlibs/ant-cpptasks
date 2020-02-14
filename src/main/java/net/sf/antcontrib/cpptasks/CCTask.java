@@ -19,9 +19,9 @@ package net.sf.antcontrib.cpptasks;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import net.sf.antcontrib.cpptasks.compiler.CompilerConfiguration;
@@ -127,10 +127,10 @@ import org.apache.tools.ant.types.Environment;
  */
 public class CCTask extends Task {
     private static class SystemLibraryCollector implements FileVisitor {
-        private Hashtable libraries;
-        private Linker linker;
+        private final Hashtable<String, File> libraries;
+        private final Linker linker;
 
-        public SystemLibraryCollector(Linker linker, Hashtable libraries) {
+        public SystemLibraryCollector(Linker linker, Hashtable<String, File> libraries) {
             this.linker = linker;
             this.libraries = libraries;
         }
@@ -145,14 +145,14 @@ public class CCTask extends Task {
     }
 
     private static class ProjectFileCollector implements FileVisitor {
-        private final List files;
+        private final List<File> files;
 
         /**
          * Creates a new ProjectFileCollector.
          *
          * @param files vector for collected files.
          */
-        public ProjectFileCollector(List files) {
+        public ProjectFileCollector(List<File> files) {
             this.files = files;
         }
 
@@ -176,18 +176,16 @@ public class CCTask extends Task {
      * @param targets Hashtable of String, TargetInfo
      * @return Hashtable of ProcessorConfiguration, Vector of TargetInfo
      */
-    public static Hashtable getTargetsToBuildByConfiguration(Hashtable targets) {
-        Hashtable targetsByConfig = new Hashtable();
-        Enumeration targetEnum = targets.elements();
-        while (targetEnum.hasMoreElements()) {
-            TargetInfo target = (TargetInfo) targetEnum.nextElement();
+    public static Hashtable<ProcessorConfiguration, Vector<TargetInfo>> getTargetsToBuildByConfiguration(Hashtable<String, TargetInfo> targets) {
+        Hashtable<ProcessorConfiguration, Vector<TargetInfo>> targetsByConfig = new Hashtable<ProcessorConfiguration, Vector<TargetInfo>>();
+        for (Map.Entry<String, TargetInfo> entry : targets.entrySet()) {
+            TargetInfo target = entry.getValue();
             if (target.getRebuild()) {
-                Vector targetsForSameConfig =
-                        (Vector) targetsByConfig.get(target.getConfiguration());
+                Vector<TargetInfo> targetsForSameConfig = targetsByConfig.get(target.getConfiguration());
                 if (targetsForSameConfig != null) {
                     targetsForSameConfig.addElement(target);
                 } else {
-                    targetsForSameConfig = new Vector();
+                    targetsForSameConfig = new Vector<TargetInfo>();
                     targetsForSameConfig.addElement(target);
                     targetsByConfig.put(target.getConfiguration(), targetsForSameConfig);
                 }
@@ -199,34 +197,34 @@ public class CCTask extends Task {
     /**
      * The compiler definitions.
      */
-    private Vector _compilers = new Vector();
+    private final Vector<CompilerDef> mCompilers = new Vector<CompilerDef>();
     /**
      *
      * The library sets.
      */
-    private Vector _libsets = new Vector();
+    private Vector<LibrarySet> mLibsets = new Vector<LibrarySet>();
     /**
      * The linker definitions.
      */
-    private Vector _linkers = new Vector();
+    private final Vector<LinkerDef> mLinkers = new Vector<LinkerDef>();
     /**
      * The object directory.
      */
-    private File _objDir;
+    private File mObjdir;
     /**
      * The output file.
      */
-    private File _outfile;
+    private File mOutfile;
     /**
      * The linker definitions.
      */
-    private final Vector targetPlatforms = new Vector();
+    private final Vector<TargetDef> targetPlatforms = new Vector<TargetDef>();
     /**
      * The distributer definitions.
      */
-    private Vector distributers = new Vector();
-    private final Vector versionInfos = new Vector();
-    private final Vector projects = new Vector();
+    private final Vector<DistributerDef> distributers = new Vector<DistributerDef>();
+    private final Vector<VersionInfo> versionInfos = new Vector<VersionInfo>();
+    private final Vector<ProjectDef> projects = new Vector<ProjectDef>();
     private boolean projectsOnly = false;
 
 
@@ -289,7 +287,7 @@ public class CCTask extends Task {
             throw new NullPointerException("compiler");
         }
         compiler.setProject(getProject());
-        _compilers.addElement(compiler);
+        mCompilers.addElement(compiler);
     }
 
     /**
@@ -326,7 +324,7 @@ public class CCTask extends Task {
             throw new NullPointerException("linker");
         }
         linker.setProject(getProject());
-        _linkers.addElement(linker);
+        mLinkers.addElement(linker);
     }
 
     /**
@@ -437,13 +435,11 @@ public class CCTask extends Task {
      * @param targets Hashtable of String, TargetInfo
      * @return total number of targets to be rebuilt
      */
-    protected int checkForChangedIncludeFiles(Hashtable targets) {
+    protected int checkForChangedIncludeFiles(Hashtable<String, TargetInfo> targets) {
         int potentialTargets = 0;
         int definiteTargets = 0;
-        Enumeration targetEnum = targets.elements();
-        while (targetEnum.hasMoreElements()) {
-            TargetInfo target = (TargetInfo) targetEnum.nextElement();
-            if (!target.getRebuild()) {
+        for (Map.Entry<String, TargetInfo> entry : targets.entrySet()) {
+            if (!entry.getValue().getRebuild()) {
                 potentialTargets++;
             } else {
                 definiteTargets++;
@@ -455,20 +451,17 @@ public class CCTask extends Task {
         //
         if (potentialTargets > 0) {
             log("Starting dependency analysis for " + Integer.toString(potentialTargets) + " files.");
-            DependencyTable dependencyTable = new DependencyTable(_objDir);
+            DependencyTable dependencyTable = new DependencyTable(mObjdir);
             try {
                 dependencyTable.load();
             } catch (Exception ex) {
                 log("Problem reading dependencies.xml: " + ex.toString());
             }
-            targetEnum = targets.elements();
-            while (targetEnum.hasMoreElements()) {
-                TargetInfo target = (TargetInfo) targetEnum.nextElement();
-                if (!target.getRebuild()) {
-                    if (dependencyTable.needsRebuild(this, target,
-                            dependencyDepth)) {
-                        target.mustRebuild();
-                    }
+            for (Map.Entry<String, TargetInfo> entry : targets.entrySet()) {
+                TargetInfo target = entry.getValue();
+                if (!target.getRebuild()
+                        && dependencyTable.needsRebuild(this, target, dependencyDepth)) {
+                    target.mustRebuild();
                 }
             }
             dependencyTable.commit(this);
@@ -477,10 +470,8 @@ public class CCTask extends Task {
         //   count files being rebuilt now
         //
         int currentTargets = 0;
-        targetEnum = targets.elements();
-        while (targetEnum.hasMoreElements()) {
-            TargetInfo target = (TargetInfo) targetEnum.nextElement();
-            if (target.getRebuild()) {
+        for (Map.Entry<String, TargetInfo> entry : targets.entrySet()) {
+            if (entry.getValue().getRebuild()) {
                 currentTargets++;
             }
         }
@@ -493,8 +484,8 @@ public class CCTask extends Task {
         return currentTargets;
     }
 
-    protected LinkerConfiguration collectExplicitObjectFiles(Vector objectFiles,
-                                                             Vector sysObjectFiles,
+    protected LinkerConfiguration collectExplicitObjectFiles(Vector<File> objectFiles,
+                                                             Vector<File> sysObjectFiles,
                                                              VersionInfo versionInfo) {
         //
         //    find the first eligible linker
@@ -503,13 +494,12 @@ public class CCTask extends Task {
         ProcessorConfiguration linkerConfig = null;
         LinkerDef selectedLinkerDef = null;
         Linker selectedLinker = null;
-        Hashtable sysLibraries = new Hashtable();
+        Hashtable<String, File> sysLibraries = new Hashtable<String, File>();
         TargetDef targetPlatform = getTargetPlatform();
         FileVisitor objCollector = null;
         FileVisitor sysLibraryCollector = null;
-        for (int i = 0; i < _linkers.size(); i++) {
-            LinkerDef currentLinkerDef = (LinkerDef) _linkers.elementAt(i);
-            if (currentLinkerDef.isActive()) {
+        for (LinkerDef currentLinkerDef : mLinkers) {
+             if (currentLinkerDef.isActive()) {
                 selectedLinkerDef = currentLinkerDef;
                 selectedLinker = currentLinkerDef.getProcessor().getLinker(linkType);
                 //
@@ -543,8 +533,9 @@ public class CCTask extends Task {
             }
         }
         if (linkerConfig == null) {
-            linkerConfig = linkerDef.createConfiguration(this, linkType, null, targetPlatform, versionInfo);
-            selectedLinker = (Linker) linkerDef.getProcessor().getLinker(linkType);
+            linkerConfig = linkerDef.createConfiguration(this, linkType, null, targetPlatform,
+                    versionInfo);
+            selectedLinker = linkerDef.getProcessor().getLinker(linkType);
             objCollector = new ObjectFileCollector(selectedLinker, objectFiles);
             sysLibraryCollector = new SystemLibraryCollector(selectedLinker, sysLibraries);
         }
@@ -572,9 +563,8 @@ public class CCTask extends Task {
         //   copy over any system libraries to the
         //      object files vector
         //
-        Enumeration sysLibEnum = sysLibraries.elements();
-        while (sysLibEnum.hasMoreElements()) {
-            sysObjectFiles.addElement(sysLibEnum.nextElement());
+        for (Map.Entry<String, File> entry : sysLibraries.entrySet()) {
+            sysObjectFiles.addElement(entry.getValue());
         }
         return (LinkerConfiguration) linkerConfig;
     }
@@ -634,42 +624,38 @@ public class CCTask extends Task {
         //
         //   if link type allowed objdir to be defaulted
         //      provide it from outfile
-        if (_objDir == null) {
-            if (_outfile != null) {
-                _objDir = new File(_outfile.getParent());
+        if (mObjdir == null) {
+            if (mOutfile != null) {
+                mObjdir = new File(mOutfile.getParent());
             } else {
-                _objDir = new File(".");
+                mObjdir = new File(".");
             }
         }
 
         //
         //   if the object directory does not exist
         //
-        if (!_objDir.exists()) {
+        if (!mObjdir.exists()) {
             throw new BuildException("Object directory does not exist");
         }
-        TargetHistoryTable objHistory = new TargetHistoryTable(this, _objDir);
+        TargetHistoryTable objHistory = new TargetHistoryTable(this, mObjdir);
 
         //
         //   get the first active version info
         //
         VersionInfo versionInfo = null;
-        Enumeration versionEnum = versionInfos.elements();
-        while (versionEnum.hasMoreElements()) {
-            versionInfo = (VersionInfo) versionEnum.nextElement();
-            versionInfo = versionInfo.merge();
-            if (versionInfo.isActive()) {
+        for (VersionInfo vInfo : versionInfos) {
+            if (vInfo.merge().isActive()) {
+                versionInfo = vInfo;
                 break;
-            } else {
-                versionInfo = null;
             }
         }
         //
         //  determine the eventual linker configuration
         //      (may be null) and collect any explicit
         //          object files or libraries
-        Vector objectFiles = new Vector();
-        Vector sysObjectFiles = new Vector();
+        Vector<File> objectFiles = new Vector<File>();
+        Vector<File> sysObjectFiles = new Vector<File>();
         LinkerConfiguration linkerConfig = collectExplicitObjectFiles(objectFiles, sysObjectFiles,
                 versionInfo);
 
@@ -677,33 +663,29 @@ public class CCTask extends Task {
         //   Assemble hashtable of all files
         //       that we know how to compile (keyed by output file name)
         //
-        Hashtable targets = getTargets(linkerConfig, objectFiles, versionInfo, _outfile);
+        Hashtable<String, TargetInfo> targets = getTargets(linkerConfig, objectFiles, versionInfo,
+                mOutfile);
         TargetInfo linkTarget = null;
         //
         //   if output file is not specified,
         //      then skip link step
         //
-        if (_outfile != null) {
-            linkTarget = getLinkTarget(linkerConfig, objectFiles,
-                    sysObjectFiles, targets, versionInfo);
+        if (mOutfile != null) {
+            linkTarget = getLinkTarget(linkerConfig, objectFiles, sysObjectFiles, targets,
+                    versionInfo);
         }
 
         if (projects.size() > 0) {
-            ArrayList files = new ArrayList();
+            ArrayList<File> files = new ArrayList<File>();
             ProjectFileCollector matcher = new ProjectFileCollector(files);
-            for (int i = 0; i < _compilers.size(); i++) {
-                CompilerDef currentCompilerDef = (CompilerDef) _compilers.elementAt(i);
-                if (currentCompilerDef.isActive()) {
-                    if (currentCompilerDef.hasFileSets()) {
-                        currentCompilerDef.visitFiles(matcher);
-                    }
+            for (CompilerDef currentCompilerDef : mCompilers) {
+                 if (currentCompilerDef.isActive() && currentCompilerDef.hasFileSets()) {
+                    currentCompilerDef.visitFiles(matcher);
                 }
             }
             compilerDef.visitFiles(matcher);
 
-            Enumeration iter = projects.elements();
-            while (iter.hasMoreElements()) {
-                ProjectDef projectDef = (ProjectDef) iter.nextElement();
+            for (ProjectDef projectDef : projects) {
                 if (projectDef.isActive()) {
                     projectDef.execute(this, files, targets, linkTarget);
                 }
@@ -728,61 +710,54 @@ public class CCTask extends Task {
             //
             //    compile all targets with getRebuild() == true
             //
-            Hashtable targetsByConfig = getTargetsToBuildByConfiguration(targets);
+            Hashtable<ProcessorConfiguration, Vector<TargetInfo>> targetsByConfig
+                    = getTargetsToBuildByConfiguration(targets);
             //
             //    build array containing Vectors with precompiled generation
             //       steps going first
             //
-            Vector[] targetVectors = new Vector[targetsByConfig.size()];
-            int index = 0;
-            Enumeration targetVectorEnum = targetsByConfig.elements();
-            while (targetVectorEnum.hasMoreElements()) {
-                Vector targetsForConfig = (Vector) targetVectorEnum.nextElement();
+            List<Vector<TargetInfo>> targetVectorsList = new ArrayList<Vector<TargetInfo>>();
+            for (Map.Entry<ProcessorConfiguration, Vector<TargetInfo>> entry : targetsByConfig.entrySet()) {
+                Vector<TargetInfo> targetsForConfig = entry.getValue();
                 //
                 //    get the configuration from the first entry
                 //
                 CompilerConfiguration config = (CompilerConfiguration)
-                        ((TargetInfo) targetsForConfig.elementAt(0)).getConfiguration();
+                        (targetsForConfig.elementAt(0)).getConfiguration();
                 if (config.isPrecompileGeneration()) {
-                    targetVectors[index++] = targetsForConfig;
+                    targetVectorsList.add(targetsForConfig);
                 }
             }
-            targetVectorEnum = targetsByConfig.elements();
-            while (targetVectorEnum.hasMoreElements()) {
-                Vector targetsForConfig = (Vector) targetVectorEnum.nextElement();
-                for (int i = 0; i < targetVectors.length; i++) {
-                    if (targetVectors[i] == targetsForConfig) {
-                        break;
-                    }
-                    if (targetVectors[i] == null) {
-                        targetVectors[i] = targetsForConfig;
+            for (Map.Entry<ProcessorConfiguration, Vector<TargetInfo>> entry : targetsByConfig.entrySet()) {
+                Vector<TargetInfo> targetsForConfig = entry.getValue();
+                boolean found = false;
+                for (Vector<TargetInfo> targetVectors : targetVectorsList) {
+                    if (targetVectors == targetsForConfig) {
+                        found = true;
                         break;
                     }
                 }
+                if (!found) {
+                    targetVectorsList.add(targetsForConfig);
+                }
             }
-            for (int i = 0; i < targetVectors.length; i++) {
+            for (Vector<TargetInfo> targetsForConfig : targetVectorsList) {
                 //
                 //    get the targets for this configuration
-                //
-                Vector targetsForConfig = targetVectors[i];
-                //
                 //    get the configuration from the first entry
                 //
                 CompilerConfiguration config = (CompilerConfiguration)
-                        ((TargetInfo) targetsForConfig.elementAt(0)).getConfiguration();
+                        (targetsForConfig.elementAt(0)).getConfiguration();
                 //
                 //    prepare the list of source files
                 //
                 String[] sourceFiles = new String[targetsForConfig.size()];
-                Enumeration targetsEnum = targetsForConfig.elements();
-                index = 0;
-                while (targetsEnum.hasMoreElements()) {
-                    TargetInfo targetInfo = ((TargetInfo) targetsEnum.nextElement());
+                int index = 0;
+                for (TargetInfo targetInfo : targetsForConfig) {
                     sourceFiles[index++] = targetInfo.getSources()[0].toString();
                 }
                 try {
-                    config.compile(this, _objDir, sourceFiles, relentless,
-                            monitor);
+                    config.compile(this, mObjdir, sourceFiles, relentless, monitor);
                 } catch (BuildException ex) {
                     if (compileException == null) {
                         compileException = ex;
@@ -886,20 +861,21 @@ public class CCTask extends Task {
     }
 
     protected TargetHistoryTable getLinkHistory(TargetHistoryTable objHistory) {
-        File outputFileDir = new File(_outfile.getParent());
+        File outputFileDir = new File(mOutfile.getParent());
         //
         //   if the output file is being produced in the link
         //        directory, then we can use the same history file
         //
-        if (_objDir.equals(outputFileDir)) {
+        if (mObjdir.equals(outputFileDir)) {
             return objHistory;
         }
         return new TargetHistoryTable(this, outputFileDir);
     }
 
     protected TargetInfo getLinkTarget(LinkerConfiguration linkerConfig,
-                                       Vector objectFiles, Vector sysObjectFiles,
-                                       Hashtable compileTargets, VersionInfo versionInfo) {
+                                       Vector<File> objectFiles, Vector<File> sysObjectFiles,
+                                       Hashtable<String, TargetInfo> compileTargets,
+                                       VersionInfo versionInfo) {
         //
         //  walk the compile phase targets and
         //     add those sources that have already been
@@ -907,34 +883,28 @@ public class CCTask extends Task {
         //     our output files the linker knows how to consume
         //     files the linker knows how to consume
         //
-        Enumeration compileTargetsEnum = compileTargets.elements();
-        while (compileTargetsEnum.hasMoreElements()) {
-            TargetInfo compileTarget = (TargetInfo) compileTargetsEnum.nextElement();
+        for (Map.Entry<String, TargetInfo> compileTargetEntry : compileTargets.entrySet()) {
+            File file = compileTargetEntry.getValue().getOutput();
             //
             //   output of compile tasks
             //
-            int bid = linkerConfig.bid(compileTarget.getOutput().toString());
+            int bid = linkerConfig.bid(file.toString());
             if (bid > 0) {
-                objectFiles.addElement(compileTarget.getOutput());
+                objectFiles.addElement(file);
             }
         }
-        File[] objectFileArray = new File[objectFiles.size()];
-        objectFiles.copyInto(objectFileArray);
-        File[] sysObjectFileArray = new File[sysObjectFiles.size()];
-        sysObjectFiles.copyInto(sysObjectFileArray);
-        String baseName = _outfile.getName();
-        String[] fullNames = linkerConfig.getOutputFileNames(baseName, versionInfo);
-        File outputFile = new File(_outfile.getParent(), fullNames[0]);
-        return new TargetInfo(linkerConfig, objectFileArray,
-                sysObjectFileArray, outputFile, linkerConfig.getRebuild());
+        String[] fullNames = linkerConfig.getOutputFileNames(mOutfile.getName(), versionInfo);
+        return new TargetInfo(linkerConfig, objectFiles.toArray(new File[0]),
+                sysObjectFiles.toArray(new File[0]), new File(mOutfile.getParent(), fullNames[0]),
+                linkerConfig.getRebuild());
     }
 
     public File getObjdir() {
-        return _objDir;
+        return mObjdir;
     }
 
     public File getOutfile() {
-        return _outfile;
+        return mOutfile;
     }
 
     public TargetDef getTargetPlatform() {
@@ -947,16 +917,16 @@ public class CCTask extends Task {
      * the &lt;cc&gt; and nested &lt;compiler&gt; elements. The TargetInfo's contain the
      * appropriate compiler configurations for their possible compilation
      */
-    private Hashtable getTargets(LinkerConfiguration linkerConfig,
-                                 Vector objectFiles, VersionInfo versionInfo, File outputFile) {
-        Hashtable targets = new Hashtable(1000);
+    private Hashtable<String, TargetInfo> getTargets(LinkerConfiguration linkerConfig,
+                                                     Vector<File> objectFiles,
+                                                     VersionInfo versionInfo, File outputFile) {
+        Hashtable<String, TargetInfo> targets = new Hashtable<String, TargetInfo>(1000);
         TargetDef targetPlatform = getTargetPlatform();
         //
         //   find active (specialized) compilers
         //
-        Vector biddingProcessors = new Vector(_compilers.size());
-        for (int i = 0; i < _compilers.size(); i++) {
-            CompilerDef currentCompilerDef = (CompilerDef) _compilers.elementAt(i);
+        Vector<ProcessorConfiguration> biddingProcessors = new Vector<ProcessorConfiguration>();
+        for (CompilerDef currentCompilerDef : mCompilers) {
             if (currentCompilerDef.isActive()) {
                 ProcessorConfiguration config = currentCompilerDef.createConfiguration(this,
                         linkType, compilerDef, targetPlatform, versionInfo);
@@ -994,8 +964,7 @@ public class CCTask extends Task {
                         //   visit the precompiled file to add it into the
                         //      targets list (just like any other file if
                         //      compiler doesn't support precompilation)
-                        TargetMatcher matcher = new TargetMatcher(this,
-                                _objDir,
+                        TargetMatcher matcher = new TargetMatcher(this, mObjdir,
                                 new ProcessorConfiguration[]{configs[0]},
                                 linkerConfig, objectFiles, targets, versionInfo);
 
@@ -1015,9 +984,8 @@ public class CCTask extends Task {
                 //       then allow it to add its files
                 //       to the set of potential targets
                 if (currentCompilerDef.hasFileSets()) {
-                    TargetMatcher matcher = new TargetMatcher(this, _objDir,
-                            localConfigs, linkerConfig, objectFiles, targets,
-                            versionInfo);
+                    TargetMatcher matcher = new TargetMatcher(this, mObjdir, localConfigs,
+                            linkerConfig, objectFiles, targets, versionInfo);
                     currentCompilerDef.visitFiles(matcher);
                 }
                 biddingProcessors.addElement(config);
@@ -1029,22 +997,19 @@ public class CCTask extends Task {
         ProcessorConfiguration config = compilerDef.createConfiguration(this,
                 linkType, null, targetPlatform, versionInfo);
         biddingProcessors.addElement(config);
-        ProcessorConfiguration[] bidders = new ProcessorConfiguration[biddingProcessors.size()];
-        biddingProcessors.copyInto(bidders);
+        ProcessorConfiguration[] bidders = biddingProcessors.toArray(new ProcessorConfiguration[0]);
         //
         //   bid out the <fileset>'s in the cctask
         //
-        TargetMatcher matcher = new TargetMatcher(this, _objDir, bidders,
-                linkerConfig, objectFiles, targets, versionInfo);
+        TargetMatcher matcher = new TargetMatcher(this, mObjdir, bidders, linkerConfig,
+                objectFiles, targets, versionInfo);
         compilerDef.visitFiles(matcher);
 
         if (outputFile != null && versionInfo != null) {
             boolean isDebug = linkerConfig.isDebug();
             try {
-                linkerConfig.getLinker().addVersionFiles(versionInfo, linkType,
-                        outputFile,
-                        isDebug,
-                        _objDir, matcher);
+                linkerConfig.getLinker().addVersionFiles(versionInfo, linkType, outputFile,
+                        isDebug, mObjdir, matcher);
             } catch (IOException ex) {
                 throw new BuildException(ex);
             }
@@ -1330,7 +1295,7 @@ public class CCTask extends Task {
         if (dir == null) {
             throw new NullPointerException("dir");
         }
-        _objDir = dir;
+        mObjdir = dir;
     }
 
     /**
@@ -1346,7 +1311,7 @@ public class CCTask extends Task {
         //   if file name was empty, skip link step
         //
         if (outfile == null || outfile.toString().length() > 0) {
-            _outfile = outfile;
+            mOutfile = outfile;
         }
     }
 

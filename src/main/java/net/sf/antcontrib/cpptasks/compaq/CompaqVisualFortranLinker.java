@@ -41,7 +41,7 @@ public final class CompaqVisualFortranLinker extends DevStudioCompatibleLinker {
         super("DF", "__bogus__.xxx", outputSuffix);
     }
 
-    protected void addImpliedArgs(boolean debug, LinkType linkType, Vector args) {
+    protected void addImpliedArgs(boolean debug, LinkType linkType, Vector<String> args) {
         args.addElement("/NOLOGO");
         boolean staticRuntime = linkType.isStaticRuntime();
         if (staticRuntime) {

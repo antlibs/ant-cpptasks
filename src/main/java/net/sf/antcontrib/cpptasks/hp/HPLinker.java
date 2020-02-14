@@ -111,7 +111,7 @@ public final class HPLinker extends AbstractLdLinker {
         return libDirs;
     }
 
-    public void addImpliedArgs(boolean debug, LinkType linkType, Vector args) {
+    public void addImpliedArgs(boolean debug, LinkType linkType, Vector<String> args) {
 /*      if(linkType.isStaticRuntime()) {
         args.addElement("-static");
       }
@@ -137,7 +137,7 @@ public final class HPLinker extends AbstractLdLinker {
         return instance;
     }
 
-    public void addIncremental(boolean incremental, Vector args) {
+    public void addIncremental(boolean incremental, Vector<String> args) {
     /*
       if (incremental) {
         args.addElement("-xidlon");

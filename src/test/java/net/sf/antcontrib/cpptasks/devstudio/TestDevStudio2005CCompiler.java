@@ -32,7 +32,7 @@ public class TestDevStudio2005CCompiler extends TestCase {
 
     public void testDebug() {
         DevStudio2005CCompiler compiler = DevStudio2005CCompiler.getInstance();
-        Vector args = new Vector();
+        Vector<String> args = new Vector<String>();
         compiler.addDebugSwitch(args);
         assertEquals(4, args.size());
         assertEquals("/Zi", args.elementAt(0));

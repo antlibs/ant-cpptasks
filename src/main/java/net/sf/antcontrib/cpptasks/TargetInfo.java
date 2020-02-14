@@ -43,11 +43,11 @@ public final class TargetInfo {
             throw new NullPointerException("output");
         }
         this.config = config;
-        this.sources = (File[]) sources.clone();
+        this.sources = sources.clone();
         if (sysSources == null) {
             this.sysSources = emptyFileArray;
         } else {
-            this.sysSources = (File[]) sysSources.clone();
+            this.sysSources = sysSources.clone();
         }
         this.output = output;
         this.rebuild = rebuild;
@@ -121,7 +121,7 @@ public final class TargetInfo {
     }
 
     public File[] getSources() {
-        File[] clone = (File[]) sources.clone();
+        File[] clone = sources.clone();
         return clone;
     }
 
@@ -134,7 +134,7 @@ public final class TargetInfo {
     }
 
     public File[] getSysSources() {
-        File[] clone = (File[]) sysSources.clone();
+        File[] clone = sysSources.clone();
         return clone;
     }
 

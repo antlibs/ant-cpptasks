@@ -22,7 +22,7 @@ public class FilenameState extends AbstractParserState {
 
     public FilenameState(AbstractParser parser, char[] terminators) {
         super(parser);
-        this.terminators = (char[]) terminators.clone();
+        this.terminators = terminators.clone();
     }
 
     public AbstractParserState consume(char ch) {

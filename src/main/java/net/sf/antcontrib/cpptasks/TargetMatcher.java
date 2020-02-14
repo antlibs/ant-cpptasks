@@ -31,17 +31,17 @@ import org.apache.tools.ant.BuildException;
  */
 public final class TargetMatcher implements FileVisitor {
     private LinkerConfiguration linker;
-    private Vector objectFiles;
+    private Vector<File> objectFiles;
     private File outputDir;
     private ProcessorConfiguration[] processors;
-    private final File sourceFiles[] = new File[1];
-    private Hashtable targets;
+    private final File[] sourceFiles = new File[1];
+    private Hashtable<String, TargetInfo> targets;
     private VersionInfo versionInfo;
     private CCTask task;
 
     public TargetMatcher(CCTask task, File outputDir,
                          ProcessorConfiguration[] processors, LinkerConfiguration linker,
-                         Vector objectFiles, Hashtable targets,
+                         Vector<File> objectFiles, Hashtable<String, TargetInfo> targets,
                          VersionInfo versionInfo) {
         this.task = task;
         this.outputDir = outputDir;
@@ -96,7 +96,7 @@ public final class TargetMatcher implements FileVisitor {
                 //
                 //   see if the same output file has already been registered
                 //
-                TargetInfo previousTarget = (TargetInfo) targets.get(outputFileNames[i]);
+                TargetInfo previousTarget = targets.get(outputFileNames[i]);
                 if (previousTarget == null) {
                     targets.put(outputFileNames[i], new TargetInfo(selectedCompiler, sourceFiles,
                             null, new File(outputDir, outputFileNames[i]),

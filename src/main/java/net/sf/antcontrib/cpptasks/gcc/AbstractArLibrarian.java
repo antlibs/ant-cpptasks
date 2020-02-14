@@ -46,28 +46,28 @@ public abstract class AbstractArLibrarian extends CommandLineLinker {
         this.outputPrefix = outputPrefix;
     }
 
-    public void addBase(long base, Vector args) {
+    public void addBase(long base, Vector<String> args) {
     }
 
-    public void addFixed(Boolean fixed, Vector args) {
+    public void addFixed(Boolean fixed, Vector<String> args) {
     }
 
-    public void addImpliedArgs(boolean debug, LinkType linkType, Vector args) {
+    public void addImpliedArgs(boolean debug, LinkType linkType, Vector<String> args) {
     }
 
-    public void addIncremental(boolean incremental, Vector args) {
+    public void addIncremental(boolean incremental, Vector<String> args) {
     }
 
-    public void addMap(boolean map, Vector args) {
+    public void addMap(boolean map, Vector<String> args) {
     }
 
-    public void addStack(int stack, Vector args) {
+    public void addStack(int stack, Vector<String> args) {
     }
 
     /* (non-Javadoc)
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineLinker#addEntry(int, java.util.Vector)
      */
-    protected void addEntry(String entry, Vector args) {
+    protected void addEntry(String entry, Vector<String> args) {
     }
 
     public String getCommandFileSwitch(String commandFile) {

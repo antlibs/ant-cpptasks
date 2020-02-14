@@ -143,8 +143,6 @@ public abstract class AbstractCompiler extends AbstractProcessor implements Comp
         long sourceLastModified = source.lastModified();
         File[] sourcePath = new File[1];
         sourcePath[0] = new File(source.getParent());
-        Vector onIncludePath = new Vector();
-        Vector onSysIncludePath = new Vector();
         String baseDirPath;
         try {
             baseDirPath = baseDir.getCanonicalPath();
@@ -164,14 +162,17 @@ public abstract class AbstractCompiler extends AbstractProcessor implements Comp
                 includes = new String[0];
             }
         }
+
+        Vector<File> filesOnIncludePath = new Vector<File>();
+        Vector<File> filesOnSysIncludePath = new Vector<File>();
         for (int i = 0; i < includes.length; i++) {
             String includeName = includes[i];
-            if (!resolveInclude(includeName, sourcePath, onIncludePath)) {
-                if (!resolveInclude(includeName, includePath, onIncludePath)) {
+            if (!resolveInclude(includeName, sourcePath, filesOnIncludePath)) {
+                if (!resolveInclude(includeName, includePath, filesOnIncludePath)) {
                     if (!resolveInclude(includeName, sysIncludePath,
-                            onSysIncludePath)) {
+                            filesOnSysIncludePath)) {
                         if (!resolveInclude(includeName, envIncludePath,
-                                onSysIncludePath)) {
+                                filesOnSysIncludePath)) {
                             //
                             //  this should be enough to require us to reparse
                             //     the file with the missing include for dependency
@@ -182,22 +183,25 @@ public abstract class AbstractCompiler extends AbstractProcessor implements Comp
                 }
             }
         }
-        for (int i = 0; i < onIncludePath.size(); i++) {
+
+        Vector<String> onIncludePath = new Vector<String>();
+        Vector<String> onSysIncludePath = new Vector<String>();
+        for (int i = 0; i < filesOnIncludePath.size(); i++) {
             String relativeInclude = CUtil.getRelativePath(baseDirPath,
-                    (File) onIncludePath.elementAt(i));
-            onIncludePath.setElementAt(relativeInclude, i);
+                    filesOnIncludePath.elementAt(i));
+            onIncludePath.add(relativeInclude);
         }
-        for (int i = 0; i < onSysIncludePath.size(); i++) {
+        for (int i = 0; i < filesOnSysIncludePath.size(); i++) {
             String relativeInclude = CUtil.getRelativePath(baseDirPath,
-                    (File) onSysIncludePath.elementAt(i));
-            onSysIncludePath.setElementAt(relativeInclude, i);
+                    filesOnSysIncludePath.elementAt(i));
+            onSysIncludePath.add(relativeInclude);
         }
         return new DependencyInfo(includePathIdentifier, relativeSource,
                 sourceLastModified, onIncludePath, onSysIncludePath);
     }
 
     protected boolean resolveInclude(String includeName, File[] includePath,
-                                     Vector onThisPath) {
+                                     Vector<File> onThisPath) {
         for (int i = 0; i < includePath.length; i++) {
             File includeFile = new File(includePath[i], includeName);
             if (includeFile.exists()) {

@@ -63,7 +63,7 @@ public abstract class OpenWatcomCompiler extends CommandLineCompiler {
      * @param rtti          Boolean run time type information
      * @param optimization  OptimizationEnum
      */
-    protected final void addImpliedArgs(final Vector args,
+    protected final void addImpliedArgs(final Vector<String> args,
                                         final boolean debug,
                                         final boolean multithreaded,
                                         final boolean exceptions,
@@ -103,7 +103,7 @@ public abstract class OpenWatcomCompiler extends CommandLineCompiler {
      * @param args  Vector command line arguments
      * @param level int warning level
      */
-    protected final void addWarningSwitch(final Vector args, final int level) {
+    protected final void addWarningSwitch(final Vector<String> args, final int level) {
         OpenWatcomProcessor.addWarningSwitch(args, level);
     }
 

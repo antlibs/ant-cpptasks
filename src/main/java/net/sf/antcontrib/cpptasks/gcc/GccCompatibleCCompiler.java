@@ -75,7 +75,7 @@ public abstract class GccCompatibleCCompiler extends CommandLineCCompiler {
                 libtool ? ".fo" : ".o", libtool, libtoolCompiler, newEnvironment, env);
     }
 
-    public void addImpliedArgs(final Vector args,
+    public void addImpliedArgs(final Vector<String> args,
                                final boolean debug,
                                final boolean multithreaded,
                                final boolean exceptions,
@@ -127,11 +127,11 @@ public abstract class GccCompatibleCCompiler extends CommandLineCCompiler {
      * @param path String
      * @param cmd a list of String
      */
-    public void addIncludePath(String path, Vector cmd) {
+    public void addIncludePath(String path, Vector<String> cmd) {
         cmd.addElement("-I" + path);
     }
 
-    public void addWarningSwitch(Vector args, int level) {
+    public void addWarningSwitch(Vector<String> args, int level) {
         switch (level) {
             case 0:
                 args.addElement("-w");

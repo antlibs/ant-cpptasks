@@ -29,7 +29,7 @@ public final class FortranParser extends AbstractParser implements Parser {
     /**
      * List of included filenames.
      */
-    private final Vector includes = new Vector();
+    private final Vector<String> includes = new Vector<String>();
 
     /**
      * State that starts consuming content at the beginning of a line.
@@ -67,9 +67,7 @@ public final class FortranParser extends AbstractParser implements Parser {
      * @return include file names
      */
     public String[] getIncludes() {
-        String[] retval = new String[includes.size()];
-        includes.copyInto(retval);
-        return retval;
+        return includes.toArray(new String[0]);
     }
 
     /**

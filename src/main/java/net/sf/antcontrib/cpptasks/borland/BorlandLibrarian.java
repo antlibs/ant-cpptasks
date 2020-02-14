@@ -47,28 +47,28 @@ public class BorlandLibrarian extends CommandLineLinker {
                 null);
     }
 
-    protected void addBase(long base, Vector args) {
+    protected void addBase(long base, Vector<String> args) {
     }
 
-    protected void addFixed(Boolean fixed, Vector args) {
+    protected void addFixed(Boolean fixed, Vector<String> args) {
     }
 
-    protected void addImpliedArgs(boolean debug, LinkType linkType, Vector args) {
+    protected void addImpliedArgs(boolean debug, LinkType linkType, Vector<String> args) {
     }
 
-    protected void addIncremental(boolean incremental, Vector args) {
+    protected void addIncremental(boolean incremental, Vector<String> args) {
     }
 
-    protected void addMap(boolean map, Vector args) {
+    protected void addMap(boolean map, Vector<String> args) {
     }
 
-    protected void addStack(int stack, Vector args) {
+    protected void addStack(int stack, Vector<String> args) {
     }
 
     /* (non-Javadoc)
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineLinker#addEntry(int, java.util.Vector)
      */
-    protected void addEntry(String entry, Vector args) {
+    protected void addEntry(String entry, Vector<String> args) {
     }
 
     protected String getCommandFileSwitch(String cmdFile) {
@@ -133,8 +133,7 @@ public class BorlandLibrarian extends CommandLineLinker {
         String[] preargs = config.getPreArguments();
         String[] endargs = config.getEndArguments();
         StringBuffer buf = new StringBuffer();
-        Vector execArgs = new Vector(preargs.length + endargs.length + 10
-                + sourceFiles.length);
+        Vector<String> execArgs = new Vector<String>();
 
         execArgs.addElement(this.getCommand());
         String outputFileName = new File(outputDir, outputName).toString();
@@ -171,8 +170,7 @@ public class BorlandLibrarian extends CommandLineLinker {
             execArgs.addElement(endargs[i]);
         }
 
-        String[] execArguments = new String[execArgs.size()];
-        execArgs.copyInto(execArguments);
+        String[] execArguments = execArgs.toArray(new String[0]);
 
         int minPageSize = objBytes >> 16;
         int pageSize = 0;

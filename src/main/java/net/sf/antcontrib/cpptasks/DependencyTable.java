@@ -24,6 +24,7 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Map;
 import java.util.Vector;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -48,10 +49,10 @@ public final class DependencyTable {
         private File baseDir;
         private final DependencyTable dependencyTable;
         private String includePath;
-        private Vector includes;
+        private final Vector<String> includes;
         private String source;
         private long sourceLastModified;
-        private Vector sysIncludes;
+        private final Vector<String> sysIncludes;
 
         /**
          * Constructor
@@ -62,8 +63,8 @@ public final class DependencyTable {
         private DependencyTableHandler(DependencyTable dependencyTable, File baseDir) {
             this.dependencyTable = dependencyTable;
             this.baseDir = baseDir;
-            includes = new Vector();
-            sysIncludes = new Vector();
+            includes = new Vector<String>();
+            sysIncludes = new Vector<String>();
             source = null;
         }
 
@@ -246,7 +247,7 @@ public final class DependencyTable {
     /**
      * a hashtable of DependencyInfo[] keyed by output file name
      */
-    private final Hashtable dependencies = new Hashtable();
+    private final Hashtable<String, DependencyInfo[]> dependencies = new Hashtable<String, DependencyInfo[]>();
 
     /**
      * The file the cache was loaded from.
@@ -289,7 +290,7 @@ public final class DependencyTable {
             //   walk through dependencies to get vector of include paths
             // identifiers
             //
-            Vector includePaths = getIncludePaths();
+            Vector<String> includePaths = getIncludePaths();
             //
             //
             //   write dependency file
@@ -315,9 +316,8 @@ public final class DependencyTable {
                 writer.write("'?>\n");
                 writer.write("<dependencies>\n");
                 StringBuffer buf = new StringBuffer();
-                Enumeration includePathEnum = includePaths.elements();
-                while (includePathEnum.hasMoreElements()) {
-                    writeIncludePathDependencies((String) includePathEnum.nextElement(), writer, buf);
+                for (String path : includePaths) {
+                    writeIncludePathDependencies(path, writer, buf);
                 }
                 writer.write("</dependencies>\n");
                 writer.close();
@@ -333,7 +333,7 @@ public final class DependencyTable {
      *
      * @return an Enumeration of arrays of DependencyInfo
      */
-    public Enumeration elements() {
+    public Enumeration<DependencyInfo[]> elements() {
         return dependencies.elements();
     }
 
@@ -347,11 +347,9 @@ public final class DependencyTable {
      */
     public DependencyInfo getDependencyInfo(String sourceRelativeName,
                                             String includePathIdentifier) {
-        DependencyInfo dependInfo = null;
-        DependencyInfo[] dependInfos = (DependencyInfo[]) dependencies.get(sourceRelativeName);
+        DependencyInfo[] dependInfos = dependencies.get(sourceRelativeName);
         if (dependInfos != null) {
-            for (int i = 0; i < dependInfos.length; i++) {
-                dependInfo = dependInfos[i];
+            for (DependencyInfo dependInfo : dependInfos) {
                 if (dependInfo.getIncludePathIdentifier().equals(includePathIdentifier)) {
                     return dependInfo;
                 }
@@ -360,19 +358,14 @@ public final class DependencyTable {
         return null;
     }
 
-    private Vector getIncludePaths() {
-        Vector includePaths = new Vector();
-        DependencyInfo[] dependInfos;
-        Enumeration dependenciesEnum = dependencies.elements();
-        while (dependenciesEnum.hasMoreElements()) {
-            dependInfos = (DependencyInfo[]) dependenciesEnum.nextElement();
-            for (int i = 0; i < dependInfos.length; i++) {
-                DependencyInfo dependInfo = dependInfos[i];
+    private Vector<String> getIncludePaths() {
+        Vector<String> includePaths = new Vector<String>();
+        for (Map.Entry<String, DependencyInfo[]> dependInfos: dependencies.entrySet()) {
+            for (DependencyInfo dependInfo : dependInfos.getValue()) {
                 boolean matchesExisting = false;
                 final String dependIncludePath = dependInfo.getIncludePathIdentifier();
-                Enumeration includePathEnum = includePaths.elements();
-                while (includePathEnum.hasMoreElements()) {
-                    if (dependIncludePath.equals(includePathEnum.nextElement())) {
+                for (String includePath : includePaths) {
+                    if (dependIncludePath.equals(includePath)) {
                         matchesExisting = true;
                         break;
                     }
@@ -462,8 +455,7 @@ public final class DependencyTable {
         //
         //   optimistic, add new value
         //
-        DependencyInfo[] old = (DependencyInfo[]) dependencies.put(key,
-                new DependencyInfo[]{dependInfo});
+        DependencyInfo[] old = dependencies.put(key, new DependencyInfo[]{dependInfo});
         dirty = true;
         //
         //   something was already there
@@ -618,11 +610,8 @@ public final class DependencyTable {
         buf.append(CUtil.xmlAttribEncode(includePathIdentifier));
         buf.append("\">\n");
         writer.write(buf.toString());
-        Enumeration dependenciesEnum = dependencies.elements();
-        while (dependenciesEnum.hasMoreElements()) {
-            DependencyInfo[] dependInfos = (DependencyInfo[]) dependenciesEnum.nextElement();
-            for (int i = 0; i < dependInfos.length; i++) {
-                DependencyInfo dependInfo = dependInfos[i];
+        for (Map.Entry<String, DependencyInfo[]> entry : dependencies.entrySet()) {
+            for (DependencyInfo dependInfo : entry.getValue()) {
                 //
                 //   if this is for the same include path
                 //      then output the info

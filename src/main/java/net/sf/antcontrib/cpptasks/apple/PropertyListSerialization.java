@@ -16,17 +16,16 @@
  */
 package net.sf.antcontrib.cpptasks.apple;
 
+import net.sf.antcontrib.cpptasks.ide.CommentDef;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
-import javax.xml.transform.Result;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.sax.TransformerHandler;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.io.File;
@@ -56,9 +55,8 @@ public final class PropertyListSerialization {
      * @throws SAXException                      if exception during serialization.
      * @throws TransformerConfigurationException if exception creating serializer.
      */
-    public static void serialize(final Map propertyList,
-                                 final List comments,
-                                 final File file)
+    public static void serialize(final Map<String, Object> propertyList,
+                                 final List<CommentDef> comments, final File file)
             throws IOException, SAXException, TransformerConfigurationException {
         SAXTransformerFactory sf = (SAXTransformerFactory) SAXTransformerFactory.newInstance();
         TransformerHandler handler = sf.newTransformerHandler();
@@ -68,8 +66,8 @@ public final class PropertyListSerialization {
         handler.setResult(result);
 
         handler.startDocument();
-        for (Iterator iter = comments.iterator(); iter.hasNext(); ) {
-            char[] comment = String.valueOf(iter.next()).toCharArray();
+        for (CommentDef object : comments) {
+            char[] comment = String.valueOf(object).toCharArray();
             handler.comment(comment, 0, comment.length);
         }
         AttributesImpl attributes = new AttributesImpl();
@@ -87,7 +85,7 @@ public final class PropertyListSerialization {
      * @param handler destination of serialization events.
      * @throws SAXException if exception during serialization.
      */
-    private static void serializeMap(final Map map,
+    private static void serializeMap(final Map<String, Object> map,
                                      final ContentHandler handler) throws SAXException {
         AttributesImpl attributes = new AttributesImpl();
         handler.startElement(null, "dict", "dict", attributes);
@@ -97,14 +95,13 @@ public final class PropertyListSerialization {
             //   need to output with sorted keys to maintain
             //     reproducibility
             //
-            Object[] keys = map.keySet().toArray();
+            String[] keys = map.keySet().toArray(new String[0]);
             Arrays.sort(keys);
-            for (int i = 0; i < keys.length; i++) {
-                String key = String.valueOf(keys[i]);
+            for (String key : keys) {
                 handler.startElement(null, "key", "key", attributes);
                 handler.characters(key.toCharArray(), 0, key.length());
                 handler.endElement(null, "key", "key");
-                serializeObject(map.get(keys[i]), handler);
+                serializeObject(map.get(key), handler);
             }
         }
         handler.endElement(null, "dict", "dict");
@@ -117,12 +114,12 @@ public final class PropertyListSerialization {
      * @param handler destination of serialization events.
      * @throws SAXException if exception during serialization.
      */
-    private static void serializeList(final List list,
+    private static void serializeList(final List<Object> list,
                                       final ContentHandler handler) throws SAXException {
         AttributesImpl attributes = new AttributesImpl();
         handler.startElement(null, "array", "array", attributes);
-        for (Iterator iter = list.iterator(); iter.hasNext(); ) {
-            serializeObject(iter.next(), handler);
+        for (Object object : list) {
+            serializeObject(object, handler);
         }
         handler.endElement(null, "array", "array");
     }
@@ -210,9 +207,9 @@ public final class PropertyListSerialization {
     private static void serializeObject(final Object obj,
                                         final ContentHandler handler) throws SAXException {
         if (obj instanceof Map) {
-            serializeMap((Map) obj, handler);
+            serializeMap((Map<String, Object>) obj, handler);
         } else if (obj instanceof List) {
-            serializeList((List) obj, handler);
+            serializeList((List<Object>) obj, handler);
         } else if (obj instanceof Number) {
             if (obj instanceof Double || obj instanceof Float) {
                 serializeReal((Number) obj, handler);

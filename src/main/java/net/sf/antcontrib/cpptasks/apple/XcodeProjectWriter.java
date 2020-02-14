@@ -23,6 +23,7 @@ import net.sf.antcontrib.cpptasks.compiler.CommandLineCompilerConfiguration;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineLinkerConfiguration;
 import net.sf.antcontrib.cpptasks.compiler.ProcessorConfiguration;
 import net.sf.antcontrib.cpptasks.gcc.GccCCompiler;
+import net.sf.antcontrib.cpptasks.ide.CommentDef;
 import net.sf.antcontrib.cpptasks.ide.DependencyDef;
 import net.sf.antcontrib.cpptasks.ide.ProjectDef;
 import net.sf.antcontrib.cpptasks.ide.ProjectWriter;
@@ -39,7 +40,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -71,8 +71,8 @@ public final class XcodeProjectWriter implements ProjectWriter {
     public void writeProject(final File fileName,
                              final CCTask task,
                              final ProjectDef projectDef,
-                             final List sources,
-                             final Hashtable targets,
+                             final List<File> sources,
+                             final Hashtable<String, TargetInfo> targets,
                              final TargetInfo linkTarget) throws IOException {
         File xcodeDir = new File(fileName + ".xcodeproj");
         if (!projectDef.getOverwrite() && xcodeDir.exists()) {
@@ -103,18 +103,18 @@ public final class XcodeProjectWriter implements ProjectWriter {
         //
         //   create property list
         //
-        Map propertyList = new HashMap();
+        Map<String, Object> propertyList = new HashMap<String, Object>();
         propertyList.put("archiveVersion", "1");
-        propertyList.put("classes", new HashMap());
+        propertyList.put("classes", new HashMap<String, Object>());
         propertyList.put("objectVersion", "42");
-        Map objects = new HashMap();
+        Map<String, Object> objects = new HashMap<String, Object>();
 
         final String sourceTree = "<source>";
 
         //
         //   add source files and source group to property list
         //
-        List sourceGroupChildren = addSources(objects, "SOURCE_ROOT", basePath, targets);
+        List<PBXObjectRef> sourceGroupChildren = addSources(objects, "SOURCE_ROOT", basePath, targets);
         PBXObjectRef sourceGroup = createPBXGroup("Source", sourceTree, sourceGroupChildren);
         objects.put(sourceGroup.getID(), sourceGroup.getProperties());
 
@@ -122,7 +122,7 @@ public final class XcodeProjectWriter implements ProjectWriter {
         //    add product to property list
         //
         PBXObjectRef product = addProduct(objects, linkTarget);
-        List productsList = new ArrayList();
+        List<PBXObjectRef> productsList = new ArrayList<PBXObjectRef>();
         productsList.add(product);
         PBXObjectRef productsGroup = createPBXGroup("Products", sourceTree, productsList);
         objects.put(productsGroup.getID(), productsGroup.getProperties());
@@ -135,14 +135,14 @@ public final class XcodeProjectWriter implements ProjectWriter {
         //
         //    add main group containing source, products and documentation group
         //
-        ArrayList groups = new ArrayList(3);
+        List<PBXObjectRef> groups = new ArrayList<PBXObjectRef>(3);
         groups.add(sourceGroup);
         groups.add(documentationGroup);
         groups.add(productsGroup);
         PBXObjectRef mainGroup = createPBXGroup(projectName, sourceTree, groups);
         StringBuffer comments = new StringBuffer();
-        for (Iterator iter = projectDef.getComments().iterator(); iter.hasNext(); ) {
-            comments.append(iter.next());
+        for (CommentDef comment : projectDef.getComments()) {
+            comments.append(comment);
         }
         if (comments.length() > 0) {
             mainGroup.getProperties().put("comments", comments.toString());
@@ -156,7 +156,7 @@ public final class XcodeProjectWriter implements ProjectWriter {
                 projectDef.getDependencies(), compilerConfig, linkerConfig);
 
         String projectDirPath = "";
-        List projectTargets = new ArrayList();
+        List<PBXObjectRef> projectTargets = new ArrayList<PBXObjectRef>();
 
         //
         //    add project to property list
@@ -171,9 +171,8 @@ public final class XcodeProjectWriter implements ProjectWriter {
                 projectDirPath, projectRoot, projectTargets);
         objects.put(project.getID(), project.getProperties());
 
-        List frameworkBuildFiles = new ArrayList();
-        for (Iterator iter = projectDef.getDependencies().iterator(); iter.hasNext(); ) {
-            DependencyDef dependency = (DependencyDef) iter.next();
+        List<PBXObjectRef> frameworkBuildFiles = new ArrayList<PBXObjectRef>();
+        for (DependencyDef dependency : projectDef.getDependencies()) {
             PBXObjectRef buildFile = addDependency(objects, project, groups, basePath, dependency);
             if (buildFile != null) {
                 frameworkBuildFiles.add(buildFile);
@@ -218,9 +217,9 @@ public final class XcodeProjectWriter implements ProjectWriter {
      * @param dependency DependencyDef
      * @return PBXBuildFile to add to PBXFrameworksBuildPhase.
      */
-    private PBXObjectRef addDependency(final Map objects,
+    private PBXObjectRef addDependency(final Map<String, Object> objects,
                                        final PBXObjectRef project,
-                                       final List mainGroupChildren,
+                                       final List<PBXObjectRef> mainGroupChildren,
                                        final String baseDir,
                                        final DependencyDef dependency) {
         if (dependency.getFile() != null) {
@@ -237,21 +236,21 @@ public final class XcodeProjectWriter implements ProjectWriter {
                 PBXObjectRef referenceProxy = createPBXReferenceProxy(proxy, dependency);
                 objects.put(referenceProxy.getID(), referenceProxy.getProperties());
 
-                PBXObjectRef buildFile = createPBXBuildFile(referenceProxy, Collections.EMPTY_MAP);
+                PBXObjectRef buildFile = createPBXBuildFile(referenceProxy, Collections.<String, Object>emptyMap());
                 objects.put(buildFile.getID(), buildFile.getProperties());
 
-                List productsChildren = new ArrayList();
+                List<PBXObjectRef> productsChildren = new ArrayList<PBXObjectRef>();
                 productsChildren.add(referenceProxy);
                 PBXObjectRef products = createPBXGroup("Products", "<group>", productsChildren);
                 objects.put(products.getID(), products.getProperties());
 
-                Map projectReference = new HashMap();
+                Map<String, Object> projectReference = new HashMap<String, Object>();
                 projectReference.put("ProductGroup", products);
                 projectReference.put("ProjectRef", xcodePrj);
 
-                List projectReferences = (List) project.getProperties().get("ProjectReferences");
+                List<Map<String, Object>> projectReferences = (List<Map<String, Object>>) project.getProperties().get("ProjectReferences");
                 if (projectReferences == null) {
-                    projectReferences = new ArrayList();
+                    projectReferences = new ArrayList<Map<String, Object>>();
                     project.getProperties().put("ProjectReferences", projectReferences);
                 }
                 projectReferences.add(projectReference);
@@ -268,9 +267,9 @@ public final class XcodeProjectWriter implements ProjectWriter {
      * @param sourceTree source tree description.
      * @return documentation group.
      */
-    private PBXObjectRef addDocumentationGroup(final Map objects,
+    private PBXObjectRef addDocumentationGroup(final Map<String, Object> objects,
                                                final String sourceTree) {
-        List productsList = new ArrayList();
+        List<PBXObjectRef> productsList = new ArrayList<PBXObjectRef>();
         PBXObjectRef products = createPBXGroup("Documentation", sourceTree, productsList);
         objects.put(products.getID(), products.getProperties());
         return products;
@@ -283,7 +282,7 @@ public final class XcodeProjectWriter implements ProjectWriter {
      * @param linkTarget build description for executable or shared library.
      * @return file reference to generated executable or shared library.
      */
-    private PBXObjectRef addProduct(final Map objects,
+    private PBXObjectRef addProduct(final Map<String, Object> objects,
                                     final TargetInfo linkTarget) {
         //
         //   create file reference for executable file
@@ -291,7 +290,7 @@ public final class XcodeProjectWriter implements ProjectWriter {
         PBXObjectRef executable = createPBXFileReference("BUILD_PRODUCTS_DIR",
                 linkTarget.getOutput().getParent(),
                 linkTarget.getOutput());
-        Map executableProperties = executable.getProperties();
+        Map<String, Object> executableProperties = executable.getProperties();
 
         String fileType = getFileType(linkTarget);
         executableProperties.put("explicitFileType", fileType);
@@ -310,30 +309,25 @@ public final class XcodeProjectWriter implements ProjectWriter {
      * @param targets    build targets.
      * @return list containing file references of source files.
      */
-    private List addSources(final Map objects,
-                            final String sourceTree,
-                            final String basePath,
-                            final Hashtable targets) {
-        List sourceGroupChildren = new ArrayList();
+    private List<PBXObjectRef> addSources(final Map<String, Object> objects,
+                                          final String sourceTree,
+                                          final String basePath,
+                                          final Hashtable<String, TargetInfo> targets) {
+        List<PBXObjectRef> sourceGroupChildren = new ArrayList<PBXObjectRef>();
 
-        ArrayList sourceList = new ArrayList(targets.size());
-        Iterator targetIter = targets.values().iterator();
-        while (targetIter.hasNext()) {
-            TargetInfo info = (TargetInfo) targetIter.next();
-            File[] targetsources = info.getSources();
-            for (int i = 0; i < targetsources.length; i++) {
-                sourceList.add(targetsources[i]);
-            }
+        List<File> sourceList = new ArrayList<File>();
+        for (TargetInfo info : targets.values()) {
+            Collections.addAll(sourceList, info.getSources());
         }
-        Object[] sortedSources = sourceList.toArray();
-        Arrays.sort(sortedSources, new Comparator() {
-            public int compare(final Object o1, final Object o2) {
-                return (((File) o1).getName().compareTo(((File) o2).getName()));
+        File[] sortedSources = sourceList.toArray(new File[]{});
+        Arrays.sort(sortedSources, new Comparator<File>() {
+            public int compare(final File o1, final File o2) {
+                return o1.getName().compareTo(o2.getName());
             }
         });
-        for (int i = 0; i < sortedSources.length; i++) {
+        for (File sortedSource : sortedSources) {
             PBXObjectRef fileRef = createPBXFileReference(sourceTree,
-                    basePath, (File) sortedSources[i]);
+                    basePath, sortedSource);
             sourceGroupChildren.add(fileRef);
             objects.put(fileRef.getID(), fileRef.getProperties());
         }
@@ -348,14 +342,14 @@ public final class XcodeProjectWriter implements ProjectWriter {
      * @param projectName project name.
      * @return build configurations for native target.
      */
-    private PBXObjectRef addNativeTargetConfigurationList(final Map objects,
+    private PBXObjectRef addNativeTargetConfigurationList(final Map<String, Object> objects,
                                                           final String projectName) {
         //
         //   Create a configuration list with
         //     two stock configurations: Debug and Release
         //
-        List configurations = new ArrayList();
-        Map debugSettings = new HashMap();
+        List<PBXObjectRef> configurations = new ArrayList<PBXObjectRef>();
+        Map<String, Object> debugSettings = new HashMap<String, Object>();
         debugSettings.put("COPY_PHASE_STRIP", "NO");
         debugSettings.put("GCC_DYNAMIC_NO_PIC", "NO");
         debugSettings.put("GCC_ENABLE_FIX_AND_CONTINUE", "YES");
@@ -369,8 +363,8 @@ public final class XcodeProjectWriter implements ProjectWriter {
         objects.put(debugConfig.getID(), debugConfig.getProperties());
         configurations.add(debugConfig);
 
-        Map releaseSettings = new HashMap();
-        List archs = new ArrayList();
+        Map<String, Object> releaseSettings = new HashMap<String, Object>();
+        List<String> archs = new ArrayList<String>();
         archs.add("ppc");
         archs.add("i386");
         releaseSettings.put("ARCHS", archs);
@@ -398,17 +392,17 @@ public final class XcodeProjectWriter implements ProjectWriter {
      * @param linkerConfig   linker configuration.
      * @return project configuration object.
      */
-    private PBXObjectRef addProjectConfigurationList(final Map objects,
+    private PBXObjectRef addProjectConfigurationList(final Map<String, Object> objects,
                                                      final String baseDir,
-                                                     final List dependencies,
+                                                     final List<DependencyDef> dependencies,
                                                      final CommandLineCompilerConfiguration compilerConfig,
                                                      final CommandLineLinkerConfiguration linkerConfig) {
         //
         //   Create a configuration list with
         //     two stock configurations: Debug and Release
         //
-        List configurations = new ArrayList();
-        Map debugSettings = new HashMap();
+        List<PBXObjectRef> configurations = new ArrayList<PBXObjectRef>();
+        Map<String, Object> debugSettings = new HashMap<String, Object>();
         debugSettings.put("GCC_WARN_ABOUT_RETURN_TYPE", "YES");
         debugSettings.put("GCC_WARN_UNUSED_VARIABLE", "YES");
         debugSettings.put("PREBINDING", "NO");
@@ -418,7 +412,7 @@ public final class XcodeProjectWriter implements ProjectWriter {
         objects.put(debugConfig.getID(), debugConfig.getProperties());
         configurations.add(debugConfig);
 
-        Map releaseSettings = new HashMap();
+        Map<String, Object> releaseSettings = new HashMap<String, Object>();
         releaseSettings.put("GCC_WARN_ABOUT_RETURN_TYPE", "YES");
         releaseSettings.put("GCC_WARN_UNUSED_VARIABLE", "YES");
         releaseSettings.put("PREBINDING", "NO");
@@ -427,7 +421,7 @@ public final class XcodeProjectWriter implements ProjectWriter {
         objects.put(releaseConfig.getID(), releaseConfig.getProperties());
         configurations.add(releaseConfig);
         PBXObjectRef configurationList = createXCConfigurationList(configurations);
-        Map projectConfigurationListProperties = configurationList.getProperties();
+        Map<String, Object> projectConfigurationListProperties = configurationList.getProperties();
         projectConfigurationListProperties.put("defaultConfigurationIsVisible", "0");
         projectConfigurationListProperties.put("defaultConfigurationName", "Debug");
         objects.put(configurationList.getID(), configurationList.getProperties());
@@ -437,8 +431,8 @@ public final class XcodeProjectWriter implements ProjectWriter {
         //
         File[] includeDirs = compilerConfig.getIncludePath();
         if (includeDirs.length > 0) {
-            ArrayList includePaths = new ArrayList();
-            Map includePathMap = new HashMap();
+            List<String> includePaths = new ArrayList<String>();
+            Map<String, String> includePathMap = new HashMap<String, String>();
             for (int i = 0; i < includeDirs.length; i++) {
                 if (!CUtil.isSystemPath(includeDirs[i])) {
                     String absPath = includeDirs[i].getAbsolutePath();
@@ -464,10 +458,10 @@ public final class XcodeProjectWriter implements ProjectWriter {
         //
         //
         String[] preArgs = compilerConfig.getPreArguments();
-        List defines = new ArrayList();
-        for (int i = 0; i < preArgs.length; i++) {
-            if (preArgs[i].startsWith("-D")) {
-                defines.add(preArgs[i].substring(2));
+        List<String> defines = new ArrayList<String>();
+        for (String preArg : preArgs) {
+            if (preArg.startsWith("-D")) {
+                defines.add(preArg.substring(2));
             }
         }
         if (defines.size() > 0) {
@@ -477,13 +471,13 @@ public final class XcodeProjectWriter implements ProjectWriter {
         }
 
         if (linkerConfig != null) {
-            Map librarySearchMap = new HashMap();
-            List librarySearchPaths = new ArrayList();
-            List otherLdFlags = new ArrayList();
+            Map<String, String> librarySearchMap = new HashMap<String, String>();
+            List<String> librarySearchPaths = new ArrayList<String>();
+            List<String> otherLdFlags = new ArrayList<String>();
             String[] linkerArgs = linkerConfig.getEndArguments();
-            for (int i = 0; i < linkerArgs.length; i++) {
-                if (linkerArgs[i].startsWith("-L")) {
-                    String libDir = linkerArgs[i].substring(2);
+            for (String linkerArg : linkerArgs) {
+                if (linkerArg.startsWith("-L")) {
+                    String libDir = linkerArg.substring(2);
                     if (!librarySearchMap.containsKey(libDir)) {
                         if (!libDir.equals("/usr/lib")) {
                             librarySearchPaths.add(CUtil.toUnixPath(CUtil.getRelativePath(baseDir,
@@ -492,14 +486,13 @@ public final class XcodeProjectWriter implements ProjectWriter {
                         librarySearchMap.put(libDir, libDir);
 
                     }
-                } else if (linkerArgs[i].startsWith("-l")) {
+                } else if (linkerArg.startsWith("-l")) {
                     //
                     //  check if library is in dependencies list
                     //
-                    String libName = linkerArgs[i].substring(2);
+                    String libName = linkerArg.substring(2);
                     boolean found = false;
-                    for (Iterator iter = dependencies.iterator(); iter.hasNext();) {
-                        DependencyDef dependency = (DependencyDef) iter.next();
+                    for (DependencyDef dependency : dependencies) {
                         if (libName.startsWith(dependency.getName())) {
                             File dependencyFile = dependency.getFile();
                             if (dependencyFile != null
@@ -511,7 +504,7 @@ public final class XcodeProjectWriter implements ProjectWriter {
                         }
                     }
                     if (!found) {
-                        otherLdFlags.add(linkerArgs[i]);
+                        otherLdFlags.add(linkerArg);
                     }
                 }
             }
@@ -535,23 +528,20 @@ public final class XcodeProjectWriter implements ProjectWriter {
      * @param frameworkBuildFiles framework files needed to build product.
      * @return native target.
      */
-    private PBXObjectRef addNativeTarget(final Map objects,
+    private PBXObjectRef addNativeTarget(final Map<String, Object> objects,
                                          final TargetInfo linkTarget,
                                          final PBXObjectRef product,
                                          final String projectName,
-                                         final List sourceGroupChildren,
-                                         final List frameworkBuildFiles) {
-
+                                         final List<PBXObjectRef> sourceGroupChildren,
+                                         final List<PBXObjectRef> frameworkBuildFiles) {
+        int buildActionMask = 2147483647;
+        List<PBXObjectRef> buildPhases = new ArrayList<PBXObjectRef>();
         PBXObjectRef buildConfigurations = addNativeTargetConfigurationList(objects, projectName);
 
-        int buildActionMask = 2147483647;
-        List buildPhases = new ArrayList();
-
-        Map settings = new HashMap();
-        settings.put("ATTRIBUTES", new ArrayList());
-        List buildFiles = new ArrayList();
-        for (Iterator iter = sourceGroupChildren.iterator(); iter.hasNext(); ) {
-            PBXObjectRef sourceFile = (PBXObjectRef) iter.next();
+        Map<String, Object> settings = new HashMap<String, Object>();
+        settings.put("ATTRIBUTES", new ArrayList<Object>());
+        List<PBXObjectRef> buildFiles = new ArrayList<PBXObjectRef>();
+        for (PBXObjectRef sourceFile : sourceGroupChildren) {
             PBXObjectRef buildFile = createPBXBuildFile(sourceFile, settings);
             buildFiles.add(buildFile);
             objects.put(buildFile.getID(), buildFile.getProperties());
@@ -564,18 +554,18 @@ public final class XcodeProjectWriter implements ProjectWriter {
 
         buildActionMask = 8;
         PBXObjectRef frameworksBuildPhase = createPBXFrameworksBuildPhase(buildActionMask,
-                frameworkBuildFiles, false);
+                        frameworkBuildFiles, false);
         objects.put(frameworksBuildPhase.getID(), frameworksBuildPhase.getProperties());
         buildPhases.add(frameworksBuildPhase);
 
         PBXObjectRef copyFilesBuildPhase = createPBXCopyFilesBuildPhase(8,
-                "/usr/share/man/man1", "0", new ArrayList(), true);
+                "/usr/share/man/man1", "0", new ArrayList<File>(), true);
         objects.put(copyFilesBuildPhase.getID(), copyFilesBuildPhase.getProperties());
         buildPhases.add(copyFilesBuildPhase);
 
-        List buildRules = new ArrayList();
+        List<Object> buildRules = new ArrayList<Object>();
 
-        List dependencies = new ArrayList();
+        List<Object> dependencies = new ArrayList<Object>();
 
         String productInstallPath = "$(HOME)/bin";
 
@@ -638,7 +628,7 @@ public final class XcodeProjectWriter implements ProjectWriter {
     private static PBXObjectRef createPBXFileReference(final String sourceTree,
                                                        final String baseDir,
                                                        final File file) {
-        Map map = new HashMap();
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("isa", "PBXFileReference");
 
         String relPath = CUtil.toUnixPath(CUtil.getRelativePath(baseDir, file));
@@ -658,8 +648,8 @@ public final class XcodeProjectWriter implements ProjectWriter {
      */
     private static PBXObjectRef createPBXGroup(final String name,
                                                final String sourceTree,
-                                               final List children) {
-        Map map = new HashMap();
+                                               final List<PBXObjectRef> children) {
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("isa", "PBXGroup");
         map.put("name", name);
         map.put("sourceTree", sourceTree);
@@ -681,8 +671,8 @@ public final class XcodeProjectWriter implements ProjectWriter {
                                                  final PBXObjectRef mainGroup,
                                                  final String projectDirPath,
                                                  final String projectRoot,
-                                                 final List targets) {
-        Map map = new HashMap();
+                                                 final List<PBXObjectRef> targets) {
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("isa", "PBXProject");
         map.put("buildConfigurationList", buildConfigurationList.getID());
         map.put("hasScannedForEncodings", "0");
@@ -699,8 +689,8 @@ public final class XcodeProjectWriter implements ProjectWriter {
      * @param buildConfigurations build configurations.
      * @return configuration list.
      */
-    private static PBXObjectRef createXCConfigurationList(final List buildConfigurations) {
-        Map map = new HashMap();
+    private static PBXObjectRef createXCConfigurationList(final List<PBXObjectRef> buildConfigurations) {
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("isa", "XCConfigurationList");
         map.put("buildConfigurations", buildConfigurations);
         return new PBXObjectRef(map);
@@ -714,8 +704,8 @@ public final class XcodeProjectWriter implements ProjectWriter {
      * @return build configuration.
      */
     private static PBXObjectRef createXCBuildConfiguration(final String name,
-                                                           final Map buildSettings) {
-        Map map = new HashMap();
+                                                           final Map<String, Object> buildSettings) {
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("isa", "XCBuildConfiguration");
         map.put("buildSettings", buildSettings);
         map.put("name", name);
@@ -738,14 +728,14 @@ public final class XcodeProjectWriter implements ProjectWriter {
      */
     private static PBXObjectRef createPBXNativeTarget(final String name,
                                                       final PBXObjectRef buildConfigurationList,
-                                                      final List buildPhases,
-                                                      final List buildRules,
-                                                      final List dependencies,
+                                                      final List<PBXObjectRef> buildPhases,
+                                                      final List<Object> buildRules,
+                                                      final List<Object> dependencies,
                                                       final String productInstallPath,
                                                       final String productName,
                                                       final PBXObjectRef productReference,
                                                       final String productType) {
-        Map map = new HashMap();
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("isa", "PBXNativeTarget");
         map.put("buildConfigurationList", buildConfigurationList);
         map.put("buildPhases", buildPhases);
@@ -768,9 +758,9 @@ public final class XcodeProjectWriter implements ProjectWriter {
      * @return PBXSourcesBuildPhase.
      */
     private static PBXObjectRef createPBXSourcesBuildPhase(int buildActionMask,
-                                                           List files,
+                                                           List<PBXObjectRef> files,
                                                            boolean runOnly) {
-        Map map = new HashMap();
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("buildActionMask",
                 String.valueOf(buildActionMask));
         map.put("files", files);
@@ -787,8 +777,8 @@ public final class XcodeProjectWriter implements ProjectWriter {
      * @return PBXBuildFile.
      */
     private static PBXObjectRef createPBXBuildFile(PBXObjectRef fileRef,
-                                                   Map settings) {
-        Map map = new HashMap();
+                                                   Map<String, Object> settings) {
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("fileRef", fileRef);
         map.put("isa", "PBXBuildFile");
         if (settings != null) {
@@ -806,9 +796,9 @@ public final class XcodeProjectWriter implements ProjectWriter {
      * @return PBXFrameworkBuildPhase.
      */
     private static PBXObjectRef createPBXFrameworksBuildPhase(final int buildActionMask,
-                                                              final List files,
+                                                              final List<PBXObjectRef> files,
                                                               final boolean runOnly) {
-        Map map = new HashMap();
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("isa", "PBXFrameworksBuildPhase");
         map.put("buildActionMask", NumberFormat.getIntegerInstance(Locale.US).format(buildActionMask));
         map.put("files", files);
@@ -829,9 +819,9 @@ public final class XcodeProjectWriter implements ProjectWriter {
     private static PBXObjectRef createPBXCopyFilesBuildPhase(final int buildActionMask,
                                                              final String dstPath,
                                                              final String dstSubfolderSpec,
-                                                             final List files,
+                                                             final List<File> files,
                                                              final boolean runOnly) {
-        Map map = new HashMap();
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("isa", "PBXCopyFilesBuildPhase");
         map.put("buildActionMask", NumberFormat.getIntegerInstance(Locale.US).format(buildActionMask));
         map.put("dstPath", dstPath);
@@ -851,7 +841,7 @@ public final class XcodeProjectWriter implements ProjectWriter {
     private static PBXObjectRef createPBXContainerItemProxy(final PBXObjectRef containerPortal,
                                                             final int proxyType,
                                                             final String remoteInfo) {
-        Map map = new HashMap();
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("isa", "PBXContainerItemProxy");
         map.put("containerPortal", containerPortal);
         map.put("proxyType", NumberFormat.getIntegerInstance(Locale.US).format(proxyType));
@@ -868,7 +858,7 @@ public final class XcodeProjectWriter implements ProjectWriter {
      */
     private static PBXObjectRef createPBXReferenceProxy(final PBXObjectRef remoteRef,
                                                         final DependencyDef dependency) {
-        Map map = new HashMap();
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("isa", "PBXReferenceProxy");
         String fileType = "compiled.mach-o.dylib";
         map.put("fileType", fileType);
@@ -907,7 +897,7 @@ public final class XcodeProjectWriter implements ProjectWriter {
         /**
          * Properties.
          */
-        private final Map properties;
+        private final Map<String, Object> properties;
         /**
          * Next available identifier.
          */
@@ -918,7 +908,7 @@ public final class XcodeProjectWriter implements ProjectWriter {
          *
          * @param props properties.
          */
-        public PBXObjectRef(final Map props) {
+        public PBXObjectRef(final Map<String, Object> props) {
             if (props == null) {
                 throw new NullPointerException("props");
             }
@@ -952,7 +942,7 @@ public final class XcodeProjectWriter implements ProjectWriter {
          *
          * @return properties.
          */
-        public Map getProperties() {
+        public Map<String, Object> getProperties() {
             return properties;
         }
     }
@@ -964,8 +954,8 @@ public final class XcodeProjectWriter implements ProjectWriter {
      * @param targets compilation targets
      * @return representative (hopefully) compiler configuration
      */
-    private CommandLineCompilerConfiguration
-    getBaseCompilerConfiguration(Hashtable targets) {
+    private CommandLineCompilerConfiguration getBaseCompilerConfiguration(
+            Hashtable<String, TargetInfo> targets) {
         //
         //   find first target with an GNU C++ compilation
         //
@@ -973,9 +963,7 @@ public final class XcodeProjectWriter implements ProjectWriter {
         //
         //   get the first target and assume that it is representative
         //
-        Iterator targetIter = targets.values().iterator();
-        while (targetIter.hasNext()) {
-            TargetInfo targetInfo = (TargetInfo) targetIter.next();
+        for (TargetInfo targetInfo : targets.values()) {
             ProcessorConfiguration config = targetInfo.getConfiguration();
             //
             //   for the first cl compiler

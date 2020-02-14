@@ -17,14 +17,12 @@
 package net.sf.antcontrib.cpptasks;
 
 import java.io.File;
-import java.util.Enumeration;
 import java.util.Vector;
 
 import net.sf.antcontrib.cpptasks.compiler.CommandLineLinker;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 import net.sf.antcontrib.cpptasks.compiler.Processor;
-import net.sf.antcontrib.cpptasks.compiler.ProcessorConfiguration;
 import net.sf.antcontrib.cpptasks.gcc.GccLinker;
 import net.sf.antcontrib.cpptasks.types.FlexLong;
 import net.sf.antcontrib.cpptasks.types.LibrarySet;
@@ -49,11 +47,10 @@ public class LinkerDef extends ProcessorDef {
     private String entry;
     private Boolean fixed;
     private Boolean incremental;
-    private final Vector librarySets = new Vector();
+    private final Vector<LibrarySet> librarySets = new Vector<LibrarySet>();
     private Boolean map;
     private int stack;
-    private final Vector sysLibrarySets = new Vector();
-
+    private final Vector<LibrarySet> sysLibrarySets = new Vector<LibrarySet>();
     /**
      * Default constructor
      *
@@ -64,22 +61,20 @@ public class LinkerDef extends ProcessorDef {
         stack = -1;
     }
 
-    private void addActiveLibrarySet(Project project, Vector libsets,
-                                     Vector srcSets) {
-        Enumeration srcenum = srcSets.elements();
-        while (srcenum.hasMoreElements()) {
-            LibrarySet set = (LibrarySet) srcenum.nextElement();
+    private void addActiveLibrarySet(Project project, Vector<LibrarySet> libsets,
+                                     Vector<LibrarySet> srcSets) {
+        for (LibrarySet set : srcSets) {
             if (set.isActive(project)) {
                 libsets.addElement(set);
             }
         }
     }
 
-    private void addActiveSystemLibrarySets(Project project, Vector libsets) {
+    private void addActiveSystemLibrarySets(Project project, Vector<LibrarySet> libsets) {
         addActiveLibrarySet(project, libsets, sysLibrarySets);
     }
 
-    private void addActiveUserLibrarySets(Project project, Vector libsets) {
+    private void addActiveUserLibrarySets(Project project, Vector<LibrarySet> libsets) {
         addActiveLibrarySet(project, libsets, librarySets);
     }
 
@@ -148,11 +143,11 @@ public class LinkerDef extends ProcessorDef {
      */
     public LibrarySet[] getActiveLibrarySets(LinkerDef[] defaultProviders, int index) {
         if (isReference()) {
-            return ((LinkerDef) getCheckedRef(LinkerDef.class,
-                    "LinkerDef")).getActiveUserLibrarySets(defaultProviders, index);
+            return getCheckedRef(LinkerDef.class,
+                    "LinkerDef").getActiveUserLibrarySets(defaultProviders, index);
         }
         Project p = getProject();
-        Vector libsets = new Vector();
+        Vector<LibrarySet> libsets = new Vector<LibrarySet>();
         for (int i = index; i < defaultProviders.length; i++) {
             defaultProviders[i].addActiveUserLibrarySets(p, libsets);
         }
@@ -161,9 +156,7 @@ public class LinkerDef extends ProcessorDef {
             defaultProviders[i].addActiveSystemLibrarySets(p, libsets);
         }
         addActiveSystemLibrarySets(p, libsets);
-        LibrarySet[] sets = new LibrarySet[libsets.size()];
-        libsets.copyInto(sets);
-        return sets;
+        return libsets.toArray(new LibrarySet[0]);
     }
 
     /**
@@ -175,18 +168,16 @@ public class LinkerDef extends ProcessorDef {
      */
     public LibrarySet[] getActiveSystemLibrarySets(LinkerDef[] defaultProviders, int index) {
         if (isReference()) {
-            return ((LinkerDef) getCheckedRef(LinkerDef.class,
-                    "LinkerDef")).getActiveUserLibrarySets(defaultProviders, index);
+            return getCheckedRef(LinkerDef.class,
+                    "LinkerDef").getActiveUserLibrarySets(defaultProviders, index);
         }
         Project p = getProject();
-        Vector libsets = new Vector();
+        Vector<LibrarySet> libsets = new Vector<LibrarySet>();
         for (int i = index; i < defaultProviders.length; i++) {
             defaultProviders[i].addActiveSystemLibrarySets(p, libsets);
         }
         addActiveSystemLibrarySets(p, libsets);
-        LibrarySet[] sets = new LibrarySet[libsets.size()];
-        libsets.copyInto(sets);
-        return sets;
+        return libsets.toArray(new LibrarySet[0]);
     }
 
     /**
@@ -198,24 +189,22 @@ public class LinkerDef extends ProcessorDef {
      */
     public LibrarySet[] getActiveUserLibrarySets(LinkerDef[] defaultProviders, int index) {
         if (isReference()) {
-            return ((LinkerDef) getCheckedRef(LinkerDef.class,
-                    "LinkerDef")).getActiveUserLibrarySets(defaultProviders, index);
+            return getCheckedRef(LinkerDef.class,
+                    "LinkerDef").getActiveUserLibrarySets(defaultProviders, index);
         }
         Project p = getProject();
-        Vector libsets = new Vector();
+        Vector<LibrarySet> libsets = new Vector<LibrarySet>();
         for (int i = index; i < defaultProviders.length; i++) {
             defaultProviders[i].addActiveUserLibrarySets(p, libsets);
         }
         addActiveUserLibrarySets(p, libsets);
-        LibrarySet[] sets = new LibrarySet[libsets.size()];
-        libsets.copyInto(sets);
-        return sets;
+        return libsets.toArray(new LibrarySet[0]);
     }
 
     public long getBase(LinkerDef[] defaultProviders, int index) {
         if (isReference()) {
-            return ((LinkerDef) getCheckedRef(LinkerDef.class,
-                    "LinkerDef")).getBase(defaultProviders, index);
+            return getCheckedRef(LinkerDef.class,
+                    "LinkerDef").getBase(defaultProviders, index);
         }
         if (base <= 0) {
             if (defaultProviders != null && index < defaultProviders.length) {
@@ -227,8 +216,8 @@ public class LinkerDef extends ProcessorDef {
 
     public Boolean getFixed(LinkerDef[] defaultProviders, int index) {
         if (isReference()) {
-            return ((LinkerDef) getCheckedRef(LinkerDef.class,
-                    "LinkerDef")).getFixed(defaultProviders, index);
+            return getCheckedRef(LinkerDef.class,
+                    "LinkerDef").getFixed(defaultProviders, index);
         }
         if (fixed == null) {
             if (defaultProviders != null && index < defaultProviders.length) {
@@ -241,8 +230,8 @@ public class LinkerDef extends ProcessorDef {
 
     public boolean getIncremental(LinkerDef[] defaultProviders, int index) {
         if (isReference()) {
-            return ((LinkerDef) getCheckedRef(LinkerDef.class,
-                    "LinkerDef")).getIncremental(defaultProviders, index);
+            return getCheckedRef(LinkerDef.class,
+                    "LinkerDef").getIncremental(defaultProviders, index);
         }
         if (incremental != null) {
             return incremental.booleanValue();
@@ -255,8 +244,8 @@ public class LinkerDef extends ProcessorDef {
 
     public boolean getMap(LinkerDef[] defaultProviders, int index) {
         if (isReference()) {
-            return ((LinkerDef) getCheckedRef(LinkerDef.class,
-                    "LinkerDef")).getMap(defaultProviders, index);
+            return getCheckedRef(LinkerDef.class,
+                    "LinkerDef").getMap(defaultProviders, index);
         }
         if (map != null) {
             return map.booleanValue();
@@ -269,8 +258,8 @@ public class LinkerDef extends ProcessorDef {
 
     public String getEntry(LinkerDef[] defaultProviders, int index) {
         if (isReference()) {
-            return ((LinkerDef) getCheckedRef(LinkerDef.class,
-                    "LinkerDef")).getEntry(defaultProviders, index);
+            return getCheckedRef(LinkerDef.class,
+                    "LinkerDef").getEntry(defaultProviders, index);
         }
         if (entry != null) {
             return entry;
@@ -300,8 +289,8 @@ public class LinkerDef extends ProcessorDef {
 
     public int getStack(LinkerDef[] defaultProviders, int index) {
         if (isReference()) {
-            return ((LinkerDef) getCheckedRef(LinkerDef.class,
-                    "LinkerDef")).getStack(defaultProviders, index);
+            return getCheckedRef(LinkerDef.class,
+                    "LinkerDef").getStack(defaultProviders, index);
         }
         if (stack < 0) {
             if (defaultProviders != null && index < defaultProviders.length) {
@@ -502,8 +491,8 @@ public class LinkerDef extends ProcessorDef {
             throw new java.lang.IllegalStateException("project must be set");
         }
         if (isReference()) {
-            LinkerDef master = ((LinkerDef) getCheckedRef(LinkerDef.class,
-                    "Linker"));
+            LinkerDef master = getCheckedRef(LinkerDef.class,
+                    "Linker");
             master.visitSystemLibraries(linker, libraryVisitor);
         } else {
             //
@@ -517,7 +506,7 @@ public class LinkerDef extends ProcessorDef {
             if (sysLibrarySets.size() > 0) {
                 File[] libpath = linker.getLibraryPath();
                 for (int i = 0; i < sysLibrarySets.size(); i++) {
-                    LibrarySet set = (LibrarySet) sysLibrarySets.elementAt(i);
+                    LibrarySet set = sysLibrarySets.elementAt(i);
                     if (set.isActive(p)) {
                         set.visitLibraries(p, linker, libpath, libraryVisitor);
                     }
@@ -532,8 +521,8 @@ public class LinkerDef extends ProcessorDef {
             throw new java.lang.IllegalStateException("project must be set");
         }
         if (isReference()) {
-            LinkerDef master = ((LinkerDef) getCheckedRef(LinkerDef.class,
-                    "Linker"));
+            LinkerDef master = getCheckedRef(LinkerDef.class,
+                    "Linker");
             master.visitUserLibraries(linker, libraryVisitor);
         } else {
             //
@@ -550,7 +539,7 @@ public class LinkerDef extends ProcessorDef {
             if (librarySets.size() > 0) {
                 File[] libpath = linker.getLibraryPath();
                 for (int i = 0; i < librarySets.size(); i++) {
-                    LibrarySet set = (LibrarySet) librarySets.elementAt(i);
+                    LibrarySet set = librarySets.elementAt(i);
                     if (set.isActive(p)) {
                         set.visitLibraries(p, linker, libpath, libraryVisitor);
                     }

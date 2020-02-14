@@ -45,7 +45,7 @@ public final class WindresResourceCompiler extends CommandLineCompiler {
                 ".o", false, null, newEnvironment, env);
     }
 
-    protected void addImpliedArgs(final Vector args,
+    protected void addImpliedArgs(final Vector<String> args,
                                   final boolean debug,
                                   final boolean multithreaded,
                                   final boolean exceptions,
@@ -59,7 +59,7 @@ public final class WindresResourceCompiler extends CommandLineCompiler {
         }
     }
 
-    protected void addWarningSwitch(Vector args, int level) {
+    protected void addWarningSwitch(Vector<String> args, int level) {
     }
 
     public Processor changeEnvironment(boolean newEnvironment, Environment env) {

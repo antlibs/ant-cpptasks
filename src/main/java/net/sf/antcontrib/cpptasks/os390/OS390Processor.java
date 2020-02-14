@@ -24,7 +24,7 @@ import java.util.Vector;
  * @author Hiram Chirino {@literal <cojonudo14@hotmail.com>}
  */
 public class OS390Processor {
-    public static void addWarningSwitch(Vector args, int level) {
+    public static void addWarningSwitch(Vector<String> args, int level) {
         switch (level) {
             /*
              * case 0: args.addElement("/W0"); break;

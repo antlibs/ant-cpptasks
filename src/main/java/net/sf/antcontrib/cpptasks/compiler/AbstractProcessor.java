@@ -62,8 +62,8 @@ public abstract class AbstractProcessor implements Processor, Cloneable {
 
     protected AbstractProcessor(String[] sourceExtensions,
                                 String[] headerExtensions) {
-        this.sourceExtensions = (String[]) sourceExtensions.clone();
-        this.headerExtensions = (String[]) headerExtensions.clone();
+        this.sourceExtensions = sourceExtensions.clone();
+        this.headerExtensions = headerExtensions.clone();
     }
 
     /**
@@ -98,7 +98,7 @@ public abstract class AbstractProcessor implements Processor, Cloneable {
     }
 
     public String[] getHeaderExtensions() {
-        return (String[]) this.headerExtensions.clone();
+        return this.headerExtensions.clone();
     }
 
     abstract public String getIdentifier();
@@ -122,7 +122,7 @@ public abstract class AbstractProcessor implements Processor, Cloneable {
     }
 
     public String[] getSourceExtensions() {
-        return (String[]) this.sourceExtensions.clone();
+        return this.sourceExtensions.clone();
     }
 
     /**

@@ -50,14 +50,13 @@ public class LineReader implements Runnable {
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(this.is));
 
-            Vector lines = new Vector(10);
-            String line = null;
+            Vector<String> lines = new Vector<String>();
+            String line;
             while ((line = reader.readLine()) != null) {
                 lines.addElement(line);
             }
 
-            this.lines = new String[lines.size()];
-            lines.copyInto(this.lines);
+            this.lines = lines.toArray(new String[0]);
         } catch (IOException e) {
         }
     }

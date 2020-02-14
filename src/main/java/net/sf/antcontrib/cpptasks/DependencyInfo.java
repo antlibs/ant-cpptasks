@@ -38,8 +38,8 @@ public final class DependencyInfo {
     private/* final */ long sourceLastModified;
     private/* final */ String[] sysIncludes;
 
-    public DependencyInfo(String includePathIdentifier, String source,
-                          long sourceLastModified, Vector includes, Vector sysIncludes) {
+    public DependencyInfo(String includePathIdentifier, String source, long sourceLastModified,
+                          Vector<String> includes, Vector<String> sysIncludes) {
         if (source == null) {
             throw new NullPointerException("source");
         }
@@ -49,15 +49,14 @@ public final class DependencyInfo {
         this.source = source;
         this.sourceLastModified = sourceLastModified;
         this.includePathIdentifier = includePathIdentifier;
-        this.includes = new String[includes.size()];
         if (includes.size() == 0) {
+            this.includes = new String[0];
             compositeLastModified = sourceLastModified;
         } else {
-            includes.copyInto(this.includes);
+            this.includes = includes.toArray(new String[0]);
             compositeLastModified = Long.MIN_VALUE;
         }
-        this.sysIncludes = new String[sysIncludes.size()];
-        sysIncludes.copyInto(this.sysIncludes);
+        this.sysIncludes = sysIncludes.toArray(new String[0]);
     }
 
     /**
@@ -76,7 +75,7 @@ public final class DependencyInfo {
     }
 
     public String[] getIncludes() {
-        String[] includesClone = (String[]) includes.clone();
+        String[] includesClone = includes.clone();
         return includesClone;
     }
 
@@ -89,7 +88,7 @@ public final class DependencyInfo {
     }
 
     public String[] getSysIncludes() {
-        String[] sysIncludesClone = (String[]) sysIncludes.clone();
+        String[] sysIncludesClone = sysIncludes.clone();
         return sysIncludesClone;
     }
 

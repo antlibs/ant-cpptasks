@@ -49,23 +49,23 @@ public final class C89Linker extends CommandLineLinker {
         this.outputPrefix = outputPrefix;
     }
 
-    protected void addBase(long base, Vector args) {
+    protected void addBase(long base, Vector<String> args) {
     }
 
-    protected void addFixed(Boolean fixed, Vector args) {
+    protected void addFixed(Boolean fixed, Vector<String> args) {
     }
 
-    protected void addImpliedArgs(boolean debug, LinkType linkType, Vector args) {
+    protected void addImpliedArgs(boolean debug, LinkType linkType, Vector<String> args) {
         if (linkType.isSharedLibrary()) {
             args.addElement("-G");
         }
     }
 
-    protected void addIncremental(boolean incremental, Vector args) {
+    protected void addIncremental(boolean incremental, Vector<String> args) {
     }
 
     public String[] addLibrarySets(CCTask task, LibrarySet[] libsets,
-                                   Vector preargs, Vector midargs, Vector endargs) {
+                                   Vector<String> preargs, Vector<String> midargs, Vector<String> endargs) {
         super.addLibrarySets(task, libsets, preargs, midargs, endargs);
         StringBuffer buf = new StringBuffer("-l");
         for (int i = 0; i < libsets.length; i++) {
@@ -92,16 +92,16 @@ public final class C89Linker extends CommandLineLinker {
         return null;
     }
 
-    protected void addMap(boolean map, Vector args) {
+    protected void addMap(boolean map, Vector<String> args) {
     }
 
-    protected void addStack(int stack, Vector args) {
+    protected void addStack(int stack, Vector<String> args) {
     }
 
     /* (non-Javadoc)
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineLinker#addEntry(int, java.util.Vector)
      */
-    protected void addEntry(String entry, Vector args) {
+    protected void addEntry(String entry, Vector<String> args) {
     }
 
     public String getCommandFileSwitch(String commandFile) {

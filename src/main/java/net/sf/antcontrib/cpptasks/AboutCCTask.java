@@ -28,7 +28,7 @@ public class AboutCCTask {
      *
      * @param args ignored
      */
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         System.out.println("CCTask: Compile and link task for Apache Ant 1.5 or later\n");
         System.out.println("Copyright (c) 2002-2004, The Ant-Contrib project.\n");
         System.out.println("http://sf.net/projects/ant-contrib\n");

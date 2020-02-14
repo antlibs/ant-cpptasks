@@ -42,7 +42,6 @@ import javax.xml.transform.stream.StreamSource;
 import java.io.File;
 import java.io.StringReader;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 
@@ -65,8 +64,8 @@ public final class TaskDoclet {
         //  replace with tf.newTransformerHandler() if you want to see raw generated XML.
         TransformerHandler typeHandler = tf.newTransformerHandler(typeStyle);
 
-        Map referencedTypes = new HashMap();
-        Map documentedTypes = new HashMap();
+        Map<String, Object> referencedTypes = new HashMap<String, Object>();
+        Map<String, ClassDoc> documentedTypes = new HashMap<String, ClassDoc>();
         ClassDoc[] classes = root.classes();
         for (int i = 0; i < classes.length; ++i) {
             ClassDoc clazz = classes[i];
@@ -78,9 +77,8 @@ public final class TaskDoclet {
             }
         }
 
-        Map additionalTypes = new HashMap();
-        for (Iterator iter = referencedTypes.keySet().iterator(); iter.hasNext(); ) {
-            String referencedName = (String) iter.next();
+        Map<String, Object> additionalTypes = new HashMap<String, Object>();
+        for (String referencedName : referencedTypes.keySet()) {
             if (documentedTypes.get(referencedName) == null) {
                 ClassDoc referencedClass = root.classNamed(referencedName);
                 if (referencedClass != null) {
@@ -186,7 +184,7 @@ public final class TaskDoclet {
                                    final MethodDoc method,
                                    final String name,
                                    final Type type,
-                                   final Map referencedTypes) throws Exception {
+                                   final Map<String, Object> referencedTypes) throws Exception {
         AttributesImpl attributes = new AttributesImpl();
         attributes.addAttribute(null, "name", "name", "CDATA", name.toLowerCase(Locale.US));
         tf.startElement(NS_URI, "child", "child", attributes);
@@ -346,8 +344,8 @@ public final class TaskDoclet {
      */
     private static void writeAttributes(final TransformerHandler tf,
                                         final ClassDoc clazz,
-                                        final Map processed,
-                                        final Map referencedTypes) throws Exception {
+                                        final Map<String, Object> processed,
+                                        final Map<String, Object> referencedTypes) throws Exception {
         MethodDoc[] methods = clazz.methods();
         for (int i = 0; i < methods.length; i++) {
             MethodDoc method = methods[i];
@@ -373,10 +371,10 @@ public final class TaskDoclet {
      * @param referencedTypes map of referenced types.
      * @throws Exception if IO or other exception.
      */
-    private static final void writeChildren(final TransformerHandler tf,
-                                            final ClassDoc clazz,
-                                            final Map processed,
-                                            final Map referencedTypes) throws Exception {
+    private static void writeChildren(final TransformerHandler tf,
+                                      final ClassDoc clazz,
+                                      final Map<String, MethodDoc> processed,
+                                      final Map<String, Object> referencedTypes) throws Exception {
         MethodDoc[] methods = clazz.methods();
         for (int i = 0; i < methods.length; i++) {
             MethodDoc method = methods[i];
@@ -406,7 +404,7 @@ public final class TaskDoclet {
      */
     private static void writeClass(final TransformerHandler tf,
                                    final ClassDoc clazz,
-                                   final Map referencedTypes) throws Exception {
+                                   final Map<String, Object> referencedTypes) throws Exception {
         StreamResult result = new StreamResult(new File("src/site/xdoc/antdocs/" + clazz.name() + ".xml"));
         tf.setResult(result);
         AttributesImpl attributes = new AttributesImpl();
@@ -427,14 +425,14 @@ public final class TaskDoclet {
         tf.endElement(NS_URI, "comment", "comment");
 
         tf.startElement(NS_URI, "attributes", "attributes", attributes);
-        Map methods = new HashMap();
+        Map<String, Object> methods = new HashMap<String, Object>();
         methods.put("setProject", "setProject");
         methods.put("setRuntimeConfigurableWrapper", "setRuntimeConfigurableWrapper");
         writeAttributes(tf, clazz, methods, referencedTypes);
         tf.endElement(NS_URI, "attributes", "attributes");
 
         tf.startElement(NS_URI, "children", "children", attributes);
-        Map children = new HashMap();
+        Map<String, MethodDoc> children = new HashMap<String, MethodDoc>();
         writeChildren(tf, clazz, children, referencedTypes);
         tf.endElement(NS_URI, "children", "children");
 

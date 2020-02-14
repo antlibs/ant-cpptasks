@@ -65,29 +65,29 @@ public final class CommandLineCompilerConfiguration
         if (args == null) {
             this.args = new String[0];
         } else {
-            this.args = (String[]) args.clone();
+            this.args = args.clone();
         }
         if (includePath == null) {
             this.includePath = new File[0];
         } else {
-            this.includePath = (File[]) includePath.clone();
+            this.includePath = includePath.clone();
         }
         if (sysIncludePath == null) {
             this.sysIncludePath = new File[0];
         } else {
-            this.sysIncludePath = (File[]) sysIncludePath.clone();
+            this.sysIncludePath = sysIncludePath.clone();
         }
         if (envIncludePath == null) {
             this.envIncludePath = new File[0];
         } else {
-            this.envIncludePath = (File[]) envIncludePath.clone();
+            this.envIncludePath = envIncludePath.clone();
         }
         this.compiler = compiler;
-        this.params = (ProcessorParam[]) params.clone();
+        this.params = params.clone();
         this.rebuild = rebuild;
         this.identifier = identifier;
         this.includePathIdentifier = includePathIdentifier;
-        this.endArgs = (String[]) endArgs.clone();
+        this.endArgs = endArgs.clone();
         exceptFiles = null;
         isPrecompiledHeaderGeneration = false;
     }
@@ -98,13 +98,13 @@ public final class CommandLineCompilerConfiguration
         compiler = base.compiler;
         identifier = base.identifier;
         rebuild = base.rebuild;
-        includePath = (File[]) base.includePath.clone();
-        sysIncludePath = (File[]) base.sysIncludePath.clone();
-        endArgs = (String[]) base.endArgs.clone();
-        envIncludePath = (File[]) base.envIncludePath.clone();
+        includePath = base.includePath.clone();
+        sysIncludePath = base.sysIncludePath.clone();
+        endArgs = base.endArgs.clone();
+        envIncludePath = base.envIncludePath.clone();
         includePathIdentifier = base.includePathIdentifier;
         if (exceptFiles != null) {
-            this.exceptFiles = (String[]) exceptFiles.clone();
+            this.exceptFiles = exceptFiles.clone();
         }
         this.isPrecompiledHeaderGeneration = isPrecompileHeaderGeneration;
         args = new String[base.args.length + additionalArgs.length];
@@ -225,15 +225,15 @@ public final class CommandLineCompilerConfiguration
     }
 
     public String[] getPreArguments() {
-        return (String[]) args.clone();
+        return args.clone();
     }
 
     public String[] getEndArguments() {
-        return (String[]) endArgs.clone();
+        return endArgs.clone();
     }
 
     public File[] getIncludePath() {
-        return (File[]) includePath.clone();
+        return includePath.clone();
     }
 
     public Compiler getCompiler() {

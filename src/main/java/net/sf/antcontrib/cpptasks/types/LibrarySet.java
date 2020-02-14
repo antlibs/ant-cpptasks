@@ -69,7 +69,7 @@ public class LibrarySet extends DataType {
      */
     public String getDataset() {
         if (isReference()) {
-            LibrarySet master = ((LibrarySet) getCheckedRef(LibrarySet.class, "LibrarySet"));
+            LibrarySet master = getCheckedRef(LibrarySet.class, "LibrarySet");
             return master.getDataset();
         }
         return dataset;
@@ -77,7 +77,7 @@ public class LibrarySet extends DataType {
 
     public File getDir(final Project project) {
         if (isReference()) {
-            LibrarySet master = ((LibrarySet) getCheckedRef(LibrarySet.class, "LibrarySet"));
+            LibrarySet master = getCheckedRef(LibrarySet.class, "LibrarySet");
             return master.getDir(project);
         }
         return set.getDir(project);
@@ -85,7 +85,7 @@ public class LibrarySet extends DataType {
 
     protected FileSet getFileSet() {
         if (isReference()) {
-            LibrarySet master = ((LibrarySet) getCheckedRef(LibrarySet.class, "LibrarySet"));
+            LibrarySet master = getCheckedRef(LibrarySet.class, "LibrarySet");
             return master.getFileSet();
         }
         return set;
@@ -93,10 +93,10 @@ public class LibrarySet extends DataType {
 
     public String[] getLibs() {
         if (isReference()) {
-            LibrarySet master = ((LibrarySet) getCheckedRef(LibrarySet.class, "LibrarySet"));
+            LibrarySet master = getCheckedRef(LibrarySet.class, "LibrarySet");
             return master.getLibs();
         }
-        String[] retval = (String[]) libnames.clone();
+        String[] retval = libnames.clone();
         return retval;
     }
 
@@ -107,7 +107,7 @@ public class LibrarySet extends DataType {
      */
     public LibraryTypeEnum getType() {
         if (isReference()) {
-            LibrarySet master = ((LibrarySet) getCheckedRef(LibrarySet.class, "LibrarySet"));
+            LibrarySet master = getCheckedRef(LibrarySet.class, "LibrarySet");
             return master.getType();
         }
         return libraryType;
@@ -152,7 +152,7 @@ public class LibrarySet extends DataType {
             }
         }
         if (isReference()) {
-            LibrarySet master = ((LibrarySet) getCheckedRef(LibrarySet.class, "LibrarySet"));
+            LibrarySet master = getCheckedRef(LibrarySet.class, "LibrarySet");
             return master.isActive(project);
         }
         if (libnames.length == 0) {
@@ -280,7 +280,7 @@ public class LibrarySet extends DataType {
     public void visitLibraries(final Project project, final Linker linker, final File[] libpath,
                                final FileVisitor visitor) throws BuildException {
         if (isReference()) {
-            LibrarySet master = ((LibrarySet) getCheckedRef(LibrarySet.class, "LibrarySet"));
+            LibrarySet master = getCheckedRef(LibrarySet.class, "LibrarySet");
             master.visitLibraries(project, linker, libpath, visitor);
         }
         //

@@ -45,13 +45,13 @@ public final class CompilerDef extends ProcessorDef {
     /**
      * The source file sets.
      */
-    private final Vector defineSets = new Vector();
+    private final Vector<DefineSet> defineSets = new Vector<DefineSet>();
     private Boolean exceptions;
     private Boolean rtti;
-    private final Vector includePaths = new Vector();
+    private final Vector<ConditionalPath> includePaths = new Vector<ConditionalPath>();
     private Boolean multithreaded;
-    private final Vector precompileDefs = new Vector();
-    private final Vector sysIncludePaths = new Vector();
+    private final Vector<PrecompileDef> precompileDefs = new Vector<PrecompileDef>();
+    private final Vector<ConditionalPath> sysIncludePaths = new Vector<ConditionalPath>();
     private OptimizationEnum optimization;
     private int warnings = -1;
 
@@ -168,12 +168,12 @@ public final class CompilerDef extends ProcessorDef {
             throw new java.lang.IllegalStateException("project must be set before this call");
         }
         if (isReference()) {
-            return ((CompilerDef) getCheckedRef(CompilerDef.class,
-                    "CompilerDef")).getActiveDefines();
+            return getCheckedRef(CompilerDef.class,
+                    "CompilerDef").getActiveDefines();
         }
-        Vector actives = new Vector();
+        Vector<UndefineArgument> actives = new Vector<UndefineArgument>();
         for (int i = 0; i < defineSets.size(); i++) {
-            DefineSet currentSet = (DefineSet) defineSets.elementAt(i);
+            DefineSet currentSet = defineSets.elementAt(i);
             UndefineArgument[] defines = currentSet.getDefines();
             for (int j = 0; j < defines.length; j++) {
                 if (defines[j].isActive(p)) {
@@ -181,9 +181,7 @@ public final class CompilerDef extends ProcessorDef {
                 }
             }
         }
-        UndefineArgument[] retval = new UndefineArgument[actives.size()];
-        actives.copyInto(retval);
-        return retval;
+        return actives.toArray(new UndefineArgument[0]);
     }
 
     /**
@@ -193,20 +191,20 @@ public final class CompilerDef extends ProcessorDef {
      */
     public String[] getActiveIncludePaths() {
         if (isReference()) {
-            return ((CompilerDef) getCheckedRef(CompilerDef.class,
-                    "CompilerDef")).getActiveIncludePaths();
+            return getCheckedRef(CompilerDef.class,
+                    "CompilerDef").getActiveIncludePaths();
         }
         return getActivePaths(includePaths);
     }
 
-    private String[] getActivePaths(Vector paths) {
+    private String[] getActivePaths(Vector<ConditionalPath> paths) {
         Project p = getProject();
         if (p == null) {
             throw new java.lang.IllegalStateException("project not set");
         }
-        Vector activePaths = new Vector(paths.size());
+        Vector<String> activePaths = new Vector<String>();
         for (int i = 0; i < paths.size(); i++) {
-            ConditionalPath path = (ConditionalPath) paths.elementAt(i);
+            ConditionalPath path = paths.elementAt(i);
             if (path.isActive(p)) {
                 String[] pathEntries = path.list();
                 for (int j = 0; j < pathEntries.length; j++) {
@@ -214,20 +212,18 @@ public final class CompilerDef extends ProcessorDef {
                 }
             }
         }
-        String[] pathNames = new String[activePaths.size()];
-        activePaths.copyInto(pathNames);
-        return pathNames;
+        return activePaths.toArray(new String[0]);
     }
 
     public PrecompileDef getActivePrecompile(CompilerDef ccElement) {
         if (isReference()) {
-            return ((CompilerDef) getCheckedRef(CompilerDef.class,
-                    "CompilerDef")).getActivePrecompile(ccElement);
+            return getCheckedRef(CompilerDef.class,
+                    "CompilerDef").getActivePrecompile(ccElement);
         }
         PrecompileDef current = null;
-        Enumeration iter = precompileDefs.elements();
+        Enumeration<PrecompileDef> iter = precompileDefs.elements();
         while (iter.hasMoreElements()) {
-            current = (PrecompileDef) iter.nextElement();
+            current = iter.nextElement();
             if (current.isActive()) {
                 return current;
             }
@@ -247,16 +243,16 @@ public final class CompilerDef extends ProcessorDef {
 
     public String[] getActiveSysIncludePaths() {
         if (isReference()) {
-            return ((CompilerDef) getCheckedRef(CompilerDef.class,
-                    "CompilerDef")).getActiveSysIncludePaths();
+            return getCheckedRef(CompilerDef.class,
+                    "CompilerDef").getActiveSysIncludePaths();
         }
         return getActivePaths(sysIncludePaths);
     }
 
     public final boolean getExceptions(CompilerDef[] defaultProviders, int index) {
         if (isReference()) {
-            return ((CompilerDef) getCheckedRef(CompilerDef.class,
-                    "CompilerDef")).getExceptions(defaultProviders, index);
+            return getCheckedRef(CompilerDef.class,
+                    "CompilerDef").getExceptions(defaultProviders, index);
         }
         if (exceptions != null) {
             return exceptions.booleanValue();
@@ -271,8 +267,8 @@ public final class CompilerDef extends ProcessorDef {
 
     public final Boolean getRtti(CompilerDef[] defaultProviders, int index) {
         if (isReference()) {
-            return ((CompilerDef) getCheckedRef(CompilerDef.class,
-                    "CompilerDef")).getRtti(defaultProviders, index);
+            return getCheckedRef(CompilerDef.class,
+                    "CompilerDef").getRtti(defaultProviders, index);
         }
         if (rtti != null) {
             return rtti;
@@ -287,8 +283,8 @@ public final class CompilerDef extends ProcessorDef {
 
     public final OptimizationEnum getOptimization(CompilerDef[] defaultProviders, int index) {
         if (isReference()) {
-            return ((CompilerDef) getCheckedRef(CompilerDef.class,
-                    "CompilerDef")).getOptimization(defaultProviders, index);
+            return getCheckedRef(CompilerDef.class,
+                    "CompilerDef").getOptimization(defaultProviders, index);
         }
         if (optimization != null) {
             return optimization;
@@ -303,8 +299,8 @@ public final class CompilerDef extends ProcessorDef {
 
     public boolean getMultithreaded(CompilerDef[] defaultProviders, int index) {
         if (isReference()) {
-            return ((CompilerDef) getCheckedRef(CompilerDef.class,
-                    "CompilerDef")).getMultithreaded(defaultProviders, index);
+            return getCheckedRef(CompilerDef.class,
+                    "CompilerDef").getMultithreaded(defaultProviders, index);
         }
         if (multithreaded != null) {
             return multithreaded.booleanValue();
@@ -330,8 +326,8 @@ public final class CompilerDef extends ProcessorDef {
 
     public int getWarnings(CompilerDef[] defaultProviders, int index) {
         if (isReference()) {
-            return ((CompilerDef) getCheckedRef(CompilerDef.class,
-                    "CompilerDef")).getWarnings(defaultProviders, index);
+            return getCheckedRef(CompilerDef.class,
+                    "CompilerDef").getWarnings(defaultProviders, index);
         }
         if (warnings == -1) {
             if (defaultProviders != null && index < defaultProviders.length) {
@@ -514,7 +510,7 @@ public final class CompilerDef extends ProcessorDef {
 
     protected void setProcessor(Processor proc) throws BuildException {
         try {
-            super.setProcessor((Compiler) proc);
+            super.setProcessor(proc);
         } catch (ClassCastException ex) {
             throw new BuildException(ex);
         }

@@ -52,7 +52,7 @@ public class BorlandResourceCompiler extends CommandLineCompiler {
                 newEnvironment, env);
     }
 
-    protected void addImpliedArgs(final Vector args,
+    protected void addImpliedArgs(final Vector<String> args,
                                   final boolean debug,
                                   final boolean multithreaded,
                                   final boolean exceptions,
@@ -65,7 +65,7 @@ public class BorlandResourceCompiler extends CommandLineCompiler {
         args.addElement("-r");
     }
 
-    protected void addWarningSwitch(Vector args, int level) {
+    protected void addWarningSwitch(Vector<String> args, int level) {
     }
 
     public Processor changeEnvironment(boolean newEnvironment, Environment env) {
