@@ -16,57 +16,62 @@
  */
 package net.sf.antcontrib.cpptasks.sun;
 
+import net.sf.antcontrib.cpptasks.compiler.AbstractProcessor;
+import org.junit.Test;
+
 import java.util.Vector;
 
-import junit.framework.TestCase;
-
-import net.sf.antcontrib.cpptasks.compiler.AbstractProcessor;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test Sun Forte compiler adapter
  */
 // TODO Since ForteCCCompiler extends GccCompatibleCCompiler, this test
 // should probably extend TestGccCompatibleCCompiler.
-public class TestForteCCCompiler extends TestCase {
-    public TestForteCCCompiler(String name) {
-        super(name);
-    }
-
+public class TestForteCCCompiler {
+    @Test
     public void testBidC() {
         ForteCCCompiler compiler = ForteCCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.c"));
     }
 
+    @Test
     public void testBidCpp() {
         ForteCCCompiler compiler = ForteCCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.C"));
     }
 
+    @Test
     public void testBidCpp2() {
         ForteCCCompiler compiler = ForteCCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.cc"));
     }
 
+    @Test
     public void testBidCpp3() {
         ForteCCCompiler compiler = ForteCCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.cxx"));
     }
 
+    @Test
     public void testBidCpp4() {
         ForteCCCompiler compiler = ForteCCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.cpp"));
     }
 
+    @Test
     public void testBidCpp5() {
         ForteCCCompiler compiler = ForteCCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.c++"));
     }
 
+    @Test
     public void testBidPreprocessed() {
         ForteCCCompiler compiler = ForteCCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.i"));
     }
 
+    @Test
     public void testBidAssembly() {
         ForteCCCompiler compiler = ForteCCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.s"));
@@ -75,6 +80,7 @@ public class TestForteCCCompiler extends TestCase {
     /**
      * Tests command line switches for warning = 0
      */
+    @Test
     public void testWarningLevel0() {
         ForteCCCompiler compiler = ForteCCCompiler.getInstance();
         Vector<String> args = new Vector<String>();
@@ -86,6 +92,7 @@ public class TestForteCCCompiler extends TestCase {
     /**
      * Tests command line switches for warning = 1
      */
+    @Test
     public void testWarningLevel1() {
         ForteCCCompiler compiler = ForteCCCompiler.getInstance();
         Vector<String> args = new Vector<String>();
@@ -96,6 +103,7 @@ public class TestForteCCCompiler extends TestCase {
     /**
      * Tests command line switches for warning = 2
      */
+    @Test
     public void testWarningLevel2() {
         ForteCCCompiler compiler = ForteCCCompiler.getInstance();
         Vector<String> args = new Vector<String>();
@@ -106,6 +114,7 @@ public class TestForteCCCompiler extends TestCase {
     /**
      * Tests command line switches for warning = 3
      */
+    @Test
     public void testWarningLevel3() {
         ForteCCCompiler compiler = ForteCCCompiler.getInstance();
         Vector<String> args = new Vector<String>();
@@ -117,6 +126,7 @@ public class TestForteCCCompiler extends TestCase {
     /**
      * Tests command line switches for warning = 4
      */
+    @Test
     public void testWarningLevel4() {
         ForteCCCompiler compiler = ForteCCCompiler.getInstance();
         Vector<String> args = new Vector<String>();
@@ -128,6 +138,7 @@ public class TestForteCCCompiler extends TestCase {
     /**
      * Tests command line switches for warning = 5
      */
+    @Test
     public void testWarningLevel5() {
         ForteCCCompiler compiler = ForteCCCompiler.getInstance();
         Vector<String> args = new Vector<String>();

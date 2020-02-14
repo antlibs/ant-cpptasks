@@ -16,9 +16,6 @@
  */
 package net.sf.antcontrib.cpptasks;
 
-import java.io.File;
-import java.io.IOException;
-
 import net.sf.antcontrib.cpptasks.compiler.CommandLineCompilerConfiguration;
 import net.sf.antcontrib.cpptasks.compiler.Compiler;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
@@ -33,20 +30,19 @@ import net.sf.antcontrib.cpptasks.types.SystemIncludePath;
 import net.sf.antcontrib.cpptasks.types.UndefineArgument;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
+import org.junit.Test;
+
+import java.io.File;
+import java.io.IOException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 
 /**
  * Tests for CompilerDef.
  */
 public final class TestCompilerDef extends TestProcessorDef {
-    /**
-     * Constructor.
-     *
-     * @param name test name
-     */
-    public TestCompilerDef(final String name) {
-        super(name);
-    }
-
     /**
      * Creates a new processor.
      *
@@ -77,6 +73,7 @@ public final class TestCompilerDef extends TestProcessorDef {
      * contain one member
      * </p>
      */
+    @Test
     public void testGetActiveDefines() {
         Project project = new org.apache.tools.ant.Project();
         CompilerDef def = new CompilerDef();
@@ -121,6 +118,7 @@ public final class TestCompilerDef extends TestProcessorDef {
      * and is evaluate for a project without and without "debug" set
      * </p>
      */
+    @Test
     public void testGetActiveIncludePaths() {
         Project project = new org.apache.tools.ant.Project();
         CompilerDef def = new CompilerDef();
@@ -144,6 +142,7 @@ public final class TestCompilerDef extends TestProcessorDef {
     /**
      * Tests that setting classname to the Gcc compiler is effective.
      */
+    @Test
     public void testGetGcc() {
         CompilerDef compilerDef = (CompilerDef) create();
         compilerDef.setClassname("net.sf.antcontrib.cpptasks.gcc.GccCCompiler");
@@ -155,6 +154,7 @@ public final class TestCompilerDef extends TestProcessorDef {
     /**
      * Tests that setting classname to the MSVC compiler is effective.
      */
+    @Test
     public void testGetMSVC() {
         CompilerDef compilerDef = (CompilerDef) create();
         compilerDef.setClassname("net.sf.antcontrib.cpptasks.devstudio.DevStudioCCompiler");
@@ -167,28 +167,20 @@ public final class TestCompilerDef extends TestProcessorDef {
      * Tests that setting classname to an bogus class name results in a
      * BuildException.
      */
+    @Test(expected = BuildException.class)
     public void testUnknownClass() {
         CompilerDef compilerDef = (CompilerDef) create();
-        try {
-            compilerDef.setClassname("net.sf.antcontrib.cpptasks.bogus.BogusCompiler");
-        } catch (BuildException ex) {
-            return;
-        }
-        fail("Exception not thrown");
+        compilerDef.setClassname("net.sf.antcontrib.cpptasks.bogus.BogusCompiler");
     }
 
     /**
      * Test that setting classname to a class that doesn't support Compiler
      * throws a BuildException.
      */
+    @Test(expected = BuildException.class)
     public void testWrongType() {
         CompilerDef compilerDef = (CompilerDef) create();
-        try {
-            compilerDef.setClassname("net.sf.antcontrib.cpptasks.devstudio.DevStudioLinker");
-        } catch (BuildException ex) {
-            return;
-        }
-        fail("Exception not thrown");
+        compilerDef.setClassname("net.sf.antcontrib.cpptasks.devstudio.DevStudioLinker");
     }
 
     /**
@@ -206,6 +198,7 @@ public final class TestCompilerDef extends TestProcessorDef {
      *
      * @throws IOException if unable to create or delete a temporary file
      */
+    @Test
     public void testExtendsFileSet() throws IOException {
         super.testExtendsFileSet(File.createTempFile("cpptaskstest", ".cpp"));
     }
@@ -214,6 +207,7 @@ public final class TestCompilerDef extends TestProcessorDef {
      * Tests if the rebuild attribute of the base compiler definition is
      * effective.
      */
+    @Test
     public void testExtendsRebuild() {
         testExtendsRebuild(new CompilerDef());
     }
@@ -222,6 +216,7 @@ public final class TestCompilerDef extends TestProcessorDef {
      * Tests that compilerarg's contained in the base compiler definition are
      * effective.
      */
+    @Test
     public void testExtendsCompilerArgs() {
         CompilerDef baseLinker = new CompilerDef();
         CompilerArgument linkerArg = new CompilerArgument();
@@ -237,6 +232,7 @@ public final class TestCompilerDef extends TestProcessorDef {
      * Tests that defineset's contained in the base compiler definition are
      * effective.
      */
+    @Test
     public void testExtendsDefineSet() {
         CompilerDef baseCompiler = new CompilerDef();
         DefineSet defSet = new DefineSet();
@@ -255,6 +251,7 @@ public final class TestCompilerDef extends TestProcessorDef {
      * Tests that includepath's contained in the base compiler definition are
      * effective.
      */
+    @Test
     public void testExtendsIncludePath() {
         CompilerDef baseCompiler = new CompilerDef();
         CompilerDef extendedCompiler = (CompilerDef) createExtendedProcessorDef(baseCompiler);
@@ -269,6 +266,7 @@ public final class TestCompilerDef extends TestProcessorDef {
      * Tests that sysincludepath's contained in the base compiler definition are
      * effective.
      */
+    @Test
     public void testExtendsSysIncludePath() {
         CompilerDef baseCompiler = new CompilerDef();
         CompilerDef extendedCompiler = (CompilerDef) createExtendedProcessorDef(baseCompiler);
@@ -295,6 +293,7 @@ public final class TestCompilerDef extends TestProcessorDef {
      * Tests that the extend attribute of the base compiler definition is
      * effective.
      */
+    @Test
     public void testExtendsExceptions() {
         CompilerDef baseCompiler = new CompilerDef();
         baseCompiler.setExceptions(true);
@@ -308,6 +307,7 @@ public final class TestCompilerDef extends TestProcessorDef {
      * Tests that the multithread attribute of the base compiler definition is
      * effective.
      */
+    @Test
     public void testExtendsMultithreaded() {
         CompilerDef baseCompiler = new CompilerDef();
         baseCompiler.setMultithreaded(false);
@@ -325,6 +325,7 @@ public final class TestCompilerDef extends TestProcessorDef {
     /**
      * Tests that the name attribute in the base compiler is effective.
      */
+    @Test
     public void testExtendsName() {
         CompilerDef baseCompiler = new CompilerDef();
         setCompilerName(baseCompiler, "msvc");
@@ -337,6 +338,7 @@ public final class TestCompilerDef extends TestProcessorDef {
     /**
      * Tests that the classname attribute in the base compiler is effective.
      */
+    @Test
     public void testExtendsClassname() {
         CompilerDef baseCompiler = new CompilerDef();
         baseCompiler.setClassname("net.sf.antcontrib.cpptasks.devstudio.DevStudioCCompiler");

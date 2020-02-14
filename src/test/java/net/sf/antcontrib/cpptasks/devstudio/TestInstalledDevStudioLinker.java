@@ -16,8 +16,11 @@
  */
 package net.sf.antcontrib.cpptasks.devstudio;
 
+import org.junit.Test;
+
 import java.io.File;
 
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test for Microsoft Developer Studio linker
@@ -26,10 +29,7 @@ import java.io.File;
  * </p>
  */
 public class TestInstalledDevStudioLinker extends TestDevStudioLinker {
-    public TestInstalledDevStudioLinker(String name) {
-        super(name);
-    }
-
+    @Test
     public void testGetLibraryPath() {
         File[] libpath = DevStudioLinker.getInstance().getLibraryPath();
         //
@@ -53,8 +53,6 @@ public class TestInstalledDevStudioLinker extends TestDevStudioLinker {
         assertTrue("kernel32 not found", libfound[0]);
         assertTrue("advapi32 not found", libfound[1]);
         assertTrue("msvcrt not found", libfound[2]);
-        if (!(libfound[3] || libfound[4])) {
-            fail("mfc42.lib or mfc70.lib not found");
-        }
+        assertTrue("mfc42.lib or mfc70.lib not found", libfound[3] || libfound[4]);
     }
 }

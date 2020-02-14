@@ -16,77 +16,84 @@
  */
 package net.sf.antcontrib.cpptasks.hp;
 
-import java.util.Vector;
-
-import junit.framework.TestCase;
-
 import net.sf.antcontrib.cpptasks.compiler.AbstractProcessor;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test HP aCC compiler adapter
  */
 // TODO Since aCCCompiler extends GccCompatibleCCompiler, this test
 // should probably extend TestGccCompatibleCCompiler.
-public class TestaCCCompiler extends TestCase {
-    public TestaCCCompiler(String name) {
-        super(name);
-    }
-
+public class TestaCCCompiler {
+    @Test
     public void testBidC() {
         aCCCompiler compiler = aCCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.c"));
     }
 
+    @Test
     public void testBidCpp() {
         aCCCompiler compiler = aCCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.C"));
     }
 
+    @Test
     public void testBidCpp2() {
         aCCCompiler compiler = aCCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.cc"));
     }
 
+    @Test
     public void testBidCpp3() {
         aCCCompiler compiler = aCCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.CC"));
     }
 
+    @Test
     public void testBidCpp4() {
         aCCCompiler compiler = aCCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.cxx"));
     }
 
+    @Test
     public void testBidCpp5() {
         aCCCompiler compiler = aCCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.CXX"));
     }
 
+    @Test
     public void testBidCpp6() {
         aCCCompiler compiler = aCCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.cpp"));
     }
 
+    @Test
     public void testBidCpp7() {
         aCCCompiler compiler = aCCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.CPP"));
     }
 
+    @Test
     public void testBidCpp8() {
         aCCCompiler compiler = aCCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.c++"));
     }
 
+    @Test
     public void testBidCpp9() {
         aCCCompiler compiler = aCCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.C++"));
     }
 
+    @Test
     public void testBidPreprocessed() {
         aCCCompiler compiler = aCCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.i"));
     }
 
+    @Test
     public void testBidAssembly() {
         aCCCompiler compiler = aCCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.s"));

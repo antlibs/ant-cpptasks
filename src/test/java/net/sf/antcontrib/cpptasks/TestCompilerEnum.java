@@ -16,26 +16,19 @@
  */
 package net.sf.antcontrib.cpptasks;
 
-import junit.framework.TestCase;
-
 import org.apache.tools.ant.BuildException;
+import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests for CompilerEnum.
  */
-public class TestCompilerEnum extends TestCase {
-    /**
-     * Create instance of TestCompilerEnum.
-     *
-     * @param name test name.
-     */
-    public TestCompilerEnum(final String name) {
-        super(name);
-    }
-
+public class TestCompilerEnum {
    /**
     * Test that "gcc" is recognized as a compiler enum.
     */
+   @Test
     public void testCompilerEnum1() {
         CompilerEnum compilerEnum = new CompilerEnum();
         compilerEnum.setValue("gcc");
@@ -45,12 +38,9 @@ public class TestCompilerEnum extends TestCase {
     /**
      * Test that "bogus" is not recognized as a compiler enum.
      */
+    @Test(expected = BuildException.class)
     public void testCompilerEnum2() {
         CompilerEnum compilerEnum = new CompilerEnum();
-        try {
-            compilerEnum.setValue("bogus");
-            fail();
-        } catch (BuildException ex) {
-        }
+        compilerEnum.setValue("bogus");
     }
 }

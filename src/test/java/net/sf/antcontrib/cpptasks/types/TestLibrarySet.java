@@ -16,37 +16,31 @@
  */
 package net.sf.antcontrib.cpptasks.types;
 
-import java.io.File;
-import java.io.IOException;
-
-import junit.framework.TestCase;
 import net.sf.antcontrib.cpptasks.CUtil;
 import net.sf.antcontrib.cpptasks.MockBuildListener;
 import net.sf.antcontrib.cpptasks.MockFileCollector;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
-import net.sf.antcontrib.cpptasks.devstudio.DevStudioLinker;
 import net.sf.antcontrib.cpptasks.devstudio.DevStudioLibrarian;
-
+import net.sf.antcontrib.cpptasks.devstudio.DevStudioLinker;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
+import org.junit.Test;
+
+import java.io.File;
+import java.io.IOException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests for the LibrarySet class.
  */
-public class TestLibrarySet extends TestCase {
-
-    /**
-     * Constructor.
-     *
-     * @param name test name
-     */
-    public TestLibrarySet(final String name) {
-        super(name);
-    }
-
+public class TestLibrarySet {
     /**
      * Evaluate isActive when "if" specifies a property that is set.
      */
+    @Test
     public final void testIsActive1() {
         LibrarySet libset = new LibrarySet();
         Project project = new Project();
@@ -63,6 +57,7 @@ public class TestLibrarySet extends TestCase {
      * Evaluate isActive when "if" specifies a property whose value suggests the
      * user thinks the value is significant.
      */
+    @Test(expected = BuildException.class)
     public final void testIsActive2() {
         LibrarySet libset = new LibrarySet();
         Project project = new Project();
@@ -72,41 +67,39 @@ public class TestLibrarySet extends TestCase {
         //
         project.setProperty("windows", "false");
         libset.setIf("windows");
-        try {
-            boolean isActive = libset.isActive(project);
-        } catch (BuildException ex) {
-            return;
-        }
-        fail();
+        boolean isActive = libset.isActive(project);
     }
 
     /**
      * Evaluate isActive when "if" specifies a property that is not set.
      */
+    @Test
     public final void testIsActive3() {
         LibrarySet libset = new LibrarySet();
         Project project = new Project();
         libset.setIf("windows");
         boolean isActive = libset.isActive(project);
-        assertTrue(!isActive);
+        assertFalse(isActive);
     }
 
     /**
      * Evaluate isActive when "unless" specifies a property that is set.
      */
+    @Test
     public final void testIsActive4() {
         LibrarySet libset = new LibrarySet();
         Project project = new Project();
         project.setProperty("windows", "");
         libset.setUnless("windows");
         boolean isActive = libset.isActive(project);
-        assertTrue(!isActive);
+        assertFalse(isActive);
     }
 
     /**
      * Evaluate isActive when "unless" specifies a property whose value suggests
      * the user thinks the value is significant.
      */
+    @Test(expected = BuildException.class)
     public final void testIsActive5() {
         LibrarySet libset = new LibrarySet();
         Project project = new Project();
@@ -116,17 +109,13 @@ public class TestLibrarySet extends TestCase {
         //
         project.setProperty("windows", "false");
         libset.setUnless("windows");
-        try {
-            boolean isActive = libset.isActive(project);
-        } catch (BuildException ex) {
-            return;
-        }
-        fail();
+        boolean isActive = libset.isActive(project);
     }
 
     /**
      * Evaluate isActive when "unless" specifies a property that is not set.
      */
+    @Test
     public final void testIsActive6() {
         LibrarySet libset = new LibrarySet();
         Project project = new Project();
@@ -142,6 +131,7 @@ public class TestLibrarySet extends TestCase {
      * The libs parameter should not end with .lib, .so, .a etc New behavior is
      * to warn if it ends in a suspicious extension.
      */
+    @Test
     public final void testLibContainsDot() {
         LibrarySet libset = new LibrarySet();
         Project p = new Project();
@@ -159,6 +149,7 @@ public class TestLibrarySet extends TestCase {
      * warn on configuration, now provides more feedback
      * when library is not found.
      */
+    @Test
     public final void testLibContainsDotLib() {
         LibrarySet libset = new LibrarySet();
         Project p = new Project();
@@ -174,6 +165,7 @@ public class TestLibrarySet extends TestCase {
      * Use of a libset or syslibset without a libs attribute should log a
      * warning message.
      */
+    @Test
     public final void testLibNotSpecified() {
         LibrarySet libset = new LibrarySet();
         Project p = new Project();
@@ -181,7 +173,7 @@ public class TestLibrarySet extends TestCase {
         p.addBuildListener(listener);
         libset.setProject(p);
         boolean isActive = libset.isActive(p);
-        assertEquals(false, isActive);
+        assertFalse(isActive);
         assertEquals(1, listener.getMessageLoggedEvents().size());
     }
 
@@ -189,6 +181,7 @@ public class TestLibrarySet extends TestCase {
      * this threw an exception prior to 2002-09-05 and started to throw one
      * again 2002-11-19 up to 2002-12-11.
      */
+    @Test
     public final void testShortLibName() {
         LibrarySet libset = new LibrarySet();
         CUtil.StringArrayBuilder libs = new CUtil.StringArrayBuilder("li");
@@ -202,6 +195,7 @@ public class TestLibrarySet extends TestCase {
      * warn on configuration, now provides more feedback
      * when library is not found.
      */
+    @Test
     public final void testStartsWithLib() {
         LibrarySet libset = new LibrarySet();
         Project p = new Project();
@@ -274,6 +268,7 @@ public class TestLibrarySet extends TestCase {
      *
      * @throws IOException if unable to create or delete temporary file
      */
+    @Test
     public final void testLinkerVisitFiles() throws IOException {
         Linker linker = DevStudioLinker.getInstance();
         testVisitFiles(linker, 1);
@@ -285,6 +280,7 @@ public class TestLibrarySet extends TestCase {
      *
      * @throws IOException if unable to create or delete temporary file
      */
+    @Test
     public final void testLibrarianVisitFiles() throws IOException {
         Linker linker = DevStudioLibrarian.getInstance();
         testVisitFiles(linker, 0);
@@ -299,29 +295,23 @@ public class TestLibrarySet extends TestCase {
      * See bug 1380366
      * </p>
      */
+    // code around line 320 in LibrarySet that would throw BuildException
+    // (and prevent reaching this line) is disabled since logic for identifying
+    // missing libraries does not work reliably on non-Windows platforms
+    // @Test(expected = BuildException.class)
+    @Test
     public final void testBadLibname() {
         LibrarySet libset = new LibrarySet();
         Project p = new Project();
         MockBuildListener listener = new MockBuildListener();
         p.addBuildListener(listener);
         libset.setProject(p);
-        //   set libs to the file name without the suffix
+        // set libs to the file name without the suffix
         CUtil.StringArrayBuilder libs = new CUtil.StringArrayBuilder("badlibname");
         libset.setLibs(libs);
 
-        //
-        //   collect all files visited
+        // collect all files visited
         MockFileCollector collector = new MockFileCollector();
-        try {
-            libset.visitLibraries(p, DevStudioLinker.getInstance(), new File[0], collector);
-        } catch (BuildException ex) {
-            return;
-        }
-//
-//      code around line 320 in LibrarySet that would throw BuildException
-//         (and prevent reaching this line) is disabled since logic for identifying
-//         missing libraries does not work reliably on non-Windows platforms
-//       
-//      fail("visitLibraries should throw exception due to unsatisifed libname");
+        libset.visitLibraries(p, DevStudioLinker.getInstance(), new File[0], collector);
     }
 }

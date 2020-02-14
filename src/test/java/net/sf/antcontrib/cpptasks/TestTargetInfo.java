@@ -16,19 +16,22 @@
  */
 package net.sf.antcontrib.cpptasks;
 
-import java.io.File;
-
-import junit.framework.TestCase;
 import net.sf.antcontrib.cpptasks.compiler.CompilerConfiguration;
 import net.sf.antcontrib.cpptasks.compiler.ProgressMonitor;
 import org.apache.tools.ant.BuildException;
-import net.sf.antcontrib.cpptasks.VersionInfo;
+import org.junit.Test;
 
+import java.io.File;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * A description of a file built or to be built
  */
-public class TestTargetInfo extends TestCase {
+public class TestTargetInfo {
     private class DummyConfiguration implements CompilerConfiguration {
         public int bid(String filename) {
             return 1;
@@ -84,47 +87,35 @@ public class TestTargetInfo extends TestCase {
         }
     }
 
-    public TestTargetInfo(String name) {
-        super(name);
-    }
-
+    @Test(expected = NullPointerException.class)
     public void testConstructorNullConfig() {
-        try {
-            new TargetInfo(null, new File[]{new File("")}, null, new File(""),
-                    false);
-            fail("Didn't throw exception");
-        } catch (NullPointerException ex) {
-        }
+        new TargetInfo(null, new File[]{new File("")}, null, new File(""), false);
     }
 
+    @Test(expected = NullPointerException.class)
     public void testConstructorNullOutput() {
         CompilerConfiguration config = new DummyConfiguration();
-        try {
-            new TargetInfo(config, new File[]{new File("")}, null, null, false);
-            fail("Didn't throw exception");
-        } catch (NullPointerException ex) {
-        }
+        new TargetInfo(config, new File[]{new File("")}, null, null, false);
     }
 
+    @Test(expected = NullPointerException.class)
     public void testConstructorNullSource() {
         CompilerConfiguration config = new DummyConfiguration();
-        try {
-            new TargetInfo(config, null, null, new File(""), false);
-            fail("Didn't throw exception");
-        } catch (NullPointerException ex) {
-        }
+        new TargetInfo(config, null, null, new File(""), false);
     }
 
+    @Test
     public void testGetRebuild() {
         CompilerConfiguration config = new DummyConfiguration();
         TargetInfo targetInfo = new TargetInfo(config, new File[]{new File("FoO.BaR")},
                 null, new File("foo.o"), false);
-        assertEquals(false, targetInfo.getRebuild());
+        assertFalse(targetInfo.getRebuild());
         targetInfo = new TargetInfo(config, new File[]{new File("FoO.BaR")},
                 null, new File("foo.o"), true);
-        assertEquals(true, targetInfo.getRebuild());
+        assertTrue(targetInfo.getRebuild());
     }
 
+   @Test
     public void testGetSource() {
         CompilerConfiguration config = new DummyConfiguration();
         TargetInfo targetInfo = new TargetInfo(config, new File[]{new File("FoO.BaR")},
@@ -133,22 +124,22 @@ public class TestTargetInfo extends TestCase {
         assertEquals(source, "FoO.BaR");
     }
 
+    @Test
     public void testHasSameSource() {
         CompilerConfiguration config = new DummyConfiguration();
         TargetInfo targetInfo = new TargetInfo(config, new File[]{new File("foo.bar")},
                 null, new File("foo.o"), false);
-        boolean hasSame = targetInfo.getSources()[0].equals(new File("foo.bar"));
-        assertTrue(hasSame);
-        hasSame = targetInfo.getSources()[0].equals(new File("boo.far"));
-        assertEquals(hasSame, false);
+        assertEquals(targetInfo.getSources()[0], new File("foo.bar"));
+        assertNotEquals(targetInfo.getSources()[0], new File("boo.far"));
     }
 
+    @Test
     public void testMustRebuild() {
         CompilerConfiguration config = new DummyConfiguration();
         TargetInfo targetInfo = new TargetInfo(config, new File[]{new File("FoO.BaR")},
                 null, new File("foo.o"), false);
-        assertEquals(false, targetInfo.getRebuild());
+        assertFalse(targetInfo.getRebuild());
         targetInfo.mustRebuild();
-        assertEquals(true, targetInfo.getRebuild());
+        assertTrue(targetInfo.getRebuild());
     }
 }

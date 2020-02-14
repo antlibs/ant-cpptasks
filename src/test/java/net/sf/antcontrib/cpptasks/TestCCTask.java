@@ -16,35 +16,33 @@
  */
 package net.sf.antcontrib.cpptasks;
 
+import net.sf.antcontrib.cpptasks.compiler.CommandLineCompilerConfiguration;
+import net.sf.antcontrib.cpptasks.compiler.CompilerConfiguration;
+import net.sf.antcontrib.cpptasks.compiler.ProcessorConfiguration;
+import net.sf.antcontrib.cpptasks.gcc.GccCCompiler;
+import org.junit.Test;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Hashtable;
 import java.util.Vector;
 
-import junit.framework.TestCase;
-import net.sf.antcontrib.cpptasks.compiler.CommandLineCompilerConfiguration;
-import net.sf.antcontrib.cpptasks.compiler.CompilerConfiguration;
-import net.sf.antcontrib.cpptasks.compiler.ProcessorConfiguration;
-import net.sf.antcontrib.cpptasks.gcc.GccCCompiler;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests for CCTask.
  */
-public final class TestCCTask extends TestCase {
-    /**
-     * Constructor.
-     *
-     * @param name test name
-     */
-    public TestCCTask(final String name) {
-        super(name);
-    }
-
+public final class TestCCTask {
     /**
      * Test that a target with no existing object file is
      * returned by getTargetsToBuildByConfiguration.
      */
+    @Test
     public void testGetTargetsToBuildByConfiguration1() {
         CompilerConfiguration config1 =
                 new CommandLineCompilerConfiguration(GccCCompiler.getInstance(),
@@ -67,6 +65,7 @@ public final class TestCCTask extends TestCase {
      * Test that a target that is up to date is not returned by
      * getTargetsToBuildByConfiguration.
      */
+    @Test
     public void testGetTargetsToBuildByConfiguration2() {
         CompilerConfiguration config1 =
                 new CommandLineCompilerConfiguration(GccCCompiler.getInstance(),
@@ -90,23 +89,25 @@ public final class TestCCTask extends TestCase {
     /**
      * Tests that the default value of failonerror is true.
      */
+    @Test
     public void testGetFailOnError() {
         CCTask task = new CCTask();
         boolean failOnError = task.getFailonerror();
-        assertEquals(true, failOnError);
+        assertTrue(failOnError);
     }
 
     /**
      * Tests that setting failonerror is effective.
      */
+    @Test
     public void testSetFailOnError() {
         CCTask task = new CCTask();
         task.setFailonerror(false);
         boolean failOnError = task.getFailonerror();
-        assertEquals(false, failOnError);
+        assertFalse(failOnError);
         task.setFailonerror(true);
         failOnError = task.getFailonerror();
-        assertEquals(true, failOnError);
+        assertTrue(failOnError);
     }
 
     /**
@@ -114,6 +115,7 @@ public final class TestCCTask extends TestCase {
      *
      * @throws IOException if stream can't be closed.
      */
+    @Test
     public void testAntlibXmlPresent() throws IOException {
         InputStream stream = TestCCTask.class.getClassLoader()
                 .getResourceAsStream("net/sf/antcontrib/cpptasks/antlib.xml");

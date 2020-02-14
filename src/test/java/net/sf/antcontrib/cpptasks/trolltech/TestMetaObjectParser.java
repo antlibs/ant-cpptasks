@@ -16,29 +16,24 @@
  */
 package net.sf.antcontrib.cpptasks.trolltech;
 
+import org.junit.Test;
+
 import java.io.CharArrayReader;
 import java.io.IOException;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests for the MetaObjectParser class.
  */
-public final class TestMetaObjectParser extends TestCase {
-    /**
-     * Constructor.
-     *
-     * @param name String test name
-     */
-    public TestMetaObjectParser(final String name) {
-        super(name);
-    }
-
+public final class TestMetaObjectParser {
     /**
      * Test that the presence of Q_OBJECT causes hasQObject to return true.
      *
      * @throws IOException test fails on IOException
      */
+    @Test
     public void testHasQObject1() throws IOException {
         CharArrayReader reader = new CharArrayReader("    Q_OBJECT  ".toCharArray());
         boolean hasQObject = MetaObjectParser.hasQObject(reader);
@@ -50,6 +45,7 @@ public final class TestMetaObjectParser extends TestCase {
      *
      * @throws IOException test fails on IOException
      */
+    @Test
     public void testHasQObject2() throws IOException {
         CharArrayReader reader = new CharArrayReader("    Q_OBJ ECT  ".toCharArray());
         boolean hasQObject = MetaObjectParser.hasQObject(reader);

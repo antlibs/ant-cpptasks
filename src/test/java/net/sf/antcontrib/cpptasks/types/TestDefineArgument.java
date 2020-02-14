@@ -16,30 +16,26 @@
  */
 package net.sf.antcontrib.cpptasks.types;
 
-import junit.framework.TestCase;
-
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests for the DefineArgument class
  */
-public class TestDefineArgument extends TestCase {
-    public TestDefineArgument(String name) {
-        super(name);
-    }
-
+public class TestDefineArgument {
+    @Test(expected = BuildException.class)
     public void testIsActive1() {
         DefineArgument arg = new DefineArgument();
         Project project = new Project();
-        try {
-            boolean isActive = arg.isActive(project);
-        } catch (BuildException ex) {
-            return;
-        }
-        fail("isActive should throw exception if name is not set");
+        boolean isActive = arg.isActive(project);
     }
 
+    @Test
     public void testIsActive2() {
         DefineArgument arg = new DefineArgument();
         arg.setName("TEST");
@@ -49,37 +45,36 @@ public class TestDefineArgument extends TestCase {
         assertTrue(arg.isActive(project));
     }
 
+    @Test
     public void testIsActive3() {
         DefineArgument arg = new DefineArgument();
         arg.setName("TEST");
         Project project = new Project();
         arg.setIf("cond");
-        assertTrue(!arg.isActive(project));
+        assertFalse(arg.isActive(project));
     }
 
+    @Test(expected = BuildException.class)
     public void testIsActive4() {
         DefineArgument arg = new DefineArgument();
         arg.setName("TEST");
         Project project = new Project();
         project.setProperty("cond", "false");
         arg.setIf("cond");
-        try {
-            boolean isActive = arg.isActive(project);
-        } catch (BuildException ex) {
-            return;
-        }
-        fail("Should throw exception for suspicious value");
+        boolean isActive = arg.isActive(project);
     }
 
+    @Test
     public void testIsActive5() {
         DefineArgument arg = new DefineArgument();
         arg.setName("TEST");
         Project project = new Project();
         project.setProperty("cond", "");
         arg.setUnless("cond");
-        assertTrue(!arg.isActive(project));
+        assertFalse(arg.isActive(project));
     }
 
+    @Test
     public void testIsActive6() {
         DefineArgument arg = new DefineArgument();
         arg.setName("TEST");
@@ -88,20 +83,17 @@ public class TestDefineArgument extends TestCase {
         assertTrue(arg.isActive(project));
     }
 
+    @Test(expected = BuildException.class)
     public void testIsActive7() {
         DefineArgument arg = new DefineArgument();
         arg.setName("TEST");
         Project project = new Project();
         project.setProperty("cond", "false");
         arg.setUnless("cond");
-        try {
-            boolean isActive = arg.isActive(project);
-        } catch (BuildException ex) {
-            return;
-        }
-        fail("Should throw exception for suspicious value");
+        boolean isActive = arg.isActive(project);
     }
 
+    @Test
     public void testIsActive8() {
         DefineArgument arg = new DefineArgument();
         arg.setName("TEST");
@@ -109,9 +101,10 @@ public class TestDefineArgument extends TestCase {
         project.setProperty("cond", "");
         arg.setIf("cond");
         arg.setUnless("cond");
-        assertTrue(!arg.isActive(project));
+        assertFalse(arg.isActive(project));
     }
 
+    @Test
     public void testMerge() {
         UndefineArgument[] base = new UndefineArgument[2];
         UndefineArgument[] specific = new UndefineArgument[2];
@@ -126,10 +119,10 @@ public class TestDefineArgument extends TestCase {
         UndefineArgument[] merged = UndefineArgument.merge(base, specific);
         assertEquals(3, merged.length);
         assertEquals("foo", merged[0].getName());
-        assertEquals(true, merged[0].isDefine());
+        assertTrue(merged[0].isDefine());
         assertEquals("hello", merged[1].getName());
-        assertEquals(true, merged[1].isDefine());
+        assertTrue(merged[1].isDefine());
         assertEquals("world", merged[2].getName());
-        assertEquals(false, merged[2].isDefine());
+        assertFalse(merged[2].isDefine());
     }
 }

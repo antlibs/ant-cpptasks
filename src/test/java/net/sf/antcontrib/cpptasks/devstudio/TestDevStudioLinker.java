@@ -19,6 +19,9 @@ package net.sf.antcontrib.cpptasks.devstudio;
 import net.sf.antcontrib.cpptasks.compiler.AbstractProcessor;
 import net.sf.antcontrib.cpptasks.compiler.TestAbstractLinker;
 import org.apache.tools.ant.taskdefs.condition.Os;
+import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test for Microsoft Developer Studio linker
@@ -27,15 +30,12 @@ import org.apache.tools.ant.taskdefs.condition.Os;
  * </p>
  */
 public class TestDevStudioLinker extends TestAbstractLinker {
-    public TestDevStudioLinker(String name) {
-        super(name);
-    }
-
     protected AbstractProcessor create() {
         return DevStudioLinker.getInstance();
     }
 
-    public void testGetIdentfier() {
+    @Test
+    public void testGetIdentifier() {
         if (!Os.isFamily("windows")) {
             return;
         }

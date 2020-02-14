@@ -16,25 +16,17 @@
  */
 package net.sf.antcontrib.cpptasks.gcc;
 
+import org.junit.Test;
+
 import java.util.Vector;
 
-import junit.framework.TestCase;
-
+import static org.junit.Assert.assertEquals;
 /**
  * Tests for gcc compatible compilers
  *
  * @author Curt Arnold
  */
-public abstract class TestGccCompatibleCCompiler extends TestCase {
-    /**
-     * Constructor
-     *
-     * @param name test case name
-     */
-    public TestGccCompatibleCCompiler(String name) {
-        super(name);
-    }
-
+public abstract class TestGccCompatibleCCompiler {
     /**
      * Compiler creation method
      * <p>
@@ -48,6 +40,7 @@ public abstract class TestGccCompatibleCCompiler extends TestCase {
     /**
      * Tests command lines switches for warning = 0
      */
+   @Test
     public void testWarningLevel0() {
         GccCompatibleCCompiler compiler = create();
         Vector<String> args = new Vector<String>();
@@ -59,6 +52,7 @@ public abstract class TestGccCompatibleCCompiler extends TestCase {
     /**
      * Tests command lines switches for warning = 1
      */
+    @Test
     public void testWarningLevel1() {
         GccCompatibleCCompiler compiler = create();
         Vector<String> args = new Vector<String>();
@@ -69,6 +63,7 @@ public abstract class TestGccCompatibleCCompiler extends TestCase {
     /**
      * Tests command lines switches for warning = 2
      */
+    @Test
     public void testWarningLevel2() {
         GccCompatibleCCompiler compiler = create();
         Vector<String> args = new Vector<String>();
@@ -90,6 +85,7 @@ public abstract class TestGccCompatibleCCompiler extends TestCase {
     /**
      * Tests command lines switches for warning = 4
      */
+    @Test
     public void testWarningLevel4() {
         GccCompatibleCCompiler compiler = create();
         Vector<String> args = new Vector<String>();
@@ -102,6 +98,7 @@ public abstract class TestGccCompatibleCCompiler extends TestCase {
     /**
      * Tests command lines switches for warning = 5
      */
+    @Test
     public void testWarningLevel5() {
         GccCompatibleCCompiler compiler = create();
         Vector<String> args = new Vector<String>();

@@ -16,26 +16,35 @@
  */
 package net.sf.antcontrib.cpptasks;
 
-import java.io.File;
-import java.io.IOException;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.channels.FileChannel;
 
 /**
  * DependencyTable tests
  *
- * @author curta
+ * @author Curt Arnold
  */
 public class TestDependencyTable extends TestXMLConsumer {
-    /**
-     * Constructor
-     *
-     * @param testName test name
-     */
-    public TestDependencyTable(String testName) {
-        super(testName);
+    @Rule
+    public TemporaryFolder temporaryFolder = new TemporaryFolder();
+
+    private File dependencyFile;
+
+    @Before
+    public void setUp() throws IOException {
+        dependencyFile = temporaryFolder.newFile("dependencies.xml");
     }
 
     /**
@@ -45,17 +54,11 @@ public class TestDependencyTable extends TestXMLConsumer {
      * @throws ParserConfigurationException if parser configuration is wrong
      * @throws SAXException if parser input is incorrect
      */
-    public void testLoadOpenshore() throws IOException,
-            ParserConfigurationException, SAXException {
-        String tmpDir = System.getProperty("java.io.tmpdir");
-        try {
-            copyResourceToTmpDir("openshore/dependencies.xml",
-                    "dependencies.xml");
-            DependencyTable dependencies = new DependencyTable(new File(tmpDir));
-            dependencies.load();
-        } finally {
-            deleteTmpFile("dependencies.xml");
-        }
+    @Test
+    public void testLoadOpenshore() throws IOException, ParserConfigurationException, SAXException, URISyntaxException {
+        copyResource("openshore/dependencies.xml", dependencyFile);
+        DependencyTable dependencies = new DependencyTable(temporaryFolder.getRoot());
+        dependencies.load();
     }
 
     /**
@@ -65,16 +68,10 @@ public class TestDependencyTable extends TestXMLConsumer {
      * @throws ParserConfigurationException if parser configuration is wrong
      * @throws SAXException if parser input is incorrect
      */
-    public void testLoadXerces() throws IOException,
-            ParserConfigurationException, SAXException {
-        String tmpDir = System.getProperty("java.io.tmpdir");
-        try {
-            copyResourceToTmpDir("xerces-c/dependencies.xml",
-                    "dependencies.xml");
-            DependencyTable dependencies = new DependencyTable(new File(tmpDir));
-            dependencies.load();
-        } finally {
-            deleteTmpFile("dependencies.xml");
-        }
+    @Test
+    public void testLoadXerces() throws IOException, ParserConfigurationException, SAXException, URISyntaxException {
+        copyResource("xerces-c/dependencies.xml", dependencyFile);
+        DependencyTable dependencies = new DependencyTable(temporaryFolder.getRoot());
+        dependencies.load();
     }
 }

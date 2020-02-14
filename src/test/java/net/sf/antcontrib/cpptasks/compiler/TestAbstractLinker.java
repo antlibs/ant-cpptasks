@@ -16,14 +16,17 @@
  */
 package net.sf.antcontrib.cpptasks.compiler;
 
-import java.io.File;
-
 import net.sf.antcontrib.cpptasks.CCTask;
 import net.sf.antcontrib.cpptasks.LinkerDef;
 import net.sf.antcontrib.cpptasks.ProcessorDef;
-import net.sf.antcontrib.cpptasks.types.LibraryTypeEnum;
 import net.sf.antcontrib.cpptasks.TargetDef;
 import net.sf.antcontrib.cpptasks.VersionInfo;
+import net.sf.antcontrib.cpptasks.types.LibraryTypeEnum;
+import org.junit.Test;
+
+import java.io.File;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test for abstract compiler class
@@ -75,14 +78,11 @@ public class TestAbstractLinker extends TestAbstractProcessor {
         }
     }
 
-    public TestAbstractLinker(String name) {
-        super(name);
-    }
-
     protected AbstractProcessor create() {
         return new DummyAbstractLinker();
     }
 
+    @Test
     public void testBid() {
         AbstractProcessor compiler = create();
         int bid = compiler.bid("c:/foo\\bar\\hello.obj");

@@ -16,31 +16,24 @@
  */
 package net.sf.antcontrib.cpptasks;
 
-import java.io.File;
-import java.io.IOException;
-
-import junit.framework.TestCase;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.ProcessorConfiguration;
 import net.sf.antcontrib.cpptasks.types.ConditionalFileSet;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.Reference;
+import org.junit.Test;
+
+import java.io.File;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests for ProcessorDef.
  */
-public abstract class TestProcessorDef extends TestCase {
-
-    /**
-     * Constructor.
-     *
-     * @param name test name
-     */
-    public TestProcessorDef(final String name) {
-        super(name);
-    }
-
+public abstract class TestProcessorDef {
     /**
      * Creates a new processor definition.
      *
@@ -51,6 +44,7 @@ public abstract class TestProcessorDef extends TestCase {
     /**
      * Tests that isActive returns true when "if" references a set property.
      */
+    @Test
     public final void testIsActive2() {
         ProcessorDef arg = create();
         Project project = new Project();
@@ -63,48 +57,47 @@ public abstract class TestProcessorDef extends TestCase {
     /**
      * Tests that isActive returns false when "if" references an unset property.
      */
+    @Test
     public final void testIsActive3() {
         ProcessorDef arg = create();
         arg.setProject(new Project());
         arg.setIf("cond");
-        assertTrue(!arg.isActive());
+        assertFalse(arg.isActive());
     }
 
     /**
      * Tests that evaluating isActive when "if" references a property with the
      * value "false" throws an exception to warn of a suspicious value.
      */
+    @Test(expected = BuildException.class)
     public final void testIsActive4() {
         ProcessorDef arg = create();
         Project project = new Project();
         project.setProperty("cond", "false");
         arg.setProject(project);
         arg.setIf("cond");
-        try {
-            boolean isActive = arg.isActive();
-        } catch (BuildException ex) {
-            return;
-        }
-        fail("Should throw exception for suspicious value");
+        boolean isActive = arg.isActive();
     }
 
     /**
      * Tests that isActive returns false when "unless" references a set
      * property.
      */
+    @Test
     public final void testIsActive5() {
         ProcessorDef arg = create();
         Project project = new Project();
         project.setProperty("cond", "");
         arg.setProject(project);
         arg.setUnless("cond");
-        assertTrue(!arg.isActive());
+        assertFalse(arg.isActive());
     }
 
     /**
      * Tests that isActive returns true when "unless" references an unset
      * property.
      */
+    @Test
     public final void testIsActive6() {
         ProcessorDef arg = create();
         arg.setProject(new Project());
@@ -116,24 +109,21 @@ public abstract class TestProcessorDef extends TestCase {
      * Tests that evaluating isActive when "unless" references a property with
      * the value "false" throws an exception to warn of a suspicious value.
      */
+    @Test(expected = BuildException.class)
     public final void testIsActive7() {
         ProcessorDef arg = create();
         Project project = new Project();
         project.setProperty("cond", "false");
         arg.setProject(project);
         arg.setUnless("cond");
-        try {
-            boolean isActive = arg.isActive();
-        } catch (BuildException ex) {
-            return;
-        }
-        fail("Should throw exception for suspicious value");
+        boolean isActive = arg.isActive();
     }
 
     /**
      * Tests if a processor is active when both "if" and "unless" are specified
      * and the associated properties are set.
      */
+    @Test
     public final void testIsActive8() {
         ProcessorDef arg = create();
         Project project = new Project();
@@ -141,7 +131,7 @@ public abstract class TestProcessorDef extends TestCase {
         arg.setProject(project);
         arg.setIf("cond");
         arg.setUnless("cond");
-        assertTrue(!arg.isActive());
+        assertFalse(arg.isActive());
     }
 
     /**
@@ -157,7 +147,7 @@ public abstract class TestProcessorDef extends TestCase {
         project.addReference("base", baseProcessor);
         ProcessorDef extendedLinker = create();
         extendedLinker.setProject(project);
-        extendedLinker.setExtends(new Reference("base"));
+        extendedLinker.setExtends(new Reference(project, "base"));
         return extendedLinker;
     }
 
@@ -205,36 +195,39 @@ public abstract class TestProcessorDef extends TestCase {
      * Tests that the if attribute in the base processor is effective when
      * evaluating if an extending processor is active.
      */
+    @Test
     public final void testExtendsIf() {
         ProcessorDef baseLinker = create();
         baseLinker.setIf("bogus");
         ProcessorDef extendedLinker = createExtendedProcessorDef(baseLinker);
         boolean isActive = extendedLinker.isActive();
-        assertEquals(false, isActive);
+        assertFalse(isActive);
         baseLinker.getProject().setProperty("bogus", "");
         isActive = extendedLinker.isActive();
-        assertEquals(true, isActive);
+        assertTrue(isActive);
     }
 
     /**
      * Tests that the unless attribute in the base processor is effective when
      * evaluating if an extending processor is active.
      */
+    @Test
     public final void testExtendsUnless() {
         ProcessorDef baseLinker = create();
         baseLinker.setUnless("bogus");
         ProcessorDef extendedLinker = createExtendedProcessorDef(baseLinker);
         boolean isActive = extendedLinker.isActive();
-        assertEquals(true, isActive);
+        assertTrue(isActive);
         baseLinker.getProject().setProperty("bogus", "");
         isActive = extendedLinker.isActive();
-        assertEquals(false, isActive);
+        assertFalse(isActive);
     }
 
     /**
      * Tests that the debug attribute in the base processor is effective when
      * creating the command line for a processor that extends it.
      */
+    @Test
     public final void testExtendsDebug() {
         ProcessorDef baseLinker = create();
         baseLinker.setDebug(true);
@@ -254,6 +247,6 @@ public abstract class TestProcessorDef extends TestCase {
         ProcessorDef extendedLinker = createExtendedProcessorDef(baseProcessor);
         ProcessorConfiguration config = getConfiguration(extendedLinker);
         boolean rebuild = config.getRebuild();
-        assertEquals(true, rebuild);
+        assertTrue(rebuild);
     }
 }
