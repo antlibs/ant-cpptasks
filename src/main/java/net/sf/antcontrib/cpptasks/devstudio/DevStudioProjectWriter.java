@@ -17,15 +17,14 @@
 package net.sf.antcontrib.cpptasks.devstudio;
 
 import net.sf.antcontrib.cpptasks.CCTask;
-import net.sf.antcontrib.cpptasks.CUtil;
 import net.sf.antcontrib.cpptasks.TargetInfo;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineCompilerConfiguration;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineLinkerConfiguration;
 import net.sf.antcontrib.cpptasks.compiler.ProcessorConfiguration;
+import net.sf.antcontrib.cpptasks.ide.CommentDef;
 import net.sf.antcontrib.cpptasks.ide.DependencyDef;
 import net.sf.antcontrib.cpptasks.ide.ProjectDef;
 import net.sf.antcontrib.cpptasks.ide.ProjectWriter;
-import net.sf.antcontrib.cpptasks.ide.CommentDef;
 import org.apache.tools.ant.BuildException;
 
 import java.io.BufferedWriter;
@@ -40,6 +39,10 @@ import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
+
+import static net.sf.antcontrib.cpptasks.CUtil.getRelativePath;
+import static net.sf.antcontrib.cpptasks.CUtil.isSystemPath;
+import static net.sf.antcontrib.cpptasks.CUtil.toWindowsPath;
 
 /**
  * <p>
@@ -351,7 +354,7 @@ public final class DevStudioProjectWriter implements ProjectWriter {
             if (dep.getFile() != null) {
                 String projName = toProjectName(dep.getName());
                 projectDeps.add(projName);
-                String depProject = CUtil.toWindowsPath(CUtil.getRelativePath(basePath,
+                String depProject = toWindowsPath(getRelativePath(basePath,
                         new File(dep.getFile() + ".dsp")));
                 writeWorkspaceProject(writer, projName, depProject, dep.getDependsList());
             }
@@ -401,7 +404,7 @@ public final class DevStudioProjectWriter implements ProjectWriter {
                              final String basePath,
                              final File groupMember) throws IOException {
         writer.write("# Begin Source File\r\n\r\nSOURCE=");
-        String relativePath = CUtil.getRelativePath(basePath,
+        String relativePath = getRelativePath(basePath,
                 groupMember);
         //
         //  if relative path is just a name (hello.c) then
@@ -410,7 +413,7 @@ public final class DevStudioProjectWriter implements ProjectWriter {
                 && !relativePath.startsWith("\\")) {
             relativePath = ".\\" + relativePath;
         }
-        writer.write(CUtil.toWindowsPath(relativePath));
+        writer.write(toWindowsPath(relativePath));
         writer.write("\r\n# End Source File\r\n");
     }
 
@@ -523,8 +526,8 @@ public final class DevStudioProjectWriter implements ProjectWriter {
         File[] includePath = compilerConfig.getIncludePath();
         for (int i = 0; i < includePath.length; i++) {
             options.append(" /I \"");
-            String relPath = CUtil.getRelativePath(baseDir, includePath[i]);
-            options.append(CUtil.toWindowsPath(relPath));
+            String relPath = getRelativePath(baseDir, includePath[i]);
+            options.append(toWindowsPath(relPath));
             options.append('"');
         }
         Hashtable<String, String> optionMap = new Hashtable<String, String>();
@@ -647,19 +650,19 @@ public final class DevStudioProjectWriter implements ProjectWriter {
                         }
                     }
                     if (!fromDependency) {
-                        if (!CUtil.isSystemPath(linkSources[i])) {
-                            relPath = CUtil.getRelativePath(basePath, linkSources[i]);
+                        if (!isSystemPath(linkSources[i])) {
+                            relPath = getRelativePath(basePath, linkSources[i]);
                         }
                         //
                         //   if path has an embedded space then
                         //      must quote
                         if (relPath.indexOf(' ') > 0) {
                             options.append(" \"");
-                            options.append(CUtil.toWindowsPath(relPath));
+                            options.append(toWindowsPath(relPath));
                             options.append("\"");
                         } else {
                             options.append(' ');
-                            options.append(CUtil.toWindowsPath(relPath));
+                            options.append(toWindowsPath(relPath));
                         }
                     }
                 }

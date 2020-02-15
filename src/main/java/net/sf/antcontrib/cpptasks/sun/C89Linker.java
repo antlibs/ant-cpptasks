@@ -16,17 +16,18 @@
  */
 package net.sf.antcontrib.cpptasks.sun;
 
-import java.io.File;
-import java.util.Vector;
-
 import net.sf.antcontrib.cpptasks.CCTask;
-import net.sf.antcontrib.cpptasks.CUtil;
+import net.sf.antcontrib.cpptasks.VersionInfo;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineLinker;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 import net.sf.antcontrib.cpptasks.types.LibrarySet;
 import net.sf.antcontrib.cpptasks.types.LibraryTypeEnum;
-import net.sf.antcontrib.cpptasks.VersionInfo;
+
+import java.io.File;
+import java.util.Vector;
+
+import static net.sf.antcontrib.cpptasks.CUtil.getPathFromEnvironment;
 
 /**
  * Adapter for the Sun C89 Linker
@@ -109,7 +110,7 @@ public final class C89Linker extends CommandLineLinker {
     }
 
     public File[] getLibraryPath() {
-        return CUtil.getPathFromEnvironment("LIB", ";");
+        return getPathFromEnvironment("LIB", ";");
     }
 
     public String[] getLibraryPatterns(String[] libnames, LibraryTypeEnum libType) {

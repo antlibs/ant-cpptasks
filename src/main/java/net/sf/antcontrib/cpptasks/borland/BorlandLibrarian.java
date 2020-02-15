@@ -16,19 +16,19 @@
  */
 package net.sf.antcontrib.cpptasks.borland;
 
+import net.sf.antcontrib.cpptasks.CCTask;
+import net.sf.antcontrib.cpptasks.compiler.CommandLineLinker;
+import net.sf.antcontrib.cpptasks.compiler.CommandLineLinkerConfiguration;
+import net.sf.antcontrib.cpptasks.compiler.LinkType;
+import net.sf.antcontrib.cpptasks.compiler.Linker;
+import net.sf.antcontrib.cpptasks.types.LibraryTypeEnum;
+import org.apache.tools.ant.BuildException;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Vector;
 
-import org.apache.tools.ant.BuildException;
-
-import net.sf.antcontrib.cpptasks.CUtil;
-import net.sf.antcontrib.cpptasks.compiler.CommandLineLinker;
-import net.sf.antcontrib.cpptasks.compiler.LinkType;
-import net.sf.antcontrib.cpptasks.compiler.Linker;
-import net.sf.antcontrib.cpptasks.CCTask;
-import net.sf.antcontrib.cpptasks.compiler.CommandLineLinkerConfiguration;
-import net.sf.antcontrib.cpptasks.types.LibraryTypeEnum;
+import static net.sf.antcontrib.cpptasks.CUtil.getPathFromEnvironment;
 
 /**
  * Adapter for the Borland(r) tlib Librarian
@@ -81,7 +81,7 @@ public class BorlandLibrarian extends CommandLineLinker {
     }
 
     public File[] getLibraryPath() {
-        return CUtil.getPathFromEnvironment("LIB", ";");
+        return getPathFromEnvironment("LIB", ";");
     }
 
     public String[] getLibraryPatterns(String[] libnames, LibraryTypeEnum libType) {

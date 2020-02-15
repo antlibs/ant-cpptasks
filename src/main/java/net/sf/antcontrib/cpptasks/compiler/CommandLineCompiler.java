@@ -16,24 +16,23 @@
  */
 package net.sf.antcontrib.cpptasks.compiler;
 
+import net.sf.antcontrib.cpptasks.CCTask;
+import net.sf.antcontrib.cpptasks.CUtil;
+import net.sf.antcontrib.cpptasks.CompilerDef;
+import net.sf.antcontrib.cpptasks.OptimizationEnum;
+import net.sf.antcontrib.cpptasks.ProcessorDef;
+import net.sf.antcontrib.cpptasks.ProcessorParam;
+import net.sf.antcontrib.cpptasks.TargetDef;
+import net.sf.antcontrib.cpptasks.VersionInfo;
+import net.sf.antcontrib.cpptasks.types.CommandLineArgument;
+import net.sf.antcontrib.cpptasks.types.UndefineArgument;
+import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.types.Environment;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Vector;
-
-import net.sf.antcontrib.cpptasks.CCTask;
-import net.sf.antcontrib.cpptasks.CUtil;
-import net.sf.antcontrib.cpptasks.CompilerDef;
-import net.sf.antcontrib.cpptasks.ProcessorDef;
-import net.sf.antcontrib.cpptasks.ProcessorParam;
-import net.sf.antcontrib.cpptasks.types.CommandLineArgument;
-import net.sf.antcontrib.cpptasks.types.UndefineArgument;
-import net.sf.antcontrib.cpptasks.TargetDef;
-import net.sf.antcontrib.cpptasks.VersionInfo;
-import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.types.Environment;
-import net.sf.antcontrib.cpptasks.OptimizationEnum;
-
 /**
  * An abstract Compiler implementation which uses an external program to
  * perform the compile.
@@ -57,7 +56,7 @@ public abstract class CommandLineCompiler extends AbstractCompiler {
         super(sourceExtensions, headerExtensions, outputSuffix);
         this.command = command;
         if (libtool && libtoolCompiler != null) {
-            throw new java.lang.IllegalArgumentException("libtoolCompiler should be null when libtool is true");
+            throw new IllegalArgumentException("libtoolCompiler should be null when libtool is true");
         }
         this.libtool = libtool;
         this.libtoolCompiler = libtoolCompiler;

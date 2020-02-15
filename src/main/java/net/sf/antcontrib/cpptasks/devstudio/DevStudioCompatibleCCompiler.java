@@ -16,17 +16,19 @@
  */
 package net.sf.antcontrib.cpptasks.devstudio;
 
-import java.io.File;
-import java.util.Vector;
-
-import net.sf.antcontrib.cpptasks.CUtil;
+import net.sf.antcontrib.cpptasks.OptimizationEnum;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineCompilerConfiguration;
 import net.sf.antcontrib.cpptasks.compiler.CompilerConfiguration;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.PrecompilingCommandLineCCompiler;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.types.Environment;
-import net.sf.antcontrib.cpptasks.OptimizationEnum;
+
+import java.io.File;
+import java.util.Vector;
+
+import static net.sf.antcontrib.cpptasks.CUtil.getBasename;
+import static net.sf.antcontrib.cpptasks.CUtil.getPathFromEnvironment;
 
 /**
  * An abstract base class for compilers that are basically command line
@@ -109,7 +111,7 @@ public abstract class DevStudioCompatibleCCompiler extends PrecompilingCommandLi
     protected CompilerConfiguration createPrecompileGeneratingConfig(
             CommandLineCompilerConfiguration baseConfig, File prototype,
             String lastInclude) {
-        String[] additionalArgs = new String[]{"/Fp" + CUtil.getBasename(prototype) + ".pch", "/Yc"};
+        String[] additionalArgs = new String[]{"/Fp" + getBasename(prototype) + ".pch", "/Yc"};
         return new CommandLineCompilerConfiguration(baseConfig, additionalArgs,
                 null, true);
     }
@@ -117,7 +119,7 @@ public abstract class DevStudioCompatibleCCompiler extends PrecompilingCommandLi
     protected CompilerConfiguration createPrecompileUsingConfig(
             CommandLineCompilerConfiguration baseConfig, File prototype,
             String lastInclude, String[] exceptFiles) {
-        String[] additionalArgs = new String[]{"/Fp" + CUtil.getBasename(prototype) + ".pch",
+        String[] additionalArgs = new String[]{"/Fp" + getBasename(prototype) + ".pch",
                 "/Yu" + lastInclude};
         return new CommandLineCompilerConfiguration(baseConfig, additionalArgs,
                 exceptFiles, false);
@@ -129,7 +131,7 @@ public abstract class DevStudioCompatibleCCompiler extends PrecompilingCommandLi
     }
 
     protected File[] getEnvironmentIncludePath() {
-        return CUtil.getPathFromEnvironment("INCLUDE", ";");
+        return getPathFromEnvironment("INCLUDE", ";");
     }
 
     protected String getIncludeDirSwitch(String includeDir) {

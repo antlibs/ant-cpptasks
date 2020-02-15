@@ -47,7 +47,7 @@ public class ConditionalPath extends Path {
      * @param p Project
      * @return boolean
      */
-    public boolean isActive(org.apache.tools.ant.Project p) throws BuildException {
+    public boolean isActive(Project p) throws BuildException {
         return CUtil.isActive(p, ifCond, unlessCond);
     }
 

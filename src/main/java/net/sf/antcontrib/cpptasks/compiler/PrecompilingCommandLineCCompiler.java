@@ -16,11 +16,11 @@
  */
 package net.sf.antcontrib.cpptasks.compiler;
 
-import java.io.File;
-
 import net.sf.antcontrib.cpptasks.parser.CParser;
 import net.sf.antcontrib.cpptasks.parser.Parser;
 import org.apache.tools.ant.types.Environment;
+
+import java.io.File;
 
 /**
  * A command line C compiler that can utilize precompilation of header files

@@ -16,10 +16,10 @@
  */
 package net.sf.antcontrib.cpptasks.gcc;
 
-import java.io.File;
-
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
+
+import java.io.File;
 
 /**
  * Adapter for the 'ld' linker

@@ -16,11 +16,11 @@
  */
 package net.sf.antcontrib.cpptasks;
 
-import java.io.File;
-import java.io.IOException;
-
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.types.DataType;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * <p>
@@ -73,8 +73,7 @@ public final class DistributerMap extends DataType {
      * Required by documentation generator.
      */
     public void execute() {
-        throw new org.apache.tools.ant.BuildException(
-                "Not an actual task, but looks like one for documentation purposes");
+        throw new BuildException(CUtil.STANDARD_EXCUSE);
     }
 
     /**

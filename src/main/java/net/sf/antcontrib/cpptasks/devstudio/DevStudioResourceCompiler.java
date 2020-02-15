@@ -16,19 +16,19 @@
  */
 package net.sf.antcontrib.cpptasks.devstudio;
 
-import java.io.File;
-import java.util.Vector;
-
-import net.sf.antcontrib.cpptasks.CUtil;
+import net.sf.antcontrib.cpptasks.OptimizationEnum;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineCompiler;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 import net.sf.antcontrib.cpptasks.compiler.Processor;
 import net.sf.antcontrib.cpptasks.parser.CParser;
 import net.sf.antcontrib.cpptasks.parser.Parser;
-import net.sf.antcontrib.cpptasks.OptimizationEnum;
-
 import org.apache.tools.ant.types.Environment;
+
+import java.io.File;
+import java.util.Vector;
+
+import static net.sf.antcontrib.cpptasks.CUtil.getPathFromEnvironment;
 
 /**
  * Adapter for the Microsoft (r) Windows 32 Resource Compiler
@@ -91,7 +91,7 @@ public final class DevStudioResourceCompiler extends CommandLineCompiler {
     }
 
     protected File[] getEnvironmentIncludePath() {
-        return CUtil.getPathFromEnvironment("INCLUDE", ";");
+        return getPathFromEnvironment("INCLUDE", ";");
     }
 
     protected String getIncludeDirSwitch(String includeDir) {

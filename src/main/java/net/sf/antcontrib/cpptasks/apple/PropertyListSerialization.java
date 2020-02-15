@@ -22,15 +22,15 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
 import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.sax.TransformerHandler;
+import javax.xml.transform.stream.StreamResult;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.io.File;
-import java.io.IOException;
-import java.io.FileOutputStream;
 
 /**
  * Static class that provides methods to serialize

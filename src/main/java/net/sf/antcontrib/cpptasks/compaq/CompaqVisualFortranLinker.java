@@ -16,11 +16,11 @@
  */
 package net.sf.antcontrib.cpptasks.compaq;
 
-import java.util.Vector;
-
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 import net.sf.antcontrib.cpptasks.devstudio.DevStudioCompatibleLinker;
+
+import java.util.Vector;
 
 /**
  * Adapter for the Compaq(r) Visual Fortran linker.

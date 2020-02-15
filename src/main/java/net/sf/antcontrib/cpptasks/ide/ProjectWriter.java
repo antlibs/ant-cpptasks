@@ -16,14 +16,15 @@
  */
 package net.sf.antcontrib.cpptasks.ide;
 
+import net.sf.antcontrib.cpptasks.CCTask;
+import net.sf.antcontrib.cpptasks.TargetInfo;
+import org.xml.sax.SAXException;
+
+import javax.xml.transform.TransformerConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.List;
-
-import net.sf.antcontrib.cpptasks.CCTask;
-import net.sf.antcontrib.cpptasks.TargetInfo;
-import org.xml.sax.SAXException;
 
 /**
  * Project writer interface.
@@ -42,11 +43,12 @@ public interface ProjectWriter {
      * @param linkTarget link target
      * @throws IOException  if I/O error is encountered
      * @throws SAXException if I/O error during XML serialization
+     * @throws TransformerConfigurationException if XML transformer is misconfigured
      */
     void writeProject(final File baseName,
                       final CCTask task,
                       final ProjectDef projectDef,
                       final List<File> files,
                       final Hashtable<String, TargetInfo> targets,
-                      final TargetInfo linkTarget) throws IOException, SAXException;
+                      final TargetInfo linkTarget) throws IOException, SAXException, TransformerConfigurationException;
 }

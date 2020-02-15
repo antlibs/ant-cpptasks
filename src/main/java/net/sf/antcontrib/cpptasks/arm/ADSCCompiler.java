@@ -16,15 +16,16 @@
  */
 package net.sf.antcontrib.cpptasks.arm;
 
-import java.io.File;
-import java.util.Vector;
-
-import net.sf.antcontrib.cpptasks.CUtil;
 import net.sf.antcontrib.cpptasks.OptimizationEnum;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineCCompiler;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 import org.apache.tools.ant.types.Environment;
+
+import java.io.File;
+import java.util.Vector;
+
+import static net.sf.antcontrib.cpptasks.CUtil.getPathFromEnvironment;
 
 /**
  * <p>
@@ -184,7 +185,7 @@ public class ADSCCompiler extends CommandLineCCompiler {
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineCompiler#getEnvironmentIncludePath()
      */
     protected File[] getEnvironmentIncludePath() {
-        return CUtil.getPathFromEnvironment("ARMINC", ";");
+        return getPathFromEnvironment("ARMINC", ";");
     }
 
     /**

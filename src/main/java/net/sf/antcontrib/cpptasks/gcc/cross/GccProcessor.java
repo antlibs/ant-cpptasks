@@ -16,6 +16,8 @@
  */
 package net.sf.antcontrib.cpptasks.gcc.cross;
 
+import net.sf.antcontrib.cpptasks.compiler.CaptureStreamHandler;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -24,8 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-import net.sf.antcontrib.cpptasks.CUtil;
-import net.sf.antcontrib.cpptasks.compiler.CaptureStreamHandler;
+import static net.sf.antcontrib.cpptasks.CUtil.getExecutableLocation;
 
 /**
  * A add-in class for Gcc processors
@@ -60,7 +61,7 @@ public class GccProcessor {
         if (names == null) {
             throw new NullPointerException("names");
         }
-        File gccDir = CUtil.getExecutableLocation("gcc.exe");
+        File gccDir = getExecutableLocation("gcc.exe");
         if (gccDir != null) {
             String prefix = gccDir.getAbsolutePath() + "/..";
             StringBuffer buf = new StringBuffer();
@@ -117,7 +118,7 @@ public class GccProcessor {
      */
     public static String[] getSpecs() {
         if (specs == null) {
-            File gccParent = CUtil.getExecutableLocation("gcc.exe");
+            File gccParent = getExecutableLocation("gcc.exe");
             if (gccParent != null) {
                 //
                 //  build a relative path like

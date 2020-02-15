@@ -16,8 +16,6 @@
  */
 package net.sf.antcontrib.cpptasks.types;
 
-import java.io.File;
-
 import net.sf.antcontrib.cpptasks.CUtil;
 import net.sf.antcontrib.cpptasks.FileVisitor;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
@@ -27,6 +25,8 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.DataType;
 import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.types.PatternSet;
+
+import java.io.File;
 
 /**
  * <p>
@@ -57,9 +57,8 @@ public class LibrarySet extends DataType {
         libnames = new String[0];
     }
 
-    public void execute() throws org.apache.tools.ant.BuildException {
-        throw new org.apache.tools.ant.BuildException(
-                "Not an actual task, but looks like one for documentation purposes");
+    public void execute() throws BuildException {
+        throw new BuildException(CUtil.STANDARD_EXCUSE);
     }
 
     /**
@@ -120,7 +119,7 @@ public class LibrarySet extends DataType {
      * @param p Project
      * @return boolean
      */
-    public boolean isActive(final org.apache.tools.ant.Project p) {
+    public boolean isActive(final Project p) {
         if (p == null) {
             throw new NullPointerException("p");
         }

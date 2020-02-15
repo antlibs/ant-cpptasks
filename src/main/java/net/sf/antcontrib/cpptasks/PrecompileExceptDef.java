@@ -16,10 +16,10 @@
  */
 package net.sf.antcontrib.cpptasks;
 
-import java.io.File;
-
 import net.sf.antcontrib.cpptasks.types.ConditionalFileSet;
 import org.apache.tools.ant.BuildException;
+
+import java.io.File;
 
 /**
  * <p>
@@ -55,9 +55,8 @@ public final class PrecompileExceptDef {
         owner.appendExceptFileSet(exceptSet);
     }
 
-    public void execute() throws org.apache.tools.ant.BuildException {
-        throw new org.apache.tools.ant.BuildException(
-                "Not an actual task, but looks like one for documentation purposes");
+    public void execute() throws BuildException {
+        throw new BuildException(CUtil.STANDARD_EXCUSE);
     }
 
     /**

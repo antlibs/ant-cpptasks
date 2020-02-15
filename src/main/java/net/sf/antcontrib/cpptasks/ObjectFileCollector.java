@@ -16,11 +16,11 @@
  */
 package net.sf.antcontrib.cpptasks;
 
-import java.io.File;
-import java.util.Vector;
-
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 import org.apache.tools.ant.BuildException;
+
+import java.io.File;
+import java.util.Vector;
 
 /**
  * Collects object files for the link step.

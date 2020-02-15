@@ -16,12 +16,12 @@
  */
 package net.sf.antcontrib.cpptasks.compiler;
 
+import org.apache.tools.ant.taskdefs.Execute;
+import org.apache.tools.ant.taskdefs.ExecuteStreamHandler;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
-import org.apache.tools.ant.taskdefs.Execute;
-import org.apache.tools.ant.taskdefs.ExecuteStreamHandler;
 
 /**
  * Implements ExecuteStreamHandler to capture the output of a Execute to an

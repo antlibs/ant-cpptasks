@@ -16,17 +16,16 @@
  */
 package net.sf.antcontrib.cpptasks.gcc;
 
-import java.io.File;
-import java.util.Vector;
-
 import net.sf.antcontrib.cpptasks.CCTask;
+import net.sf.antcontrib.cpptasks.VersionInfo;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineLinker;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineLinkerConfiguration;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
-import net.sf.antcontrib.cpptasks.VersionInfo;
 import net.sf.antcontrib.cpptasks.types.LibraryTypeEnum;
-
 import org.apache.tools.ant.BuildException;
+
+import java.io.File;
+import java.util.Vector;
 
 /**
  * Adapter for the "ar" tool

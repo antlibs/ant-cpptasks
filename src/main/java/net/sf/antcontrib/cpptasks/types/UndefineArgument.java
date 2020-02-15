@@ -16,10 +16,11 @@
  */
 package net.sf.antcontrib.cpptasks.types;
 
-import java.util.Vector;
-
 import net.sf.antcontrib.cpptasks.CUtil;
 import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Project;
+
+import java.util.Vector;
 
 /**
  * <p>
@@ -94,9 +95,8 @@ public class UndefineArgument {
         this.define = isDefine;
     }
 
-    public void execute() throws org.apache.tools.ant.BuildException {
-        throw new org.apache.tools.ant.BuildException(
-                "Not an actual task, but looks like one for documentation purposes");
+    public void execute() throws BuildException {
+        throw new BuildException(CUtil.STANDARD_EXCUSE);
     }
 
     /**
@@ -125,7 +125,7 @@ public class UndefineArgument {
      * @return boolean
      * @throws BuildException throws build exception if name is not set
      */
-    public final boolean isActive(org.apache.tools.ant.Project p) throws BuildException {
+    public final boolean isActive(Project p) throws BuildException {
         if (name == null) {
             throw new BuildException("<define> is missing name attribute");
         }

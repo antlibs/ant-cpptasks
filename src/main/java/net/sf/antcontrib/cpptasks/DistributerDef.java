@@ -16,6 +16,7 @@
  */
 package net.sf.antcontrib.cpptasks;
 
+import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.types.DataType;
 import org.apache.tools.ant.types.Reference;
 
@@ -72,8 +73,7 @@ public final class DistributerDef extends DataType {
      * Required by documentation generator.
      */
     public void execute() {
-        throw new org.apache.tools.ant.BuildException(
-                "Not an actual task, but looks like one for documentation purposes");
+        throw new BuildException(CUtil.STANDARD_EXCUSE);
     }
 
     /**

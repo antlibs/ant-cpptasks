@@ -16,6 +16,14 @@
  */
 package net.sf.antcontrib.cpptasks.compiler;
 
+import net.sf.antcontrib.cpptasks.CCTask;
+import net.sf.antcontrib.cpptasks.CompilerDef;
+import net.sf.antcontrib.cpptasks.DependencyInfo;
+import net.sf.antcontrib.cpptasks.ProcessorDef;
+import net.sf.antcontrib.cpptasks.TargetDef;
+import net.sf.antcontrib.cpptasks.VersionInfo;
+import net.sf.antcontrib.cpptasks.parser.Parser;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -23,14 +31,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.Vector;
 
-import net.sf.antcontrib.cpptasks.CCTask;
-import net.sf.antcontrib.cpptasks.CUtil;
-import net.sf.antcontrib.cpptasks.CompilerDef;
-import net.sf.antcontrib.cpptasks.DependencyInfo;
-import net.sf.antcontrib.cpptasks.ProcessorDef;
-import net.sf.antcontrib.cpptasks.parser.Parser;
-import net.sf.antcontrib.cpptasks.TargetDef;
-import net.sf.antcontrib.cpptasks.VersionInfo;
+import static net.sf.antcontrib.cpptasks.CUtil.FILETIME_EPSILON;
+import static net.sf.antcontrib.cpptasks.CUtil.getRelativePath;
 
 /**
  * An abstract compiler implementation.
@@ -65,9 +67,7 @@ public abstract class AbstractCompiler extends AbstractProcessor implements Comp
         int lastPeriod = sourceName.lastIndexOf('.');
         if (lastPeriod >= 0 && lastPeriod == sourceName.length() - 4) {
             String ext = sourceName.substring(lastPeriod).toUpperCase();
-            if (ext.equals(".DLL") || ext.equals(".TLB") || ext.equals(".RES")) {
-                return false;
-            }
+            return !ext.equals(".DLL") && !ext.equals(".TLB") && !ext.equals(".RES");
         }
         return true;
     }
@@ -149,7 +149,7 @@ public abstract class AbstractCompiler extends AbstractProcessor implements Comp
         } catch (IOException ex) {
             baseDirPath = baseDir.toString();
         }
-        String relativeSource = CUtil.getRelativePath(baseDirPath, source);
+        String relativeSource = getRelativePath(baseDirPath, source);
         String[] includes = emptyIncludeArray;
         if (canParse(source)) {
             Parser parser = createParser(source);
@@ -177,7 +177,7 @@ public abstract class AbstractCompiler extends AbstractProcessor implements Comp
                             //  this should be enough to require us to reparse
                             //     the file with the missing include for dependency
                             //     information without forcing a rebuild
-                            sourceLastModified += 2 * CUtil.FILETIME_EPSILON;
+                            sourceLastModified += 2 * FILETIME_EPSILON;
                         }
                     }
                 }
@@ -187,12 +187,12 @@ public abstract class AbstractCompiler extends AbstractProcessor implements Comp
         Vector<String> onIncludePath = new Vector<String>();
         Vector<String> onSysIncludePath = new Vector<String>();
         for (int i = 0; i < filesOnIncludePath.size(); i++) {
-            String relativeInclude = CUtil.getRelativePath(baseDirPath,
+            String relativeInclude = getRelativePath(baseDirPath,
                     filesOnIncludePath.elementAt(i));
             onIncludePath.add(relativeInclude);
         }
         for (int i = 0; i < filesOnSysIncludePath.size(); i++) {
-            String relativeInclude = CUtil.getRelativePath(baseDirPath,
+            String relativeInclude = getRelativePath(baseDirPath,
                     filesOnSysIncludePath.elementAt(i));
             onSysIncludePath.add(relativeInclude);
         }

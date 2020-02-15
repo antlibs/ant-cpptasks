@@ -18,6 +18,7 @@ package net.sf.antcontrib.cpptasks.compiler;
 
 import net.sf.antcontrib.cpptasks.CCTask;
 import net.sf.antcontrib.cpptasks.ProcessorDef;
+import net.sf.antcontrib.cpptasks.TargetDef;
 import net.sf.antcontrib.cpptasks.VersionInfo;
 import org.junit.Test;
 
@@ -39,7 +40,7 @@ public class TestAbstractProcessor {
         public ProcessorConfiguration createConfiguration(CCTask task, LinkType linkType,
                                                           ProcessorDef[] defaultProvider,
                                                           ProcessorDef specificProvider,
-                                                          net.sf.antcontrib.cpptasks.TargetDef targetPlatform,
+                                                          TargetDef targetPlatform,
                                                           VersionInfo versionInfo) {
             return null;
         }

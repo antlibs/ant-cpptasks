@@ -16,14 +16,15 @@
  */
 package net.sf.antcontrib.cpptasks.arm;
 
-import java.io.File;
-import java.util.Vector;
-
-import net.sf.antcontrib.cpptasks.CUtil;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineLinker;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 import net.sf.antcontrib.cpptasks.types.LibraryTypeEnum;
+
+import java.io.File;
+import java.util.Vector;
+
+import static net.sf.antcontrib.cpptasks.CUtil.getPathFromEnvironment;
 
 /**
  * Adapter for the ARM Linker
@@ -131,7 +132,7 @@ public class ADSLinker extends CommandLineLinker {
      * @see net.sf.antcontrib.cpptasks.compiler.Linker#getLibraryPath()
      */
     public File[] getLibraryPath() {
-        return CUtil.getPathFromEnvironment("ARMLIB", ";");
+        return getPathFromEnvironment("ARMLIB", ";");
     }
 
     /*

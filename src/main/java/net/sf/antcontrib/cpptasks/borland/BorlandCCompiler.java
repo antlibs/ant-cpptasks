@@ -16,18 +16,17 @@
  */
 package net.sf.antcontrib.cpptasks.borland;
 
-import java.io.File;
-import java.util.Vector;
-
+import net.sf.antcontrib.cpptasks.OptimizationEnum;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineCompilerConfiguration;
 import net.sf.antcontrib.cpptasks.compiler.CompilerConfiguration;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 import net.sf.antcontrib.cpptasks.compiler.PrecompilingCommandLineCCompiler;
 import net.sf.antcontrib.cpptasks.compiler.Processor;
-import net.sf.antcontrib.cpptasks.OptimizationEnum;
-
 import org.apache.tools.ant.types.Environment;
+
+import java.io.File;
+import java.util.Vector;
 
 /**
  * Adapter for the Borland(r) C/C++ compiler.

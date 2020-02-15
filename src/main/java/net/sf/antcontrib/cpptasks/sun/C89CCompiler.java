@@ -16,17 +16,18 @@
  */
 package net.sf.antcontrib.cpptasks.sun;
 
-import java.io.File;
-import java.util.Vector;
-
-import net.sf.antcontrib.cpptasks.CUtil;
+import net.sf.antcontrib.cpptasks.OptimizationEnum;
 import net.sf.antcontrib.cpptasks.compiler.AbstractCompiler;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineCCompiler;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 import net.sf.antcontrib.cpptasks.compiler.Processor;
-import net.sf.antcontrib.cpptasks.OptimizationEnum;
 import org.apache.tools.ant.types.Environment;
+
+import java.io.File;
+import java.util.Vector;
+
+import static net.sf.antcontrib.cpptasks.CUtil.getPathFromEnvironment;
 
 /**
  * Adapter for the Sun C89 C++ Compiler
@@ -93,7 +94,7 @@ public class C89CCompiler extends CommandLineCCompiler {
     }
 
     protected File[] getEnvironmentIncludePath() {
-        return CUtil.getPathFromEnvironment("INCLUDE", ":");
+        return getPathFromEnvironment("INCLUDE", ":");
     }
 
     protected String getIncludeDirSwitch(String includeDir) {

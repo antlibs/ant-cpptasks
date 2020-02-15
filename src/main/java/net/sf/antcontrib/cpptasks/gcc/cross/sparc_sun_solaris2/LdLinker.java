@@ -16,11 +16,11 @@
  */
 package net.sf.antcontrib.cpptasks.gcc.cross.sparc_sun_solaris2;
 
-import java.io.File;
-
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 import net.sf.antcontrib.cpptasks.gcc.AbstractLdLinker;
+
+import java.io.File;
 
 /**
  * Adapter for the 'ld' linker

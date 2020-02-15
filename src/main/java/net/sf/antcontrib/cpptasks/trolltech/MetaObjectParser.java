@@ -16,13 +16,13 @@
  */
 package net.sf.antcontrib.cpptasks.trolltech;
 
-import java.io.IOException;
-import java.io.Reader;
-
 import net.sf.antcontrib.cpptasks.parser.AbstractParser;
 import net.sf.antcontrib.cpptasks.parser.AbstractParserState;
 import net.sf.antcontrib.cpptasks.parser.LetterState;
 import net.sf.antcontrib.cpptasks.parser.WhitespaceOrLetterState;
+
+import java.io.IOException;
+import java.io.Reader;
 
 /**
  * Scans a source file for Q_OBJECT.

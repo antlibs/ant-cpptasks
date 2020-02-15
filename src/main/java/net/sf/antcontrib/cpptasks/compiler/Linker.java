@@ -16,12 +16,12 @@
  */
 package net.sf.antcontrib.cpptasks.compiler;
 
-import java.io.File;
-import java.io.IOException;
-
 import net.sf.antcontrib.cpptasks.TargetMatcher;
 import net.sf.antcontrib.cpptasks.VersionInfo;
 import net.sf.antcontrib.cpptasks.types.LibraryTypeEnum;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * A linker for executables, and static and dynamic libraries.

@@ -16,14 +16,15 @@
  */
 package net.sf.antcontrib.cpptasks.sun;
 
-import java.io.File;
-import java.util.Vector;
-
-import net.sf.antcontrib.cpptasks.CUtil;
+import net.sf.antcontrib.cpptasks.OptimizationEnum;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 import net.sf.antcontrib.cpptasks.gcc.GccCompatibleCCompiler;
-import net.sf.antcontrib.cpptasks.OptimizationEnum;
+
+import java.io.File;
+import java.util.Vector;
+
+import static net.sf.antcontrib.cpptasks.CUtil.getExecutableLocation;
 
 /**
  * Adapter for the Sun (r) Forte (tm) C++ compiler
@@ -114,7 +115,7 @@ public final class ForteCCCompiler extends GccCompatibleCCompiler {
 
     public File[] getEnvironmentIncludePath() {
         if (includePath == null) {
-            File ccLoc = CUtil.getExecutableLocation("CC");
+            File ccLoc = getExecutableLocation("CC");
             if (ccLoc != null) {
                 File compilerIncludeDir =
                         new File(new File(ccLoc, "../include").getAbsolutePath());

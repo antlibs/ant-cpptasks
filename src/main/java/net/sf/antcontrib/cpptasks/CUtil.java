@@ -16,19 +16,19 @@
  */
 package net.sf.antcontrib.cpptasks;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Hashtable;
-import java.util.StringTokenizer;
-import java.util.Vector;
-
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Execute;
 import org.apache.tools.ant.taskdefs.LogStreamHandler;
 import org.apache.tools.ant.types.Commandline;
 import org.apache.tools.ant.types.Environment;
-import org.apache.tools.ant.util.StringUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Hashtable;
+import java.util.Locale;
+import java.util.StringTokenizer;
+import java.util.Vector;
 
 /**
  * Some utilities used by the CC and Link tasks.
@@ -37,6 +37,9 @@ import org.apache.tools.ant.util.StringUtils;
  * @author Curt Arnold
  */
 public class CUtil {
+    public static final String STANDARD_EXCUSE
+            = "Not an actual task, but looks like one for documentation purposes";
+
     /**
      * A class that splits a white-space, comma-separated list into a String
      * array. Used for task attributes.
@@ -365,7 +368,7 @@ public class CUtil {
             }
             exe.setNewenvironment(newEnvironment);
             return exe.execute();
-        } catch (java.io.IOException exc) {
+        } catch (IOException exc) {
             throw new BuildException("Could not launch " + cmdline[0] + ": " + exc,
                     task.getLocation());
         }
@@ -494,19 +497,18 @@ public class CUtil {
         return time1 > (time2 + FILETIME_EPSILON);
     }
 
-
     public static String toWindowsPath(final String path) {
-        if (File.separatorChar != '\\' && path.indexOf(File.separatorChar) != -1) {
-            return StringUtils.replace(path, File.separator, "\\");
+        if (File.separatorChar == '\\' || path.indexOf(File.separatorChar) == -1) {
+            return path;
         }
-        return path;
+        return path.replace(File.separator, "\\");
     }
 
     public static String toUnixPath(final String path) {
-        if (File.separatorChar != '/' && path.indexOf(File.separatorChar) != -1) {
-            return StringUtils.replace(path, File.separator, "/");
+        if (File.separatorChar == '/' || path.indexOf(File.separatorChar) == -1) {
+            return path;
         }
-        return path;
+        return path.replace(File.separator, "/");
     }
 
     /**
@@ -518,7 +520,7 @@ public class CUtil {
      * and its path should be discarded.
      */
     public static boolean isSystemPath(final File source) {
-        String lcPath = source.getAbsolutePath().toLowerCase(java.util.Locale.US);
+        String lcPath = source.getAbsolutePath().toLowerCase(Locale.US);
         return lcPath.indexOf("platformsdk") != -1
                 || lcPath.indexOf("microsoft") != -1
                 || lcPath == "/usr/include"

@@ -16,14 +16,15 @@
  */
 package net.sf.antcontrib.cpptasks;
 
+import net.sf.antcontrib.cpptasks.types.ConditionalFileSet;
+import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.DirectoryScanner;
+import org.apache.tools.ant.Project;
+import org.apache.tools.ant.types.DataType;
+import org.apache.tools.ant.types.Reference;
+
 import java.io.File;
 import java.util.Vector;
-
-import net.sf.antcontrib.cpptasks.types.ConditionalFileSet;
-
-import org.apache.tools.ant.Project;
-import org.apache.tools.ant.DirectoryScanner;
-import org.apache.tools.ant.types.DataType;
 
 /**
  * <p>
@@ -69,9 +70,8 @@ public final class PrecompileDef extends DataType {
         return new PrecompileExceptDef(this);
     }
 
-    public void execute() throws org.apache.tools.ant.BuildException {
-        throw new org.apache.tools.ant.BuildException(
-                "Not an actual task, but looks like one for documentation purposes");
+    public void execute() throws BuildException {
+        throw new BuildException(CUtil.STANDARD_EXCUSE);
     }
 
     public String[] getExceptFiles() {
@@ -208,7 +208,7 @@ public final class PrecompileDef extends DataType {
      *
      * @param ref Reference to other element
      */
-    public void setRefid(org.apache.tools.ant.types.Reference ref) {
+    public void setRefid(Reference ref) {
         super.setRefid(ref);
     }
 

@@ -16,9 +16,10 @@
  */
 package net.sf.antcontrib.cpptasks.sun;
 
-import java.util.Vector;
 
 import net.sf.antcontrib.cpptasks.types.LibraryTypeEnum;
+
+import java.util.Vector;
 
 /**
  * A add-in class for Sun C89 compilers and linkers

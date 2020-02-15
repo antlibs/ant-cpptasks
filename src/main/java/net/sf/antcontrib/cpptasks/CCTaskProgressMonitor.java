@@ -16,10 +16,10 @@
  */
 package net.sf.antcontrib.cpptasks;
 
-import java.io.IOException;
-
 import net.sf.antcontrib.cpptasks.compiler.ProcessorConfiguration;
 import net.sf.antcontrib.cpptasks.compiler.ProgressMonitor;
+
+import java.io.IOException;
 
 public class CCTaskProgressMonitor implements ProgressMonitor {
     private ProcessorConfiguration config;

@@ -16,6 +16,9 @@
  */
 package net.sf.antcontrib.cpptasks.types;
 
+import net.sf.antcontrib.cpptasks.CUtil;
+import org.apache.tools.ant.BuildException;
+
 /**
  * <p>
  * A set of system library names. Timestamp or location of system libraries are
@@ -36,8 +39,7 @@ public class SystemLibrarySet extends LibrarySet {
         super();
     }
 
-    public void execute() throws org.apache.tools.ant.BuildException {
-        throw new org.apache.tools.ant.BuildException(
-                "Not an actual task, but looks like one for documentation purposes");
+    public void execute() throws BuildException {
+        throw new BuildException(CUtil.STANDARD_EXCUSE);
     }
 }

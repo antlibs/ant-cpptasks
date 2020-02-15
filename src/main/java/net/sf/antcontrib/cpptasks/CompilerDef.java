@@ -16,9 +16,6 @@
  */
 package net.sf.antcontrib.cpptasks;
 
-import java.util.Enumeration;
-import java.util.Vector;
-
 import net.sf.antcontrib.cpptasks.compiler.CommandLineCompiler;
 import net.sf.antcontrib.cpptasks.compiler.Compiler;
 import net.sf.antcontrib.cpptasks.compiler.Processor;
@@ -31,6 +28,9 @@ import net.sf.antcontrib.cpptasks.types.SystemIncludePath;
 import net.sf.antcontrib.cpptasks.types.UndefineArgument;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
+
+import java.util.Enumeration;
+import java.util.Vector;
 
 /**
  * <p>
@@ -105,7 +105,7 @@ public final class CompilerDef extends ProcessorDef {
     public IncludePath createIncludePath() {
         Project p = getProject();
         if (p == null) {
-            throw new java.lang.IllegalStateException("project must be set");
+            throw new IllegalStateException("project must be set");
         }
         if (isReference()) {
             throw noChildrenAllowed();
@@ -147,7 +147,7 @@ public final class CompilerDef extends ProcessorDef {
     public SystemIncludePath createSysIncludePath() {
         Project p = getProject();
         if (p == null) {
-            throw new java.lang.IllegalStateException("project must be set");
+            throw new IllegalStateException("project must be set");
         }
         if (isReference()) {
             throw noChildrenAllowed();
@@ -157,15 +157,14 @@ public final class CompilerDef extends ProcessorDef {
         return path;
     }
 
-    public void execute() throws org.apache.tools.ant.BuildException {
-        throw new org.apache.tools.ant.BuildException(
-                "Not an actual task, but looks like one for documentation purposes");
+    public void execute() throws BuildException {
+        throw new BuildException(CUtil.STANDARD_EXCUSE);
     }
 
     public UndefineArgument[] getActiveDefines() {
         Project p = getProject();
         if (p == null) {
-            throw new java.lang.IllegalStateException("project must be set before this call");
+            throw new IllegalStateException("project must be set before this call");
         }
         if (isReference()) {
             return getCheckedRef(CompilerDef.class,
@@ -200,7 +199,7 @@ public final class CompilerDef extends ProcessorDef {
     private String[] getActivePaths(Vector<ConditionalPath> paths) {
         Project p = getProject();
         if (p == null) {
-            throw new java.lang.IllegalStateException("project not set");
+            throw new IllegalStateException("project not set");
         }
         Vector<String> activePaths = new Vector<String>();
         for (int i = 0; i < paths.size(); i++) {

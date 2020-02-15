@@ -36,9 +36,8 @@ public class ConditionalFileSet extends FileSet {
     public ConditionalFileSet() {
     }
 
-    public void execute() throws org.apache.tools.ant.BuildException {
-        throw new org.apache.tools.ant.BuildException(
-                "Not an actual task, but looks like one for documentation purposes");
+    public void execute() throws BuildException {
+        throw new BuildException(CUtil.STANDARD_EXCUSE);
     }
 
     /**
@@ -60,7 +59,7 @@ public class ConditionalFileSet extends FileSet {
     public boolean isActive() throws BuildException {
         Project p = getProject();
         if (p == null) {
-            throw new java.lang.IllegalStateException("setProject() should have been called");
+            throw new IllegalStateException("setProject() should have been called");
         }
         return CUtil.isActive(p, ifCond, unlessCond);
     }

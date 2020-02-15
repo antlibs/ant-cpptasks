@@ -16,12 +16,11 @@
  */
 package net.sf.antcontrib.cpptasks.ide;
 
-import java.io.File;
-
 import org.apache.tools.ant.types.Commandline;
-import org.apache.tools.ant.types.Environment;
 import org.apache.tools.ant.types.DataType;
+import org.apache.tools.ant.types.Environment;
 
+import java.io.File;
 
 /**
  * <p>

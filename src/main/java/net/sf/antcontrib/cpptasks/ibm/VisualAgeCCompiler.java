@@ -16,15 +16,14 @@
  */
 package net.sf.antcontrib.cpptasks.ibm;
 
-import java.io.File;
-import java.util.Vector;
-
+import net.sf.antcontrib.cpptasks.OptimizationEnum;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 import net.sf.antcontrib.cpptasks.gcc.GccCompatibleCCompiler;
-import net.sf.antcontrib.cpptasks.OptimizationEnum;
-
 import org.apache.tools.ant.types.Environment;
+
+import java.io.File;
+import java.util.Vector;
 
 /**
  * Adapter for the IBM(r) Visual Age(tm) C++ compiler for AIX(tm)

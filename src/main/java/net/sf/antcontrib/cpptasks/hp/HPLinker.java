@@ -53,13 +53,14 @@
  */
 package net.sf.antcontrib.cpptasks.hp;
 
-import java.io.File;
-import java.util.Vector;
-
-import net.sf.antcontrib.cpptasks.CUtil;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 import net.sf.antcontrib.cpptasks.gcc.AbstractLdLinker;
+
+import java.io.File;
+import java.util.Vector;
+
+import static net.sf.antcontrib.cpptasks.CUtil.getExecutableLocation;
 
 /**
  * Adapter for HP linker
@@ -95,7 +96,7 @@ public final class HPLinker extends AbstractLdLinker {
      */
     public File[] getLibraryPath() {
         if (libDirs == null) {
-            File CCloc = CUtil.getExecutableLocation("ld");
+            File CCloc = getExecutableLocation("ld");
             if (CCloc != null) {
                 File compilerLib = new File(new File(CCloc, "../lib").getAbsolutePath());
                 if (compilerLib.exists()) {

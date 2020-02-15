@@ -16,16 +16,17 @@
  */
 package net.sf.antcontrib.cpptasks.borland;
 
+import net.sf.antcontrib.cpptasks.types.LibraryTypeEnum;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.Vector;
-import java.io.FileWriter;
 
-import net.sf.antcontrib.cpptasks.CUtil;
-import net.sf.antcontrib.cpptasks.types.LibraryTypeEnum;
+import static net.sf.antcontrib.cpptasks.CUtil.getExecutableLocation;
 
 /**
  * A add-in class for Borland(r) processor adapters
@@ -73,7 +74,7 @@ public final class BorlandProcessor {
             throw new NullPointerException("defaultRelativePath");
         }
         String[] path = defaultRelativePath;
-        File exeDir = CUtil.getExecutableLocation(toolName + ".exe");
+        File exeDir = getExecutableLocation(toolName + ".exe");
         if (exeDir != null) {
             File cfgFile = new File(exeDir, toolName + ".cfg");
             if (cfgFile.exists()) {

@@ -16,9 +16,9 @@
  */
 package net.sf.antcontrib.cpptasks.openwatcom;
 
-import java.util.Vector;
-
 import net.sf.antcontrib.cpptasks.types.LibraryTypeEnum;
+
+import java.util.Vector;
 
 /**
  * A add-in class for OpenWatcom processors.

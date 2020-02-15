@@ -22,6 +22,7 @@ import net.sf.antcontrib.cpptasks.OutputTypeEnum;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.types.LibrarySet;
 import net.sf.antcontrib.cpptasks.types.LibraryTypeEnum;
+import org.apache.tools.ant.Project;
 import org.junit.Test;
 
 import java.io.File;
@@ -134,7 +135,7 @@ public class TestAbstractLdLinker {
         CCTask task = new CCTask();
         LibrarySet[] sets = new LibrarySet[]{new LibrarySet()};
         /* throws an Exception in setLibs otherwise */
-        sets[0].setProject(new org.apache.tools.ant.Project());
+        sets[0].setProject(new Project());
         sets[0].setDir(new File("/foo"));
         sets[0].setLibs(new CUtil.StringArrayBuilder("bart,cart,dart"));
         Vector<String> preargs = new Vector<String>();
@@ -156,7 +157,7 @@ public class TestAbstractLdLinker {
         CCTask task = new CCTask();
         LibrarySet[] sets = new LibrarySet[]{new LibrarySet()};
         /* throws an Exception in setLibs otherwise */
-        sets[0].setProject(new org.apache.tools.ant.Project());
+        sets[0].setProject(new Project());
         sets[0].setDir(new File("/foo"));
         sets[0].setLibs(new CUtil.StringArrayBuilder("bart,cart,dart"));
         Vector<String> preargs = new Vector<String>();
@@ -177,7 +178,7 @@ public class TestAbstractLdLinker {
         CCTask task = new CCTask();
         LibrarySet[] sets = new LibrarySet[]{new LibrarySet()};
         /* throws an Exception in setLibs otherwise */
-        sets[0].setProject(new org.apache.tools.ant.Project());
+        sets[0].setProject(new Project());
         sets[0].setDir(new File("/foo"));
         LibraryTypeEnum libType = new LibraryTypeEnum();
         libType.setValue("framework");
@@ -202,7 +203,7 @@ public class TestAbstractLdLinker {
         CCTask task = new CCTask();
         LibrarySet[] sets = new LibrarySet[]{new LibrarySet()};
         /* throws an Exception in setLibs otherwise */
-        sets[0].setProject(new org.apache.tools.ant.Project());
+        sets[0].setProject(new Project());
         sets[0].setDir(new File("/foo"));
         LibraryTypeEnum libType = new LibraryTypeEnum();
         libType.setValue("framework");
@@ -228,14 +229,14 @@ public class TestAbstractLdLinker {
                 new LibrarySet(),
                 new LibrarySet()};
         /* throws an Exception in setLibs otherwise */
-        sets[0].setProject(new org.apache.tools.ant.Project());
+        sets[0].setProject(new Project());
         sets[0].setLibs(new CUtil.StringArrayBuilder("bart"));
-        sets[1].setProject(new org.apache.tools.ant.Project());
+        sets[1].setProject(new Project());
         sets[1].setLibs(new CUtil.StringArrayBuilder("cart"));
         LibraryTypeEnum libType = new LibraryTypeEnum();
         libType.setValue("static");
         sets[1].setType(libType);
-        sets[2].setProject(new org.apache.tools.ant.Project());
+        sets[2].setProject(new Project());
         sets[2].setLibs(new CUtil.StringArrayBuilder("dart"));
         Vector<String> preargs = new Vector<String>();
         Vector<String> midargs = new Vector<String>();
@@ -255,7 +256,7 @@ public class TestAbstractLdLinker {
         CCTask task = new CCTask();
         LibrarySet[] sets = new LibrarySet[]{new LibrarySet()};
         /* throws an Exception in setLibs otherwise */
-        sets[0].setProject(new org.apache.tools.ant.Project());
+        sets[0].setProject(new Project());
         sets[0].setDir(new File("/foo"));
         sets[0].setLibs(new CUtil.StringArrayBuilder("bart,cart,dart"));
         Vector<String> preargs = new Vector<String>();
