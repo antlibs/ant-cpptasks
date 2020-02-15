@@ -16,6 +16,8 @@
  */
 package net.sf.antcontrib.cpptasks;
 
+import org.apache.tools.ant.Project;
+
 /*******************************************************************************
  * <p>
  * A processor parameter.
@@ -48,7 +50,7 @@ public class ProcessorParam {
      * @param p Project
      * @return boolean
      */
-    public boolean isActive(org.apache.tools.ant.Project p) {
+    public boolean isActive(Project p) {
         if (value == null) {
             return false;
         }

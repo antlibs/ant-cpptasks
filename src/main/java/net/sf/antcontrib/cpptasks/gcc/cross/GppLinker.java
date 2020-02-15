@@ -16,11 +16,7 @@
  */
 package net.sf.antcontrib.cpptasks.gcc.cross;
 
-import java.io.File;
-import java.util.Vector;
-
 import net.sf.antcontrib.cpptasks.CCTask;
-import net.sf.antcontrib.cpptasks.CUtil;
 import net.sf.antcontrib.cpptasks.LinkerParam;
 import net.sf.antcontrib.cpptasks.compiler.CaptureStreamHandler;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineLinkerConfiguration;
@@ -29,6 +25,11 @@ import net.sf.antcontrib.cpptasks.compiler.Linker;
 import net.sf.antcontrib.cpptasks.gcc.AbstractLdLinker;
 import net.sf.antcontrib.cpptasks.types.LibrarySet;
 import org.apache.tools.ant.BuildException;
+
+import java.io.File;
+import java.util.Vector;
+
+import static net.sf.antcontrib.cpptasks.CUtil.checkDirectoryArray;
 
 /**
  * Adapter for the g++ variant of the GCC linker
@@ -182,7 +183,7 @@ public class GppLinker extends AbstractLdLinker {
             }
             // Eliminate all but actual directories.
             String[] libpath = dirs.toArray(new String[0]);
-            int count = CUtil.checkDirectoryArray(libpath);
+            int count = checkDirectoryArray(libpath);
             // Build return array.
             libDirs = new File[count];
             int index = 0;

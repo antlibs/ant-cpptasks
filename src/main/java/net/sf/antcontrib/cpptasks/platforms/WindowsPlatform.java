@@ -16,6 +16,10 @@
  */
 package net.sf.antcontrib.cpptasks.platforms;
 
+import net.sf.antcontrib.cpptasks.TargetMatcher;
+import net.sf.antcontrib.cpptasks.VersionInfo;
+import net.sf.antcontrib.cpptasks.compiler.LinkType;
+
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -27,11 +31,7 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 
-import net.sf.antcontrib.cpptasks.CUtil;
-import net.sf.antcontrib.cpptasks.TargetMatcher;
-import net.sf.antcontrib.cpptasks.VersionInfo;
-import net.sf.antcontrib.cpptasks.compiler.LinkType;
-
+import static net.sf.antcontrib.cpptasks.CUtil.getBasename;
 
 /**
  * Platform specific behavior for Microsoft Windows.
@@ -303,7 +303,7 @@ public final class WindowsPlatform {
             writer.write(versionInfo.getFileversion());
             writer.write("\\0\"\n");
         }
-        String baseName = CUtil.getBasename(outputFile);
+        String baseName = getBasename(outputFile);
         String internalName = versionInfo.getInternalname();
         if (internalName == null) {
             internalName = baseName;

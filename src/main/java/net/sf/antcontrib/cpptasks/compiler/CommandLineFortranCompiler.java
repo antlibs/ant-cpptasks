@@ -16,11 +16,11 @@
  */
 package net.sf.antcontrib.cpptasks.compiler;
 
-import java.io.File;
-
 import net.sf.antcontrib.cpptasks.parser.FortranParser;
 import net.sf.antcontrib.cpptasks.parser.Parser;
 import org.apache.tools.ant.types.Environment;
+
+import java.io.File;
 
 /**
  * An abstract Compiler implementation which uses an external program to

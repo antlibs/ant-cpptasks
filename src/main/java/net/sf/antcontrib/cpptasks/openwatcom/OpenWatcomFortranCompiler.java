@@ -16,13 +16,13 @@
  */
 package net.sf.antcontrib.cpptasks.openwatcom;
 
-import java.io.File;
-
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 import net.sf.antcontrib.cpptasks.parser.FortranParser;
 import net.sf.antcontrib.cpptasks.parser.Parser;
 import org.apache.tools.ant.types.Environment;
+
+import java.io.File;
 
 /**
  * Adapter for the OpenWatcom Fortran compiler.

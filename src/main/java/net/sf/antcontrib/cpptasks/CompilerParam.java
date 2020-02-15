@@ -16,6 +16,8 @@
  */
 package net.sf.antcontrib.cpptasks;
 
+import org.apache.tools.ant.BuildException;
+
 /*******************************************************************************
  * <p>
  * A compiler parameter.
@@ -28,8 +30,7 @@ public class CompilerParam extends ProcessorParam {
     public CompilerParam() {
     }
 
-    public void execute() throws org.apache.tools.ant.BuildException {
-        throw new org.apache.tools.ant.BuildException(
-                "Not an actual task, but looks like one for documentation purposes");
+    public void execute() throws BuildException {
+        throw new BuildException(CUtil.STANDARD_EXCUSE);
     }
 }

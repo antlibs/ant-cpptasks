@@ -16,14 +16,14 @@
  */
 package net.sf.antcontrib.cpptasks.compiler;
 
-import java.io.File;
-
 import net.sf.antcontrib.cpptasks.CCTask;
 import net.sf.antcontrib.cpptasks.CompilerParam;
 import net.sf.antcontrib.cpptasks.DependencyInfo;
 import net.sf.antcontrib.cpptasks.ProcessorParam;
 import net.sf.antcontrib.cpptasks.VersionInfo;
 import org.apache.tools.ant.BuildException;
+
+import java.io.File;
 
 /**
  * A configuration for a C++ compiler

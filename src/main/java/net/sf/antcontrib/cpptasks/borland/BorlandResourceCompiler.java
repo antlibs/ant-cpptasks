@@ -16,10 +16,8 @@
  */
 package net.sf.antcontrib.cpptasks.borland;
 
-import java.io.File;
-import java.util.Vector;
-
 import net.sf.antcontrib.cpptasks.CCTask;
+import net.sf.antcontrib.cpptasks.OptimizationEnum;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineCompiler;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineCompilerConfiguration;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
@@ -28,10 +26,11 @@ import net.sf.antcontrib.cpptasks.compiler.Processor;
 import net.sf.antcontrib.cpptasks.compiler.ProgressMonitor;
 import net.sf.antcontrib.cpptasks.parser.CParser;
 import net.sf.antcontrib.cpptasks.parser.Parser;
-import net.sf.antcontrib.cpptasks.OptimizationEnum;
-
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.types.Environment;
+
+import java.io.File;
+import java.util.Vector;
 
 /**
  * Adapter for the Borland(r) brc32 Resource compiler.

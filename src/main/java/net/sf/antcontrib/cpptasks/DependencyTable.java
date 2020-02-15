@@ -16,6 +16,16 @@
  */
 package net.sf.antcontrib.cpptasks;
 
+import net.sf.antcontrib.cpptasks.compiler.CompilerConfiguration;
+import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Project;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -26,16 +36,11 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Vector;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 
-import net.sf.antcontrib.cpptasks.compiler.CompilerConfiguration;
-import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.Project;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
+import static net.sf.antcontrib.cpptasks.CUtil.getRelativePath;
+import static net.sf.antcontrib.cpptasks.CUtil.isSignificantlyAfter;
+import static net.sf.antcontrib.cpptasks.CUtil.isSignificantlyBefore;
+import static net.sf.antcontrib.cpptasks.CUtil.xmlAttribEncode;
 
 /**
  * @author Curt Arnold
@@ -89,8 +94,8 @@ public final class DependencyTable {
                         //       a few tens of milliseconds, as long
                         //       as the times are within a second
                         long existingLastModified = existingFile.lastModified();
-                        if (!CUtil.isSignificantlyAfter(existingLastModified, sourceLastModified)
-                                && !CUtil.isSignificantlyBefore(existingLastModified, sourceLastModified)) {
+                        if (!isSignificantlyAfter(existingLastModified, sourceLastModified)
+                                && !isSignificantlyBefore(existingLastModified, sourceLastModified)) {
                             DependencyInfo dependInfo = new DependencyInfo(includePath, source,
                                     sourceLastModified, includes, sysIncludes);
                             dependencyTable.putDependencyInfo(source, dependInfo);
@@ -227,8 +232,8 @@ public final class DependencyTable {
 
         public boolean visit(DependencyInfo dependInfo) {
             if (noNeedToRebuild) {
-                if (CUtil.isSignificantlyAfter(dependInfo.getSourceLastModified(), outputLastModified)
-                        || CUtil.isSignificantlyAfter(dependInfo.getCompositeLastModified(), outputLastModified)) {
+                if (isSignificantlyAfter(dependInfo.getSourceLastModified(), outputLastModified)
+                        || isSignificantlyAfter(dependInfo.getCompositeLastModified(), outputLastModified)) {
                     noNeedToRebuild = false;
                 }
             }
@@ -431,7 +436,7 @@ public final class DependencyTable {
                 rebuildOnStackExhaustion);
         for (int i = 0; i < sources.length && !mustRebuild; i++) {
             File source = sources[i];
-            String relative = CUtil.getRelativePath(baseDirPath, source);
+            String relative = getRelativePath(baseDirPath, source);
             DependencyInfo dependInfo = getDependencyInfo(relative, includePathIdentifier);
             if (dependInfo == null) {
                 task.log("Parsing " + relative, Project.MSG_VERBOSE);
@@ -446,7 +451,7 @@ public final class DependencyTable {
     public DependencyInfo parseIncludes(CCTask task,
                                         CompilerConfiguration compiler, File source) {
         DependencyInfo dependInfo = compiler.parseIncludes(task, baseDir, source);
-        String relativeSource = CUtil.getRelativePath(baseDirPath, source);
+        String relativeSource = getRelativePath(baseDirPath, source);
         putDependencyInfo(relativeSource, dependInfo);
         return dependInfo;
     }
@@ -577,7 +582,7 @@ public final class DependencyTable {
         //       no dependencies and those with undetermined dependencies
         buf.setLength(0);
         buf.append("      <source file=\"");
-        buf.append(CUtil.xmlAttribEncode(dependInfo.getSource()));
+        buf.append(xmlAttribEncode(dependInfo.getSource()));
         buf.append("\" lastModified=\"");
         buf.append(Long.toHexString(dependInfo.getSourceLastModified()));
         buf.append("\">\n");
@@ -585,14 +590,14 @@ public final class DependencyTable {
         for (int i = 0; i < includes.length; i++) {
             buf.setLength(0);
             buf.append("         <include file=\"");
-            buf.append(CUtil.xmlAttribEncode(includes[i]));
+            buf.append(xmlAttribEncode(includes[i]));
             buf.append("\"/>\n");
             writer.write(buf.toString());
         }
         for (int i = 0; i < sysIncludes.length; i++) {
             buf.setLength(0);
             buf.append("         <sysinclude file=\"");
-            buf.append(CUtil.xmlAttribEncode(sysIncludes[i]));
+            buf.append(xmlAttribEncode(sysIncludes[i]));
             buf.append("\"/>\n");
             writer.write(buf.toString());
         }
@@ -607,7 +612,7 @@ public final class DependencyTable {
         //
         buf.setLength(0);
         buf.append("   <includePath signature=\"");
-        buf.append(CUtil.xmlAttribEncode(includePathIdentifier));
+        buf.append(xmlAttribEncode(includePathIdentifier));
         buf.append("\">\n");
         writer.write(buf.toString());
         for (Map.Entry<String, DependencyInfo[]> entry : dependencies.entrySet()) {

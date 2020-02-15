@@ -16,22 +16,22 @@
  */
 package net.sf.antcontrib.cpptasks.os390;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Vector;
-
 import net.sf.antcontrib.cpptasks.CCTask;
-import net.sf.antcontrib.cpptasks.CUtil;
+import net.sf.antcontrib.cpptasks.VersionInfo;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineLinker;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineLinkerConfiguration;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 import net.sf.antcontrib.cpptasks.types.LibrarySet;
 import net.sf.antcontrib.cpptasks.types.LibraryTypeEnum;
-import net.sf.antcontrib.cpptasks.VersionInfo;
-
 import org.apache.tools.ant.BuildException;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Vector;
+
+import static net.sf.antcontrib.cpptasks.CUtil.getPathFromEnvironment;
 
 /**
  * Adapter for the IBM (R) OS/390 (tm) Linker.
@@ -131,7 +131,7 @@ public final class OS390Linker extends CommandLineLinker {
     }
 
     public File[] getLibraryPath() {
-        return CUtil.getPathFromEnvironment("LIB", ";");
+        return getPathFromEnvironment("LIB", ";");
     }
 
     public String[] getLibraryPatterns(String[] libnames, LibraryTypeEnum libType) {

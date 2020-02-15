@@ -17,7 +17,6 @@
 package net.sf.antcontrib.cpptasks.apple;
 
 import net.sf.antcontrib.cpptasks.CCTask;
-import net.sf.antcontrib.cpptasks.CUtil;
 import net.sf.antcontrib.cpptasks.TargetInfo;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineCompilerConfiguration;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineLinkerConfiguration;
@@ -43,6 +42,10 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import static net.sf.antcontrib.cpptasks.CUtil.getRelativePath;
+import static net.sf.antcontrib.cpptasks.CUtil.isSystemPath;
+import static net.sf.antcontrib.cpptasks.CUtil.toUnixPath;
 
 /**
  * Writes a Apple Xcode 2.1+ project directory.  XCode stores project
@@ -165,7 +168,7 @@ public final class XcodeProjectWriter implements ProjectWriter {
         //   Calculate path (typically several ../..) of the root directory
         //        (where build.xml lives) relative to the XCode project directory.
         //         XCode 3.0 will now prompt user to supply the value if not specified.
-        String projectRoot = CUtil.toUnixPath(CUtil.getRelativePath(basePath,
+        String projectRoot = toUnixPath(getRelativePath(basePath,
                 projectDef.getProject().getBaseDir()));
         PBXObjectRef project = createPBXProject(compilerConfigurations, mainGroup,
                 projectDirPath, projectRoot, projectTargets);
@@ -434,13 +437,13 @@ public final class XcodeProjectWriter implements ProjectWriter {
             List<String> includePaths = new ArrayList<String>();
             Map<String, String> includePathMap = new HashMap<String, String>();
             for (int i = 0; i < includeDirs.length; i++) {
-                if (!CUtil.isSystemPath(includeDirs[i])) {
+                if (!isSystemPath(includeDirs[i])) {
                     String absPath = includeDirs[i].getAbsolutePath();
                     if (!includePathMap.containsKey(absPath)) {
                         if (absPath.startsWith("/usr/")) {
-                            includePaths.add(CUtil.toUnixPath(absPath));
+                            includePaths.add(toUnixPath(absPath));
                         } else {
-                            String relPath = CUtil.toUnixPath(CUtil.getRelativePath(baseDir,
+                            String relPath = toUnixPath(getRelativePath(baseDir,
                                     includeDirs[i]));
                             includePaths.add(relPath);
                         }
@@ -480,7 +483,7 @@ public final class XcodeProjectWriter implements ProjectWriter {
                     String libDir = linkerArg.substring(2);
                     if (!librarySearchMap.containsKey(libDir)) {
                         if (!libDir.equals("/usr/lib")) {
-                            librarySearchPaths.add(CUtil.toUnixPath(CUtil.getRelativePath(baseDir,
+                            librarySearchPaths.add(toUnixPath(getRelativePath(baseDir,
                                     new File(libDir))));
                         }
                         librarySearchMap.put(libDir, libDir);
@@ -631,7 +634,7 @@ public final class XcodeProjectWriter implements ProjectWriter {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("isa", "PBXFileReference");
 
-        String relPath = CUtil.toUnixPath(CUtil.getRelativePath(baseDir, file));
+        String relPath = toUnixPath(getRelativePath(baseDir, file));
         map.put("path", relPath);
         map.put("name", file.getName());
         map.put("sourceTree", sourceTree);

@@ -16,12 +16,12 @@
  */
 package net.sf.antcontrib.cpptasks.types;
 
-import java.util.Vector;
-
 import net.sf.antcontrib.cpptasks.CUtil;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.types.DataType;
 import org.apache.tools.ant.types.Reference;
+
+import java.util.Vector;
 
 /**
  * <p>
@@ -81,9 +81,8 @@ public class DefineSet extends DataType {
         defineList.addElement(arg);
     }
 
-    public void execute() throws org.apache.tools.ant.BuildException {
-        throw new org.apache.tools.ant.BuildException(
-                "Not an actual task, but looks like one for documentation purposes");
+    public void execute() throws BuildException {
+        throw new BuildException(CUtil.STANDARD_EXCUSE);
     }
 
     /**

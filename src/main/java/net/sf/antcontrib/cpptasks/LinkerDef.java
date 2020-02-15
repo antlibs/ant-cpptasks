@@ -16,9 +16,6 @@
  */
 package net.sf.antcontrib.cpptasks;
 
-import java.io.File;
-import java.util.Vector;
-
 import net.sf.antcontrib.cpptasks.compiler.CommandLineLinker;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
@@ -31,6 +28,9 @@ import net.sf.antcontrib.cpptasks.types.SystemLibrarySet;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.FlexInteger;
+
+import java.io.File;
+import java.util.Vector;
 
 /**
  * <p>
@@ -129,9 +129,8 @@ public class LinkerDef extends ProcessorDef {
         sysLibrarySets.addElement(libset);
     }
 
-    public void execute() throws org.apache.tools.ant.BuildException {
-        throw new org.apache.tools.ant.BuildException(
-                "Not an actual task, but looks like one for documentation purposes");
+    public void execute() throws BuildException {
+        throw new BuildException(CUtil.STANDARD_EXCUSE);
     }
 
     /**
@@ -488,7 +487,7 @@ public class LinkerDef extends ProcessorDef {
     public void visitSystemLibraries(Linker linker, FileVisitor libraryVisitor) {
         Project p = getProject();
         if (p == null) {
-            throw new java.lang.IllegalStateException("project must be set");
+            throw new IllegalStateException("project must be set");
         }
         if (isReference()) {
             LinkerDef master = getCheckedRef(LinkerDef.class,
@@ -518,7 +517,7 @@ public class LinkerDef extends ProcessorDef {
     public void visitUserLibraries(Linker linker, FileVisitor libraryVisitor) {
         Project p = getProject();
         if (p == null) {
-            throw new java.lang.IllegalStateException("project must be set");
+            throw new IllegalStateException("project must be set");
         }
         if (isReference()) {
             LinkerDef master = getCheckedRef(LinkerDef.class,

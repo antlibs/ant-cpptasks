@@ -16,10 +16,6 @@
  */
 package net.sf.antcontrib.cpptasks.borland;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Vector;
-
 import net.sf.antcontrib.cpptasks.CCTask;
 import net.sf.antcontrib.cpptasks.TargetMatcher;
 import net.sf.antcontrib.cpptasks.VersionInfo;
@@ -29,6 +25,10 @@ import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 import net.sf.antcontrib.cpptasks.platforms.WindowsPlatform;
 import net.sf.antcontrib.cpptasks.types.LibraryTypeEnum;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Vector;
 
 /**
  * Adapter for the Borland(r) ilink32 linker

@@ -16,6 +16,14 @@
  */
 package net.sf.antcontrib.cpptasks;
 
+import net.sf.antcontrib.cpptasks.compiler.ProcessorConfiguration;
+import org.apache.tools.ant.BuildException;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -26,15 +34,10 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.Vector;
 
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
-import net.sf.antcontrib.cpptasks.compiler.ProcessorConfiguration;
-
-import org.apache.tools.ant.BuildException;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
+import static net.sf.antcontrib.cpptasks.CUtil.getRelativePath;
+import static net.sf.antcontrib.cpptasks.CUtil.isSignificantlyAfter;
+import static net.sf.antcontrib.cpptasks.CUtil.isSignificantlyBefore;
+import static net.sf.antcontrib.cpptasks.CUtil.xmlAttribEncode;
 
 /**
  * A history of the compiler and linker settings used to build the files in the
@@ -91,8 +94,8 @@ public final class TargetHistoryTable {
                         //      lastModified(). Check if times are within
                         //      a second
                         long existingLastModified = existingFile.lastModified();
-                        if (!CUtil.isSignificantlyBefore(existingLastModified, outputLastModified)
-                                && !CUtil.isSignificantlyAfter(existingLastModified, outputLastModified)) {
+                        if (!isSignificantlyBefore(existingLastModified, outputLastModified)
+                                && !isSignificantlyAfter(existingLastModified, outputLastModified)) {
                             TargetHistory targetHistory = new TargetHistory(config, output,
                                     outputLastModified, sources.toArray(new SourceHistory[0]));
                             history.put(output, targetHistory);
@@ -268,7 +271,7 @@ public final class TargetHistoryTable {
                 String configId = entry.getValue();
                 buf.setLength(0);
                 buf.append("   <processor signature=\"");
-                buf.append(CUtil.xmlAttribEncode(configId));
+                buf.append(xmlAttribEncode(configId));
                 buf.append("\">\n");
                 writer.write(buf.toString());
                 for (Map.Entry<String, TargetHistory> historyEntry : history.entrySet()) {
@@ -276,7 +279,7 @@ public final class TargetHistoryTable {
                     if (targetHistory.getProcessorConfiguration().equals(configId)) {
                         buf.setLength(0);
                         buf.append("      <target file=\"");
-                        buf.append(CUtil.xmlAttribEncode(targetHistory.getOutput()));
+                        buf.append(xmlAttribEncode(targetHistory.getOutput()));
                         buf.append("\" lastModified=\"");
                         buf.append(Long.toHexString(targetHistory.getOutputLastModified()));
                         buf.append("\">\n");
@@ -285,7 +288,7 @@ public final class TargetHistoryTable {
                         for (int i = 0; i < sourceHistories.length; i++) {
                             buf.setLength(0);
                             buf.append("         <source file=\"");
-                            buf.append(CUtil.xmlAttribEncode(sourceHistories[i].getRelativePath()));
+                            buf.append(xmlAttribEncode(sourceHistories[i].getRelativePath()));
                             buf.append("\" lastModified=\"");
                             buf.append(Long.toHexString(sourceHistories[i].getLastModified()));
                             buf.append("\"/>\n");
@@ -386,18 +389,16 @@ public final class TargetHistoryTable {
         //        compile step (most likely a compilation error) then
         //        do not write add a history entry
         //
-        if (outputFile.exists() && !CUtil.isSignificantlyBefore(outputFile.lastModified(),
-                historyFile.lastModified())) {
+        if (outputFile.exists()
+                && !isSignificantlyBefore(outputFile.lastModified(), historyFile.lastModified())) {
             dirty = true;
             history.remove(outputName);
             SourceHistory[] sourceHistories = new SourceHistory[sources.length];
             for (int i = 0; i < sources.length; i++) {
                 File sourceFile = new File(sources[i]);
                 long lastModified = sourceFile.lastModified();
-                String relativePath = CUtil.getRelativePath(outputDirPath,
-                        sourceFile);
-                sourceHistories[i] = new SourceHistory(relativePath,
-                        lastModified);
+                String relativePath = getRelativePath(outputDirPath, sourceFile);
+                sourceHistories[i] = new SourceHistory(relativePath, lastModified);
             }
             TargetHistory newHistory = new TargetHistory(configId, outputName,
                     outputFile.lastModified(), sourceHistories);
@@ -414,7 +415,7 @@ public final class TargetHistoryTable {
         //        do not write add a history entry
         //
         if (outputFile.exists()
-                && !CUtil.isSignificantlyBefore(outputFile.lastModified(), historyFile.lastModified())) {
+                && !isSignificantlyBefore(outputFile.lastModified(), historyFile.lastModified())) {
             dirty = true;
             history.remove(outputName);
             SourceHistory[] sourceHistories = linkTarget.getSourceHistories(outputDirPath);

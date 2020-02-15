@@ -16,16 +16,17 @@
  */
 package net.sf.antcontrib.cpptasks.openwatcom;
 
-import java.io.File;
-import java.util.Vector;
-
 import net.sf.antcontrib.cpptasks.CCTask;
-import net.sf.antcontrib.cpptasks.CUtil;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineLinker;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineLinkerConfiguration;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 import net.sf.antcontrib.cpptasks.types.LibraryTypeEnum;
+
+import java.io.File;
+import java.util.Vector;
+
+import static net.sf.antcontrib.cpptasks.CUtil.getPathFromEnvironment;
 
 /**
  * Adapter for the OpenWatcom Librarian.
@@ -141,7 +142,7 @@ public final class OpenWatcomLibrarian extends CommandLineLinker {
      * @return File[] library search path
      */
     public File[] getLibraryPath() {
-        return CUtil.getPathFromEnvironment("LIB", ";");
+        return getPathFromEnvironment("LIB", ";");
     }
 
     /**

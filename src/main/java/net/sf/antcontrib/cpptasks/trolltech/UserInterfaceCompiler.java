@@ -16,11 +16,9 @@
  */
 package net.sf.antcontrib.cpptasks.trolltech;
 
-import java.io.File;
-import java.util.Vector;
-
 import net.sf.antcontrib.cpptasks.CCTask;
 import net.sf.antcontrib.cpptasks.OptimizationEnum;
+import net.sf.antcontrib.cpptasks.VersionInfo;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineCompiler;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineCompilerConfiguration;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
@@ -29,10 +27,11 @@ import net.sf.antcontrib.cpptasks.compiler.Processor;
 import net.sf.antcontrib.cpptasks.compiler.ProgressMonitor;
 import net.sf.antcontrib.cpptasks.gcc.LdLinker;
 import net.sf.antcontrib.cpptasks.parser.Parser;
-import net.sf.antcontrib.cpptasks.VersionInfo;
-
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.types.Environment;
+
+import java.io.File;
+import java.util.Vector;
 
 /**
  * Adapter for the Trolltech Qt UIC Compiler.

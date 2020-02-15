@@ -17,22 +17,24 @@
 package net.sf.antcontrib.cpptasks.devstudio;
 
 import net.sf.antcontrib.cpptasks.CCTask;
-import net.sf.antcontrib.cpptasks.CUtil;
 import net.sf.antcontrib.cpptasks.TargetInfo;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineCompilerConfiguration;
-import net.sf.antcontrib.cpptasks.compiler.ProcessorConfiguration;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineLinkerConfiguration;
-import net.sf.antcontrib.cpptasks.ide.ProjectDef;
+import net.sf.antcontrib.cpptasks.compiler.ProcessorConfiguration;
 import net.sf.antcontrib.cpptasks.ide.CommentDef;
-import net.sf.antcontrib.cpptasks.ide.ProjectWriter;
 import net.sf.antcontrib.cpptasks.ide.DependencyDef;
+import net.sf.antcontrib.cpptasks.ide.ProjectDef;
+import net.sf.antcontrib.cpptasks.ide.ProjectWriter;
 import org.apache.tools.ant.BuildException;
-import org.apache.xml.serialize.OutputFormat;
-import org.apache.xml.serialize.XMLSerializer;
+import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.sax.SAXTransformerFactory;
+import javax.xml.transform.sax.TransformerHandler;
+import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -42,6 +44,10 @@ import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+
+import static net.sf.antcontrib.cpptasks.CUtil.getRelativePath;
+import static net.sf.antcontrib.cpptasks.CUtil.isSystemPath;
+import static net.sf.antcontrib.cpptasks.CUtil.toWindowsPath;
 
 /**
  * Writes a Visual Studio.NET project file.
@@ -196,8 +202,8 @@ public final class VisualStudioNETProjectWriter implements ProjectWriter {
         File[] includePath = compilerConfig.getIncludePath();
         StringBuffer includeDirs = new StringBuffer();
         for (int i = 0; i < includePath.length; i++) {
-            String relPath = CUtil.getRelativePath(baseDir, includePath[i]);
-            includeDirs.append(CUtil.toWindowsPath(relPath));
+            String relPath = getRelativePath(baseDir, includePath[i]);
+            includeDirs.append(toWindowsPath(relPath));
             includeDirs.append(';');
         }
 
@@ -557,15 +563,15 @@ public final class VisualStudioNETProjectWriter implements ProjectWriter {
                 }
 
                 if (!fromDependency) {
-                    if (!CUtil.isSystemPath(linkSources[i])) {
-                        relPath = CUtil.getRelativePath(basePath, linkSources[i]);
+                    if (!isSystemPath(linkSources[i])) {
+                        relPath = getRelativePath(basePath, linkSources[i]);
                     }
                     //
                     //   if path has an embedded space then
                     //      must quote
                     if (relPath.indexOf(' ') > 0) {
                         buf.append('\"');
-                        buf.append(CUtil.toWindowsPath(relPath));
+                        buf.append(toWindowsPath(relPath));
                         buf.append('\"');
                     } else {
                         buf.append(relPath);
@@ -636,6 +642,7 @@ public final class VisualStudioNETProjectWriter implements ProjectWriter {
      * @param linkTarget link target
      * @throws IOException  if I/O error
      * @throws SAXException if XML serialization error
+     * @throws TransformerConfigurationException if XML Transformer error
      */
     public void writeProject(final File fileName,
                              final CCTask task,
@@ -643,7 +650,7 @@ public final class VisualStudioNETProjectWriter implements ProjectWriter {
                              final List<File> sources,
                              final Hashtable<String, TargetInfo> targets,
                              final TargetInfo linkTarget)
-            throws IOException, SAXException {
+            throws IOException, SAXException, TransformerConfigurationException {
         String projectName = projectDef.getName();
         if (projectName == null) {
             projectName = fileName.getName();
@@ -667,18 +674,21 @@ public final class VisualStudioNETProjectWriter implements ProjectWriter {
         }
 
         OutputStream outStream = new FileOutputStream(fileName + ".vcproj");
-        OutputFormat format = new OutputFormat("xml", "UTF-8", true);
-        XMLSerializer serializer = new XMLSerializer(outStream, format);
-        ContentHandler content = serializer.asContentHandler();
+        StreamResult result = new StreamResult(outStream);
+
+        SAXTransformerFactory sf = (SAXTransformerFactory) SAXTransformerFactory.newInstance();
+        TransformerHandler content = sf.newTransformerHandler();
+        content.setResult(result);
+
         String basePath = fileName.getParentFile().getAbsolutePath();
         content.startDocument();
 
         for (CommentDef commentDef : projectDef.getComments()) {
             String comment = commentDef.getText();
-            serializer.comment(comment);
+            content.comment(comment.toCharArray(), 0, comment.length());
         }
 
-        AttributesImpl emptyAttrs = new AttributesImpl();
+        Attributes emptyAttrs = new AttributesImpl();
 
         AttributesImpl attributes = new AttributesImpl();
         addAttribute(attributes, "ProjectType", "Visual C++");
@@ -763,16 +773,13 @@ public final class VisualStudioNETProjectWriter implements ProjectWriter {
         filterAttrs.addAttribute(null, "Filter", "Filter", "#PCDATA", filter);
         content.startElement(null, "Filter", "Filter", filterAttrs);
 
-
         AttributesImpl fileAttrs = new AttributesImpl();
         fileAttrs.addAttribute(null, "RelativePath", "RelativePath",
                 "#PCDATA", "");
 
-
         for (int i = 0; i < sortedSources.length; i++) {
             if (isGroupMember(filter, sortedSources[i])) {
-                String relativePath = CUtil.getRelativePath(basePath,
-                        sortedSources[i]);
+                String relativePath = getRelativePath(basePath, sortedSources[i]);
                 fileAttrs.setValue(0, relativePath);
                 content.startElement(null, "File", "File", fileAttrs);
                 content.endElement(null, "File", "File");

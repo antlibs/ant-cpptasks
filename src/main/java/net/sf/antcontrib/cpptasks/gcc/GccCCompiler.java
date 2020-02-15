@@ -16,10 +16,7 @@
  */
 package net.sf.antcontrib.cpptasks.gcc;
 
-import java.io.File;
-import java.util.Vector;
-
-import net.sf.antcontrib.cpptasks.CUtil;
+import net.sf.antcontrib.cpptasks.OptimizationEnum;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 import net.sf.antcontrib.cpptasks.compiler.Processor;
@@ -28,7 +25,11 @@ import net.sf.antcontrib.cpptasks.parser.FortranParser;
 import net.sf.antcontrib.cpptasks.parser.Parser;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.types.Environment;
-import net.sf.antcontrib.cpptasks.OptimizationEnum;
+
+import java.io.File;
+import java.util.Vector;
+
+import static net.sf.antcontrib.cpptasks.CUtil.checkDirectoryArray;
 
 /**
  * Adapter for the GCC C/C++ compiler
@@ -225,9 +226,9 @@ public final class GccCCompiler extends GccCompatibleCCompiler {
                 GccProcessor.convertCygwinFilenames(optionValues[1]);
                 GccProcessor.convertCygwinFilenames(defaultInclude);
             }
-            int count = CUtil.checkDirectoryArray(optionValues[0]);
-            count += CUtil.checkDirectoryArray(optionValues[1]);
-            count += CUtil.checkDirectoryArray(defaultInclude);
+            int count = checkDirectoryArray(optionValues[0]);
+            count += checkDirectoryArray(optionValues[1]);
+            count += checkDirectoryArray(defaultInclude);
             includePath = new File[count];
             int index = 0;
             for (int i = 0; i < optionValues.length; i++) {

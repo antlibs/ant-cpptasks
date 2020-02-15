@@ -16,17 +16,19 @@
  */
 package net.sf.antcontrib.cpptasks.gcc;
 
-import java.io.File;
-import java.util.Vector;
-
 import net.sf.antcontrib.cpptasks.CCTask;
-import net.sf.antcontrib.cpptasks.CUtil;
+import net.sf.antcontrib.cpptasks.VersionInfo;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineLinker;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineLinkerConfiguration;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
-import net.sf.antcontrib.cpptasks.VersionInfo;
 import net.sf.antcontrib.cpptasks.types.LibrarySet;
 import net.sf.antcontrib.cpptasks.types.LibraryTypeEnum;
+
+import java.io.File;
+import java.util.Vector;
+
+import static net.sf.antcontrib.cpptasks.CUtil.getPathFromEnvironment;
+import static net.sf.antcontrib.cpptasks.CUtil.getRelativePath;
 
 /**
  * Abstract adapter for ld-like linkers
@@ -113,7 +115,7 @@ public abstract class AbstractLdLinker extends CommandLineLinker {
                 String relPath = libdir.getAbsolutePath();
                 File outputFile = task.getOutfile();
                 if (outputFile != null && outputFile.getParentFile() != null) {
-                    relPath = CUtil.getRelativePath(outputFile.getParentFile().getAbsolutePath(),
+                    relPath = getRelativePath(outputFile.getParentFile().getAbsolutePath(),
                             libdir);
                 }
                 if (set.getType() != null
@@ -199,7 +201,7 @@ public abstract class AbstractLdLinker extends CommandLineLinker {
      * @return an array of File
      */
     protected File[] getEnvironmentIncludePath() {
-        return CUtil.getPathFromEnvironment("LIB", ":");
+        return getPathFromEnvironment("LIB", ":");
     }
 
     public String getLibraryKey(File libfile) {

@@ -16,12 +16,9 @@
  */
 package net.sf.antcontrib.cpptasks.mozilla;
 
-import java.io.File;
-import java.util.Vector;
-
 import net.sf.antcontrib.cpptasks.CCTask;
-import net.sf.antcontrib.cpptasks.CUtil;
 import net.sf.antcontrib.cpptasks.OptimizationEnum;
+import net.sf.antcontrib.cpptasks.VersionInfo;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineCompiler;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineCompilerConfiguration;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
@@ -31,10 +28,13 @@ import net.sf.antcontrib.cpptasks.compiler.ProgressMonitor;
 import net.sf.antcontrib.cpptasks.gcc.LdLinker;
 import net.sf.antcontrib.cpptasks.parser.CParser;
 import net.sf.antcontrib.cpptasks.parser.Parser;
-import net.sf.antcontrib.cpptasks.VersionInfo;
-
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.types.Environment;
+
+import java.io.File;
+import java.util.Vector;
+
+import static net.sf.antcontrib.cpptasks.CUtil.getRelativePath;
 
 /**
  * Adapter for the Mozilla Xpidl Compiler.
@@ -199,8 +199,7 @@ public final class XpidlCompiler extends CommandLineCompiler {
             args.addElement("-I");
             args.addElement(includeDirs[i].getAbsolutePath());
             if (relativeArgs != null) {
-                String relative = CUtil.getRelativePath(baseDirPath,
-                        includeDirs[i]);
+                String relative = getRelativePath(baseDirPath, includeDirs[i]);
                 relativeArgs.addElement("-I");
                 relativeArgs.addElement(relative);
                 if (includePathId != null) {

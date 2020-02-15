@@ -16,17 +16,18 @@
  */
 package net.sf.antcontrib.cpptasks.devstudio;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Vector;
-
-import net.sf.antcontrib.cpptasks.CUtil;
 import net.sf.antcontrib.cpptasks.TargetMatcher;
 import net.sf.antcontrib.cpptasks.VersionInfo;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineLinker;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.platforms.WindowsPlatform;
 import net.sf.antcontrib.cpptasks.types.LibraryTypeEnum;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Vector;
+
+import static net.sf.antcontrib.cpptasks.CUtil.getPathFromEnvironment;
 
 /**
  * Abstract base class for linkers that try to mimic the command line arguments
@@ -113,7 +114,7 @@ public abstract class DevStudioCompatibleLinker extends CommandLineLinker {
     }
 
     public File[] getLibraryPath() {
-        return CUtil.getPathFromEnvironment("LIB", ";");
+        return getPathFromEnvironment("LIB", ";");
     }
 
     public String[] getLibraryPatterns(String[] libnames, LibraryTypeEnum libType) {

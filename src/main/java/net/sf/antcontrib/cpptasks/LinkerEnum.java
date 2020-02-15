@@ -25,21 +25,21 @@ import net.sf.antcontrib.cpptasks.gcc.GccLibrarian;
 import net.sf.antcontrib.cpptasks.gcc.GccLinker;
 import net.sf.antcontrib.cpptasks.gcc.GppLinker;
 import net.sf.antcontrib.cpptasks.gcc.LdLinker;
-import net.sf.antcontrib.cpptasks.hp.aCCLinker;
 import net.sf.antcontrib.cpptasks.hp.HPLinker;
+import net.sf.antcontrib.cpptasks.hp.aCCLinker;
 import net.sf.antcontrib.cpptasks.ibm.VisualAgeLinker;
 import net.sf.antcontrib.cpptasks.ibm.XlcLinker;
 import net.sf.antcontrib.cpptasks.intel.IntelLinux32Linker;
 import net.sf.antcontrib.cpptasks.intel.IntelLinux64Linker;
 import net.sf.antcontrib.cpptasks.intel.IntelWin32Linker;
+import net.sf.antcontrib.cpptasks.openwatcom.OpenWatcomCLinker;
+import net.sf.antcontrib.cpptasks.openwatcom.OpenWatcomFortranLinker;
 import net.sf.antcontrib.cpptasks.os390.OS390Linker;
 import net.sf.antcontrib.cpptasks.os400.IccLinker;
 import net.sf.antcontrib.cpptasks.sun.C89Linker;
 import net.sf.antcontrib.cpptasks.sun.ForteCCLinker;
 import net.sf.antcontrib.cpptasks.ti.ClxxLinker;
 import org.apache.tools.ant.types.EnumeratedAttribute;
-import net.sf.antcontrib.cpptasks.openwatcom.OpenWatcomCLinker;
-import net.sf.antcontrib.cpptasks.openwatcom.OpenWatcomFortranLinker;
 
 /**
  * Enumeration of supported linkers

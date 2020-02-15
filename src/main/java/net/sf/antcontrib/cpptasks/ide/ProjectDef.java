@@ -210,10 +210,7 @@ public final class ProjectDef extends DataType {
      */
     public boolean isActive() {
         Project project = getProject();
-        if (!CUtil.isActive(project, ifProp, unlessProp)) {
-            return false;
-        }
-        return true;
+        return CUtil.isActive(project, ifProp, unlessProp);
     }
 
     /**
@@ -372,7 +369,6 @@ public final class ProjectDef extends DataType {
      * Required by documentation generator.
      */
     public void execute() {
-        throw new org.apache.tools.ant.BuildException(
-                "Not an actual task, but looks like one for documentation purposes");
+        throw new BuildException(CUtil.STANDARD_EXCUSE);
     }
 }

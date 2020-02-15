@@ -48,12 +48,12 @@
  */
 package net.sf.antcontrib.cpptasks.ibm;
 
-import java.util.Vector;
-
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 import net.sf.antcontrib.cpptasks.gcc.AbstractLdLinker;
 import net.sf.antcontrib.cpptasks.gcc.GccLibrarian;
+
+import java.util.Vector;
 
 /**
  * Adapter for IBM(r) Visual Age(tm) Linker for AIX(tm)

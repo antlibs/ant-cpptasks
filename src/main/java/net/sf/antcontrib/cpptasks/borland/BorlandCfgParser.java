@@ -16,14 +16,14 @@
  */
 package net.sf.antcontrib.cpptasks.borland;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.util.Vector;
-
 import net.sf.antcontrib.cpptasks.parser.AbstractParser;
 import net.sf.antcontrib.cpptasks.parser.AbstractParserState;
 import net.sf.antcontrib.cpptasks.parser.LetterState;
 import net.sf.antcontrib.cpptasks.parser.WhitespaceOrLetterState;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.util.Vector;
 
 /**
  * A parser that paths from a borland cfg file

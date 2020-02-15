@@ -16,12 +16,13 @@
  */
 package net.sf.antcontrib.cpptasks.gcc;
 
+import net.sf.antcontrib.cpptasks.compiler.LinkType;
+import net.sf.antcontrib.cpptasks.compiler.Linker;
+
 import java.io.File;
 import java.util.Vector;
 
-import net.sf.antcontrib.cpptasks.CUtil;
-import net.sf.antcontrib.cpptasks.compiler.LinkType;
-import net.sf.antcontrib.cpptasks.compiler.Linker;
+import static net.sf.antcontrib.cpptasks.CUtil.checkDirectoryArray;
 
 /**
  * Adapter for the GCC linker
@@ -173,7 +174,7 @@ public class GccLinker extends AbstractLdLinker {
             //
             //  check that remaining entries are actual directories
             //
-            int count = CUtil.checkDirectoryArray(libpath);
+            int count = checkDirectoryArray(libpath);
             //
             //   populate return array with remaining entries
             //

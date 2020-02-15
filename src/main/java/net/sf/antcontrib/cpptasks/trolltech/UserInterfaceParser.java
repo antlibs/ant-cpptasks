@@ -16,10 +16,10 @@
  */
 package net.sf.antcontrib.cpptasks.trolltech;
 
+import net.sf.antcontrib.cpptasks.parser.Parser;
+
 import java.io.IOException;
 import java.io.Reader;
-
-import net.sf.antcontrib.cpptasks.parser.Parser;
 
 /**
  * <p>

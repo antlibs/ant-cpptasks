@@ -16,15 +16,16 @@
  */
 package net.sf.antcontrib.cpptasks.openwatcom;
 
-import java.io.File;
-import java.util.Vector;
-
-import net.sf.antcontrib.cpptasks.CUtil;
 import net.sf.antcontrib.cpptasks.OptimizationEnum;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineCompiler;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Processor;
 import org.apache.tools.ant.types.Environment;
+
+import java.io.File;
+import java.util.Vector;
+
+import static net.sf.antcontrib.cpptasks.CUtil.getPathFromEnvironment;
 
 /**
  * An abstract base class for the OpenWatcom C and Fortran compilers.
@@ -138,7 +139,7 @@ public abstract class OpenWatcomCompiler extends CommandLineCompiler {
      * @return File[]
      */
     protected final File[] getEnvironmentIncludePath() {
-        return CUtil.getPathFromEnvironment("INCLUDE", ";");
+        return getPathFromEnvironment("INCLUDE", ";");
     }
 
     /**

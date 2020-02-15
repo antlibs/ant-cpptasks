@@ -16,9 +16,9 @@
  */
 package net.sf.antcontrib.cpptasks;
 
-import java.io.File;
-
 import org.apache.tools.ant.BuildException;
+
+import java.io.File;
 
 /**
  * An abstract class implemented to walk over the fileset members of a

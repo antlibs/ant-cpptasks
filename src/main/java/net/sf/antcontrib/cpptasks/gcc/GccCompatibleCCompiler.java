@@ -16,14 +16,15 @@
  */
 package net.sf.antcontrib.cpptasks.gcc;
 
-import java.io.File;
-import java.util.Vector;
-
-import net.sf.antcontrib.cpptasks.CUtil;
+import net.sf.antcontrib.cpptasks.OptimizationEnum;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineCCompiler;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import org.apache.tools.ant.types.Environment;
-import net.sf.antcontrib.cpptasks.OptimizationEnum;
+
+import java.io.File;
+import java.util.Vector;
+
+import static net.sf.antcontrib.cpptasks.CUtil.getPathFromEnvironment;
 
 /**
  * Abstract base class for compilers that attempt to be command line compatible
@@ -158,7 +159,7 @@ public abstract class GccCompatibleCCompiler extends CommandLineCCompiler {
     }
 
     protected File[] getEnvironmentIncludePath() {
-        return CUtil.getPathFromEnvironment("INCLUDE", ":");
+        return getPathFromEnvironment("INCLUDE", ":");
     }
 
     public String getIncludeDirSwitch(String includeDir) {

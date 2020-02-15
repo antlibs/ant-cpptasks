@@ -75,7 +75,7 @@ public final class TestCompilerDef extends TestProcessorDef {
      */
     @Test
     public void testGetActiveDefines() {
-        Project project = new org.apache.tools.ant.Project();
+        Project project = new Project();
         CompilerDef def = new CompilerDef();
         def.setProject(project);
         DefineSet defset = new DefineSet();
@@ -120,7 +120,7 @@ public final class TestCompilerDef extends TestProcessorDef {
      */
     @Test
     public void testGetActiveIncludePaths() {
-        Project project = new org.apache.tools.ant.Project();
+        Project project = new Project();
         CompilerDef def = new CompilerDef();
         def.setProject(project);
         ConditionalPath path = def.createIncludePath();

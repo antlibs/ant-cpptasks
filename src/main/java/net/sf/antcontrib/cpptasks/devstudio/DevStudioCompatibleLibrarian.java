@@ -16,12 +16,12 @@
  */
 package net.sf.antcontrib.cpptasks.devstudio;
 
-import java.io.File;
-import java.util.Vector;
-
 import net.sf.antcontrib.cpptasks.compiler.CommandLineLinker;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.types.LibraryTypeEnum;
+
+import java.io.File;
+import java.util.Vector;
 
 /**
  * Abstract base adapter for librarians with command line options compatible

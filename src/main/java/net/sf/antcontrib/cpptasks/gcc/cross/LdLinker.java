@@ -16,8 +16,6 @@
  */
 package net.sf.antcontrib.cpptasks.gcc.cross;
 
-import java.io.File;
-
 import net.sf.antcontrib.cpptasks.CCTask;
 import net.sf.antcontrib.cpptasks.LinkerParam;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineLinkerConfiguration;
@@ -25,6 +23,8 @@ import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 import net.sf.antcontrib.cpptasks.gcc.AbstractLdLinker;
 import org.apache.tools.ant.BuildException;
+
+import java.io.File;
 
 /**
  * Adapter for the 'ld' linker

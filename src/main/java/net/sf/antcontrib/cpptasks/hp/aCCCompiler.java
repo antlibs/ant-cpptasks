@@ -16,16 +16,16 @@
  */
 package net.sf.antcontrib.cpptasks.hp;
 
-import java.io.File;
-import java.util.Vector;
-
-import net.sf.antcontrib.cpptasks.CUtil;
+import net.sf.antcontrib.cpptasks.OptimizationEnum;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 import net.sf.antcontrib.cpptasks.gcc.GccCompatibleCCompiler;
-import net.sf.antcontrib.cpptasks.OptimizationEnum;
-
 import org.apache.tools.ant.types.Environment;
+
+import java.io.File;
+import java.util.Vector;
+
+import static net.sf.antcontrib.cpptasks.CUtil.getExecutableLocation;
 
 /**
  * Adapter for the HP aC++ C++ compiler
@@ -105,7 +105,7 @@ public final class aCCCompiler extends GccCompatibleCCompiler {
 
     public File[] getEnvironmentIncludePath() {
         if (includePath == null) {
-            File ccLoc = CUtil.getExecutableLocation("aCC");
+            File ccLoc = getExecutableLocation("aCC");
             if (ccLoc != null) {
                 File compilerIncludeDir = new File(new File(ccLoc, "../include").getAbsolutePath());
                 if (compilerIncludeDir.exists()) {

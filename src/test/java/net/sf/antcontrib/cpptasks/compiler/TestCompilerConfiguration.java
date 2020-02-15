@@ -54,7 +54,7 @@ public abstract class TestCompilerConfiguration {
         //     setPlatformInfo has not been called
         try {
             String[] output = compiler.getOutputFileNames(input, null);
-        } catch (java.lang.IllegalStateException ex) {
+        } catch (IllegalStateException ex) {
         }
     }
 

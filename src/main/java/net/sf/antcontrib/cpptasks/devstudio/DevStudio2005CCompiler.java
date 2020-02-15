@@ -16,12 +16,12 @@
  */
 package net.sf.antcontrib.cpptasks.devstudio;
 
-import java.util.Vector;
-
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 import net.sf.antcontrib.cpptasks.compiler.Processor;
 import org.apache.tools.ant.types.Environment;
+
+import java.util.Vector;
 
 /**
  * Adapter for the Microsoft(r) C/C++ 8 Optimizing Compiler

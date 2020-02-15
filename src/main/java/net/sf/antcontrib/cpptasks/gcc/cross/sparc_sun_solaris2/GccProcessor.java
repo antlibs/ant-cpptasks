@@ -16,6 +16,9 @@
  */
 package net.sf.antcontrib.cpptasks.gcc.cross.sparc_sun_solaris2;
 
+import net.sf.antcontrib.cpptasks.compiler.CaptureStreamHandler;
+import net.sf.antcontrib.cpptasks.types.LibraryTypeEnum;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -24,9 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-import net.sf.antcontrib.cpptasks.CUtil;
-import net.sf.antcontrib.cpptasks.compiler.CaptureStreamHandler;
-import net.sf.antcontrib.cpptasks.types.LibraryTypeEnum;
+import static net.sf.antcontrib.cpptasks.CUtil.getExecutableLocation;
 
 /**
  * A add-in class for Gcc processors
@@ -61,7 +62,7 @@ public class GccProcessor {
         if (names == null) {
             throw new NullPointerException("names");
         }
-        File gccDir = CUtil.getExecutableLocation(GccCCompiler.CMD_PREFIX
+        File gccDir = getExecutableLocation(GccCCompiler.CMD_PREFIX
                 + "gcc.exe");
         if (gccDir != null) {
             String prefix = gccDir.getAbsolutePath() + "/..";
@@ -134,7 +135,7 @@ public class GccProcessor {
      */
     public static String[] getSpecs() {
         if (specs == null) {
-            File gccParent = CUtil.getExecutableLocation(GccCCompiler.CMD_PREFIX + "gcc.exe");
+            File gccParent = getExecutableLocation(GccCCompiler.CMD_PREFIX + "gcc.exe");
             if (gccParent != null) {
                 //
                 //  build a relative path like

@@ -48,13 +48,13 @@
  */
 package net.sf.antcontrib.cpptasks.ibm;
 
-import java.io.File;
-import java.util.Vector;
-
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 import net.sf.antcontrib.cpptasks.gcc.GccCompatibleCCompiler;
 import org.apache.tools.ant.types.Environment;
+
+import java.io.File;
+import java.util.Vector;
 
 
 /**

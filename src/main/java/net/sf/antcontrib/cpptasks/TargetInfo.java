@@ -16,9 +16,11 @@
  */
 package net.sf.antcontrib.cpptasks;
 
+import net.sf.antcontrib.cpptasks.compiler.ProcessorConfiguration;
+
 import java.io.File;
 
-import net.sf.antcontrib.cpptasks.compiler.ProcessorConfiguration;
+import static net.sf.antcontrib.cpptasks.CUtil.getRelativePath;
 
 /**
  * A description of a file built or to be built
@@ -105,7 +107,7 @@ public final class TargetInfo {
     public SourceHistory[] getSourceHistories(String basePath) {
         SourceHistory[] histories = new SourceHistory[sources.length];
         for (int i = 0; i < sources.length; i++) {
-            String relativeName = CUtil.getRelativePath(basePath, sources[i]);
+            String relativeName = getRelativePath(basePath, sources[i]);
             long lastModified = sources[i].lastModified();
             histories[i] = new SourceHistory(relativeName, lastModified);
         }

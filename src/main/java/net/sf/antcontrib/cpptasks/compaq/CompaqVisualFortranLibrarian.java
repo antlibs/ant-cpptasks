@@ -16,15 +16,15 @@
  */
 package net.sf.antcontrib.cpptasks.compaq;
 
-import java.io.File;
-import java.util.Vector;
-
 import net.sf.antcontrib.cpptasks.compiler.CommandLineLinker;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 import net.sf.antcontrib.cpptasks.devstudio.DevStudioLibrarian;
 import net.sf.antcontrib.cpptasks.devstudio.DevStudioProcessor;
 import net.sf.antcontrib.cpptasks.types.LibraryTypeEnum;
+
+import java.io.File;
+import java.util.Vector;
 
 /**
  * Adapter for the Compaq(r) Visual Fortran Librarian

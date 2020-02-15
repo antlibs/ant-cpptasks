@@ -16,6 +16,24 @@
  */
 package net.sf.antcontrib.cpptasks.borland;
 
+import net.sf.antcontrib.cpptasks.CCTask;
+import net.sf.antcontrib.cpptasks.TargetInfo;
+import net.sf.antcontrib.cpptasks.compiler.CommandLineCompilerConfiguration;
+import net.sf.antcontrib.cpptasks.compiler.CommandLineLinkerConfiguration;
+import net.sf.antcontrib.cpptasks.compiler.ProcessorConfiguration;
+import net.sf.antcontrib.cpptasks.gcc.GccCCompiler;
+import net.sf.antcontrib.cpptasks.ide.ProjectDef;
+import net.sf.antcontrib.cpptasks.ide.ProjectWriter;
+import org.apache.tools.ant.BuildException;
+import org.xml.sax.Attributes;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.AttributesImpl;
+
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.sax.SAXTransformerFactory;
+import javax.xml.transform.sax.TransformerHandler;
+import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -24,23 +42,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
 
-import net.sf.antcontrib.cpptasks.CCTask;
-import net.sf.antcontrib.cpptasks.CUtil;
-import net.sf.antcontrib.cpptasks.TargetInfo;
-import net.sf.antcontrib.cpptasks.compiler.CommandLineCompilerConfiguration;
-import net.sf.antcontrib.cpptasks.compiler.CommandLineLinkerConfiguration;
-import net.sf.antcontrib.cpptasks.compiler.ProcessorConfiguration;
-import net.sf.antcontrib.cpptasks.gcc.GccCCompiler;
-import net.sf.antcontrib.cpptasks.ide.ProjectDef;
-import net.sf.antcontrib.cpptasks.ide.ProjectWriter;
-
-import org.apache.tools.ant.BuildException;
-import org.apache.xml.serialize.OutputFormat;
-import org.apache.xml.serialize.Serializer;
-import org.apache.xml.serialize.XMLSerializer;
-import org.xml.sax.ContentHandler;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.AttributesImpl;
+import static net.sf.antcontrib.cpptasks.CUtil.getRelativePath;
 
 /**
  * Writes a CBuilderX 1.0 project file.
@@ -65,6 +67,7 @@ public final class CBuilderXProjectWriter implements ProjectWriter {
      * @param linkTarget link target
      * @throws IOException  if I/O error
      * @throws SAXException if XML serialization error
+     * @throws TransformerConfigurationException if XML configuration error
      */
     public void writeProject(final File fileName,
                              final CCTask task,
@@ -72,7 +75,7 @@ public final class CBuilderXProjectWriter implements ProjectWriter {
                              final List<File> sources,
                              final Hashtable<String, TargetInfo> targets,
                              final TargetInfo linkTarget)
-            throws IOException, SAXException {
+            throws IOException, SAXException, TransformerConfigurationException {
         final String basePath = fileName.getAbsoluteFile().getParent();
 
         File projectFile = new File(fileName + ".cbx");
@@ -88,11 +91,14 @@ public final class CBuilderXProjectWriter implements ProjectWriter {
         }
 
         OutputStream outStream = new FileOutputStream(projectFile);
-        OutputFormat format = new OutputFormat("xml", "UTF-8", true);
-        Serializer serializer = new XMLSerializer(outStream, format);
-        ContentHandler content = serializer.asContentHandler();
+        StreamResult result = new StreamResult(outStream);
+
+        SAXTransformerFactory sf = (SAXTransformerFactory) SAXTransformerFactory.newInstance();
+        TransformerHandler content = sf.newTransformerHandler();
+        content.setResult(result);
+
         content.startDocument();
-        AttributesImpl emptyAttrs = new AttributesImpl();
+        Attributes emptyAttrs = new AttributesImpl();
         content.startElement(null, "project", "project", emptyAttrs);
         PropertyWriter propertyWriter = new PropertyWriter(content);
         propertyWriter.write("build.config", "active", "0");
@@ -160,7 +166,7 @@ public final class CBuilderXProjectWriter implements ProjectWriter {
 
         for (TargetInfo info : targets.values()) {
             for (File targetsource : info.getSources()) {
-                String relativePath = CUtil.getRelativePath(basePath, targetsource);
+                String relativePath = getRelativePath(basePath, targetsource);
                 fileAttributes.setValue(0, relativePath);
                 content.startElement(null, "file", "file", fileAttributes);
 
@@ -323,7 +329,7 @@ public final class CBuilderXProjectWriter implements ProjectWriter {
             writer.write(compileID, "option.I.arg." + (includeIndex++), "/usr/include/g++-3");
         }
         for (int i = 0; i < includePath.length; i++) {
-            String relPath = CUtil.getRelativePath(baseDir, includePath[i]);
+            String relPath = getRelativePath(baseDir, includePath[i]);
             writer.write(compileID, "option.I.arg." + (includeIndex++), relPath);
         }
         if (includePath.length > 0) {

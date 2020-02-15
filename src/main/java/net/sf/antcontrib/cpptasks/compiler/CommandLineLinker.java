@@ -16,6 +16,18 @@
  */
 package net.sf.antcontrib.cpptasks.compiler;
 
+import net.sf.antcontrib.cpptasks.CCTask;
+import net.sf.antcontrib.cpptasks.CUtil;
+import net.sf.antcontrib.cpptasks.LinkerDef;
+import net.sf.antcontrib.cpptasks.ProcessorDef;
+import net.sf.antcontrib.cpptasks.ProcessorParam;
+import net.sf.antcontrib.cpptasks.TargetDef;
+import net.sf.antcontrib.cpptasks.VersionInfo;
+import net.sf.antcontrib.cpptasks.types.CommandLineArgument;
+import net.sf.antcontrib.cpptasks.types.LibrarySet;
+import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.types.Environment;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -23,20 +35,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
-
-import net.sf.antcontrib.cpptasks.CCTask;
-import net.sf.antcontrib.cpptasks.CUtil;
-import net.sf.antcontrib.cpptasks.LinkerDef;
-import net.sf.antcontrib.cpptasks.ProcessorDef;
-import net.sf.antcontrib.cpptasks.ProcessorParam;
-import net.sf.antcontrib.cpptasks.types.CommandLineArgument;
-import net.sf.antcontrib.cpptasks.types.LibrarySet;
-import net.sf.antcontrib.cpptasks.TargetDef;
-import net.sf.antcontrib.cpptasks.VersionInfo;
-
-import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.types.Environment;
-
 
 /**
  * An abstract Linker implementation that performs the link via an external

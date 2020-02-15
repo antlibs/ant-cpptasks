@@ -16,6 +16,7 @@
  */
 package net.sf.antcontrib.cpptasks.types;
 
+import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.EnumeratedAttribute;
 
 /**
@@ -54,7 +55,7 @@ public class CommandLineArgument {
      * @param p Project
      * @return boolean
      */
-    public boolean isActive(org.apache.tools.ant.Project p) {
+    public boolean isActive(Project p) {
         if (value == null) {
             return false;
         }

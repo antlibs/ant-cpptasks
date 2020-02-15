@@ -16,15 +16,16 @@
  */
 package net.sf.antcontrib.cpptasks.ti;
 
-import java.io.File;
-import java.util.Vector;
-
-import net.sf.antcontrib.cpptasks.CUtil;
+import net.sf.antcontrib.cpptasks.OptimizationEnum;
 import net.sf.antcontrib.cpptasks.compiler.CommandLineCCompiler;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
-import net.sf.antcontrib.cpptasks.OptimizationEnum;
 import org.apache.tools.ant.types.Environment;
+
+import java.io.File;
+import java.util.Vector;
+
+import static net.sf.antcontrib.cpptasks.CUtil.getPathFromEnvironment;
 
 /**
  * Adapter for TI DSP compilers with cl** commands
@@ -125,8 +126,8 @@ public class ClxxCCompiler extends CommandLineCCompiler {
      * @see net.sf.antcontrib.cpptasks.compiler.CommandLineCompiler#getEnvironmentIncludePath()
      */
     protected File[] getEnvironmentIncludePath() {
-        File[] c_dir = CUtil.getPathFromEnvironment("C_DIR", ";");
-        File[] cx_dir = CUtil.getPathFromEnvironment("C6X_C_DIR", ";");
+        File[] c_dir = getPathFromEnvironment("C_DIR", ";");
+        File[] cx_dir = getPathFromEnvironment("C6X_C_DIR", ";");
         if (c_dir.length == 0) {
             return cx_dir;
         }

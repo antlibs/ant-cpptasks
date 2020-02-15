@@ -16,9 +16,9 @@
  */
 package net.sf.antcontrib.cpptasks.intel;
 
-import java.util.Vector;
-
 import net.sf.antcontrib.cpptasks.devstudio.DevStudioProcessor;
+
+import java.util.Vector;
 
 /**
  * A add-in class for Intel (r) compilers and linkers

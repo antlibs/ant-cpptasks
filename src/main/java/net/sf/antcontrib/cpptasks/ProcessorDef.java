@@ -16,9 +16,6 @@
  */
 package net.sf.antcontrib.cpptasks;
 
-import java.io.File;
-import java.lang.reflect.Method;
-import java.util.Vector;
 
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Processor;
@@ -31,6 +28,10 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.DataType;
 import org.apache.tools.ant.types.Environment;
 import org.apache.tools.ant.types.Reference;
+
+import java.io.File;
+import java.lang.reflect.Method;
+import java.util.Vector;
 
 /**
  * An abstract compiler/linker definition.
@@ -214,7 +215,7 @@ public abstract class ProcessorDef extends DataType {
     public CommandLineArgument[] getActiveProcessorArgs() {
         Project p = getProject();
         if (p == null) {
-            throw new java.lang.IllegalStateException("project must be set");
+            throw new IllegalStateException("project must be set");
         }
         if (isReference()) {
             return getCheckedRef(ProcessorDef.class,
@@ -238,7 +239,7 @@ public abstract class ProcessorDef extends DataType {
     public ProcessorParam[] getActiveProcessorParams() {
         Project p = getProject();
         if (p == null) {
-            throw new java.lang.IllegalStateException("project must be set");
+            throw new IllegalStateException("project must be set");
         }
         if (isReference()) {
             return getCheckedRef(ProcessorDef.class,
@@ -629,7 +630,7 @@ public abstract class ProcessorDef extends DataType {
      *
      * @param ref Reference to other element
      */
-    public void setRefid(org.apache.tools.ant.types.Reference ref) {
+    public void setRefid(Reference ref) {
         super.setRefid(ref);
     }
 
@@ -661,7 +662,7 @@ public abstract class ProcessorDef extends DataType {
     public void visitFiles(FileVisitor visitor) {
         Project p = getProject();
         if (p == null) {
-            throw new java.lang.IllegalStateException("project must be set before this call");
+            throw new IllegalStateException("project must be set before this call");
         }
         if (isReference()) {
             getCheckedRef(ProcessorDef.class,

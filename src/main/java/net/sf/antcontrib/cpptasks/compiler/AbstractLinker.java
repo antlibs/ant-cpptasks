@@ -16,9 +16,6 @@
  */
 package net.sf.antcontrib.cpptasks.compiler;
 
-import java.io.File;
-import java.io.IOException;
-
 import net.sf.antcontrib.cpptasks.CCTask;
 import net.sf.antcontrib.cpptasks.LinkerDef;
 import net.sf.antcontrib.cpptasks.ProcessorDef;
@@ -26,6 +23,9 @@ import net.sf.antcontrib.cpptasks.TargetDef;
 import net.sf.antcontrib.cpptasks.TargetMatcher;
 import net.sf.antcontrib.cpptasks.VersionInfo;
 import org.apache.tools.ant.types.Environment;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * An abstract Linker implementation.

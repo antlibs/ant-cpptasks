@@ -21,14 +21,14 @@ import net.sf.antcontrib.cpptasks.borland.BorlandCCompiler;
 import net.sf.antcontrib.cpptasks.borland.BorlandResourceCompiler;
 import net.sf.antcontrib.cpptasks.compaq.CompaqVisualFortranCompiler;
 import net.sf.antcontrib.cpptasks.compiler.Compiler;
-import net.sf.antcontrib.cpptasks.devstudio.DevStudioCCompiler;
 import net.sf.antcontrib.cpptasks.devstudio.DevStudio2005CCompiler;
+import net.sf.antcontrib.cpptasks.devstudio.DevStudioCCompiler;
 import net.sf.antcontrib.cpptasks.devstudio.DevStudioMIDLCompiler;
 import net.sf.antcontrib.cpptasks.devstudio.DevStudioResourceCompiler;
 import net.sf.antcontrib.cpptasks.gcc.GccCCompiler;
 import net.sf.antcontrib.cpptasks.gcc.WindresResourceCompiler;
-import net.sf.antcontrib.cpptasks.hp.aCCCompiler;
 import net.sf.antcontrib.cpptasks.hp.HPCompiler;
+import net.sf.antcontrib.cpptasks.hp.aCCCompiler;
 import net.sf.antcontrib.cpptasks.ibm.VisualAgeCCompiler;
 import net.sf.antcontrib.cpptasks.ibm.XlcCompiler;
 import net.sf.antcontrib.cpptasks.intel.IntelLinux32CCompiler;
@@ -36,6 +36,8 @@ import net.sf.antcontrib.cpptasks.intel.IntelLinux64CCompiler;
 import net.sf.antcontrib.cpptasks.intel.IntelWin32CCompiler;
 import net.sf.antcontrib.cpptasks.intel.IntelWin64CCompiler;
 import net.sf.antcontrib.cpptasks.mozilla.XpidlCompiler;
+import net.sf.antcontrib.cpptasks.openwatcom.OpenWatcomCCompiler;
+import net.sf.antcontrib.cpptasks.openwatcom.OpenWatcomFortranCompiler;
 import net.sf.antcontrib.cpptasks.os390.OS390CCompiler;
 import net.sf.antcontrib.cpptasks.os400.IccCompiler;
 import net.sf.antcontrib.cpptasks.sun.C89CCompiler;
@@ -43,9 +45,6 @@ import net.sf.antcontrib.cpptasks.sun.ForteCCCompiler;
 import net.sf.antcontrib.cpptasks.ti.ClxxCCompiler;
 import net.sf.antcontrib.cpptasks.trolltech.MetaObjectCompiler;
 import net.sf.antcontrib.cpptasks.trolltech.UserInterfaceCompiler;
-import net.sf.antcontrib.cpptasks.openwatcom.OpenWatcomCCompiler;
-import net.sf.antcontrib.cpptasks.openwatcom.OpenWatcomFortranCompiler;
-
 import org.apache.tools.ant.types.EnumeratedAttribute;
 
 /**
