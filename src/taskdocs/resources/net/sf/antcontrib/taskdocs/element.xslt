@@ -17,9 +17,14 @@
 <xsl:transform xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                xmlns:taskdocs="http://ant-contrib.sf.net/taskdocs"
                xmlns:xhtml="http://www.w3.org/1999/xhtml"
+               exclude-result-prefixes="taskdocs xhtml"
+               xmlns="http://maven.apache.org/XDOC/2.0"
                version="1.0">
 
   <xsl:output method="xml" indent="yes"/>
+
+  <xsl:strip-space elements="*"/>
+  <xsl:preserve-space elements="xsl:text"/>
 
   <xsl:apply-templates select="/"/>
 
@@ -42,7 +47,8 @@
  limitations under the License.
 
     </xsl:comment>
-    <document>
+    <document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
       <xsl:apply-templates/>
     </document>
   </xsl:template>
@@ -63,21 +69,21 @@
       <xsl:when test="contains($name, 'SystemLibrarySet')">syslibset</xsl:when>
       <xsl:when test="contains($name, 'LibrarySet')">libset</xsl:when>
       <xsl:when test="contains($name, 'TargetDef')">targetplatform</xsl:when>
-      <xsl:when test="string-length(substring-before($name, 'Task'))">
+      <xsl:when test="boolean(string-length(substring-before($name, 'Task')))">
         <xsl:call-template name="pretty-name">
           <xsl:with-param name="name">
             <xsl:value-of select="substring-before($name, 'Task')"/>
           </xsl:with-param>
         </xsl:call-template>
       </xsl:when>
-      <xsl:when test="string-length(substring-before($name, 'Def'))">
+      <xsl:when test="boolean(string-length(substring-before($name, 'Def')))">
         <xsl:call-template name="pretty-name">
           <xsl:with-param name="name">
             <xsl:value-of select="substring-before($name, 'Def')"/>
           </xsl:with-param>
         </xsl:call-template>
       </xsl:when>
-      <xsl:when test="string-length(substring-before($name, 'Argument'))">
+      <xsl:when test="boolean(string-length(substring-before($name, 'Argument')))">
         <xsl:call-template name="pretty-name">
           <xsl:with-param name="name">
             <xsl:value-of select="substring-before($name, 'ument')"/>
@@ -101,7 +107,7 @@
       </title>
     </properties>
     <body>
-      <section>
+      <section name="">
         <xsl:attribute name="name">
           <xsl:call-template name='pretty-name'>
             <xsl:with-param name="name">
@@ -116,15 +122,9 @@
           <subsection name="parameters">
             <table>
               <tr>
-                <td>
-                  <b>Attribute</b>
-                </td>
-                <td>
-                  <b>Description</b>
-                </td>
-                <td>
-                  <b>Type</b>
-                </td>
+                <th>Attribute</th>
+                <th>Description</th>
+                <th>Type</th>
               </tr>
               <xsl:apply-templates select="taskdocs:attributes/taskdocs:attribute">
                 <xsl:sort select="@name"/>
@@ -181,17 +181,17 @@
     <xsl:element name="a">
       <xsl:attribute name="href">
         <xsl:choose>
-          <xsl:when test="starts-with(@qualifiedTypeName, 'net.sf.antcontrib.cpptasks')"><xsl:value-of
-          select="@name"/>.html
+          <xsl:when test="starts-with(@qualifiedTypeName, 'net.sf.antcontrib.cpptasks')">
+            <xsl:value-of select="@name"/>.html
           </xsl:when>
           <xsl:when test="starts-with(@qualifiedTypeName, 'org.apache.tools.ant.types.PatternSet')">
-            http://ant.apache.org/manual/CoreTypes/patternset.html
+            http://ant.apache.org/manual/Types/patternset.html
           </xsl:when>
           <xsl:when test="starts-with(@qualifiedTypeName, 'org.apache.tools.ant.types.Path')">
             http://ant.apache.org/manual/using.html#path
           </xsl:when>
           <xsl:when test="starts-with(@qualifiedTypeName, 'org.apache.tools.ant.types.Commandline')">
-            http://ant.apache.org/manual/CoreTasks/exec.html
+            http://ant.apache.org/manual/Tasks/exec.html
           </xsl:when>
           <xsl:otherwise>about:blank</xsl:otherwise>
         </xsl:choose>
@@ -213,9 +213,7 @@
         </xsl:call-template>
       </xsl:for-each>
     </dt>
-    <dd>
-      <xsl:value-of select="taskdocs:comment"/>
-    </dd>
+    <dd><xsl:value-of select="taskdocs:comment"/></dd>
   </xsl:template>
 
 </xsl:transform>
