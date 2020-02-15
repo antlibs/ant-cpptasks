@@ -15,39 +15,31 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-<project default="jars" basedir=".">
+<project name="ant-cpptasks" default="jars" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
 
   <!--
       Give user a chance to override without editing this file
       (and without typing -D each time it compiles it)
   -->
-  <property name="Name" value="cpptasks"/>
-  <property name="name" value="cpptasks"/>
   <property name="version" value="1.0b5"/>
 
   <property name="debug" value="true"/>
   <property name="deprecation" value="false"/>
   <property name="optimize" value="true"/>
   <property name="junit.fork" value="false"/>
-  <!--
-      base of Ant CVS source required for xdocs and dist tasks
-      (zipped source doesn't contain xdocs proposal)
-  -->
-  <property name="ant-src.dir" location="/ant-src/ant"/>
-  <property name="xdocs.dir" location="${ant-src.dir}/proposal/xdocs"/>
-  <property name="javac.source" value="1.3"/>
-  <property name="javac.target" value="1.1"/>
+  <property name="javac.source" value="1.5"/>
+  <property name="javac.target" value="1.5"/>
 
   <!--
       ===================================================================
       Set the properties related to the source tree
       ===================================================================
   -->
-  <property name="src.dir" value="src/main/java"/>
-  <property name="resources.dir" value="src/main/resources"/>
   <property name="java.dir" value="src/main/java"/>
+  <property name="resources.dir" value="src/main/resources"/>
   <property name="tests.java.dir" value="src/test/java"/>
   <property name="tests.resources.dir" value="src/test/resources"/>
+  <property name="xdoc.dir" value="src/site/xdoc"/>
 
   <!--
       ===================================================================
@@ -59,26 +51,63 @@
   <property name="tests.build.classes" value="${build.dir}/tests"/>
   <property name="tests.build.lib" value="${build.dir}/lib"/>
   <property name="build.lib" value="${build.dir}/lib"/>
-  <property name="build.javadocs" value="${build.dir}/javadocs"/>
+  <property name="jacoco.log" value="${build.dir}/jacoco.data"/>
+  <property name="xml.log.dir" value="${build.dir}/test-report"/>
+  <property name="docs.dir" location="${build.dir}/docs"/>
+  <property name="build.javadocs" value="${docs.dir}/manual/apidocs"/>
+  <property name="checkstyle.report.dir" location="${docs.dir}/checkstyle"/>
+  <property name="coverage.report.dir" location="${docs.dir}/coverage"/>
   <property name="lib.dir" value="lib"/>
-  <property name="clover.jar" value="/clover-1.2/lib/clover.jar"/>
 
   <!--
       ===================================================================
       Set up properties for the distribution area
       ===================================================================
   -->
-  <property name="dist.name" value="${name}-${version}"/>
+  <property name="dist.name" value="${ant.project.name}-${version}"/>
   <property name="dist.base" value="target"/>
   <property name="dist.dir" value="${dist.base}/${dist.name}"/>
   <property name="dist.javadocs" value="${dist.dir}/docs/manual/api"/>
+
+  <!-- Ivy -->
+  <property name="central.repo" value="https://repo1.maven.org/maven2"/>
+  <property name="ivy.version" value="2.5.0"/>
+  <property name="ivy.dir" value="${user.home}/.ivy2/cache/org.apache.ivy/jars"/>
+  <property name="ivy.jar.name" value="ivy-${ivy.version}.jar"/>
+  <available property="has.ivy" file="${ivy.dir}/${ivy.jar.name}" type="file"/>
+
+  <target name="get-ivy" description="--> gets Ivy jar unless already cached" unless="has.ivy">
+    <mkdir dir="${ivy.dir}"/>
+    <get usetimestamp="true" src="${central.repo}/org/apache/ivy/ivy/${ivy.version}/${ivy.jar.name}"
+         skipexisting="true"
+         dest="${ivy.dir}/${ivy.jar.name}"/>
+  </target>
+
+  <target name="init" description="--> initializes Ivy" depends="get-ivy">
+    <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpath="${ivy.dir}/${ivy.jar.name}"/>
+    <ivy:settings file="${basedir}/ivy.settings.xml"/>
+  </target>
+
+  <target name="get-deps" description="--> retrieves dependencies" depends="init" unless="noget">
+    <ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" sync="true" type="jar"/>
+  </target>
+
+  <target name="classpath" depends="get-deps">
+    <ivy:cachepath pathid="compile.classpath" type="jar" conf="compile"/>
+    <ivy:cachepath pathid="runtime.classpath" type="jar" conf="runtime"/>
+    <ivy:cachepath pathid="test.classpath" type="jar" conf="test"/>
+    <ivy:cachepath pathid="doxia.classpath" type="jar" conf="doxia"/>
+    <ivy:cachefileset setid="compile.fileset" type="jar" conf="compile"/>
+    <ivy:cachefileset setid="runtime.fileset" type="jar" conf="runtime"/>
+    <ivy:cachefileset setid="test.fileset" type="jar" conf="test"/>
+  </target>
 
   <!--
       ===================================================================
       Prepare the build
       ===================================================================
   -->
-  <target name="prepare">
+  <target name="prepare" depends="classpath">
     <tstamp>
       <format property="year" pattern="yyyy"/>
     </tstamp>
@@ -87,37 +116,6 @@
       <filter token="DATE" value="${TODAY}"/>
       <filter token="TIME" value="${TSTAMP}"/>
     </filterset>
-    <available property="junit-available" classname="junit.framework.TestCase"/>
-  </target>
-
-  <!--
-      ===================================================================
-      Configure for coverage analysis
-      ===================================================================
-  -->
-  <target name="with.clover">
-    <taskdef classpath="${clover.jar}" resource="clovertasks"/>
-    <clover-setup initString="cpptasks.db"/>
-  </target>
-
-  <!--
-      ===================================================================
-      Generate coverage analysis
-      ===================================================================
-  -->
-  <target name="coverage-report" depends="clean, with.clover, run-coverage-tests">
-    <mkdir dir="${build.dir}/coverage/report"/>
-    <clover-report>
-      <current title="cpptasks coverage" outfile="${build.dir}/coverage/report">
-	<format type="html"/>
-      </current>
-    </clover-report>
-
-    <replace dir="${build.dir}/coverage/report"
-             includes="**/*.html"
-             token='Ant-Contrib Tasks only. &lt;/td&gt;'
-             value='Ant-Contrib Tasks only. &lt;/td&gt;&lt;td&gt;&lt;a target="_parent" href="http://sourceforge.net"&gt;&lt;img src="http://sourceforge.net/sflogo.php?group_id=36177&amp;amp;type=1" width="88" height="31" border="0" alt="SourceForge.net Logo" /&gt;&lt;/a&gt;&lt;/td&gt;'/>
-
   </target>
 
   <!--
@@ -125,9 +123,7 @@
       Build the code
       ===================================================================
   -->
-  <target name="build"
-          depends="prepare"
-          description="--> compiles the source code">
+  <target name="build" depends="prepare" description="--> compiles the source code">
     <mkdir dir="${build.classes}"/>
     <javac srcdir="${java.dir}"
            destdir="${build.classes}"
@@ -135,7 +131,9 @@
            target="${javac.target}"
            source="${javac.source}"
            deprecation="${deprecation}"
-           optimize="${optimize}">
+           optimize="${optimize}"
+           includeantruntime="false"
+           classpathref="compile.classpath">
     </javac>
   </target>
 
@@ -144,11 +142,9 @@
       Create the jar
       ===================================================================
   -->
-  <target name="jars"
-          depends="build"
-          description="--> creates the jar">
+  <target name="jars" depends="build" description="--> creates the jar">
     <mkdir dir="${build.lib}"/>
-    <jar jarfile="${build.lib}/${name}.jar">
+    <jar jarfile="${build.lib}/${ant.project.name}.jar">
       <fileset dir="${build.classes}"/>
       <fileset dir="${resources.dir}" excludes="META-INF"/>
       <manifest>
@@ -162,12 +158,7 @@
     </jar>
   </target>
 
-  <target name="junit-warning" depends="prepare" unless="junit-available">
-    <fail message="junit.jar is required in Ant's lib directory to build this target.  Download from http://www.junit.org"/>
-  </target>
-
-
-  <target name="build-tests" depends="jars,junit-warning">
+  <target name="build-tests" depends="jars">
     <mkdir dir="${tests.build.classes}"/>
     <mkdir dir="${tests.build.lib}"/>
     <javac srcdir="${tests.java.dir}"
@@ -176,54 +167,88 @@
            deprecation="false"
            target="${javac.target}"
            source="${javac.source}"
-           optimize="false"
-           classpath="${build.lib}/${name}.jar;${java.class.path}"/>
-    <jar jarfile="${tests.build.lib}/${name}_test.jar">
+           optimize="false">
+      <classpath>
+        <path refid="test.classpath"/>
+        <pathelement location="${build.lib}/${ant.project.name}.jar"/>
+      </classpath>
+    </javac>
+    <jar jarfile="${tests.build.lib}/${ant.project.name}-test.jar">
       <fileset dir="." includes="NOTICE LICENSE"/>
       <fileset dir="${tests.build.classes}"/>
     </jar>
   </target>
 
-  <target name="run-tests" depends="build-tests" description="Run tests">
-    <junit printsummary="false"
-           fork="true"
-           dir="${tests.resources.dir}">
-      <classpath>
-        <pathelement location="${tests.build.lib}/${name}_test.jar"/>
-        <pathelement location="${build.lib}/${name}.jar"/>
-      </classpath>
-
-      <test name="net.sf.antcontrib.cpptasks.TestAllClasses" outfile="result">
-        <formatter type="xml"/>
-        <formatter type="brief" usefile="false"/>
-      </test>
-
-    </junit>
+  <target name="init-jacoco" depends="build-tests">
+    <ivy:cachepath organisation="org.jacoco" module="org.jacoco.ant" revision="0.8.2"
+                   inline="true" conf="default" pathid="jacoco.classpath" log="download-only"/>
+    <taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml"
+             classpathref="jacoco.classpath"/>
   </target>
 
-  <target name="run-coverage-tests" depends="build-tests">
-    <junit printsummary="false"
-           fork="true"
+  <target name="run-tests" depends="init-jacoco" description="--> runs tests">
+    <mkdir dir="${xml.log.dir}"/>
+    <!-- multiple runs into the same logfile cause the later report generation fail -->
+    <delete file="${jacoco.log}"/>
+    <jacoco:coverage xmlns:jacoco="antlib:org.jacoco.ant" destfile="${jacoco.log}"
+                     exclclassloader="sun.reflect.DelegatingClassLoader:javassist.Loader">
+    <junit printsummary="false" fork="true" tempdir="${build.dir}"
+           haltonerror="false" haltonfailure="false"
+           errorproperty="junit.error" failureproperty="junit.failure"
            dir="${tests.resources.dir}">
       <classpath>
-        <pathelement location="${tests.build.lib}/${name}_test.jar"/>
-        <pathelement location="${build.lib}/${name}.jar"/>
-        <pathelement location="${clover.jar}"/>
+        <path refid="test.classpath"/>
+        <pathelement location="${build.lib}/${ant.project.name}.jar"/>
+        <pathelement location="${tests.build.lib}/${ant.project.name}-test.jar"/>
       </classpath>
 
-      <test name="net.sf.antcontrib.cpptasks.TestAllClasses" outfile="result">
+      <batchtest todir="${xml.log.dir}">
+        <fileset dir="${tests.build.classes}" includes="net/sf/antcontrib/cpptasks/TestAllClasses.class"/>
         <formatter type="xml"/>
         <formatter type="brief" usefile="false"/>
-      </test>
-
+      </batchtest>
     </junit>
+    </jacoco:coverage>
+  </target>
+
+  <target name="test" depends="run-tests" description="--> runs JUnit tests">
+    <fail message="JUnit error (${junit.error}) encountered. See logs (in ${xml.log.dir}) for details (use the target test-report to run the test with a report)" if="junit.error"/>
+    <fail message="JUnit failure (${junit.failure}) encountered. See logs (in ${xml.log.dir}) for details (use the target test-report to run the test with a report)" if="junit.failure"/>
+  </target>
+
+  <target name="test-report" depends="run-tests" description="--> prepares report of JUnit tests and code coverage">
+    <junitreport todir="${xml.log.dir}">
+      <fileset dir="${xml.log.dir}">
+        <include name="TEST-*.xml"/>
+      </fileset>
+      <report format="frames" todir="${docs.dir}/test-reports"/>
+    </junitreport>
+    <mkdir dir="${coverage.report.dir}"/>
+    <jacoco:report xmlns:jacoco="antlib:org.jacoco.ant">
+      <executiondata>
+        <file file="${jacoco.log}"/>
+      </executiondata>
+
+      <structure name="Ant CPP Tasks">
+        <classfiles>
+          <fileset dir="${build.classes}"/>
+        </classfiles>
+        <sourcefiles encoding="UTF-8">
+          <fileset dir="${java.dir}"/>
+        </sourcefiles>
+      </structure>
+
+      <html destdir="${coverage.report.dir}"/>
+    </jacoco:report>
+    <fail message="JUnit error (${junit.error}) encountered. See logs (in ${xml.log.dir}) or report (in ${docs.dir}/test-reports)" if="junit.error"/>
+    <fail message="JUnit failure (${junit.failure}) encountered. See logs (in ${xml.log.dir}) or report (in ${docs.dir}/test-reports)" if="junit.failure"/>
   </target>
 
   <target name="run-devstudio-tests" depends="build-tests">
     <junit printsummary="true" haltonfailure="true">
       <classpath>
-        <pathelement location="${tests.build.lib}/${name}_test.jar"/>
-        <pathelement location="${build.lib}/${name}.jar"/>
+        <pathelement location="${tests.build.lib}/${ant.project.name}-test.jar"/>
+        <pathelement location="${build.lib}/${ant.project.name}.jar"/>
       </classpath>
 
       <test name="net.sf.antcontrib.cpptasks.devstudio.TestInstalledDevStudio"
@@ -231,7 +256,6 @@
         <formatter type="xml"/>
         <formatter type="brief" usefile="false"/>
       </test>
-
     </junit>
   </target>
 
@@ -240,15 +264,14 @@
       Create the jar and javadocs
       ===================================================================
   -->
-  <target name="gump" depends="jars, javadocs"
-          description="--> creates the jar and javadocs"/>
+  <target name="gump" depends="jars,javadocs" description="--> creates the jar and javadocs"/>
 
   <!--
       ===================================================================
       Create the complete distribution
       ===================================================================
   -->
-  <target name="dist" depends="jars, javadocs, xdocs" description="--> creates a complete distribution">
+  <target name="dist" depends="gump,xdocs" description="--> creates a complete distribution">
     <delete dir="${dist.dir}"/>
     <mkdir dir="${dist.dir}/src"/>
     <copy todir="${dist.dir}">
@@ -258,7 +281,7 @@
       </fileset>
     </copy>
     <copy todir="${dist.dir}/src">
-      <fileset dir="${src.dir}">
+      <fileset dir="${java.dir}">
         <include name="net/**/*.java"/>
         <include name="cpptasks.types"/>
         <include name="cpptasks.tasks"/>
@@ -298,8 +321,7 @@
       Cleans up build and distribution directories
       ===================================================================
   -->
-  <target name="clean"
-          description="--> cleans up build and dist directories">
+  <target name="clean" description="--> cleans up build and dist directories">
     <delete dir="${build.dir}"/>
     <delete dir="${dist.base}"/>
     <delete dir="${dist.dir}"/>
@@ -313,15 +335,13 @@
       Creates the API documentation
       ===================================================================
   -->
-  <target name="javadoc_check">
-    <uptodate property="javadoc.notrequired"
-              targetfile="${build.javadocs}/packages.html">
+  <target name="check-javadoc">
+    <uptodate property="javadoc.notrequired" targetfile="${build.javadocs}/packages.html">
       <srcfiles dir="${java.dir}" includes="**/*.java"/>
     </uptodate>
   </target>
 
-  <target name="javadocs" depends="prepare, javadoc_check"
-          unless="javadoc.notrequired"
+  <target name="javadocs" depends="prepare,check-javadoc" unless="javadoc.notrequired"
           description="--> creates the API documentation">
     <mkdir dir="${build.javadocs}"/>
     <javadoc packagenames="net.sf.antcontrib.*"
@@ -330,40 +350,48 @@
              destdir="${build.javadocs}"
              author="true"
              version="true"
-             windowtitle="${Name} API"
-             doctitle="${Name}">
+             windowtitle="${ant.project.name} API"
+             doctitle="${ant.project.name}">
       <group title="CCTasks" packages="net.sf.antcontrib.cpptasks"/>
 
       <bottom>Copyright &#169; 2001-${year} Ant-Contrib project. All Rights Reserved.</bottom>
     </javadoc>
   </target>
 
-  <target name="detab" depends="prepare" description="detabs java files">
+  <target name="detab" depends="prepare" description="--> detabs java files">
     <replace token="&#9;" value="    " dir="src" includes="**/*.java"/>
     <replace token="&#9;" value="    " dir="test" includes="**/*.java"/>
   </target>
 
-  <target name="checkstyle-all" depends="prepare" description="Checks style of all source">
-    <!--
-	requires checkstyle-all-2.1.jar or later in lib directory
-        download from http://checkstyle.sourceforge.net
-    -->
-    <taskdef resource="checkstyletask.properties"/>
-
-    <checkstyle config="sun_checks.xml">
-      <fileset dir="${java.dir}" includes="**/*.java"/>
-    </checkstyle>
+  <target name="init-checkstyle" depends="classpath">
+    <ivy:cachepath organisation="com.puppycrawl.tools" module="checkstyle" revision="6.19"
+                   inline="true" conf="default" pathid="checkstyle.classpath" log="download-only"/>
+    <taskdef uri="antlib:com.puppycrawl.tools.checkstyle.ant"
+             resource="com/puppycrawl/tools/checkstyle/ant/antlib.xml" classpathref="checkstyle.classpath"/>
   </target>
 
-  <target name="checkstyle" depends="prepare" description="Checks style of cleaned up source">
-    <!--
-	requires checkstyle-all-3.3.jar or later in lib directory
-        download from http://checkstyle.sourceforge.net
-    -->
-    <taskdef resource="checkstyletask.properties"/>
+  <target name="run-checkstyle-all" depends="init-checkstyle" description="--> checks style of all source">
+    <mkdir dir="${checkstyle.report.dir}"/>
+    <cs:checkstyle xmlns:cs="antlib:com.puppycrawl.tools.checkstyle.ant"
+                   config="src/config/sun_checks.xml"
+                   failOnViolation="false" failureProperty="checkstyle.failed">
+      <classpath>
+        <path refid="runtime.classpath"/>
+      </classpath>
+      <formatter type="xml" toFile="${checkstyle.report.dir}/checkstyle.xml"/>
+      <fileset dir="${java.dir}" includes="**/*.java"/>
+    </cs:checkstyle>
+  </target>
 
+  <target name="run-checkstyle" depends="init-checkstyle" description="--> checks style of cleaned up source">
+    <mkdir dir="${checkstyle.report.dir}"/>
     <!-- only includes files that pass Sun checks -->
-    <checkstyle config="sun_checks.xml">
+    <cs:checkstyle xmlns:cs="antlib:com.puppycrawl.tools.checkstyle.ant"
+                   config="src/config/sun_checks.xml">
+      <classpath>
+        <path refid="runtime.classpath"/>
+      </classpath>
+      <formatter type="xml" toFile="${checkstyle.report.dir}/checkstyle.xml"/>
       <fileset dir="${java.dir}/net/sf/antcontrib/cpptasks/parser"
                includes="CaseInsensitiveLetterState.java
                          FortranParser.java
@@ -403,354 +431,332 @@
         <include name="net/sf/antcontrib/cpptasks/openwatcom/*.java"/>
         <include name="net/sf/antcontrib/cpptasks/platforms/*.java"/>
       </fileset>
-    </checkstyle>
+    </cs:checkstyle>
   </target>
 
-  <target name="xdocs-init">
-    <available property="cctask-available" classname="net.sf.antcontrib.cpptasks.CCTask"/>
-    <available property="xdocs.build-available" file="${xdocs.dir}/build.xml"/>
+  <target name="generate-xdocs">
+    <mkdir dir="target/taskdocs-classes"/>
+    <javac includeantruntime="true" debug="true" destdir="target/taskdocs-classes" srcdir="src/taskdocs/java"/>
+    <mkdir dir="src/site/xdoc/antdocs"/>
+    <javadoc docletPath="target/taskdocs-classes" doclet="net.sf.antcontrib.taskdocs.TaskDoclet" sourcepath="src/main/java">
+      <fileset dir="src/main/java" includes="**/*.java"/>
+    </javadoc>
   </target>
 
-  <target name="xdocs-cctask-warning" depends="xdocs-init" unless="cctask-available">
-    <fail>cpptasks.jar must be in the classpath, SET CLASSPATH=${build.dir}\lib\cpptasks.jar before running ant.
-    </fail>
+  <target name="checkstyle-all" depends="run-checkstyle-all">
+    <fail if="checkstyle.failed"
+          message="Checkstyle has errors. See report in ${checkstyle.report.dir}"/>
   </target>
 
-  <target name="xdocs-build-warning" depends="xdocs-init" unless="xdocs.build-available">
-    <fail message="Could not locate &quot;${xdocs.dir}/build.xml&quot;, specify value for xdocs.dir that points to Ant's proposal/xdocs directory."/>
+  <target name="checkstyle" depends="run-checkstyle">
+    <fail if="checkstyle.failed"
+          message="Checkstyle has errors. See report in ${checkstyle.report.dir}"/>
   </target>
 
-  <!--
-      cpptasks.jar must be on path
-  -->
-  <target name="xdocs" depends="xdocs-cctask-warning,xdocs-build-warning">
+  <target name="checkstyle-report" depends="run-checkstyle-all">
+    <xslt in="${checkstyle.report.dir}/checkstyle.xml"
+          style="src/config/checkstyle-frames.xsl"
+          out="${checkstyle.report.dir}/output.txt">
+      <param name="basedir" expression="${java.dir}"/>
+      <param name="output.dir" expression="${checkstyle.report.dir}"/>
+    </xslt>
+  </target>
 
-    <condition property="shellcmd" value="cmd">
-      <os family="windows"/>
-    </condition>
-    <property name="shellcmd" value="sh"/>
-
+  <target name="xdocs" depends="classpath,generate-xdocs">
     <mkdir dir="${build.dir}/xdocs"/>
-    <ant dir="${xdocs.dir}" target="gen" inheritAll="false">
-      <property name="src.dir" location="${src.dir}/net/sf/antcontrib/cpptasks"/>
-      <property name="src.root" location="${src.dir}"/>
-      <property name="build.dir" location="${build.dir}/xdocs"/>
-    </ant>
+    <taskdef resource="net/sf/antcontrib/antlib.xml" classpathref="doxia.classpath"/>
 
-    <!--
-	the docs task doesn't like running here will run it in Ant's xdoc build directory
-        and copy results back
-    -->
-    <delete dir="${xdocs.dir}/build"/>
-    <copy todir="${xdocs.dir}/build">
-      <fileset dir="${build.dir}/xdocs" includes="**/*.xml"/>
-    </copy>
-    <!--
-        <ant dir="${xdocs.dir}" target="docs" inheritAll="false">
-          <property name="src.dir" location="${src.dir}/net/sf/antcontrib/cpptasks"/>
-          <property name="src.root" location="${src.dir}"/>
-          <property name="build.dir" location="${build.dir}/xdocs"/>
-        </ant>
-    -->
-    <exec dir="${xdocs.dir}" executable="${shellcmd}">
-      <arg value="ant"/>
-      <arg value="docs"/>
-    </exec>
-    <copy todir="${build.dir}/xdocs">
-      <fileset dir="${xdocs.dir}/build" includes="**/*.html"/>
-    </copy>
+    <for param="xdoc.source">
+      <path>
+        <fileset dir="${xdoc.dir}" includes="**/*.xml"/>
+      </path>
+      <sequential>
+        <propertyregex property="xdoc.html" input="@{xdoc.source}"
+                       regexp=".*[\\/]xdoc[\\/]antdocs[\\/](.*)\.xml$" replace="\1.html" override="true"/>
+        <echo>${xdoc.html}</echo>
+        <java classname="org.apache.maven.doxia.cli.ConverterCli" classpathref="doxia.classpath">
+          <arg line="-from xdoc -to xhtml"/>
+          <arg value="-in"/>
+          <arg file="@{xdoc.source}"/>
+          <arg value="-out"/>
+          <arg file="${build.dir}/xdocs/${xdoc.html}"/>
+    </java>
+      </sequential>
+    </for>
 
     <!--  Replace Apache Software copyright notice with Ant-Contrib  -->
     <property name="nontask.html"
               value="compilerarg.html,linkerarg.html,compiler.html,fileset.html,includepath.html,sysincludepath.html,define.html,undefine.html,defineset.html,libset.html,syslibset.html,linker.html,precompile.html,except.html,versioninfo.html,target.html,distributer.html,map.html,project.html"/>
     <property name="all.html" value="cc.html,${nontask.html}"/>
-    <property name="doc.dir" value="${build.dir}/xdocs/docs/manual/other"/>
+    <property name="doc.dir" value="${docs.dir}/manual/other"/>
 
-    <move file="${doc.dir}/compilerargument.html" tofile="${doc.dir}/compilerarg.html"/>
-    <move file="${doc.dir}/linkerargument.html" tofile="${doc.dir}/linkerarg.html"/>
-    <move file="${doc.dir}/compilerdef.html" tofile="${doc.dir}/compiler.html"/>
-    <move file="${doc.dir}/targetdef.html" tofile="${doc.dir}/target.html"/>
-    <move file="${doc.dir}/distributerdef.html" tofile="${doc.dir}/distributer.html"/>
-    <move file="${doc.dir}/conditionalfileset.html" tofile="${doc.dir}/fileset.html"/>
-    <move file="${doc.dir}/defineargument.html" tofile="${doc.dir}/define.html"/>
-    <move file="${doc.dir}/undefineargument.html" tofile="${doc.dir}/undefine.html"/>
-    <move file="${doc.dir}/libraryset.html" tofile="${doc.dir}/libset.html"/>
-    <move file="${doc.dir}/systemlibraryset.html" tofile="${doc.dir}/syslibset.html"/>
-    <move file="${doc.dir}/linkerdef.html" tofile="${doc.dir}/linker.html"/>
-    <move file="${doc.dir}/precompiledef.html" tofile="${doc.dir}/precompile.html"/>
-    <move file="${doc.dir}/systemincludepath.html" tofile="${doc.dir}/sysincludepath.html"/>
-    <move file="${doc.dir}/precompileexceptdef.html" tofile="${doc.dir}/except.html"/>
-    <move file="${doc.dir}/distributermap.html" tofile="${doc.dir}/map.html"/>
-    <move file="${doc.dir}/projectdef.html" tofile="${doc.dir}/project.html"/>
+    <copy file="${build.dir}/xdocs/compilerargument.html" tofile="${doc.dir}/compilerarg.html"/>
+    <copy file="${build.dir}/xdocs/linkerargument.html" tofile="${doc.dir}/linkerarg.html"/>
+    <copy file="${build.dir}/xdocs/compilerdef.html" tofile="${doc.dir}/compiler.html"/>
+    <copy file="${build.dir}/xdocs/targetdef.html" tofile="${doc.dir}/target.html"/>
+    <copy file="${build.dir}/xdocs/distributerdef.html" tofile="${doc.dir}/distributer.html"/>
+    <copy file="${build.dir}/xdocs/conditionalfileset.html" tofile="${doc.dir}/fileset.html"/>
+    <copy file="${build.dir}/xdocs/defineargument.html" tofile="${doc.dir}/define.html"/>
+    <copy file="${build.dir}/xdocs/undefineargument.html" tofile="${doc.dir}/undefine.html"/>
+    <copy file="${build.dir}/xdocs/libraryset.html" tofile="${doc.dir}/libset.html"/>
+    <copy file="${build.dir}/xdocs/systemlibraryset.html" tofile="${doc.dir}/syslibset.html"/>
+    <copy file="${build.dir}/xdocs/linkerdef.html" tofile="${doc.dir}/linker.html"/>
+    <copy file="${build.dir}/xdocs/precompiledef.html" tofile="${doc.dir}/precompile.html"/>
+    <copy file="${build.dir}/xdocs/systemincludepath.html" tofile="${doc.dir}/sysincludepath.html"/>
+    <copy file="${build.dir}/xdocs/precompileexceptdef.html" tofile="${doc.dir}/except.html"/>
+    <copy file="${build.dir}/xdocs/distributermap.html" tofile="${doc.dir}/map.html"/>
+    <copy file="${build.dir}/xdocs/projectdef.html" tofile="${doc.dir}/project.html"/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="${all.html}"
              token="2000-2003, Apache Software Foundation"
              value="2001-2005, Ant-Contrib Project"/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="${all.html}"
              token="http://jakarta.apache.org/ant/"
              value="http://sourceforge.net"/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="${all.html}"
              token='../../images/ant_logo_large.gif'
              value='http://sourceforge.net/sflogo.php?group_id=36177&amp;amp;type=4'/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="${all.html}"
              token='alt="Apache Ant"'
              value='alt="SourceForge logo"'/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="${all.html}"
              token="&lt;strong&gt;compilerarg&lt;/strong&gt; (net.sf.antcontrib.cpptasks.types.CompilerArgument)"
              value='&lt;strong&gt;&lt;a href="compilerarg.html" style="color: white"&gt;compilerarg&lt;/a&gt;&lt;/strong&gt;'/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="${all.html}"
              token="&lt;strong&gt;linkerarg&lt;/strong&gt; (net.sf.antcontrib.cpptasks.types.LinkerArgument)"
              value='&lt;strong&gt;&lt;a href="linkerarg.html" style="color: white"&gt;linkerarg&lt;/a&gt;&lt;/strong&gt;'/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="${all.html}"
              token="&lt;strong&gt;compiler&lt;/strong&gt; (net.sf.antcontrib.cpptasks.CompilerDef)"
              value='&lt;strong&gt;&lt;a href="compiler.html" style="color: white"&gt;compiler&lt;/a&gt;&lt;/strong&gt;'/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="${all.html}"
              token="&lt;strong&gt;linker&lt;/strong&gt; (net.sf.antcontrib.cpptasks.LinkerDef)"
              value='&lt;strong&gt;&lt;a href="linker.html" style="color: white"&gt;linker&lt;/a&gt;&lt;/strong&gt;'/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="${all.html}"
              token="&lt;strong&gt;defineset&lt;/strong&gt; (net.sf.antcontrib.cpptasks.types.DefineSet)"
              value='&lt;strong&gt;&lt;a href="defineset.html" style="color: white"&gt;defineset&lt;/a&gt;&lt;/strong&gt;'/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="${all.html}"
              token="&lt;strong&gt;fileset&lt;/strong&gt; (net.sf.antcontrib.cpptasks.types.ConditionalFileSet)"
              value='&lt;strong&gt;&lt;a href="fileset.html" style="color: white"&gt;fileset&lt;/a&gt;&lt;/strong&gt;'/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="${all.html}"
              token="&lt;strong&gt;libset&lt;/strong&gt; (net.sf.antcontrib.cpptasks.types.LibrarySet)"
              value='&lt;strong&gt;&lt;a href="libset.html" style="color: white"&gt;libset&lt;/a&gt;&lt;/strong&gt;'/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="${all.html}"
              token="&lt;strong&gt;syslibset&lt;/strong&gt; (net.sf.antcontrib.cpptasks.types.SystemLibrarySet)"
              value='&lt;strong&gt;&lt;a href="syslibset.html" style="color: white"&gt;syslibset&lt;/a&gt;&lt;/strong&gt;'/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="${all.html}"
              token="&lt;strong&gt;includepath&lt;/strong&gt; (net.sf.antcontrib.cpptasks.types.IncludePath)"
              value='&lt;strong&gt;&lt;a href="includepath.html" style="color: white"&gt;includepath&lt;/a&gt;&lt;/strong&gt;'/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="${all.html}"
              token="&lt;strong&gt;sysincludepath&lt;/strong&gt; (net.sf.antcontrib.cpptasks.types.SystemIncludePath)"
              value='&lt;strong&gt;&lt;a href="sysincludepath.html" style="color: white"&gt;sysincludepath&lt;/a&gt;&lt;/strong&gt;'/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="${all.html}"
              token="&lt;strong&gt;precompile&lt;/strong&gt; (net.sf.antcontrib.cpptasks.PrecompileDef)"
              value='&lt;strong&gt;&lt;a href="precompile.html" style="color: white"&gt;precompile&lt;/a&gt;&lt;/strong&gt;'/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="precompile.html"
              token="&lt;strong&gt;except&lt;/strong&gt; (net.sf.antcontrib.cpptasks.PrecompileExceptDef)"
              value='&lt;strong&gt;&lt;a href="except.html" style="color: white"&gt;except&lt;/a&gt;&lt;/strong&gt;'/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="defineset.html"
              token="&lt;strong&gt;define&lt;/strong&gt; (net.sf.antcontrib.cpptasks.types.DefineArgument)"
              value='&lt;strong&gt;&lt;a href="define.html" style="color: white"&gt;define&lt;/a&gt;&lt;/strong&gt;'/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="defineset.html"
              token="&lt;strong&gt;undefine&lt;/strong&gt; (net.sf.antcontrib.cpptasks.types.UndefineArgument)"
              value='&lt;strong&gt;&lt;a href="undefine.html" style="color: white"&gt;undefine&lt;/a&gt;&lt;/strong&gt;'/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="${all.html}"
              token="&lt;strong&gt;distributer&lt;/strong&gt; (net.sf.antcontrib.cpptasks.DistributerDef)"
              value='&lt;strong&gt;&lt;a href="distributer.html" style="color: white"&gt;distributer&lt;/a&gt;&lt;/strong&gt;'/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="${all.html}"
              token="&lt;strong&gt;target&lt;/strong&gt; (net.sf.antcontrib.cpptasks.TargetDef)"
              value='&lt;strong&gt;&lt;a href="target.html" style="color: white"&gt;target&lt;/a&gt;&lt;/strong&gt;'/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="${all.html}"
              token="&lt;strong&gt;versioninfo&lt;/strong&gt; (net.sf.antcontrib.cpptasks.VersionInfo)"
              value='&lt;strong&gt;&lt;a href="versioninfo.html" style="color: white"&gt;versioninfo&lt;/a&gt;&lt;/strong&gt;'/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="${all.html}"
              token="&lt;strong&gt;map&lt;/strong&gt; (net.sf.antcontrib.cpptasks.DistributerMap)"
              value='&lt;strong&gt;&lt;a href="map.html" style="color: white"&gt;map&lt;/a&gt;&lt;/strong&gt;'/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="${all.html}"
              token="&lt;strong&gt;project&lt;/strong&gt; (net.sf.antcontrib.cpptasks.ide.ProjectDef)"
              value='&lt;strong&gt;&lt;a href="project.html" style="color: white"&gt;project&lt;/a&gt;&lt;/strong&gt;'/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="${all.html}"
              token="&lt;strong&gt;debug&lt;/strong&gt; (net.sf.antcontrib.cpptasks.ide.DebugDef)"
              value='&lt;strong&gt;&lt;a href="debug.html" style="color: white"&gt;debug&lt;/a&gt;&lt;/strong&gt;'/>
 
     <!--   remove Task from the title of everything but cc.html   -->
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="${nontask.html}"
              token="Task&lt;/strong"
              value="&lt;/strong"/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="cc.html"
              token="Cc"
              value="cc"/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="compilerarg.html"
              token="Compilerargument"
              value="compilerarg"/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="linkerarg.html"
              token="Linkerargument"
              value="linkerarg"/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="compiler.html"
              token="Compilerdef"
              value="compiler"/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="fileset.html"
              token="Conditionalfileset"
              value="fileset"/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="includepath.html"
              token="Includepath"
              value="includepath"/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="sysincludepath.html"
              token="Systemincludepath"
              value="sysincludepath"/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="defineargument.html"
              token="Defineargument"
              value="define"/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="undefineargument.html"
              token="Undefineargument"
              value="undefine"/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="defineset.html"
              token="Defineset"
              value="defineset"/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="libset.html"
              token="Libraryset"
              value="libset"/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="syslibset.html"
              token="Systemlibraryset"
              value="syslibset"/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="linker.html"
              token="Linkerdef"
              value="linker"/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="precompile.html"
              token="Precompiledef"
              value="precompile"/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="define.html"
              token="Defineargument"
              value="define"/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="undefine.html"
              token="Undefineargument"
              value="undefine"/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="except.html"
              token="Precompileexceptdef"
              value="except"/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="target.html"
              token="Targetdef"
              value="target"/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="distributer.html"
              token="Distributerdef"
              value="distributer"/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="versioninfo.html"
              token="Versioninfodef"
              value="versioninfo"/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="map.html"
              token="Distributermap"
              value="map"/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="project.html"
              token="Projectdef"
              value="project"/>
 
-    <replace dir="${build.dir}/xdocs/docs/manual/other"
+    <replace dir="${doc.dir}"
              includes="debug.html"
              token="Debugdef"
              value="debug"/>
   </target>
 
-  <target name="check-sfuser" unless="sfuser">
-    <fail message="Please specify SourceForge user name using -Dsfuser=joeuser"/>
-  </target>
-
-  <target name="submit-xdocs" depends="check-sfuser" description="updates project web site">
-    <!-- requires scp with project admin private keys available and sfuser set -->
-    <exec executable="scp">
-      <arg line="${build.dir}/xdocs/docs/manual/other/*.html ${sfuser}@shell.sourceforge.net:/home/groups/a/an/ant-contrib/htdocs"/>
-    </exec>
-  </target>
-
-  <target name="submit-coverage" depends="check-sfuser" description="updates project web site coverage map">
-    <exec executable="scp">
-      <arg line="-r -C ${build.dir}/coverage/report/* ${sfuser}@shell.sourceforge.net:/home/groups/a/an/ant-contrib/htdocs/cpptasks/coverage"/>
-    </exec>
-  </target>
-
-  <target name="xdocs-clean"
-          description="--> cleans up xdocs directories">
+  <target name="clean-xdocs" description="--> cleans up xdocs directories">
     <delete dir="${build.dir}/xdocs"/>
   </target>
 
   <target name="style">
-    <mkdir dir="src/site/xdoc"/>
+    <mkdir dir="target/site/antdocs"/>
     <xslt style="src/taskdocs/resources/net/sf/antcontrib/taskdocs/type.xslt"
-          baseDir="target/site/antdocs" includes="*.xml" processor="trax"
-          destDir="src/site/xdoc" extension=".xml" force="true"/>
+          baseDir="src/site/xdoc" includes="**/*.xml" processor="trax"
+          destDir="target/site/antdocs" extension=".xml" force="true"/>
   </target>
 </project>

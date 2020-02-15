@@ -1,0 +1,38 @@
+<ivy-module version="2.0"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
+    <info organisation="net.sourceforge" module="ant-contrib" revision="1.1"/>
+
+    <configurations defaultconfmapping="*->default">
+        <conf name="runtime"/>
+        <conf name="compile" extends="runtime"/>
+        <conf name="test" extends="compile"/>
+        <conf name="doxia"/>
+    </configurations>
+
+    <publications>
+        <artifact name="ant-cpptasks" type="jar"/>
+    </publications>
+
+    <dependencies>
+        <dependency org="org.apache.ant" name="ant" rev="1.9.14" conf="compile"/>
+        <dependency org="junit" name="junit" rev="4.13" conf="test"/>
+        <dependency org="org.hamcrest" name="hamcrest-core" rev="1.3" conf="test"/>
+        <dependency org="ant-contrib" name="ant-contrib" rev="1.0b3" conf="doxia"/>
+        <dependency org="commons-cli" name="commons-cli" rev="1.2" conf="doxia"/>
+        <dependency org="org.apache.maven.doxia" name="doxia-module-xdoc" rev="1.7" conf="doxia"/>
+        <dependency org="org.apache.maven.doxia" name="doxia-module-xhtml" rev="1.7" conf="doxia"/>
+        <dependency org="org.apache.maven.doxia" name="doxia-core" rev="1.7" conf="doxia"/>
+        <dependency org="org.apache.maven.doxia" name="doxia-converter" rev="1.2" conf="doxia"/>
+        <dependency org="org.apache.maven.doxia" name="doxia-logging-api" rev="1.7" conf="doxia"/>
+        <dependency org="org.apache.maven.doxia" name="doxia-sink-api" rev="1.7" conf="doxia"/>
+        <dependency org="org.codehaus.plexus" name="plexus-utils" rev="3.0.24" conf="doxia"/>
+        <dependency org="org.codehaus.plexus" name="plexus-component-annotations" rev="1.7.1" conf="doxia"/>
+        <dependency org="org.codehaus.plexus" name="plexus-container-default" rev="1.7.1" conf="doxia"/>
+        <dependency org="org.codehaus.plexus" name="plexus-classworlds" rev="2.5.2" conf="doxia"/>
+        <dependency org="com.google.collections" name="google-collections" rev="1.0" conf="doxia"/>
+        <dependency org="org.apache.xbean" name="xbean-reflect" rev="3.18" conf="doxia"/>
+        <dependency org="commons-lang" name="commons-lang" rev="2.6" conf="doxia"/>
+        <dependency org="com.ibm.icu" name="icu4j" rev="56.1" conf="doxia"/>
+    </dependencies>
+</ivy-module>
