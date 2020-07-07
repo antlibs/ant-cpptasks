@@ -176,7 +176,7 @@ public final class PropertyListSerialization {
     private static void serializeBoolean(final Boolean val,
                                          final ContentHandler handler) throws SAXException {
         String tag = "false";
-        if (val.booleanValue()) {
+        if (val) {
             tag = "true";
         }
         AttributesImpl attributes = new AttributesImpl();

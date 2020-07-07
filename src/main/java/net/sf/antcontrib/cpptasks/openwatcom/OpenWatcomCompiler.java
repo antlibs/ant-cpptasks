@@ -93,7 +93,7 @@ public abstract class OpenWatcomCompiler extends CommandLineCompiler {
             }
             args.addElement("/dNDEBUG");
         }
-        if (rtti != null && rtti.booleanValue()) {
+        if (rtti != null && rtti) {
             args.addElement("/xr");
         }
     }

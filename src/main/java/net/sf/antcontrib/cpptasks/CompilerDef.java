@@ -254,7 +254,7 @@ public final class CompilerDef extends ProcessorDef {
                     "CompilerDef").getExceptions(defaultProviders, index);
         }
         if (exceptions != null) {
-            return exceptions.booleanValue();
+            return exceptions;
         } else {
             if (defaultProviders != null && index < defaultProviders.length) {
                 return defaultProviders[index].getExceptions(defaultProviders,
@@ -302,7 +302,7 @@ public final class CompilerDef extends ProcessorDef {
                     "CompilerDef").getMultithreaded(defaultProviders, index);
         }
         if (multithreaded != null) {
-            return multithreaded.booleanValue();
+            return multithreaded;
         } else {
             if (defaultProviders != null && index < defaultProviders.length) {
                 return defaultProviders[index].getMultithreaded(defaultProviders, index + 1);

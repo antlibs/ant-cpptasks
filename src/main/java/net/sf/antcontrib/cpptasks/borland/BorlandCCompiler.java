@@ -86,7 +86,7 @@ public class BorlandCCompiler extends PrecompilingCommandLineCCompiler {
                 }
             }
         }
-        if (rtti != null && !rtti.booleanValue()) {
+        if (rtti != null && !rtti) {
             args.addElement("-RT-");
         }
     }

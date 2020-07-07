@@ -233,7 +233,7 @@ public class LinkerDef extends ProcessorDef {
                     "LinkerDef").getIncremental(defaultProviders, index);
         }
         if (incremental != null) {
-            return incremental.booleanValue();
+            return incremental;
         }
         if (defaultProviders != null && index < defaultProviders.length) {
             return defaultProviders[index].getIncremental(defaultProviders, index + 1);
@@ -247,7 +247,7 @@ public class LinkerDef extends ProcessorDef {
                     "LinkerDef").getMap(defaultProviders, index);
         }
         if (map != null) {
-            return map.booleanValue();
+            return map;
         }
         if (defaultProviders != null && index < defaultProviders.length) {
             return defaultProviders[index].getMap(defaultProviders, index + 1);
