@@ -394,7 +394,7 @@ public abstract class CommandLineCompiler extends AbstractCompiler {
         //
         //   if there is an embedded space,
         //      must enclose in quotes
-        if (filename.indexOf(" ") >= 0) {
+        if (filename.contains(" ")) {
             return "\"" + filename + "\"";
         }
         return filename;

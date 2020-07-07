@@ -279,7 +279,7 @@ public abstract class AbstractLdLinker extends CommandLineLinker {
 
     protected boolean isHPUX() {
         String osname = System.getProperty("os.name").toLowerCase();
-        if (osname.indexOf("hp") >= 0 && osname.indexOf("ux") >= 0) {
+        if (osname.contains("hp") && osname.contains("ux")) {
             return true;
         }
         return false;

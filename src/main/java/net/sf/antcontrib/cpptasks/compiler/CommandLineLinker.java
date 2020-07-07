@@ -381,7 +381,7 @@ public abstract class CommandLineLinker extends AbstractLinker {
             //
             //   if embedded space and not quoted then
             //       quote argument
-            if (args[i].indexOf(" ") >= 0 && args[i].charAt(0) != '\"') {
+            if (args[i].contains(" ") && args[i].charAt(0) != '\"') {
                 writer.write('\"');
                 writer.write(args[i]);
                 writer.write("\"\n");
@@ -396,7 +396,7 @@ public abstract class CommandLineLinker extends AbstractLinker {
 
 
     protected String quoteFilename(StringBuffer buf, String filename) {
-        if (filename.indexOf(' ') >= 0) {
+        if (filename.contains(" ")) {
             buf.setLength(0);
             buf.append('\"');
             buf.append(filename);

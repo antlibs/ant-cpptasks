@@ -60,7 +60,7 @@ public class GccLinker extends AbstractLdLinker {
 
     protected void addImpliedArgs(boolean debug, LinkType linkType, Vector<String> args) {
         super.addImpliedArgs(debug, linkType, args);
-        if (getIdentifier().indexOf("mingw") >= 0) {
+        if (getIdentifier().contains("mingw")) {
             if (linkType.isSubsystemConsole()) {
                 args.addElement("-mconsole");
             }
@@ -158,7 +158,7 @@ public class GccLinker extends AbstractLdLinker {
                         "/usr/lib/mingw", "/usr/lib", buf.toString(), "/lib/w32api", "/lib"};
             }
             for (int i = 0; i < libpath.length; i++) {
-                if (libpath[i].indexOf("mingw") >= 0) {
+                if (libpath[i].contains("mingw")) {
                     libpath[i] = null;
                 }
             }

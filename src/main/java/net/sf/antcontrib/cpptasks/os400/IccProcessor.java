@@ -42,7 +42,7 @@ public class IccProcessor {
 
     public static String getCommandFileSwitch(String cmdFile) {
         StringBuilder buf = new StringBuilder("@");
-        if (cmdFile.indexOf(' ') >= 0) {
+        if (cmdFile.contains(" ")) {
             buf.append('\"');
             buf.append(cmdFile);
             buf.append('\"');
@@ -58,7 +58,7 @@ public class IccProcessor {
 
     public static String[] getOutputFileSwitch(String outPath) {
         StringBuilder buf = new StringBuilder("-o ");
-        if (outPath.indexOf(' ') >= 0) {
+        if (outPath.contains(" ")) {
             buf.append('\"');
             buf.append(outPath);
             buf.append('\"');

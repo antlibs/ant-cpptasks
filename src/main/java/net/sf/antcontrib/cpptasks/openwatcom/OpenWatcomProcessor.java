@@ -63,7 +63,7 @@ public final class OpenWatcomProcessor {
      */
     public static String getCommandFileSwitch(final String cmdFile) {
         StringBuilder buf = new StringBuilder("@");
-        if (cmdFile.indexOf(' ') >= 0) {
+        if (cmdFile.contains(" ")) {
             buf.append('\"');
             buf.append(cmdFile.replace('/', '\\'));
             buf.append('\"');
@@ -109,7 +109,7 @@ public final class OpenWatcomProcessor {
      */
     public static String[] getOutputFileSwitch(final String outPath) {
         StringBuilder buf = new StringBuilder("/fo=");
-        if (outPath.indexOf(' ') >= 0) {
+        if (outPath.contains(" ")) {
             buf.append('\"');
             buf.append(outPath);
             buf.append('\"');

@@ -387,7 +387,7 @@ public final class DevStudioProjectWriter implements ProjectWriter {
         if (lastDot >= 0 && lastDot < fileName.length() - 1) {
             String extension = ";" + fileName.substring(lastDot + 1).toLowerCase() + ";";
             String semiFilter = ";" + filter + ";";
-            return semiFilter.indexOf(extension) >= 0;
+            return semiFilter.contains(extension);
         }
         return false;
     }
@@ -409,7 +409,7 @@ public final class DevStudioProjectWriter implements ProjectWriter {
         //
         //  if relative path is just a name (hello.c) then
         //    make it .\hello.c
-        if (!relativePath.startsWith(".") && relativePath.indexOf(":") < 0
+        if (!relativePath.startsWith(".") && !relativePath.contains(":")
                 && !relativePath.startsWith("\\")) {
             relativePath = ".\\" + relativePath;
         }
@@ -561,7 +561,7 @@ public final class DevStudioProjectWriter implements ProjectWriter {
                 options.append(" /D ");
                 baseOptions.append(" /D ");
                 String body = preArgs[i].substring(2);
-                if (preArgs[i].indexOf('=') >= 0) {
+                if (preArgs[i].contains("=")) {
                     options.append(body);
                     baseOptions.append(body);
                 } else {
@@ -656,7 +656,7 @@ public final class DevStudioProjectWriter implements ProjectWriter {
                         //
                         //   if path has an embedded space then
                         //      must quote
-                        if (relPath.indexOf(' ') > 0) {
+                        if (relPath.contains(" ")) {
                             options.append(" \"");
                             options.append(toWindowsPath(relPath));
                             options.append("\"");

@@ -162,9 +162,7 @@ public final class BorlandProcessor {
 
     public static void quoteFile(StringBuffer buf, String outPath) {
         if (outPath.charAt(0) != '\"'
-                && (outPath.indexOf(' ') >= 0
-                || outPath.indexOf('-') >= 0
-                || outPath.indexOf('/') >= 0)) {
+                && (outPath.contains(" ") || outPath.contains("-") || outPath.contains("/"))) {
             buf.append('\"');
             buf.append(outPath);
             buf.append('\"');

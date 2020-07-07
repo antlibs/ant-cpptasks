@@ -100,7 +100,7 @@ public class ADSCCompiler extends CommandLineCCompiler {
     }
 
     private static void quoteFile(StringBuffer buf, String outPath) {
-        if (outPath.indexOf(' ') >= 0) {
+        if (outPath.contains(" ")) {
             buf.append('\"');
             buf.append(outPath);
             buf.append('\"');

@@ -104,7 +104,7 @@ public class GccProcessor {
 
     public static String[] getOutputFileSwitch(String letter, String outputFile) {
         StringBuilder buf = new StringBuilder();
-        if (outputFile.indexOf(' ') >= 0) {
+        if (outputFile.contains(" ")) {
             buf.append('"');
             buf.append(outputFile.replace('\\', '/'));
             buf.append('"');
@@ -195,7 +195,7 @@ public class GccProcessor {
 
     private static boolean isHPUX() {
         String osname = System.getProperty("os.name").toLowerCase();
-        if (osname.indexOf("hp") >= 0 && osname.indexOf("ux") >= 0) {
+        if (osname.contains("hp") && osname.contains("ux")) {
             return true;
         }
         return false;

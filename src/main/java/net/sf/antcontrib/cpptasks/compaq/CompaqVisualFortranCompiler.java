@@ -123,7 +123,7 @@ public class CompaqVisualFortranCompiler extends CommandLineFortranCompiler {
 
     protected String getIncludeDirSwitch(String includeDir) {
         StringBuilder buf = new StringBuilder("/include:");
-        if (includeDir.indexOf(' ') >= 0) {
+        if (includeDir.contains(" ")) {
             buf.append('"');
             buf.append(includeDir);
             buf.append('"');
