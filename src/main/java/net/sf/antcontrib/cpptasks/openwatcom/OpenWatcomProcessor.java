@@ -62,7 +62,7 @@ public final class OpenWatcomProcessor {
      * @return String Command line option
      */
     public static String getCommandFileSwitch(final String cmdFile) {
-        StringBuffer buf = new StringBuffer("@");
+        StringBuilder buf = new StringBuilder("@");
         if (cmdFile.indexOf(' ') >= 0) {
             buf.append('\"');
             buf.append(cmdFile.replace('/', '\\'));
@@ -108,7 +108,7 @@ public final class OpenWatcomProcessor {
      * @return String[] command line options
      */
     public static String[] getOutputFileSwitch(final String outPath) {
-        StringBuffer buf = new StringBuffer("/fo=");
+        StringBuilder buf = new StringBuilder("/fo=");
         if (outPath.indexOf(' ') >= 0) {
             buf.append('\"');
             buf.append(outPath);
@@ -129,7 +129,7 @@ public final class OpenWatcomProcessor {
      */
     public static String[] getLibraryPatterns(final String[] libnames,
                                               final LibraryTypeEnum libType) {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         String[] patterns = new String[libnames.length];
         for (int i = 0; i < libnames.length; i++) {
             buf.setLength(0);

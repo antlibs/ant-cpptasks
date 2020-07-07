@@ -125,7 +125,7 @@ public class GccLinker extends AbstractLdLinker {
             //
             //   construct gcc lib path from machine and version
             //
-            StringBuffer buf = new StringBuffer("/lib/gcc-lib/");
+            StringBuilder buf = new StringBuilder("/lib/gcc-lib/");
             buf.append(GccProcessor.getMachine());
             buf.append('/');
             buf.append(GccProcessor.getVersion());

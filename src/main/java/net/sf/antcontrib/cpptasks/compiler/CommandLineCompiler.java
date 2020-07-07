@@ -347,7 +347,7 @@ public abstract class CommandLineCompiler extends AbstractCompiler {
         addIncludes(baseDirPath, incPath, args, relativeArgs,
                 includePathIdentifier);
         addIncludes(baseDirPath, sysIncPath, args, null, null);
-        StringBuffer buf = new StringBuffer(getIdentifier());
+        StringBuilder buf = new StringBuilder(getIdentifier());
         for (int i = 0; i < relativeArgs.size(); i++) {
             buf.append(' ');
             buf.append(relativeArgs.elementAt(i));
@@ -394,11 +394,8 @@ public abstract class CommandLineCompiler extends AbstractCompiler {
         //
         //   if there is an embedded space,
         //      must enclose in quotes
-        if (filename.indexOf(' ') >= 0) {
-            StringBuffer buf = new StringBuffer("\"");
-            buf.append(filename);
-            buf.append("\"");
-            return buf.toString();
+        if (filename.indexOf(" ") >= 0) {
+            return "\"" + filename + "\"";
         }
         return filename;
     }

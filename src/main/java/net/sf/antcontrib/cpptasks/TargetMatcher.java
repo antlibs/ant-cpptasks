@@ -103,13 +103,9 @@ public final class TargetMatcher implements FileVisitor {
                             selectedCompiler.getRebuild()));
                 } else {
                     if (!previousTarget.getSources()[0].equals(sourceFiles[0])) {
-                        StringBuffer builder = new StringBuffer("Output filename conflict: ");
-                        builder.append(outputFileNames[i]);
-                        builder.append(" would be produced from ");
-                        builder.append(previousTarget.getSources()[0].toString());
-                        builder.append(" and ");
-                        builder.append(filename);
-                        throw new BuildException(builder.toString());
+                        throw new BuildException(String.format("Output filename conflict:"
+                                + " %s would be produced from %s and %s",
+                                outputFileNames[i], previousTarget.getSources()[0], filename));
                     }
                 }
             }

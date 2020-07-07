@@ -253,7 +253,7 @@ public class CUtil {
                     break;
                 }
             }
-            StringBuffer relativePath = new StringBuffer(50);
+            StringBuilder relativePath = new StringBuilder(50);
             //
             //   walk from the first difference to the end of the base
             //      adding "../" for each separator encountered
@@ -445,7 +445,7 @@ public class CUtil {
      * @return equivalent attribute literal
      */
     public static String xmlAttribEncode(String attrValue) {
-        StringBuffer buf = new StringBuffer(attrValue);
+        StringBuilder buf = new StringBuilder(attrValue);
         int quotePos;
 
         for (quotePos = -1; (quotePos = buf.toString().indexOf("\"", quotePos + 1)) >= 0; ) {

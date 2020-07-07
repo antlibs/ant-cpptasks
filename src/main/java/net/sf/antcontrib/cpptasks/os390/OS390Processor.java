@@ -41,7 +41,7 @@ public class OS390Processor {
     }
 
     public static String getCommandFileSwitch(String cmdFile) {
-        StringBuffer buf = new StringBuffer("@");
+        StringBuilder buf = new StringBuilder("@");
         if (cmdFile.indexOf(' ') >= 0) {
             buf.append('\"');
             buf.append(cmdFile);
@@ -57,7 +57,7 @@ public class OS390Processor {
     }
 
     public static String[] getOutputFileSwitch(String outPath) {
-        StringBuffer buf = new StringBuffer("-o ");
+        StringBuilder buf = new StringBuilder("-o ");
         if (outPath.indexOf(' ') >= 0) {
             buf.append('\"');
             buf.append(outPath);

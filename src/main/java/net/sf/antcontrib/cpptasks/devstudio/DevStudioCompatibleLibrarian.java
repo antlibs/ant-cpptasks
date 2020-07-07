@@ -76,7 +76,7 @@ public abstract class DevStudioCompatibleLibrarian extends CommandLineLinker {
     }
 
     public String[] getOutputFileSwitch(String outFile) {
-        StringBuffer buf = new StringBuffer("/OUT:");
+        StringBuilder buf = new StringBuilder("/OUT:");
         if (outFile.indexOf(' ') >= 0) {
             buf.append('"');
             buf.append(outFile);

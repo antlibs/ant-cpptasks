@@ -118,7 +118,7 @@ public abstract class DevStudioCompatibleLinker extends CommandLineLinker {
     }
 
     public String[] getLibraryPatterns(String[] libnames, LibraryTypeEnum libType) {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         String[] patterns = new String[libnames.length];
         for (int i = 0; i < libnames.length; i++) {
             buf.setLength(0);

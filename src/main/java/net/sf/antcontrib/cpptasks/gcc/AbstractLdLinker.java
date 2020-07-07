@@ -140,7 +140,7 @@ public abstract class AbstractLdLinker extends CommandLineLinker {
                     }
                 }
             }
-            StringBuffer buf = new StringBuffer("-l");
+            StringBuilder buf = new StringBuilder("-l");
             if (set.getType() != null
                     && "framework".equals(set.getType().getValue()) && isDarwin()) {
                 buf.setLength(0);

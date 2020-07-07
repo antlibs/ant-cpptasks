@@ -45,7 +45,7 @@ public class DevStudioProcessor {
     }
 
     public static String getCommandFileSwitch(String cmdFile) {
-        StringBuffer buf = new StringBuffer("@");
+        StringBuilder buf = new StringBuilder("@");
         if (cmdFile.indexOf(' ') >= 0) {
             buf.append('\"');
             buf.append(cmdFile.replace('/', '\\'));
@@ -70,7 +70,7 @@ public class DevStudioProcessor {
     }
 
     public static String[] getOutputFileSwitch(String outPath) {
-        StringBuffer buf = new StringBuffer("/Fo");
+        StringBuilder buf = new StringBuilder("/Fo");
         if (outPath.indexOf(' ') >= 0) {
             buf.append('\"');
             buf.append(outPath);

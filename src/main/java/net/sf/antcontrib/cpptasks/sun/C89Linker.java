@@ -68,7 +68,7 @@ public final class C89Linker extends CommandLineLinker {
     public String[] addLibrarySets(CCTask task, LibrarySet[] libsets,
                                    Vector<String> preargs, Vector<String> midargs, Vector<String> endargs) {
         super.addLibrarySets(task, libsets, preargs, midargs, endargs);
-        StringBuffer buf = new StringBuffer("-l");
+        StringBuilder buf = new StringBuilder("-l");
         for (int i = 0; i < libsets.length; i++) {
             LibrarySet set = libsets[i];
             File libdir = set.getDir(null);

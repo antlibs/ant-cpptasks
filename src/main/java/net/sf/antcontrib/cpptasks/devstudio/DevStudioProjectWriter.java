@@ -75,7 +75,7 @@ public final class DevStudioProjectWriter implements ProjectWriter {
         //    some characters are apparently not allowed in VS project names
         //       but have not been able to find them documented
         //       limiting characters to letters, numbers and hyphens
-        StringBuffer projectNameBuf = new StringBuffer(name);
+        StringBuilder projectNameBuf = new StringBuilder(name);
         for (int i = 0; i < projectNameBuf.length(); i++) {
             final char ch = projectNameBuf.charAt(i);
             if (!((ch >= 'a' && ch <= 'z')
@@ -519,9 +519,9 @@ public final class DevStudioProjectWriter implements ProjectWriter {
                                      final String baseDir,
                                      final CommandLineCompilerConfiguration
                                              compilerConfig) throws IOException {
-        StringBuffer baseOptions = new StringBuffer(50);
+        StringBuilder baseOptions = new StringBuilder(50);
         baseOptions.append("# ADD BASE CPP");
-        StringBuffer options = new StringBuffer(50);
+        StringBuilder options = new StringBuilder(50);
         options.append("# ADD CPP");
         File[] includePath = compilerConfig.getIncludePath();
         for (int i = 0; i < includePath.length; i++) {
@@ -565,7 +565,7 @@ public final class DevStudioProjectWriter implements ProjectWriter {
                     options.append(body);
                     baseOptions.append(body);
                 } else {
-                    StringBuffer buf = new StringBuffer("\"");
+                    StringBuilder buf = new StringBuilder("\"");
                     if ("NDEBUG".equals(body) || "_DEBUG".equals(body)) {
                         if (isDebug) {
                             buf.append("_DEBUG");
@@ -616,8 +616,8 @@ public final class DevStudioProjectWriter implements ProjectWriter {
                                   final TargetInfo linkTarget,
                                   final Hashtable<String, TargetInfo> targets) throws IOException {
 
-        StringBuffer baseOptions = new StringBuffer(100);
-        StringBuffer options = new StringBuffer(100);
+        StringBuilder baseOptions = new StringBuilder(100);
+        StringBuilder options = new StringBuilder(100);
         baseOptions.append("# ADD BASE LINK32");
         options.append("# ADD LINK32");
 

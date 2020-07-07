@@ -151,14 +151,13 @@ public final class WindowsPlatform {
     public static short[] parseVersion(final String version) {
         short[] values = new short[]{0, 0, 0, 0};
         if (version != null) {
-            StringBuffer buf = new StringBuffer(version);
             int start = 0;
             for (int i = 0; i < 4; i++) {
                 int end = version.indexOf('.', start);
+                final String part = version.substring(start, end);
                 if (end <= 0) {
                     end = version.length();
                     for (int j = end; j > start; j--) {
-                        String part = buf.substring(start, end);
                         try {
                             values[i] = Short.parseShort(part);
                             break;
@@ -168,7 +167,6 @@ public final class WindowsPlatform {
                     }
                     break;
                 } else {
-                    String part = buf.substring(start, end);
                     try {
                         values[i] = Short.parseShort(part);
                         start = end + 1;
