@@ -107,8 +107,7 @@ public abstract class AbstractLdLinker extends CommandLineLinker {
         Vector<String> libnames = new Vector<String>();
         super.addLibrarySets(task, libsets, preargs, midargs, endargs);
         LibraryTypeEnum previousLibraryType = null;
-        for (int i = 0; i < libsets.length; i++) {
-            LibrarySet set = libsets[i];
+        for (LibrarySet set : libsets) {
             File libdir = set.getDir(null);
             String[] libs = set.getLibs();
             if (libdir != null) {
@@ -147,15 +146,15 @@ public abstract class AbstractLdLinker extends CommandLineLinker {
                 buf.append("-framework ");
             }
             int initialLength = buf.length();
-            for (int j = 0; j < libs.length; j++) {
+            for (String lib : libs) {
                 //
                 //  reset the buffer to just "-l"
                 //
                 buf.setLength(initialLength);
                 //
                 //  add the library name
-                buf.append(libs[j]);
-                libnames.addElement(libs[j]);
+                buf.append(lib);
+                libnames.addElement(lib);
                 //
                 //  add the argument to the list
                 endargs.addElement(buf.toString());
@@ -234,11 +233,11 @@ public abstract class AbstractLdLinker extends CommandLineLinker {
             offset = addLibraryPatterns(libnames, buf, "lib", ".a", patterns, 0);
         }
         if (libType != null && "framework".equals(libType.getValue()) && isDarwin()) {
-            for (int i = 0; i < libnames.length; i++) {
+            for (String libname : libnames) {
                 buf.setLength(0);
-                buf.append(libnames[i]);
+                buf.append(libname);
                 buf.append(".framework/");
-                buf.append(libnames[i]);
+                buf.append(libname);
                 patterns[offset++] = buf.toString();
             }
         } else {
@@ -314,8 +313,7 @@ public abstract class AbstractLdLinker extends CommandLineLinker {
         //
         String[] localSources = sourceFiles.clone();
         int extra = 0;
-        for (int i = 0; i < libnames.length; i++) {
-            String libname = libnames[i];
+        for (String libname : libnames) {
             for (int j = 0; j < localSources.length; j++) {
                 if (localSources[j] != null && localSources[j].indexOf(libname) > 0
                         && localSources[j].indexOf("lib") > 0) {
@@ -336,9 +334,9 @@ public abstract class AbstractLdLinker extends CommandLineLinker {
         }
         String[] finalSources = new String[localSources.length - extra];
         int index = 0;
-        for (int i = 0; i < localSources.length; i++) {
-            if (localSources[i] != null) {
-                finalSources[index++] = localSources[i];
+        for (String localSource : localSources) {
+            if (localSource != null) {
+                finalSources[index++] = localSource;
             }
         }
         return super.prepareArguments(task, outputDir, outputFile,

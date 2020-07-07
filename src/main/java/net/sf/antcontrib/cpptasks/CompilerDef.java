@@ -29,7 +29,6 @@ import net.sf.antcontrib.cpptasks.types.UndefineArgument;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 
-import java.util.Enumeration;
 import java.util.Vector;
 
 /**
@@ -171,12 +170,11 @@ public final class CompilerDef extends ProcessorDef {
                     "CompilerDef").getActiveDefines();
         }
         Vector<UndefineArgument> actives = new Vector<UndefineArgument>();
-        for (int i = 0; i < defineSets.size(); i++) {
-            DefineSet currentSet = defineSets.elementAt(i);
+        for (DefineSet currentSet : defineSets) {
             UndefineArgument[] defines = currentSet.getDefines();
-            for (int j = 0; j < defines.length; j++) {
-                if (defines[j].isActive(p)) {
-                    actives.addElement(defines[j]);
+            for (UndefineArgument define : defines) {
+                if (define.isActive(p)) {
+                    actives.addElement(define);
                 }
             }
         }
@@ -202,12 +200,11 @@ public final class CompilerDef extends ProcessorDef {
             throw new IllegalStateException("project not set");
         }
         Vector<String> activePaths = new Vector<String>();
-        for (int i = 0; i < paths.size(); i++) {
-            ConditionalPath path = paths.elementAt(i);
+        for (ConditionalPath path : paths) {
             if (path.isActive(p)) {
                 String[] pathEntries = path.list();
-                for (int j = 0; j < pathEntries.length; j++) {
-                    activePaths.addElement(pathEntries[j]);
+                for (String pathEntry : pathEntries) {
+                    activePaths.addElement(pathEntry);
                 }
             }
         }
@@ -219,17 +216,14 @@ public final class CompilerDef extends ProcessorDef {
             return getCheckedRef(CompilerDef.class,
                     "CompilerDef").getActivePrecompile(ccElement);
         }
-        PrecompileDef current = null;
-        Enumeration<PrecompileDef> iter = precompileDefs.elements();
-        while (iter.hasMoreElements()) {
-            current = iter.nextElement();
+        for (PrecompileDef current : precompileDefs) {
             if (current.isActive()) {
                 return current;
             }
         }
         CompilerDef extendedDef = (CompilerDef) getExtends();
         if (extendedDef != null) {
-            current = extendedDef.getActivePrecompile(null);
+            PrecompileDef current = extendedDef.getActivePrecompile(null);
             if (current != null) {
                 return current;
             }

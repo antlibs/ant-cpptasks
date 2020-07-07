@@ -26,8 +26,8 @@ public class FilenameState extends AbstractParserState {
     }
 
     public AbstractParserState consume(char ch) {
-        for (int i = 0; i < terminators.length; i++) {
-            if (ch == terminators[i]) {
+        for (char terminator : terminators) {
+            if (ch == terminator) {
                 getParser().addFilename(buf.toString());
                 buf.setLength(0);
                 return null;

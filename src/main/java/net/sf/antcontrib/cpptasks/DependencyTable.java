@@ -199,14 +199,14 @@ public final class DependencyTable {
         public boolean preview(DependencyInfo parent, DependencyInfo[] children) {
             int withCompositeTimes = 0;
             long parentCompositeLastModified = parent.getSourceLastModified();
-            for (int i = 0; i < children.length; i++) {
-                if (children[i] != null) {
+            for (DependencyInfo child : children) {
+                if (child != null) {
                     //
                     //  expedient way to determine if a child forces us to
                     // rebuild
                     //
-                    visit(children[i]);
-                    long childCompositeLastModified = children[i].getCompositeLastModified();
+                    visit(child);
+                    long childCompositeLastModified = child.getCompositeLastModified();
                     if (childCompositeLastModified != Long.MIN_VALUE) {
                         withCompositeTimes++;
                         if (childCompositeLastModified > parentCompositeLastModified) {
@@ -414,7 +414,6 @@ public final class DependencyTable {
         //    look at any files where the compositeLastModified
         //    is not known, but the includes are known
         //
-        boolean mustRebuild = false;
         CompilerConfiguration compiler = (CompilerConfiguration) target.getConfiguration();
         String includePathIdentifier = compiler.getIncludePathIdentifier();
         File[] sources = target.getSources();
@@ -434,8 +433,7 @@ public final class DependencyTable {
         }
         TimestampChecker checker = new TimestampChecker(outputLastModified,
                 rebuildOnStackExhaustion);
-        for (int i = 0; i < sources.length && !mustRebuild; i++) {
-            File source = sources[i];
+        for (File source : sources) {
             String relative = getRelativePath(baseDirPath, source);
             DependencyInfo dependInfo = getDependencyInfo(relative, includePathIdentifier);
             if (dependInfo == null) {
@@ -443,9 +441,11 @@ public final class DependencyTable {
                 dependInfo = parseIncludes(task, compiler, source);
             }
             walkDependencies(task, dependInfo, compiler, stack, checker);
-            mustRebuild = checker.getMustRebuild();
+            if (checker.getMustRebuild()) {
+                return true;
+            }
         }
-        return mustRebuild;
+        return false;
     }
 
     public DependencyInfo parseIncludes(CCTask task,
@@ -560,8 +560,7 @@ public final class DependencyTable {
                     //
                     //   recurse into
                     //
-                    for (int i = 0; i < includeInfos.length; i++) {
-                        DependencyInfo includeInfo = includeInfos[i];
+                    for (DependencyInfo includeInfo : includeInfos) {
                         walkDependencies(task, includeInfo, compiler, stack, visitor);
                     }
                 }
@@ -586,17 +585,17 @@ public final class DependencyTable {
         buf.append(Long.toHexString(dependInfo.getSourceLastModified()));
         buf.append("\">\n");
         writer.write(buf.toString());
-        for (int i = 0; i < includes.length; i++) {
+        for (String include : includes) {
             buf.setLength(0);
             buf.append("         <include file=\"");
-            buf.append(xmlAttribEncode(includes[i]));
+            buf.append(xmlAttribEncode(include));
             buf.append("\"/>\n");
             writer.write(buf.toString());
         }
-        for (int i = 0; i < sysIncludes.length; i++) {
+        for (String sysInclude : sysIncludes) {
             buf.setLength(0);
             buf.append("         <sysinclude file=\"");
-            buf.append(xmlAttribEncode(sysIncludes[i]));
+            buf.append(xmlAttribEncode(sysInclude));
             buf.append("\"/>\n");
             writer.write(buf.toString());
         }

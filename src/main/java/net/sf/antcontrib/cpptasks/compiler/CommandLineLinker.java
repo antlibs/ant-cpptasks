@@ -125,8 +125,8 @@ public abstract class CommandLineLinker extends AbstractLinker {
         CommandLineArgument[] commandArgs;
         for (int i = defaultProviders.length - 1; i >= 0; i--) {
             commandArgs = defaultProviders[i].getActiveProcessorArgs();
-            for (int j = 0; j < commandArgs.length; j++) {
-                args.get(commandArgs[j].getLocation()).addElement(commandArgs[j].getValue());
+            for (CommandLineArgument commandArg : commandArgs) {
+                args.get(commandArg.getLocation()).addElement(commandArg.getValue());
             }
         }
 
@@ -266,8 +266,8 @@ public abstract class CommandLineLinker extends AbstractLinker {
         String[] execArgs = prepareArguments(task, parentPath, outputFile.getName(),
                 sourceFiles, config);
         int commandLength = 0;
-        for (int i = 0; i < execArgs.length; i++) {
-            commandLength += execArgs[i].length() + 1;
+        for (String execArg : execArgs) {
+            commandLength += execArg.length() + 1;
         }
 
         //
@@ -326,17 +326,17 @@ public abstract class CommandLineLinker extends AbstractLinker {
         }
         allArgs[index++] = this.getCommand();
         StringBuffer buf = new StringBuffer();
-        for (int i = 0; i < preargs.length; i++) {
-            allArgs[index++] = decorateLinkerOption(buf, preargs[i]);
+        for (String prearg : preargs) {
+            allArgs[index++] = decorateLinkerOption(buf, prearg);
         }
-        for (int i = 0; i < outputSwitch.length; i++) {
-            allArgs[index++] = outputSwitch[i];
+        for (String aSwitch : outputSwitch) {
+            allArgs[index++] = aSwitch;
         }
-        for (int i = 0; i < sourceFiles.length; i++) {
-            allArgs[index++] = prepareFilename(buf, outputDir, sourceFiles[i]);
+        for (String sourceFile : sourceFiles) {
+            allArgs[index++] = prepareFilename(buf, outputDir, sourceFile);
         }
-        for (int i = 0; i < endargs.length; i++) {
-            allArgs[index++] = decorateLinkerOption(buf, endargs[i]);
+        for (String endarg : endargs) {
+            allArgs[index++] = decorateLinkerOption(buf, endarg);
         }
         return allArgs;
     }

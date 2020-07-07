@@ -209,10 +209,10 @@ public final class DevStudioProjectWriter implements ProjectWriter {
             writer.write("# Begin Group \"Source Files\"\r\n\r\n");
             writer.write("# PROP Default_Filter \"" + sourceFilter + "\"\r\n");
 
-            for (int i = 0; i < sortedSources.length; i++) {
-                if (!isGroupMember(headerFilter, sortedSources[i])
-                        && !isGroupMember(resourceFilter, sortedSources[i])) {
-                    writeSource(writer, basePath, sortedSources[i]);
+            for (File sortedSource : sortedSources) {
+                if (!isGroupMember(headerFilter, sortedSource)
+                        && !isGroupMember(resourceFilter, sortedSource)) {
+                    writeSource(writer, basePath, sortedSource);
                 }
             }
             writer.write("# End Group\r\n");
@@ -220,9 +220,9 @@ public final class DevStudioProjectWriter implements ProjectWriter {
             writer.write("# Begin Group \"Header Files\"\r\n\r\n");
             writer.write("# PROP Default_Filter \"" + headerFilter + "\"\r\n");
 
-            for (int i = 0; i < sortedSources.length; i++) {
-                if (isGroupMember(headerFilter, sortedSources[i])) {
-                    writeSource(writer, basePath, sortedSources[i]);
+            for (File sortedSource : sortedSources) {
+                if (isGroupMember(headerFilter, sortedSource)) {
+                    writeSource(writer, basePath, sortedSource);
                 }
             }
             writer.write("# End Group\r\n");
@@ -230,16 +230,16 @@ public final class DevStudioProjectWriter implements ProjectWriter {
             writer.write("# Begin Group \"Resource Files\"\r\n\r\n");
             writer.write("# PROP Default_Filter \"" + resourceFilter + "\"\r\n");
 
-            for (int i = 0; i < sortedSources.length; i++) {
-                if (isGroupMember(resourceFilter, sortedSources[i])) {
-                    writeSource(writer, basePath, sortedSources[i]);
+            for (File sortedSource : sortedSources) {
+                if (isGroupMember(resourceFilter, sortedSource)) {
+                    writeSource(writer, basePath, sortedSource);
                 }
             }
             writer.write("# End Group\r\n");
 
         } else {
-            for (int i = 0; i < sortedSources.length; i++) {
-                writeSource(writer, basePath, sortedSources[i]);
+            for (File sortedSource : sortedSources) {
+                writeSource(writer, basePath, sortedSource);
             }
         }
 
@@ -524,9 +524,9 @@ public final class DevStudioProjectWriter implements ProjectWriter {
         StringBuilder options = new StringBuilder(50);
         options.append("# ADD CPP");
         File[] includePath = compilerConfig.getIncludePath();
-        for (int i = 0; i < includePath.length; i++) {
+        for (File file : includePath) {
             options.append(" /I \"");
-            String relPath = getRelativePath(baseDir, includePath[i]);
+            String relPath = getRelativePath(baseDir, file);
             options.append(toWindowsPath(relPath));
             options.append('"');
         }
@@ -556,12 +556,12 @@ public final class DevStudioProjectWriter implements ProjectWriter {
 
 
         String[] preArgs = compilerConfig.getPreArguments();
-        for (int i = 0; i < preArgs.length; i++) {
-            if (preArgs[i].startsWith("/D")) {
+        for (String preArg : preArgs) {
+            if (preArg.startsWith("/D")) {
                 options.append(" /D ");
                 baseOptions.append(" /D ");
-                String body = preArgs[i].substring(2);
-                if (preArgs[i].contains("=")) {
+                String body = preArg.substring(2);
+                if (preArg.contains("=")) {
                     options.append(body);
                     baseOptions.append(body);
                 } else {
@@ -579,8 +579,8 @@ public final class DevStudioProjectWriter implements ProjectWriter {
                     options.append(buf);
                     baseOptions.append(buf);
                 }
-            } else if (!preArgs[i].startsWith("/I")) {
-                String option = preArgs[i];
+            } else if (!preArg.startsWith("/I")) {
+                String option = preArg;
                 String key = option.toUpperCase(Locale.US);
                 if (optionMap.containsKey(key)) {
                     option = optionMap.get(key);
@@ -626,17 +626,17 @@ public final class DevStudioProjectWriter implements ProjectWriter {
             CommandLineLinkerConfiguration linkConfig = (CommandLineLinkerConfiguration) config;
 
             File[] linkSources = linkTarget.getAllSources();
-            for (int i = 0; i < linkSources.length; i++) {
+            for (File linkSource : linkSources) {
                 //
                 //   if file was not compiled or otherwise generated
                 //
-                if (targets.get(linkSources[i].getName()) == null) {
+                if (targets.get(linkSource.getName()) == null) {
                     //
                     //   if source appears to be a system library or object file
                     //      just output the name of the file (advapi.lib for example)
                     //      otherwise construct a relative path.
                     //
-                    String relPath = linkSources[i].getName();
+                    String relPath = linkSource.getName();
                     //
                     //   check if file comes from a project dependency
                     //       if it does it should not be explicitly linked
@@ -650,8 +650,8 @@ public final class DevStudioProjectWriter implements ProjectWriter {
                         }
                     }
                     if (!fromDependency) {
-                        if (!isSystemPath(linkSources[i])) {
-                            relPath = getRelativePath(basePath, linkSources[i]);
+                        if (!isSystemPath(linkSource)) {
+                            relPath = getRelativePath(basePath, linkSource);
                         }
                         //
                         //   if path has an embedded space then
@@ -668,20 +668,20 @@ public final class DevStudioProjectWriter implements ProjectWriter {
                 }
             }
             String[] preArgs = linkConfig.getPreArguments();
-            for (int i = 0; i < preArgs.length; i++) {
-                if (isDebug || !preArgs[i].equals("/DEBUG")) {
+            for (String preArg : preArgs) {
+                if (isDebug || !preArg.equals("/DEBUG")) {
                     options.append(' ');
-                    options.append(preArgs[i]);
+                    options.append(preArg);
                     baseOptions.append(' ');
-                    baseOptions.append(preArgs[i]);
+                    baseOptions.append(preArg);
                 }
             }
             String[] endArgs = linkConfig.getEndArguments();
-            for (int i = 0; i < endArgs.length; i++) {
+            for (String endArg : endArgs) {
                 options.append(' ');
-                options.append(endArgs[i]);
+                options.append(endArg);
                 baseOptions.append(' ');
-                baseOptions.append(endArgs[i]);
+                baseOptions.append(endArg);
             }
         }
         baseOptions.append("\r\n");

@@ -101,15 +101,15 @@ public final class OS390Linker extends CommandLineLinker {
         // on the normal filesystem so the task will not normally include it
         // as part of the link command.
         if (libsets != null) {
-            for (int i = 0; i < libsets.length; i++) {
-                String[] libs = libsets[i].getLibs();
-                for (int j = 0; j < libs.length; j++) {
-                    if (libs[j].startsWith("//")) {
+            for (LibrarySet libset : libsets) {
+                String[] libs = libset.getLibs();
+                for (String lib : libs) {
+                    if (lib.startsWith("//")) {
                         endargs.addElement("-l");
-                        endargs.addElement(libs[j]);
-                    } else if (libsets[i].getDataset() != null) {
-                        String ds = libsets[i].getDataset();
-                        endargs.addElement("//'" + ds + "(" + libs[j] + ")'");
+                        endargs.addElement(lib);
+                    } else if (libset.getDataset() != null) {
+                        String ds = libset.getDataset();
+                        endargs.addElement("//'" + ds + "(" + lib + ")'");
                     }
                 }
             }

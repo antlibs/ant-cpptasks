@@ -122,9 +122,9 @@ public class CUtil {
         }
         File[] envPath = CUtil.getPathFromEnvironment("PATH",
                 File.pathSeparator);
-        for (int i = 0; i < envPath.length; i++) {
-            if (new File(envPath[i], exeName).exists()) {
-                return envPath[i];
+        for (File file : envPath) {
+            if (new File(file, exeName).exists()) {
+                return file;
             }
         }
         return null;
@@ -360,8 +360,8 @@ public class CUtil {
             if (env != null) {
                 String[] environment = env.getVariables();
                 if (environment != null) {
-                    for (int i = 0; i < environment.length; i++) {
-                        task.log("Setting environment variable: " + environment[i], Project.MSG_VERBOSE);
+                    for (String s : environment) {
+                        task.log("Setting environment variable: " + s, Project.MSG_VERBOSE);
                     }
                 }
                 exe.setEnvironment(environment);
@@ -418,8 +418,8 @@ public class CUtil {
         }
         // Convert the array into a set
         Hashtable<Object, Object> t = new Hashtable<Object, Object>();
-        for (int i = 0; i < a.length; i++) {
-            t.put(a[i], a[i]);
+        for (Object value : a) {
+            t.put(value, value);
         }
         for (int i = 0; i < b.size(); i++) {
             Object o = b.elementAt(i);

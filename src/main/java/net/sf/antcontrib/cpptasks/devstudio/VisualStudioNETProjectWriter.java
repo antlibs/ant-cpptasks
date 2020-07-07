@@ -120,11 +120,11 @@ public final class VisualStudioNETProjectWriter implements ProjectWriter {
     private String getCharacterSet(final CommandLineCompilerConfiguration compilerConfig) {
         String[] args = compilerConfig.getPreArguments();
         String charset = "0";
-        for (int i = 0; i < args.length; i++) {
-            if ("/D_UNICODE".equals(args[i]) || "/DUNICODE".equals(args[i])) {
+        for (String arg : args) {
+            if ("/D_UNICODE".equals(arg) || "/DUNICODE".equals(arg)) {
                 charset = "1";
             }
-            if ("/D_MBCS".equals(args[i])) {
+            if ("/D_MBCS".equals(arg)) {
                 charset = "2";
             }
         }
@@ -173,17 +173,17 @@ public final class VisualStudioNETProjectWriter implements ProjectWriter {
     private String getOptimization(final CommandLineCompilerConfiguration compilerConfig) {
         String[] args = compilerConfig.getPreArguments();
         String opt = "0";
-        for (int i = 0; i < args.length; i++) {
-            if ("/Od".equals(args[i])) {
+        for (String arg : args) {
+            if ("/Od".equals(arg)) {
                 opt = "0";
             }
-            if ("/O1".equals(args[i])) {
+            if ("/O1".equals(arg)) {
                 opt = "1";
             }
-            if ("/O2".equals(args[i])) {
+            if ("/O2".equals(arg)) {
                 opt = "2";
             }
-            if ("/Ox".equals(args[i])) {
+            if ("/Ox".equals(arg)) {
                 opt = "3";
             }
         }
@@ -201,8 +201,8 @@ public final class VisualStudioNETProjectWriter implements ProjectWriter {
                                                    final CommandLineCompilerConfiguration compilerConfig) {
         File[] includePath = compilerConfig.getIncludePath();
         StringBuilder includeDirs = new StringBuilder();
-        for (int i = 0; i < includePath.length; i++) {
-            String relPath = getRelativePath(baseDir, includePath[i]);
+        for (File file : includePath) {
+            String relPath = getRelativePath(baseDir, file);
             includeDirs.append(toWindowsPath(relPath));
             includeDirs.append(';');
         }
@@ -224,9 +224,9 @@ public final class VisualStudioNETProjectWriter implements ProjectWriter {
                                               final boolean isDebug) {
         StringBuilder defines = new StringBuilder();
         String[] args = compilerConfig.getPreArguments();
-        for (int i = 0; i < args.length; i++) {
-            if (args[i].startsWith("/D")) {
-                String macro = args[i].substring(2);
+        for (String arg : args) {
+            if (arg.startsWith("/D")) {
+                String macro = arg.substring(2);
                 if (isDebug) {
                     if (macro.equals("NDEBUG")) {
                         macro = "_DEBUG";
@@ -258,14 +258,14 @@ public final class VisualStudioNETProjectWriter implements ProjectWriter {
                                      final boolean isDebug) {
         String rtl = null;
         String[] args = compilerConfig.getPreArguments();
-        for (int i = 0; i < args.length; i++) {
-            if (args[i].startsWith("/MT")) {
+        for (String arg : args) {
+            if (arg.startsWith("/MT")) {
                 if (isDebug) {
                     rtl = "1";
                 } else {
                     rtl = "0";
                 }
-            } else if (args[i].startsWith("/MD")) {
+            } else if (arg.startsWith("/MD")) {
                 if (isDebug) {
                     rtl = "3";
                 } else {
@@ -285,11 +285,11 @@ public final class VisualStudioNETProjectWriter implements ProjectWriter {
     private String getUsePrecompiledHeader(final CommandLineCompilerConfiguration compilerConfig) {
         String usePCH = "0";
         String[] args = compilerConfig.getPreArguments();
-        for (int i = 0; i < args.length; i++) {
-            if ("/Yc".equals(args[i])) {
+        for (String arg : args) {
+            if ("/Yc".equals(arg)) {
                 usePCH = "1";
             }
-            if ("/Yu".equals(args[i])) {
+            if ("/Yu".equals(arg)) {
                 usePCH = "2";
             }
         }
@@ -306,9 +306,9 @@ public final class VisualStudioNETProjectWriter implements ProjectWriter {
             final CommandLineCompilerConfiguration compilerConfig) {
         String pch = null;
         String[] args = compilerConfig.getPreArguments();
-        for (int i = 0; i < args.length; i++) {
-            if (args[i].startsWith("/Fp")) {
-                pch = args[i].substring(3);
+        for (String arg : args) {
+            if (arg.startsWith("/Fp")) {
+                pch = arg.substring(3);
             }
         }
         return pch;
@@ -324,14 +324,14 @@ public final class VisualStudioNETProjectWriter implements ProjectWriter {
             final CommandLineCompilerConfiguration compilerConfig) {
         String checks = "0";
         String[] args = compilerConfig.getPreArguments();
-        for (int i = 0; i < args.length; i++) {
-            if ("/RTCs".equals(args[i])) {
+        for (String arg : args) {
+            if ("/RTCs".equals(arg)) {
                 checks = "1";
             }
-            if ("/RTCu".equals(args[i])) {
+            if ("/RTCu".equals(arg)) {
                 checks = "2";
             }
-            if ("/RTC1".equals(args[i]) || "/GZ".equals(args[i])) {
+            if ("/RTC1".equals(arg) || "/GZ".equals(arg)) {
                 checks = "3";
             }
         }
@@ -347,17 +347,17 @@ public final class VisualStudioNETProjectWriter implements ProjectWriter {
     private String getWarningLevel(final CommandLineCompilerConfiguration compilerConfig) {
         String warn = null;
         String[] args = compilerConfig.getPreArguments();
-        for (int i = 0; i < args.length; i++) {
-            if ("/W0".equals(args[i])) {
+        for (String arg : args) {
+            if ("/W0".equals(arg)) {
                 warn = "0";
             }
-            if ("/W1".equals(args[i])) {
+            if ("/W1".equals(arg)) {
                 warn = "1";
             }
-            if ("/W2".equals(args[i])) {
+            if ("/W2".equals(arg)) {
                 warn = "2";
             }
-            if ("/W3".equals(args[i])) {
+            if ("/W3".equals(arg)) {
                 warn = "3";
             }
         }
@@ -374,8 +374,8 @@ public final class VisualStudioNETProjectWriter implements ProjectWriter {
             final CommandLineCompilerConfiguration compilerConfig) {
         String warn64 = null;
         String[] args = compilerConfig.getPreArguments();
-        for (int i = 0; i < args.length; i++) {
-            if ("/Wp64".equals(args[i])) {
+        for (String arg : args) {
+            if ("/Wp64".equals(arg)) {
                 warn64 = trueLiteral;
             }
         }
@@ -392,17 +392,17 @@ public final class VisualStudioNETProjectWriter implements ProjectWriter {
             final CommandLineCompilerConfiguration compilerConfig) {
         String format = "0";
         String[] args = compilerConfig.getPreArguments();
-        for (int i = 0; i < args.length; i++) {
-            if ("/Z7".equals(args[i])) {
+        for (String arg : args) {
+            if ("/Z7".equals(arg)) {
                 format = "1";
             }
-            if ("/Zd".equals(args[i])) {
+            if ("/Zd".equals(arg)) {
                 format = "2";
             }
-            if ("/Zi".equals(args[i])) {
+            if ("/Zi".equals(arg)) {
                 format = "3";
             }
-            if ("/ZI".equals(args[i])) {
+            if ("/ZI".equals(arg)) {
                 format = "4";
             }
         }
@@ -471,11 +471,11 @@ public final class VisualStudioNETProjectWriter implements ProjectWriter {
     private String getLinkIncremental(final CommandLineLinkerConfiguration linkerConfig) {
         String incremental = "0";
         String[] args = linkerConfig.getPreArguments();
-        for (int i = 0; i < args.length; i++) {
-            if ("/INCREMENTAL:NO".equals(args[i])) {
+        for (String arg : args) {
+            if ("/INCREMENTAL:NO".equals(arg)) {
                 incremental = "1";
             }
-            if ("/INCREMENTAL:YES".equals(args[i])) {
+            if ("/INCREMENTAL:YES".equals(arg)) {
                 incremental = "2";
             }
         }
@@ -491,14 +491,14 @@ public final class VisualStudioNETProjectWriter implements ProjectWriter {
     private String getSubsystem(final CommandLineLinkerConfiguration linkerConfig) {
         String subsystem = "0";
         String[] args = linkerConfig.getPreArguments();
-        for (int i = 0; i < args.length; i++) {
-            if ("/SUBSYSTEM:CONSOLE".equals(args[i])) {
+        for (String arg : args) {
+            if ("/SUBSYSTEM:CONSOLE".equals(arg)) {
                 subsystem = "1";
             }
-            if ("/SUBSYSTEM:WINDOWS".equals(args[i])) {
+            if ("/SUBSYSTEM:WINDOWS".equals(arg)) {
                 subsystem = "2";
             }
-            if ("/SUBSYSTEM:WINDOWSCE".equals(args[i])) {
+            if ("/SUBSYSTEM:WINDOWSCE".equals(arg)) {
                 subsystem = "9";
             }
         }
@@ -514,8 +514,8 @@ public final class VisualStudioNETProjectWriter implements ProjectWriter {
     private String getTargetMachine(final CommandLineLinkerConfiguration linkerConfig) {
         String subsystem = "0";
         String[] args = linkerConfig.getPreArguments();
-        for (int i = 0; i < args.length; i++) {
-            if ("/MACHINE:X86".equals(args[i])) {
+        for (String arg : args) {
+            if ("/MACHINE:X86".equals(arg)) {
                 subsystem = "1";
             }
         }
@@ -538,17 +538,17 @@ public final class VisualStudioNETProjectWriter implements ProjectWriter {
         String dependencies = null;
         File[] linkSources = linkTarget.getAllSources();
         StringBuilder buf = new StringBuilder();
-        for (int i = 0; i < linkSources.length; i++) {
+        for (File linkSource : linkSources) {
             //
             //   if file was not compiled or otherwise generated
             //
-            if (targets.get(linkSources[i].getName()) == null) {
+            if (targets.get(linkSource.getName()) == null) {
                 //
                 //   if source appears to be a system library or object file
                 //      just output the name of the file (advapi.lib for example)
                 //      otherwise construct a relative path.
                 //
-                String relPath = linkSources[i].getName();
+                String relPath = linkSource.getName();
                 //
                 //   check if file comes from a project dependency
                 //       if it does it should not be explicitly linked
@@ -563,8 +563,8 @@ public final class VisualStudioNETProjectWriter implements ProjectWriter {
                 }
 
                 if (!fromDependency) {
-                    if (!isSystemPath(linkSources[i])) {
-                        relPath = getRelativePath(basePath, linkSources[i]);
+                    if (!isSystemPath(linkSource)) {
+                        relPath = getRelativePath(basePath, linkSource);
                     }
                     //
                     //   if path has an embedded space then
@@ -777,9 +777,9 @@ public final class VisualStudioNETProjectWriter implements ProjectWriter {
         fileAttrs.addAttribute(null, "RelativePath", "RelativePath",
                 "#PCDATA", "");
 
-        for (int i = 0; i < sortedSources.length; i++) {
-            if (isGroupMember(filter, sortedSources[i])) {
-                String relativePath = getRelativePath(basePath, sortedSources[i]);
+        for (File sortedSource : sortedSources) {
+            if (isGroupMember(filter, sortedSource)) {
+                String relativePath = getRelativePath(basePath, sortedSource);
                 fileAttrs.setValue(0, relativePath);
                 content.startElement(null, "File", "File", fileAttrs);
                 content.endElement(null, "File", "File");

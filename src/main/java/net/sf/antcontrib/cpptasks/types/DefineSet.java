@@ -56,14 +56,14 @@ public class DefineSet extends DataType {
      * @param isDefine boolean
      */
     private void addDefines(String[] defs, boolean isDefine) {
-        for (int i = 0; i < defs.length; i++) {
+        for (String s : defs) {
             UndefineArgument def;
             if (isDefine) {
                 def = new DefineArgument();
             } else {
                 def = new UndefineArgument();
             }
-            def.setName(defs[i]);
+            def.setName(s);
             defineList.addElement(def);
         }
     }

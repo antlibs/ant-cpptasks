@@ -226,16 +226,16 @@ public final class GccCCompiler extends GccCompatibleCCompiler {
             count += checkDirectoryArray(defaultInclude);
             includePath = new File[count];
             int index = 0;
-            for (int i = 0; i < optionValues.length; i++) {
-                for (int j = 0; j < optionValues[i].length; j++) {
-                    if (optionValues[i][j] != null) {
-                        includePath[index++] = new File(optionValues[i][j]);
+            for (String[] optionValue : optionValues) {
+                for (String s : optionValue) {
+                    if (s != null) {
+                        includePath[index++] = new File(s);
                     }
                 }
             }
-            for (int i = 0; i < defaultInclude.length; i++) {
-                if (defaultInclude[i] != null) {
-                    includePath[index++] = new File(defaultInclude[i]);
+            for (String s : defaultInclude) {
+                if (s != null) {
+                    includePath[index++] = new File(s);
                 }
             }
         }

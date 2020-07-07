@@ -42,9 +42,9 @@ public class TestInstalledDevStudioLinker extends TestDevStudioLinker {
         String[] libnames = new String[]{"kernel32.lib",
                 "advapi32.lib", "msvcrt.lib", "mfc42.lib", "mfc70.lib"};
         boolean[] libfound = new boolean[libnames.length];
-        for (int i = 0; i < libpath.length; i++) {
+        for (File file : libpath) {
             for (int j = 0; j < libnames.length; j++) {
-                File libfile = new File(libpath[i], libnames[j]);
+                File libfile = new File(file, libnames[j]);
                 if (libfile.exists()) {
                     libfound[j] = true;
                 }

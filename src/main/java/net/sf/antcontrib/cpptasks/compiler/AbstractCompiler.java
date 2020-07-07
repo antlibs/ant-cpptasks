@@ -165,8 +165,7 @@ public abstract class AbstractCompiler extends AbstractProcessor implements Comp
 
         Vector<File> filesOnIncludePath = new Vector<File>();
         Vector<File> filesOnSysIncludePath = new Vector<File>();
-        for (int i = 0; i < includes.length; i++) {
-            String includeName = includes[i];
+        for (String includeName : includes) {
             if (!resolveInclude(includeName, sourcePath, filesOnIncludePath)) {
                 if (!resolveInclude(includeName, includePath, filesOnIncludePath)) {
                     if (!resolveInclude(includeName, sysIncludePath,
@@ -202,8 +201,8 @@ public abstract class AbstractCompiler extends AbstractProcessor implements Comp
 
     protected boolean resolveInclude(String includeName, File[] includePath,
                                      Vector<File> onThisPath) {
-        for (int i = 0; i < includePath.length; i++) {
-            File includeFile = new File(includePath[i], includeName);
+        for (File file : includePath) {
+            File includeFile = new File(file, includeName);
             if (includeFile.exists()) {
                 onThisPath.addElement(includeFile);
                 return true;

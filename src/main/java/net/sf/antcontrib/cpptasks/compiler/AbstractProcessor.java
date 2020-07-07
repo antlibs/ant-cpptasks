@@ -76,13 +76,13 @@ public abstract class AbstractProcessor implements Processor, Cloneable {
      */
     public int bid(String inputFile) {
         String lower = inputFile.toLowerCase();
-        for (int i = 0; i < sourceExtensions.length; i++) {
-            if (lower.endsWith(sourceExtensions[i])) {
+        for (String sourceExtension : sourceExtensions) {
+            if (lower.endsWith(sourceExtension)) {
                 return DEFAULT_PROCESS_BID;
             }
         }
-        for (int i = 0; i < headerExtensions.length; i++) {
-            if (lower.endsWith(headerExtensions[i])) {
+        for (String headerExtension : headerExtensions) {
+            if (lower.endsWith(headerExtension)) {
                 return DEFAULT_DISCARD_BID;
             }
         }

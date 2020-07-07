@@ -112,16 +112,16 @@ public final class CommandLineCompilerConfiguration
             args[i] = base.args[i];
         }
         int index = base.args.length;
-        for (int i = 0; i < additionalArgs.length; i++) {
-            args[index++] = additionalArgs[i];
+        for (String additionalArg : additionalArgs) {
+            args[index++] = additionalArg;
         }
     }
 
     public int bid(String inputFile) {
         int compilerBid = compiler.bid(inputFile);
         if (compilerBid > 0 && exceptFiles != null) {
-            for (int i = 0; i < exceptFiles.length; i++) {
-                if (inputFile.equals(exceptFiles[i])) {
+            for (String exceptFile : exceptFiles) {
+                if (inputFile.equals(exceptFile)) {
                     return 0;
                 }
             }
@@ -194,9 +194,9 @@ public final class CommandLineCompilerConfiguration
     }
 
     public CompilerParam getParam(String name) {
-        for (int i = 0; i < params.length; i++) {
-            if (name.equals(params[i].getName())) {
-                return (CompilerParam) params[i];
+        for (ProcessorParam param : params) {
+            if (name.equals(param.getName())) {
+                return (CompilerParam) param;
             }
         }
         return null;

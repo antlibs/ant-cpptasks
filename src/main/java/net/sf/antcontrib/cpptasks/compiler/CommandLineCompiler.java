@@ -88,10 +88,10 @@ public abstract class CommandLineCompiler extends AbstractCompiler {
      */
     protected void addIncludes(String baseDirPath, File[] includeDirs, Vector<String> args,
                                Vector<String> relativeArgs, StringBuffer includePathId) {
-        for (int i = 0; i < includeDirs.length; i++) {
-            args.addElement(getIncludeDirSwitch(includeDirs[i].getAbsolutePath()));
+        for (File includeDir : includeDirs) {
+            args.addElement(getIncludeDirSwitch(includeDir.getAbsolutePath()));
             if (relativeArgs != null) {
-                String relative = CUtil.getRelativePath(baseDirPath, includeDirs[i]);
+                String relative = CUtil.getRelativePath(baseDirPath, includeDir);
                 relativeArgs.addElement(getIncludeDirSwitch(relative));
                 if (includePathId != null) {
                     if (includePathId.length() == 0) {
@@ -119,9 +119,8 @@ public abstract class CommandLineCompiler extends AbstractCompiler {
             merged = UndefineArgument.merge(defs[i].getActiveDefines(), merged);
         }
         StringBuffer buf = new StringBuffer(30);
-        for (int i = 0; i < merged.length; i++) {
+        for (UndefineArgument current : merged) {
             buf.setLength(0);
-            UndefineArgument current = merged[i];
             if (current.isDefine()) {
                 getDefineSwitch(buf, current.getName(), current.getValue());
             } else {
@@ -157,11 +156,11 @@ public abstract class CommandLineCompiler extends AbstractCompiler {
         if (libtool) {
             baseLength += 8;
         }
-        for (int i = 0; i < args.length; i++) {
-            baseLength += args[i].length();
+        for (String arg : args) {
+            baseLength += arg.length();
         }
-        for (int i = 0; i < endArgs.length; i++) {
-            baseLength += endArgs[i].length();
+        for (String endArg : endArgs) {
+            baseLength += endArg.length();
         }
         if (baseLength > getMaximumCommandLength()) {
             throw new BuildException("Command line is over maximum length"
@@ -197,16 +196,16 @@ public abstract class CommandLineCompiler extends AbstractCompiler {
                 commandline[index++] = "libtool";
             }
             commandline[index++] = command;
-            for (int j = 0; j < args.length; j++) {
-                commandline[index++] = args[j];
+            for (String arg : args) {
+                commandline[index++] = arg;
             }
             for (int j = sourceIndex; j < firstFileNextExec; j++) {
                 for (int k = 0; k < argumentCountPerInputFile; k++) {
                     commandline[index++] = getInputFileArgument(outputDir, sourceFiles[j], k);
                 }
             }
-            for (int j = 0; j < endArgs.length; j++) {
-                commandline[index++] = endArgs[j];
+            for (String endArg : endArgs) {
+                commandline[index++] = endArg;
             }
             int retval = runCommand(task, outputDir, commandline);
             if (monitor != null) {
@@ -262,11 +261,11 @@ public abstract class CommandLineCompiler extends AbstractCompiler {
         CommandLineArgument[] commandArgs;
         for (int i = defaultProviders.length - 1; i >= 0; i--) {
             commandArgs = defaultProviders[i].getActiveProcessorArgs();
-            for (int j = 0; j < commandArgs.length; j++) {
-                if (commandArgs[j].getLocation() == 0) {
-                    args.addElement(commandArgs[j].getValue());
+            for (CommandLineArgument commandArg : commandArgs) {
+                if (commandArg.getLocation() == 0) {
+                    args.addElement(commandArg.getValue());
                 } else {
-                    cmdArgs.addElement(commandArgs[j]);
+                    cmdArgs.addElement(commandArg);
                 }
             }
         }
@@ -328,12 +327,12 @@ public abstract class CommandLineCompiler extends AbstractCompiler {
         Vector<String> sysIncludePath = new Vector<String>();
         for (int i = defaultProviders.length - 1; i >= 0; i--) {
             String[] incPath = defaultProviders[i].getActiveIncludePaths();
-            for (int j = 0; j < incPath.length; j++) {
-                includePath.addElement(incPath[j]);
+            for (String value : incPath) {
+                includePath.addElement(value);
             }
             incPath = defaultProviders[i].getActiveSysIncludePaths();
-            for (int j = 0; j < incPath.length; j++) {
-                sysIncludePath.addElement(incPath[j]);
+            for (String s : incPath) {
+                sysIncludePath.addElement(s);
             }
         }
         File[] incPath = new File[includePath.size()];
@@ -352,9 +351,9 @@ public abstract class CommandLineCompiler extends AbstractCompiler {
             buf.append(' ');
             buf.append(relativeArgs.elementAt(i));
         }
-        for (int i = 0; i < endArgs.length; i++) {
+        for (String endArg : endArgs) {
             buf.append(' ');
-            buf.append(endArgs[i]);
+            buf.append(endArg);
         }
         String configId = buf.toString();
         boolean rebuild = specificDef.getRebuild(baseDefs, 0);

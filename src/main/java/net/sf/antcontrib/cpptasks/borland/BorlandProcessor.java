@@ -118,9 +118,9 @@ public final class BorlandProcessor {
         if (nonExistent > 0) {
             File[] culled = new File[resourcePath.length - nonExistent];
             int index = 0;
-            for (int i = 0; i < resourcePath.length; i++) {
-                if (resourcePath[i] != null) {
-                    culled[index++] = resourcePath[i];
+            for (File file : resourcePath) {
+                if (file != null) {
+                    culled[index++] = file;
                 }
             }
             resourcePath = culled;

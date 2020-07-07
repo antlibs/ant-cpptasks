@@ -285,12 +285,12 @@ public final class TargetHistoryTable {
                         buf.append("\">\n");
                         writer.write(buf.toString());
                         SourceHistory[] sourceHistories = targetHistory.getSources();
-                        for (int i = 0; i < sourceHistories.length; i++) {
+                        for (SourceHistory sourceHistory : sourceHistories) {
                             buf.setLength(0);
                             buf.append("         <source file=\"");
-                            buf.append(xmlAttribEncode(sourceHistories[i].getRelativePath()));
+                            buf.append(xmlAttribEncode(sourceHistory.getRelativePath()));
                             buf.append("\" lastModified=\"");
-                            buf.append(Long.toHexString(sourceHistories[i].getLastModified()));
+                            buf.append(Long.toHexString(sourceHistory.getLastModified()));
                             buf.append("\"/>\n");
                             writer.write(buf.toString());
                         }
@@ -337,19 +337,19 @@ public final class TargetHistoryTable {
                     targetInfo.mustRebuild();
                 } else {
                     Hashtable<String, File> sourceMap = new Hashtable<String, File>();
-                    for (int i = 0; i < sources.length; i++) {
+                    for (File source : sources) {
                         try {
-                            sourceMap.put(sources[i].getCanonicalPath(), sources[i]);
+                            sourceMap.put(source.getCanonicalPath(), source);
                         } catch (IOException ex) {
-                            sourceMap.put(sources[i].getAbsolutePath(), sources[i]);
+                            sourceMap.put(source.getAbsolutePath(), source);
                         }
                     }
-                    for (int i = 0; i < sourceHistories.length; i++) {
+                    for (SourceHistory sourceHistory : sourceHistories) {
                         //
                         //   relative file name, must absolutize it on output
                         // directory
                         //
-                        String absPath = sourceHistories[i].getAbsolutePath(outputDir);
+                        String absPath = sourceHistory.getAbsolutePath(outputDir);
                         File match = sourceMap.get(absPath);
                         if (match != null) {
                             try {
@@ -359,7 +359,7 @@ public final class TargetHistoryTable {
                                 break;
                             }
                         }
-                        if (match == null || match.lastModified() != sourceHistories[i].getLastModified()) {
+                        if (match == null || match.lastModified() != sourceHistory.getLastModified()) {
                             targetInfo.mustRebuild();
                             break;
                         }
@@ -373,11 +373,11 @@ public final class TargetHistoryTable {
         String configId = config.getIdentifier();
         String[] onesource = new String[1];
         String[] outputNames;
-        for (int i = 0; i < sources.length; i++) {
-            onesource[0] = sources[i];
-            outputNames = config.getOutputFileNames(sources[i], versionInfo);
-            for (int j = 0; j < outputNames.length; j++) {
-                update(configId, outputNames[j], onesource);
+        for (String source : sources) {
+            onesource[0] = source;
+            outputNames = config.getOutputFileNames(source, versionInfo);
+            for (String outputName : outputNames) {
+                update(configId, outputName, onesource);
             }
         }
     }

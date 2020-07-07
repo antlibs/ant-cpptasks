@@ -328,8 +328,8 @@ public final class CBuilderXProjectWriter implements ProjectWriter {
             writer.write(compileID, "option.I.arg." + (includeIndex++), "/usr/include");
             writer.write(compileID, "option.I.arg." + (includeIndex++), "/usr/include/g++-3");
         }
-        for (int i = 0; i < includePath.length; i++) {
-            String relPath = getRelativePath(baseDir, includePath[i]);
+        for (File file : includePath) {
+            String relPath = getRelativePath(baseDir, file);
             writer.write(compileID, "option.I.arg." + (includeIndex++), relPath);
         }
         if (includePath.length > 0) {
@@ -344,16 +344,16 @@ public final class CBuilderXProjectWriter implements ProjectWriter {
         int defineIndex = 1;
         int undefineIndex = 1;
         String[] preArgs = compilerConfig.getPreArguments();
-        for (int i = 0; i < preArgs.length; i++) {
-            if (preArgs[i].startsWith("-D")) {
-                writer.write(compileID, defineOption + (defineIndex++), preArgs[i].substring(2));
-            } else if (preArgs[i].startsWith("-U")) {
-                writer.write(compileID, "option.U.arg." + (undefineIndex++), preArgs[i].substring(2));
-            } else if (!(preArgs[i].startsWith("-I") || preArgs[i].startsWith("-o"))) {
+        for (String preArg : preArgs) {
+            if (preArg.startsWith("-D")) {
+                writer.write(compileID, defineOption + (defineIndex++), preArg.substring(2));
+            } else if (preArg.startsWith("-U")) {
+                writer.write(compileID, "option.U.arg." + (undefineIndex++), preArg.substring(2));
+            } else if (!(preArg.startsWith("-I") || preArg.startsWith("-o"))) {
                 //
                 //  any others (-g, -fno-rtti, -w, -Wall, etc)
                 //
-                writer.write(compileID, "option." + preArgs[i].substring(1) + ".enabled", "1");
+                writer.write(compileID, "option." + preArg.substring(1) + ".enabled", "1");
             }
         }
         if (defineIndex > 1) {
@@ -390,8 +390,8 @@ public final class CBuilderXProjectWriter implements ProjectWriter {
                     writer.write(linkID, "param.libfiles.2", "import32.lib");
                     int libIndex = 3;
                     String[] libNames = linkConfig.getLibraryNames();
-                    for (int i = 0; i < libNames.length; i++) {
-                        writer.write(linkID, "param.libfiles." + (libIndex++), libNames[i]);
+                    for (String libName : libNames) {
+                        writer.write(linkID, "param.libfiles." + (libIndex++), libName);
                     }
                     String startup = linkConfig.getStartupObject();
                     if (startup != null) {
@@ -420,18 +420,18 @@ public final class CBuilderXProjectWriter implements ProjectWriter {
         int objnameIndex = 1;
         int libnameIndex = 1;
         int libpathIndex = 1;
-        for (int i = 0; i < preArgs.length; i++) {
-            if (preArgs[i].startsWith("-o")) {
-                writer.write(linkID, "option.o.arg." + (objnameIndex++), preArgs[i].substring(2));
-            } else if (preArgs[i].startsWith("-l")) {
-                writer.write(linkID, "option.l.arg." + (libnameIndex++), preArgs[i].substring(2));
-            } else if (preArgs[i].startsWith("-L")) {
-                writer.write(linkID, "option.L.arg." + (libpathIndex++), preArgs[i].substring(2));
+        for (String preArg : preArgs) {
+            if (preArg.startsWith("-o")) {
+                writer.write(linkID, "option.o.arg." + (objnameIndex++), preArg.substring(2));
+            } else if (preArg.startsWith("-l")) {
+                writer.write(linkID, "option.l.arg." + (libnameIndex++), preArg.substring(2));
+            } else if (preArg.startsWith("-L")) {
+                writer.write(linkID, "option.L.arg." + (libpathIndex++), preArg.substring(2));
             } else {
                 //
                 //  any others
                 //
-                writer.write(linkID, "option." + preArgs[i].substring(1) + ".enabled", "1");
+                writer.write(linkID, "option." + preArg.substring(1) + ".enabled", "1");
             }
         }
         if (objnameIndex > 1) {
@@ -456,15 +456,15 @@ public final class CBuilderXProjectWriter implements ProjectWriter {
     private void writeIlinkArgs(final PropertyWriter writer,
                                 final String linkID,
                                 final String[] args) throws SAXException {
-        for (int i = 0; i < args.length; i++) {
-            if (args[i].charAt(0) == '/' || args[i].charAt(0) == '-') {
-                int equalsPos = args[i].indexOf('=');
+        for (String arg : args) {
+            if (arg.charAt(0) == '/' || arg.charAt(0) == '-') {
+                int equalsPos = arg.indexOf('=');
                 if (equalsPos > 0) {
-                    String option = "option." + args[i].substring(0, equalsPos - 1);
+                    String option = "option." + arg.substring(0, equalsPos - 1);
                     writer.write(linkID, option + ".enabled", "1");
-                    writer.write(linkID, option + ".value", args[i].substring(equalsPos + 1));
+                    writer.write(linkID, option + ".value", arg.substring(equalsPos + 1));
                 } else {
-                    writer.write(linkID, "option." + args[i].substring(1) + ".enabled", "1");
+                    writer.write(linkID, "option." + arg.substring(1) + ".enabled", "1");
                 }
             }
         }

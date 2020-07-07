@@ -136,8 +136,8 @@ public class GppLinker extends AbstractLdLinker {
                     break;
                 default:
                     boolean known = false;
-                    for (int i = 0; i < linkerOptions.length; i++) {
-                        if (linkerOptions[i].equals(arg)) {
+                    for (String linkerOption : linkerOptions) {
+                        if (linkerOption.equals(arg)) {
                             known = true;
                             break;
                         }
@@ -187,9 +187,9 @@ public class GppLinker extends AbstractLdLinker {
             // Build return array.
             libDirs = new File[count];
             int index = 0;
-            for (int i = 0; i < libpath.length; ++i) {
-                if (libpath[i] != null) {
-                    libDirs[index++] = new File(libpath[i]);
+            for (String s : libpath) {
+                if (s != null) {
+                    libDirs[index++] = new File(s);
                 }
             }
         }

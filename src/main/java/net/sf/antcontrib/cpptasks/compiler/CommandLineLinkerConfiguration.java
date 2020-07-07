@@ -97,9 +97,9 @@ public final class CommandLineLinkerConfiguration implements LinkerConfiguration
     }
 
     public LinkerParam getParam(String name) {
-        for (int i = 0; i < params.length; i++) {
-            if (name.equals(params[i].getName())) {
-                return (LinkerParam) params[i];
+        for (ProcessorParam param : params) {
+            if (name.equals(param.getName())) {
+                return (LinkerParam) param;
             }
         }
         return null;

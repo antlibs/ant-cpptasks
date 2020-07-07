@@ -446,8 +446,8 @@ public abstract class ProcessorDef extends DataType {
         //  walk through any extended definitions
         //
         ProcessorDef[] defaultProviders = getDefaultProviders(null);
-        for (int i = 0; i < defaultProviders.length; i++) {
-            if (!defaultProviders[i].isActive()) {
+        for (ProcessorDef defaultProvider : defaultProviders) {
+            if (!defaultProvider.isActive()) {
                 return false;
             }
         }
@@ -685,8 +685,7 @@ public abstract class ProcessorDef extends DataType {
                 // Check each source file - see if it needs compilation
                 String[] fileNames = scanner.getIncludedFiles();
                 File parentDir = scanner.getBasedir();
-                for (int j = 0; j < fileNames.length; j++) {
-                    String currentFile = fileNames[j];
+                for (String currentFile : fileNames) {
                     visitor.visit(parentDir, currentFile);
                 }
             }

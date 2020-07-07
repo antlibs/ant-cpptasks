@@ -279,24 +279,24 @@ public final class UserInterfaceCompiler extends CommandLineCompiler {
         int uicIndex = args.length + 4;
         int uicImplIndex = args.length + 6;
         int mocIndex = args.length + 4;
-        for (int i = 0; i < endArgs.length; i++) {
-            uicCommand[uicIndex++] = endArgs[i];
-            uicImplCommand[uicImplIndex++] = endArgs[i];
-            mocCommand[mocIndex++] = endArgs[i];
+        for (String endArg : endArgs) {
+            uicCommand[uicIndex++] = endArg;
+            uicImplCommand[uicImplIndex++] = endArg;
+            mocCommand[mocIndex++] = endArg;
         }
-        for (int j = 0; j < sourceFiles.length; j++) {
+        for (String sourceFile : sourceFiles) {
             uicIndex = args.length + 2;
             uicImplIndex = args.length + 2;
             mocIndex = args.length + 2;
-            String[] outputFileNames = getOutputFileNames(sourceFiles[j], null);
+            String[] outputFileNames = getOutputFileNames(sourceFile, null);
 
             uicCommand[uicIndex++] = outputFileNames[0];
-            uicCommand[uicIndex++] = sourceFiles[j];
+            uicCommand[uicIndex++] = sourceFile;
 
             uicImplCommand[uicImplIndex++] = outputFileNames[1];
             uicImplCommand[uicImplIndex++] = "-impl";
             uicImplCommand[uicImplIndex++] = outputFileNames[0];
-            uicImplCommand[uicImplIndex++] = sourceFiles[j];
+            uicImplCommand[uicImplIndex++] = sourceFile;
 
             mocCommand[mocIndex++] = outputFileNames[2];
             mocCommand[mocIndex++] = outputFileNames[0];
@@ -309,7 +309,7 @@ public final class UserInterfaceCompiler extends CommandLineCompiler {
                 }
             }
             if (monitor != null) {
-                thisSource[0] = sourceFiles[j];
+                thisSource[0] = sourceFile;
                 monitor.progress(thisSource);
             }
             //

@@ -287,8 +287,8 @@ public class LibrarySet extends DataType {
         //     add the corresponding patterns to the FileSet
         //
         if (libnames != null) {
-            for (int i = 0; i < libnames.length; i++) {
-                String[] patterns = linker.getLibraryPatterns(new String[]{libnames[i]}, libraryType);
+            for (String libname : libnames) {
+                String[] patterns = linker.getLibraryPatterns(new String[]{libname}, libraryType);
                 if (patterns.length > 0) {
                     FileSet localSet = (FileSet) set.clone();
                     //
@@ -302,9 +302,9 @@ public class LibrarySet extends DataType {
                     //
                     //   add all the patterns for this libname
                     //
-                    for (int j = 0; j < patterns.length; j++) {
+                    for (String pattern : patterns) {
                         PatternSet.NameEntry entry = localSet.createInclude();
-                        entry.setName(patterns[j]);
+                        entry.setName(pattern);
                     }
                     int matches = 0;
                     //
@@ -323,8 +323,8 @@ public class LibrarySet extends DataType {
                             File basedir = scanner.getBasedir();
                             String[] files = scanner.getIncludedFiles();
                             matches += files.length;
-                            for (int k = 0; k < files.length; k++) {
-                                visitor.visit(basedir, files[k]);
+                            for (String file : files) {
+                                visitor.visit(basedir, file);
                             }
                         }
                     } else {
@@ -332,8 +332,8 @@ public class LibrarySet extends DataType {
                         File basedir = scanner.getBasedir();
                         String[] files = scanner.getIncludedFiles();
                         matches += files.length;
-                        for (int k = 0; k < files.length; k++) {
-                            visitor.visit(basedir, files[k]);
+                        for (String file : files) {
+                            visitor.visit(basedir, file);
                         }
                     }
                     //
@@ -357,7 +357,7 @@ public class LibrarySet extends DataType {
                             msg.append(")");
                         }
                         msg.append(" for library name \"");
-                        msg.append(libnames[i]);
+                        msg.append(libname);
                         msg.append("\" was found.");
                         throw new BuildException(msg.toString());
                     }

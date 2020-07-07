@@ -167,22 +167,22 @@ public final class BorlandLinker extends CommandLineLinker {
         String[] endargs = config.getEndArguments();
         Vector<String> execArgs = new Vector<String>();
         execArgs.addElement(this.getCommand());
-        for (int i = 0; i < preargs.length; i++) {
-            execArgs.addElement(preargs[i]);
+        for (String prearg : preargs) {
+            execArgs.addElement(prearg);
         }
-        for (int i = 0; i < endargs.length; i++) {
-            execArgs.addElement(endargs[i]);
+        for (String endarg : endargs) {
+            execArgs.addElement(endarg);
         }
         //
         //  see if the input files have any known startup obj files
         //
         String startup = null;
-        for (int i = 0; i < sourceFiles.length; i++) {
-            String filename = new File(sourceFiles[i]).getName().toLowerCase();
+        for (String sourceFile : sourceFiles) {
+            String filename = new File(sourceFile).getName().toLowerCase();
             if (startup != null && filename.substring(0, 2).equals("c0")
                     && filename.substring(3, 5).equals("32")
                     && filename.substring(filename.length() - 4).equals(".obj")) {
-                startup = sourceFiles[i];
+                startup = sourceFile;
             }
         }
         //
@@ -196,18 +196,18 @@ public final class BorlandLinker extends CommandLineLinker {
         Vector<String> libFiles = new Vector<String>();
         String defFile = null;
         StringBuffer buf = new StringBuffer();
-        for (int i = 0; i < sourceFiles.length; i++) {
-            String last4 = sourceFiles[i].substring(sourceFiles[i].length() - 4).toLowerCase();
+        for (String sourceFile : sourceFiles) {
+            String last4 = sourceFile.substring(sourceFile.length() - 4).toLowerCase();
             if (last4.equals(".def")) {
-                defFile = quoteFilename(buf, sourceFiles[i]);
+                defFile = quoteFilename(buf, sourceFile);
             } else {
                 if (last4.equals(".res")) {
-                    resFiles.addElement(quoteFilename(buf, sourceFiles[i]));
+                    resFiles.addElement(quoteFilename(buf, sourceFile));
                 } else {
                     if (last4.equals(".lib")) {
-                        libFiles.addElement(quoteFilename(buf, sourceFiles[i]));
+                        libFiles.addElement(quoteFilename(buf, sourceFile));
                     } else {
-                        execArgs.addElement(quoteFilename(buf, sourceFiles[i]));
+                        execArgs.addElement(quoteFilename(buf, sourceFile));
                     }
                 }
             }

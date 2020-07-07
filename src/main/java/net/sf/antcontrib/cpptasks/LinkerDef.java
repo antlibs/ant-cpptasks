@@ -504,8 +504,7 @@ public class LinkerDef extends ProcessorDef {
             }
             if (sysLibrarySets.size() > 0) {
                 File[] libpath = linker.getLibraryPath();
-                for (int i = 0; i < sysLibrarySets.size(); i++) {
-                    LibrarySet set = sysLibrarySets.elementAt(i);
+                for (LibrarySet set : sysLibrarySets) {
                     if (set.isActive(p)) {
                         set.visitLibraries(p, linker, libpath, libraryVisitor);
                     }
@@ -537,8 +536,7 @@ public class LinkerDef extends ProcessorDef {
             //
             if (librarySets.size() > 0) {
                 File[] libpath = linker.getLibraryPath();
-                for (int i = 0; i < librarySets.size(); i++) {
-                    LibrarySet set = librarySets.elementAt(i);
+                for (LibrarySet set : librarySets) {
                     if (set.isActive(p)) {
                         set.visitLibraries(p, linker, libpath, libraryVisitor);
                     }
