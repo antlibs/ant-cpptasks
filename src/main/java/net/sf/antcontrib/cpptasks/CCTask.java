@@ -450,7 +450,7 @@ public class CCTask extends Task {
         //        might be out of date
         //
         if (potentialTargets > 0) {
-            log("Starting dependency analysis for " + Integer.toString(potentialTargets) + " files.");
+            log("Starting dependency analysis for " + potentialTargets + " files.");
             DependencyTable dependencyTable = new DependencyTable(mObjdir);
             try {
                 dependencyTable.load();
@@ -476,11 +476,11 @@ public class CCTask extends Task {
             }
         }
         if (potentialTargets > 0) {
-            log(Integer.toString(potentialTargets - currentTargets + definiteTargets) + " files are up to date.");
-            log(Integer.toString(currentTargets - definiteTargets)
+            log((potentialTargets - currentTargets + definiteTargets) + " files are up to date.");
+            log((currentTargets - definiteTargets)
                     + " files to be recompiled from dependency analysis.");
         }
-        log(Integer.toString(currentTargets) + " total files to be compiled.");
+        log(currentTargets + " total files to be compiled.");
         return currentTargets;
     }
 
@@ -799,7 +799,7 @@ public class CCTask extends Task {
         //      should have done
         //
         if (dependencyDepth >= 0) {
-            throw new BuildException("All files at depth " + Integer.toString(dependencyDepth)
+            throw new BuildException("All files at depth " + dependencyDepth
                     + " from changes successfully compiled.\n"
                     + "Remove or change dependencyDepth to -1 to perform full compilation.");
         }

@@ -190,10 +190,10 @@ public final class WindowsPlatform {
     private static void encodeVersion(final StringBuffer buf,
                                       final short[] version) {
         for (int i = 0; i < 3; i++) {
-            buf.append(Short.toString(version[i]));
+            buf.append(version[i]);
             buf.append(',');
         }
-        buf.append(Short.toString(version[3]));
+        buf.append(version[3]);
     }
 
     /**

@@ -583,7 +583,7 @@ public final class DevStudioProjectWriter implements ProjectWriter {
                 String option = preArgs[i];
                 String key = option.toUpperCase(Locale.US);
                 if (optionMap.containsKey(key)) {
-                    option = optionMap.get(key).toString();
+                    option = optionMap.get(key);
                 }
                 options.append(" ");
                 options.append(option);

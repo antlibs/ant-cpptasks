@@ -178,7 +178,7 @@ public class BorlandLibrarian extends CommandLineLinker {
             pageSize = 1 << i;
             if (pageSize > minPageSize) break;
         }
-        execArguments[pageSizeIndex] = "/P" + Integer.toString(pageSize);
+        execArguments[pageSizeIndex] = "/P" + pageSize;
 
         return execArguments;
     }
