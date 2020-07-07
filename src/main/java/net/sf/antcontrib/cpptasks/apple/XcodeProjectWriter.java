@@ -436,15 +436,15 @@ public final class XcodeProjectWriter implements ProjectWriter {
         if (includeDirs.length > 0) {
             List<String> includePaths = new ArrayList<String>();
             Map<String, String> includePathMap = new HashMap<String, String>();
-            for (int i = 0; i < includeDirs.length; i++) {
-                if (!isSystemPath(includeDirs[i])) {
-                    String absPath = includeDirs[i].getAbsolutePath();
+            for (File includeDir : includeDirs) {
+                if (!isSystemPath(includeDir)) {
+                    String absPath = includeDir.getAbsolutePath();
                     if (!includePathMap.containsKey(absPath)) {
                         if (absPath.startsWith("/usr/")) {
                             includePaths.add(toUnixPath(absPath));
                         } else {
                             String relPath = toUnixPath(getRelativePath(baseDir,
-                                    includeDirs[i]));
+                                    includeDir));
                             includePaths.add(relPath);
                         }
                         includePathMap.put(absPath, absPath);

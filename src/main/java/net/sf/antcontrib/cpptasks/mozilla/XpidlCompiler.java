@@ -195,11 +195,11 @@ public final class XpidlCompiler extends CommandLineCompiler {
         //
         //   requires space between switch and path
         //
-        for (int i = 0; i < includeDirs.length; i++) {
+        for (File includeDir : includeDirs) {
             args.addElement("-I");
-            args.addElement(includeDirs[i].getAbsolutePath());
+            args.addElement(includeDir.getAbsolutePath());
             if (relativeArgs != null) {
-                String relative = getRelativePath(baseDirPath, includeDirs[i]);
+                String relative = getRelativePath(baseDirPath, includeDir);
                 relativeArgs.addElement("-I");
                 relativeArgs.addElement(relative);
                 if (includePathId != null) {
@@ -305,27 +305,27 @@ public final class XpidlCompiler extends CommandLineCompiler {
 
         int tlbIndex = args.length + 6;
         int headerIndex = args.length + 6;
-        for (int i = 0; i < endArgs.length; i++) {
-            tlbCommand[tlbIndex++] = endArgs[i];
-            headerCommand[headerIndex++] = endArgs[i];
+        for (String endArg : endArgs) {
+            tlbCommand[tlbIndex++] = endArg;
+            headerCommand[headerIndex++] = endArg;
         }
-        for (int j = 0; j < sourceFiles.length; j++) {
+        for (String sourceFile : sourceFiles) {
             tlbIndex = args.length + 4;
             headerIndex = args.length + 4;
-            String[] outputFileNames = getOutputFileNames(sourceFiles[j], null);
+            String[] outputFileNames = getOutputFileNames(sourceFile, null);
 
             tlbCommand[tlbIndex++] = outputFileNames[0];
-            tlbCommand[tlbIndex++] = sourceFiles[j];
+            tlbCommand[tlbIndex++] = sourceFile;
 
             headerCommand[headerIndex++] = outputFileNames[1];
-            headerCommand[headerIndex++] = sourceFiles[j];
+            headerCommand[headerIndex++] = sourceFile;
 
             int retval = runCommand(task, outputDir, tlbCommand);
             if (retval == 0) {
                 retval = runCommand(task, outputDir, headerCommand);
             }
             if (monitor != null) {
-                thisSource[0] = sourceFiles[j];
+                thisSource[0] = sourceFile;
                 monitor.progress(thisSource);
             }
             //

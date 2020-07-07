@@ -110,9 +110,8 @@ public class OS390CCompiler extends CommandLineCCompiler {
             merged = DefineArgument.merge(defs[i].getActiveDefines(), merged);
         }
         StringBuilder buf = new StringBuilder(30);
-        for (int i = 0; i < merged.length; i++) {
+        for (UndefineArgument current : merged) {
             buf.setLength(0);
-            UndefineArgument current = merged[i];
             if (current.isDefine()) {
                 args.addElement("-D");
                 buf.append(current.getName());

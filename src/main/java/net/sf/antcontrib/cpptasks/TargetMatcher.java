@@ -60,11 +60,11 @@ public final class TargetMatcher implements FileVisitor {
         ProcessorConfiguration selectedCompiler = null;
         int bid = 0;
         if (processors != null) {
-            for (int k = 0; k < processors.length; k++) {
-                int newBid = processors[k].bid(fullPath.toString());
+            for (ProcessorConfiguration processor : processors) {
+                int newBid = processor.bid(fullPath.toString());
                 if (newBid > bid) {
                     bid = newBid;
-                    selectedCompiler = processors[k];
+                    selectedCompiler = processor;
                 }
             }
         }
@@ -92,20 +92,20 @@ public final class TargetMatcher implements FileVisitor {
             //   if there is some output for this task
             //      (that is a source file and not an header file)
             //
-            for (int i = 0; i < outputFileNames.length; i++) {
+            for (String outputFileName : outputFileNames) {
                 //
                 //   see if the same output file has already been registered
                 //
-                TargetInfo previousTarget = targets.get(outputFileNames[i]);
+                TargetInfo previousTarget = targets.get(outputFileName);
                 if (previousTarget == null) {
-                    targets.put(outputFileNames[i], new TargetInfo(selectedCompiler, sourceFiles,
-                            null, new File(outputDir, outputFileNames[i]),
+                    targets.put(outputFileName, new TargetInfo(selectedCompiler, sourceFiles,
+                            null, new File(outputDir, outputFileName),
                             selectedCompiler.getRebuild()));
                 } else {
                     if (!previousTarget.getSources()[0].equals(sourceFiles[0])) {
                         throw new BuildException(String.format("Output filename conflict:"
                                 + " %s would be produced from %s and %s",
-                                outputFileNames[i], previousTarget.getSources()[0], filename));
+                                outputFileName, previousTarget.getSources()[0], filename));
                     }
                 }
             }

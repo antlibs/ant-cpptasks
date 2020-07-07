@@ -138,11 +138,11 @@ public class CaptureStreamHandler implements ExecuteStreamHandler {
 
         this.output = new String[outputLines.length + errorLines.length];
         int pos = 0;
-        for (int i = 0; i < errorLines.length; i++) {
-            this.output[pos++] = errorLines[i];
+        for (String errorLine : errorLines) {
+            this.output[pos++] = errorLine;
         }
-        for (int i = 0; i < outputLines.length; i++) {
-            this.output[pos++] = outputLines[i];
+        for (String outputLine : outputLines) {
+            this.output[pos++] = outputLine;
         }
     }
 }

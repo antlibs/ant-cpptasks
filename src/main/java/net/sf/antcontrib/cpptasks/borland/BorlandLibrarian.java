@@ -139,8 +139,8 @@ public class BorlandLibrarian extends CommandLineLinker {
         String outputFileName = new File(outputDir, outputName).toString();
         execArgs.addElement(quoteFilename(buf, outputFileName));
 
-        for (int i = 0; i < preargs.length; i++) {
-            execArgs.addElement(preargs[i]);
+        for (String prearg : preargs) {
+            execArgs.addElement(prearg);
         }
 
         //
@@ -151,23 +151,23 @@ public class BorlandLibrarian extends CommandLineLinker {
 
         int objBytes = 0;
 
-        for (int i = 0; i < sourceFiles.length; i++) {
-            String last4 = sourceFiles[i].substring(sourceFiles[i].length() - 4).toLowerCase();
+        for (String sourceFile : sourceFiles) {
+            String last4 = sourceFile.substring(sourceFile.length() - 4).toLowerCase();
             if (last4.equals(".def")) {
             } else {
                 if (last4.equals(".res")) {
                 } else {
                     if (last4.equals(".lib")) {
                     } else {
-                        execArgs.addElement("+" + quoteFilename(buf, sourceFiles[i]));
-                        objBytes += new File(sourceFiles[i]).length();
+                        execArgs.addElement("+" + quoteFilename(buf, sourceFile));
+                        objBytes += new File(sourceFile).length();
                     }
                 }
             }
         }
 
-        for (int i = 0; i < endargs.length; i++) {
-            execArgs.addElement(endargs[i]);
+        for (String endarg : endargs) {
+            execArgs.addElement(endarg);
         }
 
         String[] execArguments = execArgs.toArray(new String[0]);

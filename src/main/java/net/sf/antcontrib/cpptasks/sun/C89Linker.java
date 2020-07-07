@@ -69,22 +69,21 @@ public final class C89Linker extends CommandLineLinker {
                                    Vector<String> preargs, Vector<String> midargs, Vector<String> endargs) {
         super.addLibrarySets(task, libsets, preargs, midargs, endargs);
         StringBuilder buf = new StringBuilder("-l");
-        for (int i = 0; i < libsets.length; i++) {
-            LibrarySet set = libsets[i];
+        for (LibrarySet set : libsets) {
             File libdir = set.getDir(null);
             String[] libs = set.getLibs();
             if (libdir != null) {
                 endargs.addElement("-L");
                 endargs.addElement(libdir.getAbsolutePath());
             }
-            for (int j = 0; j < libs.length; j++) {
+            for (String lib : libs) {
                 //
                 //  reset the buffer to just "-l"
                 //
                 buf.setLength(2);
                 //
                 //  add the library name
-                buf.append(libs[j]);
+                buf.append(lib);
                 //
                 //  add the argument to the list
                 endargs.addElement(buf.toString());

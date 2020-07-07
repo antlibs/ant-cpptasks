@@ -67,8 +67,7 @@ public final class TaskDoclet {
         Map<String, Object> referencedTypes = new HashMap<String, Object>();
         Map<String, ClassDoc> documentedTypes = new HashMap<String, ClassDoc>();
         ClassDoc[] classes = root.classes();
-        for (int i = 0; i < classes.length; ++i) {
-            ClassDoc clazz = classes[i];
+        for (ClassDoc clazz : classes) {
             if (clazz.isPublic() && !clazz.isAbstract()) {
                 if (isTask(clazz) || isType(clazz)) {
                     writeClass(typeHandler, clazz, referencedTypes);
@@ -347,8 +346,7 @@ public final class TaskDoclet {
                                         final Map<String, Object> processed,
                                         final Map<String, Object> referencedTypes) throws Exception {
         MethodDoc[] methods = clazz.methods();
-        for (int i = 0; i < methods.length; i++) {
-            MethodDoc method = methods[i];
+        for (MethodDoc method : methods) {
             if (processed.get(method.name()) == null) {
                 if (method.name().startsWith("set") && method.isPublic() && method.parameters().length == 1) {
                     writeAttribute(tf, method);
@@ -376,8 +374,7 @@ public final class TaskDoclet {
                                       final Map<String, MethodDoc> processed,
                                       final Map<String, Object> referencedTypes) throws Exception {
         MethodDoc[] methods = clazz.methods();
-        for (int i = 0; i < methods.length; i++) {
-            MethodDoc method = methods[i];
+        for (MethodDoc method : methods) {
             if (processed.get(method.name()) == null) {
                 if (method.name().startsWith("addConfigured") && method.isPublic() && method.parameters().length == 1) {
                     writeChild(tf, method, method.name().substring(13), method.parameters()[0].type(), referencedTypes);
@@ -411,8 +408,8 @@ public final class TaskDoclet {
         attributes.addAttribute(null, "name", "name", "CDATA", clazz.name());
         StringBuilder firstSentence = new StringBuilder();
         Tag[] tags = clazz.firstSentenceTags();
-        for (int i = 0; i < tags.length; i++) {
-            firstSentence.append(tags[i].text());
+        for (Tag tag : tags) {
+            firstSentence.append(tag.text());
         }
         if (firstSentence.length() > 0) {
             attributes.addAttribute(null, "firstSentence", "firstSentence", "CDATA", firstSentence.toString());
