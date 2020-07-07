@@ -569,7 +569,7 @@ public final class VisualStudioNETProjectWriter implements ProjectWriter {
                     //
                     //   if path has an embedded space then
                     //      must quote
-                    if (relPath.indexOf(' ') > 0) {
+                    if (relPath.contains(" ")) {
                         buf.append('\"');
                         buf.append(toWindowsPath(relPath));
                         buf.append('\"');
@@ -803,7 +803,7 @@ public final class VisualStudioNETProjectWriter implements ProjectWriter {
         if (lastDot >= 0 && lastDot < fileName.length() - 1) {
             String extension = ";" + fileName.substring(lastDot + 1).toLowerCase() + ";";
             String semiFilter = ";" + filter + ";";
-            return semiFilter.indexOf(extension) >= 0;
+            return semiFilter.contains(extension);
         }
         return false;
     }

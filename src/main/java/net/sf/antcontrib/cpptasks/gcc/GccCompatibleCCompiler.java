@@ -108,7 +108,7 @@ public abstract class GccCompatibleCCompiler extends CommandLineCCompiler {
                 }
             }
         }
-        if (getIdentifier().indexOf("mingw") >= 0) {
+        if (getIdentifier().contains("mingw")) {
             if (linkType.isSubsystemConsole()) {
                 args.addElement("-mconsole");
             }

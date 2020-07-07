@@ -132,7 +132,7 @@ public final class GccCCompiler extends GccCompatibleCCompiler {
                          Environment env) {
         super(command, null, sourceExtensions, headerExtensions, isLibtool,
                 libtoolCompiler, newEnvironment, env);
-        isPICMeaningful = System.getProperty("os.name").indexOf("Windows") < 0;
+        isPICMeaningful = !System.getProperty("os.name").contains("Windows");
     }
 
     public void addImpliedArgs(final Vector<String> args,

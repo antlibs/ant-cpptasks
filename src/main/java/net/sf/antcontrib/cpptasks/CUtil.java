@@ -498,14 +498,14 @@ public class CUtil {
     }
 
     public static String toWindowsPath(final String path) {
-        if (File.separatorChar == '\\' || path.indexOf(File.separatorChar) == -1) {
+        if (File.separatorChar == '\\' || !path.contains(File.separator)) {
             return path;
         }
         return path.replace(File.separator, "\\");
     }
 
     public static String toUnixPath(final String path) {
-        if (File.separatorChar == '/' || path.indexOf(File.separatorChar) == -1) {
+        if (File.separatorChar == '/' || !path.contains(File.separator)) {
             return path;
         }
         return path.replace(File.separator, "/");
@@ -521,8 +521,8 @@ public class CUtil {
      */
     public static boolean isSystemPath(final File source) {
         String lcPath = source.getAbsolutePath().toLowerCase(Locale.US);
-        return lcPath.indexOf("platformsdk") != -1
-                || lcPath.indexOf("microsoft") != -1
+        return lcPath.contains("platformsdk")
+                || lcPath.contains("microsoft")
                 || lcPath == "/usr/include"
                 || lcPath == "/usr/lib"
                 || lcPath == "/usr/local/include"

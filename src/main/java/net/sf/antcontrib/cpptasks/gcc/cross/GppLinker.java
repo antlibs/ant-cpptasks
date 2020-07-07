@@ -72,7 +72,7 @@ public class GppLinker extends AbstractLdLinker {
 
     protected void addImpliedArgs(boolean debug, LinkType linkType, Vector<String> args) {
         super.addImpliedArgs(debug, linkType, args);
-        if (getIdentifier().indexOf("mingw") >= 0) {
+        if (getIdentifier().contains("mingw")) {
             if (linkType.isSubsystemConsole()) {
                 args.addElement("-mconsole");
             }
@@ -201,14 +201,14 @@ public class GppLinker extends AbstractLdLinker {
             return GccLibrarian.getInstance();
         }
         if (type.isPluginModule()) {
-            if (GccProcessor.getMachine().indexOf("darwin") >= 0) {
+            if (GccProcessor.getMachine().contains("darwin")) {
                 return machPluginLinker;
             } else {
                 return dllLinker;
             }
         }
         if (type.isSharedLibrary()) {
-            if (GccProcessor.getMachine().indexOf("darwin") >= 0) {
+            if (GccProcessor.getMachine().contains("darwin")) {
                 return machDllLinker;
             } else {
                 return dllLinker;

@@ -313,7 +313,7 @@ public final class TaskDoclet {
      */
     private static void writeDescription(final TransformerHandler tf,
                                          final String description) throws SAXException {
-        if (description.indexOf('<') == -1) {
+        if (!description.contains("<")) {
             tf.characters(description.toCharArray(), 0, description.length());
         } else {
             //

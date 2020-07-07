@@ -150,7 +150,7 @@ public final class DistributerMap extends DataType {
      * @return remote name for local file, null if unknown.
      */
     public String toRemote(final String host, final File localFile) {
-        if (remoteName != null && (hosts == null || hosts.indexOf(host) >= 0)) {
+        if (remoteName != null && (hosts == null || hosts.contains(host))) {
             try {
                 String canonical = localFile.getCanonicalPath();
                 if (canonical.startsWith(canonicalPath)) {

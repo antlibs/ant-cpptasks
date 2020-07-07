@@ -126,7 +126,7 @@ public final class GccCCompiler extends GccCompatibleCCompiler {
                          Environment env) {
         super(command, null, sourceExtensions, headerExtensions, isLibtool,
                 libtoolCompiler, newEnvironment, env);
-        isPICMeaningful = System.getProperty("os.name").indexOf("Windows") < 0;
+        isPICMeaningful = !System.getProperty("os.name").contains("Windows");
     }
 
     public void addImpliedArgs(final Vector<String> args,
@@ -260,7 +260,7 @@ public final class GccCCompiler extends GccCompatibleCCompiler {
          * running the available command line length, while the Unix compilers
          * assume that they have an unlimited command line.
          */
-        if (System.getProperty("os.name").indexOf("Windows") >= 0) {
+        if (System.getProperty("os.name").contains("Windows")) {
             return 2048;
         } else {
             return Integer.MAX_VALUE;

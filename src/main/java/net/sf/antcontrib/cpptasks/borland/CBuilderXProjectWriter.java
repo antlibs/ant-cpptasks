@@ -208,7 +208,7 @@ public final class CBuilderXProjectWriter implements ProjectWriter {
      */
     private String getActivePlatform(final CCTask task) {
         String osName = System.getProperty("os.name").toLowerCase(Locale.US);
-        if (osName.indexOf("windows") >= 0) {
+        if (osName.contains("windows")) {
             return "win32";
         }
         return "linux";
