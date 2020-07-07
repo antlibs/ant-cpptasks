@@ -267,7 +267,7 @@ public abstract class ProcessorDef extends DataType {
                     "ProcessorDef").getDebug(defaultProviders, index);
         }
         if (debug != null) {
-            return debug.booleanValue();
+            return debug;
         } else {
             if (defaultProviders != null && index < defaultProviders.length) {
                 return defaultProviders[index].getDebug(defaultProviders,
@@ -331,7 +331,7 @@ public abstract class ProcessorDef extends DataType {
 
     public boolean getLibtool() {
         if (libtool != null) {
-            return libtool.booleanValue();
+            return libtool;
         }
         if (isReference()) {
             return getCheckedRef(ProcessorDef.class,
@@ -392,7 +392,7 @@ public abstract class ProcessorDef extends DataType {
                     "ProcessorDef").getRebuild(defaultProviders, index);
         }
         if (rebuild != null) {
-            return rebuild.booleanValue();
+            return rebuild;
         } else {
             if (defaultProviders != null && index < defaultProviders.length) {
                 return defaultProviders[index].getRebuild(defaultProviders,

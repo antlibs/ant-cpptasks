@@ -50,7 +50,7 @@ public abstract class DevStudioCompatibleLinker extends CommandLineLinker {
 
     protected void addFixed(Boolean fixed, Vector<String> args) {
         if (fixed != null) {
-            if (fixed.booleanValue()) {
+            if (fixed) {
                 args.addElement("/FIXED");
             } else {
                 args.addElement("/FIXED:NO");

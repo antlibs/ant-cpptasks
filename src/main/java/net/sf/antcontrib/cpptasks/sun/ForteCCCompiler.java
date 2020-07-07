@@ -78,7 +78,7 @@ public final class ForteCCCompiler extends GccCompatibleCCompiler {
             }
         }
         if (rtti != null) {
-            if (rtti.booleanValue()) {
+            if (rtti) {
                 args.addElement("-features=rtti");
             } else {
                 args.addElement("-features=no%rtti");

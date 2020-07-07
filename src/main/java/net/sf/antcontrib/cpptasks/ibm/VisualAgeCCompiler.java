@@ -79,7 +79,7 @@ public final class VisualAgeCCompiler extends GccCompatibleCCompiler {
             args.addElement("-fpic");
         }
         if (rtti != null) {
-            if (rtti.booleanValue()) {
+            if (rtti) {
                 args.addElement("-qrtti=all");
             } else {
                 args.addElement("-qnortti");

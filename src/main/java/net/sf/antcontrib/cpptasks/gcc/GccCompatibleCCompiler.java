@@ -116,7 +116,7 @@ public abstract class GccCompatibleCCompiler extends CommandLineCCompiler {
                 args.addElement("-mwindows");
             }
         }
-        if (rtti != null && !rtti.booleanValue()) {
+        if (rtti != null && !rtti) {
             args.addElement("-fno-rtti");
         }
 

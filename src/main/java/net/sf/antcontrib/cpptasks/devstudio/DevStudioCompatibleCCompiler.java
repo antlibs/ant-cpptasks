@@ -92,7 +92,7 @@ public abstract class DevStudioCompatibleCCompiler extends PrecompilingCommandLi
             throw new BuildException("multithread='false' and runtime='dynamic' not supported");
         }
         args.addElement(mflag);
-        if (rtti != null && rtti.booleanValue()) {
+        if (rtti != null && rtti) {
             args.addElement("/GR");
         }
     }

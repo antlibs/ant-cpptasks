@@ -55,7 +55,7 @@ public class FlexLong {
      * @return long
      */
     public long longValue() {
-        return value.longValue();
+        return value;
     }
 
     /**
