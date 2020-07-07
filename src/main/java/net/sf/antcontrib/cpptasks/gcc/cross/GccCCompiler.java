@@ -211,13 +211,8 @@ public final class GccCCompiler extends GccCompatibleCCompiler {
             //
             //   construct default include path from machine id and version id
             //
-            String[] defaultInclude = new String[1];
-            StringBuffer buf = new StringBuffer("/lib/");
-            buf.append(GccProcessor.getMachine());
-            buf.append('/');
-            buf.append(GccProcessor.getVersion());
-            buf.append("/include");
-            defaultInclude[0] = buf.toString();
+            String[] defaultInclude = new String[]{String.format("/lib/%s/%s/include",
+                    GccProcessor.getMachine(), GccProcessor.getVersion())};
             //
             //   read specs file and look for -istart and -idirafter
             //
@@ -278,18 +273,8 @@ public final class GccCCompiler extends GccCompatibleCCompiler {
 
     public String getIdentifier() throws BuildException {
         if (identifier == null) {
-            StringBuffer buf;
-            if (getLibtool()) {
-                buf = new StringBuffer("libtool ");
-            } else {
-                buf = new StringBuffer(' ');
-            }
-            buf.append(getCommand());
-            buf.append(' ');
-            buf.append(GccProcessor.getVersion());
-            buf.append(' ');
-            buf.append(GccProcessor.getMachine());
-            identifier = buf.toString();
+            identifier = String.format("%s %s %s %s", getLibtool() ? "libtool" : "", getCommand(),
+                    GccProcessor.getVersion(), GccProcessor.getMachine());
         }
         return identifier;
     }

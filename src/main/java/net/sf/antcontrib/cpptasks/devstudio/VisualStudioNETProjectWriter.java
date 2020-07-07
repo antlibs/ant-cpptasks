@@ -200,7 +200,7 @@ public final class VisualStudioNETProjectWriter implements ProjectWriter {
     private String getAdditionalIncludeDirectories(final String baseDir,
                                                    final CommandLineCompilerConfiguration compilerConfig) {
         File[] includePath = compilerConfig.getIncludePath();
-        StringBuffer includeDirs = new StringBuffer();
+        StringBuilder includeDirs = new StringBuilder();
         for (int i = 0; i < includePath.length; i++) {
             String relPath = getRelativePath(baseDir, includePath[i]);
             includeDirs.append(toWindowsPath(relPath));
@@ -222,7 +222,7 @@ public final class VisualStudioNETProjectWriter implements ProjectWriter {
      */
     private String getPreprocessorDefinitions(final CommandLineCompilerConfiguration compilerConfig,
                                               final boolean isDebug) {
-        StringBuffer defines = new StringBuffer();
+        StringBuilder defines = new StringBuilder();
         String[] args = compilerConfig.getPreArguments();
         for (int i = 0; i < args.length; i++) {
             if (args[i].startsWith("/D")) {
@@ -537,7 +537,7 @@ public final class VisualStudioNETProjectWriter implements ProjectWriter {
                                              final String basePath) {
         String dependencies = null;
         File[] linkSources = linkTarget.getAllSources();
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         for (int i = 0; i < linkSources.length; i++) {
             //
             //   if file was not compiled or otherwise generated

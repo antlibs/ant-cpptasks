@@ -319,7 +319,7 @@ public final class TaskDoclet {
             //
             //   attempt to fabricate an XHTML fragment
             //
-            StringBuffer buf = new StringBuffer(description);
+            StringBuilder buf = new StringBuilder(description);
             buf.insert(0, "<body xmlns='" + XHTML_URI + "'>");
             buf.append("</body>");
             try {
@@ -409,7 +409,7 @@ public final class TaskDoclet {
         tf.setResult(result);
         AttributesImpl attributes = new AttributesImpl();
         attributes.addAttribute(null, "name", "name", "CDATA", clazz.name());
-        StringBuffer firstSentence = new StringBuffer();
+        StringBuilder firstSentence = new StringBuilder();
         Tag[] tags = clazz.firstSentenceTags();
         for (int i = 0; i < tags.length; i++) {
             firstSentence.append(tags[i].text());

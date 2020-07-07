@@ -64,7 +64,7 @@ public class GccProcessor {
         File gccDir = getExecutableLocation("gcc.exe");
         if (gccDir != null) {
             String prefix = gccDir.getAbsolutePath() + "/..";
-            StringBuffer buf = new StringBuffer();
+            StringBuilder buf = new StringBuilder();
             for (int i = 0; i < names.length; i++) {
                 String name = names[i];
                 if (name != null && name.length() > 1 && name.charAt(0) == '/') {
@@ -103,7 +103,7 @@ public class GccProcessor {
     }
 
     public static String[] getOutputFileSwitch(String letter, String outputFile) {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         if (outputFile.indexOf(' ') >= 0) {
             buf.append('"');
             buf.append(outputFile.replace('\\', '/'));
@@ -136,15 +136,11 @@ public class GccProcessor {
                 //  build a relative path like
                 //    ../lib/gcc-lib/i686-pc-cygwin/2.95.3-5/specs
                 //
-                StringBuffer buf = new StringBuffer("../lib/gcc-lib/");
-                buf.append(getMachine());
-                buf.append('/');
-                buf.append(getVersion());
-                buf.append("/specs");
+                String relativePath = String.format("../lib/gcc-lib/%s/%s/specs",
+                        getMachine(), getVersion());
                 //
                 //  resolve it relative to the location of gcc.exe
                 //
-                String relativePath = buf.toString();
                 File specsFile = new File(gccParent, relativePath);
                 //
                 //  found the specs file
@@ -226,7 +222,7 @@ public class GccProcessor {
             throw new NullPointerException("option");
         }
         String[][] optionValues = new String[options.length][];
-        StringBuffer optionValue = new StringBuffer(40);
+        StringBuilder optionValue = new StringBuilder(40);
         for (int i = 0; i < specsContent.length; i++) {
             String specLine = specsContent[i];
             //

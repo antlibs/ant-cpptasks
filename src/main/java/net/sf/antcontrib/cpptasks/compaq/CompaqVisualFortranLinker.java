@@ -70,7 +70,7 @@ public final class CompaqVisualFortranLinker extends DevStudioCompatibleLinker {
     }
 
     public String[] getOutputFileSwitch(String outputFile) {
-        StringBuffer buf = new StringBuffer("/OUT:");
+        StringBuilder buf = new StringBuilder("/OUT:");
         if (outputFile.indexOf(' ') >= 0) {
             buf.append('"');
             buf.append(outputFile);

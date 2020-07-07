@@ -143,7 +143,7 @@ public final class XcodeProjectWriter implements ProjectWriter {
         groups.add(documentationGroup);
         groups.add(productsGroup);
         PBXObjectRef mainGroup = createPBXGroup(projectName, sourceTree, groups);
-        StringBuffer comments = new StringBuffer();
+        StringBuilder comments = new StringBuilder();
         for (CommentDef comment : projectDef.getComments()) {
             comments.append(comment);
         }
@@ -915,7 +915,7 @@ public final class XcodeProjectWriter implements ProjectWriter {
             if (props == null) {
                 throw new NullPointerException("props");
             }
-            StringBuffer buf = new StringBuffer("000000000000000000000000");
+            StringBuilder buf = new StringBuilder("000000000000000000000000");
             String idStr = Integer.toHexString(nextID++);
             buf.replace(buf.length() - idStr.length(), buf.length(), idStr);
             id = buf.toString();
