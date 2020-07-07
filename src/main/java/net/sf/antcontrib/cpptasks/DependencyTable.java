@@ -488,7 +488,6 @@ public final class DependencyTable {
             }
             dependencies.put(key, combined);
         }
-        return;
     }
 
     public void walkDependencies(CCTask task, DependencyInfo dependInfo,
@@ -602,7 +601,6 @@ public final class DependencyTable {
             writer.write(buf.toString());
         }
         writer.write("      </source>\n");
-        return;
     }
 
     private void writeIncludePathDependencies(String includePathIdentifier,
