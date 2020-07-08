@@ -232,7 +232,7 @@ public final class OpenWatcomLibrarian extends CommandLineLinker {
                                         final CommandLineLinkerConfiguration config) {
         String[] preargs = config.getPreArguments();
         String[] endargs = config.getEndArguments();
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         Vector<String> execArgs = new Vector<String>();
 
         execArgs.addElement(this.getCommand());

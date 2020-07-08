@@ -235,11 +235,11 @@ public final class MetaObjectCompiler extends CommandLineCompiler {
     /**
      * Gets switch to define preprocessor macro.
      *
-     * @param buffer StringBuffer command line argument
+     * @param buffer StringBuilder command line argument
      * @param define String macro name
      * @param value  String macro value, may be null.
      */
-    protected void getDefineSwitch(final StringBuffer buffer,
+    protected void getDefineSwitch(final StringBuilder buffer,
                                    final String define,
                                    final String value) {
     }
@@ -247,10 +247,10 @@ public final class MetaObjectCompiler extends CommandLineCompiler {
     /**
      * Gets switch to undefine preprocessor macro.
      *
-     * @param buffer StringBuffer command line argument
+     * @param buffer StringBuilder command line argument
      * @param define String macro name
      */
-    protected void getUndefineSwitch(final StringBuffer buffer,
+    protected void getUndefineSwitch(final StringBuilder buffer,
                                      final String define) {
     }
 

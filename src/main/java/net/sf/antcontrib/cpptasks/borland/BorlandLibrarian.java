@@ -75,7 +75,7 @@ public class BorlandLibrarian extends CommandLineLinker {
         //
         //  tlib requires quotes around paths containing -
         //     ilink32 doesn't like them
-        StringBuffer buf = new StringBuffer("@");
+        StringBuilder buf = new StringBuilder("@");
         BorlandProcessor.quoteFile(buf, cmdFile);
         return buf.toString();
     }
@@ -132,7 +132,7 @@ public class BorlandLibrarian extends CommandLineLinker {
                                         CommandLineLinkerConfiguration config) {
         String[] preargs = config.getPreArguments();
         String[] endargs = config.getEndArguments();
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         Vector<String> execArgs = new Vector<String>();
 
         execArgs.addElement(this.getCommand());
@@ -214,11 +214,11 @@ public class BorlandLibrarian extends CommandLineLinker {
     /**
      * Encloses problematic file names within quotes.
      *
-     * @param buf      string buffer
+     * @param buf      StringBuilder
      * @param filename source file name
      * @return filename potentially enclosed in quotes.
      */
-    protected String quoteFilename(StringBuffer buf, String filename) {
+    protected String quoteFilename(StringBuilder buf, String filename) {
         buf.setLength(0);
         BorlandProcessor.quoteFile(buf, filename);
         return buf.toString();

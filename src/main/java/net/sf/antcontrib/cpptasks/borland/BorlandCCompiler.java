@@ -118,7 +118,7 @@ public class BorlandCCompiler extends PrecompilingCommandLineCCompiler {
                 exceptFiles, false);
     }
 
-    protected void getDefineSwitch(StringBuffer buffer, String define, String value) {
+    protected void getDefineSwitch(StringBuilder buffer, String define, String value) {
         BorlandProcessor.getDefineSwitch(buffer, define, value);
     }
 
@@ -139,7 +139,7 @@ public class BorlandCCompiler extends PrecompilingCommandLineCCompiler {
         return 1024;
     }
 
-    protected void getUndefineSwitch(StringBuffer buffer, String define) {
+    protected void getUndefineSwitch(StringBuilder buffer, String define) {
         BorlandProcessor.getUndefineSwitch(buffer, define);
     }
 }

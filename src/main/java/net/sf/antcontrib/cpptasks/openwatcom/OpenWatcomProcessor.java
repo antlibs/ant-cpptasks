@@ -76,11 +76,11 @@ public final class OpenWatcomProcessor {
     /**
      * Creates a command line option to define a preprocessor macro.
      *
-     * @param buffer StringBuffer destination buffer
+     * @param buffer StringBuilder destination buffer
      * @param define String parameter to define
      * @param value  String value, may be null
      */
-    public static void getDefineSwitch(final StringBuffer buffer,
+    public static void getDefineSwitch(final StringBuilder buffer,
                                        final String define,
                                        final String value) {
         buffer.append("/d");
@@ -143,10 +143,10 @@ public final class OpenWatcomProcessor {
     /**
      * Builds a command line option to undefine a preprocessor macro.
      *
-     * @param buffer StringBuffer destination
+     * @param buffer StringBuilder destination
      * @param define String macro to be undefined
      */
-    public static void getUndefineSwitch(final StringBuffer buffer,
+    public static void getUndefineSwitch(final StringBuilder buffer,
                                          final String define) {
         buffer.append("/u");
         buffer.append(define);

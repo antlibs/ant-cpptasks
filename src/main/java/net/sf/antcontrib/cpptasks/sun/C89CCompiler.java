@@ -89,7 +89,7 @@ public class C89CCompiler extends CommandLineCCompiler {
         return this;
     }
 
-    protected void getDefineSwitch(StringBuffer buf, String define, String value) {
+    protected void getDefineSwitch(StringBuilder buf, String define, String value) {
         C89Processor.getDefineSwitch(buf, define, value);
     }
 
@@ -114,7 +114,7 @@ public class C89CCompiler extends CommandLineCCompiler {
         return 1;
     }
 
-    protected void getUndefineSwitch(StringBuffer buf, String define) {
+    protected void getUndefineSwitch(StringBuilder buf, String define) {
         C89Processor.getUndefineSwitch(buf, define);
     }
 }

@@ -17,7 +17,7 @@
 package net.sf.antcontrib.cpptasks.parser;
 
 public class FilenameState extends AbstractParserState {
-    private final StringBuffer buf = new StringBuffer();
+    private final StringBuilder buf = new StringBuilder();
     private final char[] terminators;
 
     public FilenameState(AbstractParser parser, char[] terminators) {

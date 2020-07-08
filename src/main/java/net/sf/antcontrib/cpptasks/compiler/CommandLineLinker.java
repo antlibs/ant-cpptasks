@@ -197,7 +197,7 @@ public abstract class CommandLineLinker extends AbstractLinker {
      * @param arg linker argument
      * @return String
      */
-    protected String decorateLinkerOption(StringBuffer buf, String arg) {
+    protected String decorateLinkerOption(StringBuilder buf, String arg) {
         return arg;
     }
 
@@ -325,7 +325,7 @@ public abstract class CommandLineLinker extends AbstractLinker {
             allArgs[index++] = "libtool";
         }
         allArgs[index++] = this.getCommand();
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         for (String prearg : preargs) {
             allArgs[index++] = decorateLinkerOption(buf, prearg);
         }
@@ -344,14 +344,13 @@ public abstract class CommandLineLinker extends AbstractLinker {
     /**
      * Processes filename into argument form
      *
-     * @param buf StringBuffer
+     * @param buf StringBuilder
      * @param outputDir String
      * @param sourceFile String
      * @return String
      */
-    protected String prepareFilename(StringBuffer buf, String outputDir, String sourceFile) {
-        String relativePath = CUtil.getRelativePath(outputDir,
-                new File(sourceFile));
+    protected String prepareFilename(StringBuilder buf, String outputDir, String sourceFile) {
+        String relativePath = CUtil.getRelativePath(outputDir, new File(sourceFile));
         return quoteFilename(buf, relativePath);
     }
 
@@ -395,7 +394,7 @@ public abstract class CommandLineLinker extends AbstractLinker {
     }
 
 
-    protected String quoteFilename(StringBuffer buf, String filename) {
+    protected String quoteFilename(StringBuilder buf, String filename) {
         if (filename.contains(" ")) {
             buf.setLength(0);
             buf.append('\"');

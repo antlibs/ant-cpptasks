@@ -185,13 +185,13 @@ public final class XpidlCompiler extends CommandLineCompiler {
      * @param includeDirs   File[] include directories
      * @param args          Vector command line arguments
      * @param relativeArgs  Vector arguments for configuration identification
-     * @param includePathId StringBuffer buffer for configuration identification
+     * @param includePathId StringBuilder buffer for configuration identification
      */
     protected void addIncludes(final String baseDirPath,
                                final File[] includeDirs,
                                final Vector<String> args,
                                final Vector<String> relativeArgs,
-                               final StringBuffer includePathId) {
+                               final StringBuilder includePathId) {
         //
         //   requires space between switch and path
         //
@@ -227,11 +227,11 @@ public final class XpidlCompiler extends CommandLineCompiler {
     /**
      * Gets switch to define preprocessor macro.
      *
-     * @param buffer StringBuffer command line argument
+     * @param buffer StringBuilder command line argument
      * @param define String macro name
      * @param value  String macro value, may be null.
      */
-    protected void getDefineSwitch(final StringBuffer buffer,
+    protected void getDefineSwitch(final StringBuilder buffer,
                                    final String define,
                                    final String value) {
     }
@@ -239,10 +239,10 @@ public final class XpidlCompiler extends CommandLineCompiler {
     /**
      * Gets switch to undefine preprocessor macro.
      *
-     * @param buffer StringBuffer command line argument
+     * @param buffer StringBuilder command line argument
      * @param define String macro name
      */
-    protected void getUndefineSwitch(final StringBuffer buffer,
+    protected void getUndefineSwitch(final StringBuilder buffer,
                                      final String define) {
     }
 

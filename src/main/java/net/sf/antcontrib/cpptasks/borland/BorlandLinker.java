@@ -195,7 +195,7 @@ public final class BorlandLinker extends CommandLineLinker {
         Vector<String> resFiles = new Vector<String>();
         Vector<String> libFiles = new Vector<String>();
         String defFile = null;
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         for (String sourceFile : sourceFiles) {
             String last4 = sourceFile.substring(sourceFile.length() - 4).toLowerCase();
             if (last4.equals(".def")) {

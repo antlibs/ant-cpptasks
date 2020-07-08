@@ -94,8 +94,7 @@ public class BorlandResourceCompiler extends CommandLineCompiler {
         return 2;
     }
 
-    protected void getDefineSwitch(StringBuffer buffer, String define,
-                                   String value) {
+    protected void getDefineSwitch(StringBuilder buffer, String define, String value) {
         buffer.append("-d");
         buffer.append(define);
         if (value != null && value.length() > 0) {
@@ -142,6 +141,6 @@ public class BorlandResourceCompiler extends CommandLineCompiler {
         return arg1.length() + arg2.length() + 2;
     }
 
-    protected void getUndefineSwitch(StringBuffer buffer, String define) {
+    protected void getUndefineSwitch(StringBuilder buffer, String define) {
     }
 }

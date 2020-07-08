@@ -136,9 +136,9 @@ public class OS390CCompiler extends CommandLineCCompiler {
     }
 
     /*
-     * @see CommandLineCompiler#getDefineSwitch(StringBuffer, String, String)
+     * @see CommandLineCompiler#getDefineSwitch(StringBuilder, String, String)
      */
-    protected void getDefineSwitch(StringBuffer buffer, String define, String value) {
+    protected void getDefineSwitch(StringBuilder buffer, String define, String value) {
     }
 
     protected File[] getEnvironmentIncludePath() {
@@ -163,8 +163,8 @@ public class OS390CCompiler extends CommandLineCCompiler {
     }
 
     /*
-     * @see CommandLineCompiler#getUndefineSwitch(StringBuffer, String)
+     * @see CommandLineCompiler#getUndefineSwitch(StringBuilder, String)
      */
-    protected void getUndefineSwitch(StringBuffer buffer, String define) {
+    protected void getUndefineSwitch(StringBuilder buffer, String define) {
     }
 }

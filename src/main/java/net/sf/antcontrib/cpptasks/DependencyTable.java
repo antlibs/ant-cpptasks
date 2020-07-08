@@ -320,7 +320,7 @@ public final class DependencyTable {
                 writer.write(encodingName);
                 writer.write("'?>\n");
                 writer.write("<dependencies>\n");
-                StringBuffer buf = new StringBuffer();
+                StringBuilder buf = new StringBuilder();
                 for (String path : includePaths) {
                     writeIncludePathDependencies(path, writer, buf);
                 }
@@ -569,7 +569,7 @@ public final class DependencyTable {
         }
     }
 
-    private void writeDependencyInfo(BufferedWriter writer, StringBuffer buf,
+    private void writeDependencyInfo(BufferedWriter writer, StringBuilder buf,
                                      DependencyInfo dependInfo) throws IOException {
         String[] includes = dependInfo.getIncludes();
         String[] sysIncludes = dependInfo.getSysIncludes();
@@ -603,7 +603,7 @@ public final class DependencyTable {
     }
 
     private void writeIncludePathDependencies(String includePathIdentifier,
-                                              BufferedWriter writer, StringBuffer buf) throws IOException {
+                                              BufferedWriter writer, StringBuilder buf) throws IOException {
         //
         //  include path element
         //

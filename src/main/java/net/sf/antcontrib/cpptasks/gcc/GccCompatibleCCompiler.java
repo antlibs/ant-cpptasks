@@ -149,7 +149,7 @@ public abstract class GccCompatibleCCompiler extends CommandLineCCompiler {
         }
     }
 
-    public void getDefineSwitch(StringBuffer buffer, String define, String value) {
+    public void getDefineSwitch(StringBuilder buffer, String define, String value) {
         buffer.append("-D");
         buffer.append(define);
         if (value != null && value.length() > 0) {
@@ -166,7 +166,7 @@ public abstract class GccCompatibleCCompiler extends CommandLineCCompiler {
         return "-I" + includeDir;
     }
 
-    public void getUndefineSwitch(StringBuffer buffer, String define) {
+    public void getUndefineSwitch(StringBuilder buffer, String define) {
         buffer.append("-U");
         buffer.append(define);
     }

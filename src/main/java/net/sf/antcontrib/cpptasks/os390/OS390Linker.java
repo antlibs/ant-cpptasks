@@ -135,7 +135,7 @@ public final class OS390Linker extends CommandLineLinker {
     }
 
     public String[] getLibraryPatterns(String[] libnames, LibraryTypeEnum libType) {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         String[] patterns = new String[libnames.length * 3];
         int offset = addLibraryPatterns(libnames, buf, "lib", ".a", patterns, 0);
         offset = addLibraryPatterns(libnames, buf, "", ".x", patterns, offset);
@@ -143,7 +143,7 @@ public final class OS390Linker extends CommandLineLinker {
         return patterns;
     }
 
-    private static int addLibraryPatterns(String[] libnames, StringBuffer buf,
+    private static int addLibraryPatterns(String[] libnames, StringBuilder buf,
                                           String prefix, String extension, String[] patterns, int offset) {
         for (int i = 0; i < libnames.length; i++) {
             buf.setLength(0);
