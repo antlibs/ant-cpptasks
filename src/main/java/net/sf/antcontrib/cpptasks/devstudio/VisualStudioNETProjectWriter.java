@@ -553,8 +553,9 @@ public final class VisualStudioNETProjectWriter implements ProjectWriter {
                 //   check if file comes from a project dependency
                 //       if it does it should not be explicitly linked
                 boolean fromDependency = false;
-                if (relPath.indexOf(".") > 0) {
-                    String baseName = relPath.substring(0, relPath.indexOf("."));
+                int dotPos = relPath.indexOf(".");
+                if (dotPos > 0) {
+                    String baseName = relPath.substring(0, dotPos);
                     for (DependencyDef depend : projectDependencies) {
                         if (baseName.compareToIgnoreCase(depend.getName()) == 0) {
                             fromDependency = true;

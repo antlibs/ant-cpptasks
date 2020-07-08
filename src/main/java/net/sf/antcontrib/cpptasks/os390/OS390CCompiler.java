@@ -115,10 +115,9 @@ public class OS390CCompiler extends CommandLineCCompiler {
             if (current.isDefine()) {
                 args.addElement("-D");
                 buf.append(current.getName());
-                if (current.getValue() != null
-                        && current.getValue().length() > 0) {
-                    buf.append('=');
-                    buf.append(current.getValue());
+                String cv = current.getValue();
+                if (cv != null && cv.length() > 0) {
+                    buf.append('=').append(cv);
                 }
                 args.addElement(buf.toString());
             } else {

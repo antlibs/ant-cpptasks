@@ -204,9 +204,9 @@ public final class OS390Linker extends CommandLineLinker {
         this.task = task;
         this.outputFile = outputFile;
         if (isADatasetLinker) {
-            int p = outputFile.getName().indexOf(".");
-            if (p >= 0) {
-                String newname = outputFile.getName().substring(0, p);
+            int dotPos = outputFile.getName().indexOf(".");
+            if (dotPos >= 0) {
+                String newname = outputFile.getName().substring(0, dotPos);
                 outputFile = new File(outputFile.getParent(), newname);
             }
         }
