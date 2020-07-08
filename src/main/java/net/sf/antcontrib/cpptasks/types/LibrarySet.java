@@ -316,7 +316,8 @@ public class LibrarySet extends DataType {
                         //  scan libpath in reverse order
                         //     to give earlier entries priority
                         //
-                        for (int j = libpath.length - 1; j >= 0; j--) {
+                        int j = libpath.length - 1;
+                        while (j >= 0) {
                             FileSet clone = (FileSet) localSet.clone();
                             clone.setDir(libpath[j]);
                             DirectoryScanner scanner = clone.getDirectoryScanner(project);
@@ -326,6 +327,7 @@ public class LibrarySet extends DataType {
                             for (String file : files) {
                                 visitor.visit(basedir, file);
                             }
+                            j--;
                         }
                     } else {
                         DirectoryScanner scanner = localSet.getDirectoryScanner(project);

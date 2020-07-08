@@ -173,14 +173,15 @@ public abstract class CommandLineCompiler extends AbstractCompiler {
         int argumentCountPerInputFile = getArgumentCountPerInputFile();
         for (int sourceIndex = 0; sourceIndex < sourceFiles.length; ) {
             int cmdLength = baseLength;
-            int firstFileNextExec;
-            for (firstFileNextExec = sourceIndex; firstFileNextExec < sourceFiles.length
-                    && (firstFileNextExec - sourceIndex) < maxInputFilesPerCommand; firstFileNextExec++) {
+            int firstFileNextExec = sourceIndex;
+            while (firstFileNextExec < sourceFiles.length
+                    && (firstFileNextExec - sourceIndex) < maxInputFilesPerCommand) {
                 cmdLength += getTotalArgumentLengthForInputFile(outputDir,
                         sourceFiles[firstFileNextExec]);
                 if (cmdLength >= getMaximumCommandLength()) {
                     break;
                 }
+                firstFileNextExec++;
             }
             if (firstFileNextExec == sourceIndex) {
                 throw new BuildException("Extremely long file name, can't fit on command line");

@@ -313,9 +313,9 @@ public class CUtil {
      */
     public static File[] parsePath(String path, String delim) {
         Vector<File> libpaths = new Vector<File>();
-        int delimPos = 0;
-        for (int startPos = 0; startPos < path.length(); startPos = delimPos + delim.length()) {
-            delimPos = path.indexOf(delim, startPos);
+        int startPos = 0;
+        while (startPos < path.length()) {
+            int delimPos = path.indexOf(delim, startPos);
             if (delimPos < 0) {
                 delimPos = path.length();
             }
@@ -329,6 +329,7 @@ public class CUtil {
                     libpaths.addElement(dir);
                 }
             }
+            startPos = delimPos + delim.length();
         }
         return libpaths.toArray(new File[0]);
     }
