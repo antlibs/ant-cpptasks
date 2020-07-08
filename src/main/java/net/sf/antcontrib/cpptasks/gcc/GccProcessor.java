@@ -38,7 +38,7 @@ public class GccProcessor {
     //   the results from gcc -dumpversion
     private static String version;
 
-    private static int addLibraryPatterns(String[] libnames, StringBuffer buf,
+    private static int addLibraryPatterns(String[] libnames, StringBuilder buf,
                                           String prefix, String extension, String[] patterns, int offset) {
         for (int i = 0; i < libnames.length; i++) {
             buf.setLength(0);
@@ -78,7 +78,7 @@ public class GccProcessor {
     }
 
     public static String[] getLibraryPatterns(String[] libnames) {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         String[] patterns = new String[libnames.length * 2];
         int offset = addLibraryPatterns(libnames, buf, "lib", ".a", patterns, 0);
         if (isHPUX()) {

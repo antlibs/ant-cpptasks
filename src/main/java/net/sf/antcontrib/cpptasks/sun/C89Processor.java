@@ -27,7 +27,7 @@ import java.util.Vector;
  * @author Hiram Chirino {@literal <cojonudo14@hotmail.com>}
  */
 public class C89Processor {
-    private static int addLibraryPatterns(String[] libnames, StringBuffer buf,
+    private static int addLibraryPatterns(String[] libnames, StringBuilder buf,
                                           String prefix, String extension, String[] patterns, int offset) {
         for (int i = 0; i < libnames.length; i++) {
             buf.setLength(0);
@@ -67,8 +67,7 @@ public class C89Processor {
         return buf.toString();
     }
 
-    public static void getDefineSwitch(StringBuffer buf, String define,
-                                       String value) {
+    public static void getDefineSwitch(StringBuilder buf, String define, String value) {
         buf.setLength(0);
         buf.append("-D");
         buf.append(define);
@@ -83,7 +82,7 @@ public class C89Processor {
     }
 
     public static String[] getLibraryPatterns(String[] libnames, LibraryTypeEnum libType) {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         int patternCount = libnames.length * 2;
         if (libType != null) {
             patternCount = libnames.length;
@@ -113,7 +112,7 @@ public class C89Processor {
         return retval;
     }
 
-    public static void getUndefineSwitch(StringBuffer buf, String define) {
+    public static void getUndefineSwitch(StringBuilder buf, String define) {
         buf.setLength(0);
         buf.append("-U");
         buf.append(define);

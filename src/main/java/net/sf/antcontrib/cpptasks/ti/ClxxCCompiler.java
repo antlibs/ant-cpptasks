@@ -107,11 +107,10 @@ public class ClxxCCompiler extends CommandLineCCompiler {
     /*
      * (non-Javadoc)
      *
-     * @see net.sf.antcontrib.cpptasks.compiler.CommandLineCompiler#getDefineSwitch(java.lang.StringBuffer,
+     * @see net.sf.antcontrib.cpptasks.compiler.CommandLineCompiler#getDefineSwitch(java.lang.StringBuilder,
      *      java.lang.String, java.lang.String)
      */
-    protected void getDefineSwitch(StringBuffer buffer, String define,
-                                   String value) {
+    protected void getDefineSwitch(StringBuilder buffer, String define, String value) {
         buffer.append("-d");
         buffer.append(define);
         if (value != null) {
@@ -189,10 +188,10 @@ public class ClxxCCompiler extends CommandLineCCompiler {
     /*
      * (non-Javadoc)
      *
-     * @see net.sf.antcontrib.cpptasks.compiler.CommandLineCompiler#getUndefineSwitch(java.lang.StringBuffer,
+     * @see net.sf.antcontrib.cpptasks.compiler.CommandLineCompiler#getUndefineSwitch(java.lang.StringBuilder,
      *      java.lang.String)
      */
-    protected void getUndefineSwitch(StringBuffer buffer, String define) {
+    protected void getUndefineSwitch(StringBuilder buffer, String define) {
         buffer.append("-u");
         buffer.append(define);
     }

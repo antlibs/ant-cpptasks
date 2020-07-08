@@ -99,7 +99,7 @@ public class ADSCCompiler extends CommandLineCCompiler {
         return tcpp;
     }
 
-    private static void quoteFile(StringBuffer buf, String outPath) {
+    private static void quoteFile(StringBuilder buf, String outPath) {
         if (outPath.contains(" ")) {
             buf.append('\"');
             buf.append(outPath);
@@ -163,13 +163,13 @@ public class ADSCCompiler extends CommandLineCCompiler {
     /**
      * Add command line options for preprocessor macro
      *
-     * @param buffer StringBuffer
+     * @param buffer StringBuilder
      * @param define String
      * @param value String
-     * @see net.sf.antcontrib.cpptasks.compiler.CommandLineCompiler#getDefineSwitch(java.lang.StringBuffer,
+     * @see net.sf.antcontrib.cpptasks.compiler.CommandLineCompiler#getDefineSwitch(java.lang.StringBuilder,
      * java.lang.String, java.lang.String)
      */
-    protected void getDefineSwitch(StringBuffer buffer, String define, String value) {
+    protected void getDefineSwitch(StringBuilder buffer, String define, String value) {
         buffer.append("-D");
         buffer.append(define);
         if (value != null) {
@@ -195,7 +195,7 @@ public class ADSCCompiler extends CommandLineCCompiler {
      * @return String
      */
     protected String getIncludeDirSwitch(String source) {
-        StringBuffer buf = new StringBuffer("-I");
+        StringBuilder buf = new StringBuilder("-I");
         quoteFile(buf, source);
         return buf.toString();
     }
@@ -228,10 +228,10 @@ public class ADSCCompiler extends CommandLineCCompiler {
     /*
      * Adds command to undefine preprocessor macro
      *
-     * @see net.sf.antcontrib.cpptasks.compiler.CommandLineCompiler#getUndefineSwitch(java.lang.StringBuffer,
+     * @see net.sf.antcontrib.cpptasks.compiler.CommandLineCompiler#getUndefineSwitch(java.lang.StringBuilder,
      *      java.lang.String)
      */
-    protected void getUndefineSwitch(StringBuffer buffer, String define) {
+    protected void getUndefineSwitch(StringBuilder buffer, String define) {
         buffer.append("-U");
         buffer.append(define);
     }

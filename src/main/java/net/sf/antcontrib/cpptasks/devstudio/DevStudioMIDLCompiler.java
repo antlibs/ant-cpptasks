@@ -78,7 +78,7 @@ public final class DevStudioMIDLCompiler extends CommandLineCompiler {
         return 3;
     }
 
-    protected void getDefineSwitch(StringBuffer buffer, String define, String value) {
+    protected void getDefineSwitch(StringBuilder buffer, String define, String value) {
         DevStudioProcessor.getDefineSwitch(buffer, define, value);
     }
 
@@ -121,7 +121,7 @@ public final class DevStudioMIDLCompiler extends CommandLineCompiler {
         return arg1.length() + arg2.length() + arg3.length() + 3;
     }
 
-    protected void getUndefineSwitch(StringBuffer buffer, String define) {
+    protected void getUndefineSwitch(StringBuilder buffer, String define) {
         DevStudioProcessor.getUndefineSwitch(buffer, define);
     }
 }

@@ -46,8 +46,7 @@ public final class BorlandProcessor {
         }
     }
 
-    public static void getDefineSwitch(StringBuffer buffer, String define,
-                                       String value) {
+    public static void getDefineSwitch(StringBuilder buffer, String define, String value) {
         buffer.append("-D");
         buffer.append(define);
         if (value != null && value.length() > 0) {
@@ -130,7 +129,7 @@ public final class BorlandProcessor {
 
     public static String getIncludeDirSwitch(String includeOption,
                                              String includeDir) {
-        StringBuffer buf = new StringBuffer(includeOption);
+        StringBuilder buf = new StringBuilder(includeOption);
         quoteFile(buf, includeDir);
         return buf.toString();
     }
@@ -151,7 +150,7 @@ public final class BorlandProcessor {
         return new String[0];
     }
 
-    public static void getUndefineSwitch(StringBuffer buffer, String define) {
+    public static void getUndefineSwitch(StringBuilder buffer, String define) {
         buffer.append("-U");
         buffer.append(define);
     }
@@ -160,7 +159,7 @@ public final class BorlandProcessor {
         return false;
     }
 
-    public static void quoteFile(StringBuffer buf, String outPath) {
+    public static void quoteFile(StringBuilder buf, String outPath) {
         if (outPath.charAt(0) != '\"'
                 && (outPath.contains(" ") || outPath.contains("-") || outPath.contains("/"))) {
             buf.append('\"');

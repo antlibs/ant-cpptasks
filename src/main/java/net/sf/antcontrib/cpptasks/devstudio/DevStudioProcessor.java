@@ -56,7 +56,7 @@ public class DevStudioProcessor {
         return buf.toString();
     }
 
-    public static void getDefineSwitch(StringBuffer buffer, String define, String value) {
+    public static void getDefineSwitch(StringBuilder buffer, String define, String value) {
         buffer.append("/D");
         buffer.append(define);
         if (value != null && value.length() > 0) {
@@ -82,7 +82,7 @@ public class DevStudioProcessor {
         return retval;
     }
 
-    public static void getUndefineSwitch(StringBuffer buffer, String define) {
+    public static void getUndefineSwitch(StringBuilder buffer, String define) {
         buffer.append("/U");
         buffer.append(define);
     }

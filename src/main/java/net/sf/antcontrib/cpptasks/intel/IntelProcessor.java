@@ -32,8 +32,7 @@ public class IntelProcessor {
         return DevStudioProcessor.getCommandFileSwitch(cmdFile);
     }
 
-    public static void getDefineSwitch(StringBuffer buffer, String define,
-                                       String value) {
+    public static void getDefineSwitch(StringBuilder buffer, String define, String value) {
         DevStudioProcessor.getDefineSwitch(buffer, define, value);
     }
 
@@ -45,7 +44,7 @@ public class IntelProcessor {
         return DevStudioProcessor.getOutputFileSwitch(outPath);
     }
 
-    public static void getUndefineSwitch(StringBuffer buffer, String define) {
+    public static void getUndefineSwitch(StringBuilder buffer, String define) {
         DevStudioProcessor.getUndefineSwitch(buffer, define);
     }
 

@@ -125,8 +125,7 @@ public abstract class DevStudioCompatibleCCompiler extends PrecompilingCommandLi
                 exceptFiles, false);
     }
 
-    protected void getDefineSwitch(StringBuffer buffer, String define,
-                                   String value) {
+    protected void getDefineSwitch(StringBuilder buffer, String define, String value) {
         DevStudioProcessor.getDefineSwitch(buffer, define, value);
     }
 
@@ -138,7 +137,7 @@ public abstract class DevStudioCompatibleCCompiler extends PrecompilingCommandLi
         return DevStudioProcessor.getIncludeDirSwitch(includeDir);
     }
 
-    protected void getUndefineSwitch(StringBuffer buffer, String define) {
+    protected void getUndefineSwitch(StringBuilder buffer, String define) {
         DevStudioProcessor.getUndefineSwitch(buffer, define);
     }
 }

@@ -78,7 +78,7 @@ public class GccLinker extends AbstractLdLinker {
      *            must not be null.
      * @param arg linker argument
      */
-    public String decorateLinkerOption(StringBuffer buf, String arg) {
+    public String decorateLinkerOption(StringBuilder buf, String arg) {
         String decoratedArg = arg;
         if (arg.length() > 1 && arg.charAt(0) == '-') {
             switch (arg.charAt(1)) {

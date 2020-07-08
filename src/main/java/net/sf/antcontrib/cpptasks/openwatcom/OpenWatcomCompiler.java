@@ -123,11 +123,11 @@ public abstract class OpenWatcomCompiler extends CommandLineCompiler {
     /**
      * Get define switch.
      *
-     * @param buffer StringBuffer buffer
+     * @param buffer StringBuilder buffer
      * @param define String preprocessor macro
      * @param value  String value, may be null.
      */
-    protected final void getDefineSwitch(final StringBuffer buffer,
+    protected final void getDefineSwitch(final StringBuilder buffer,
                                          final String define,
                                          final String value) {
         OpenWatcomProcessor.getDefineSwitch(buffer, define, value);
@@ -165,10 +165,10 @@ public abstract class OpenWatcomCompiler extends CommandLineCompiler {
     /**
      * Get undefine switch.
      *
-     * @param buffer StringBuffer argument destination
+     * @param buffer StringBuilder argument destination
      * @param define String preprocessor macro
      */
-    protected final void getUndefineSwitch(final StringBuffer buffer,
+    protected final void getUndefineSwitch(final StringBuilder buffer,
                                            final String define) {
         OpenWatcomProcessor.getUndefineSwitch(buffer, define);
     }

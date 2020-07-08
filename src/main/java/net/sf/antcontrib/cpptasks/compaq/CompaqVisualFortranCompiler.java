@@ -108,7 +108,7 @@ public class CompaqVisualFortranCompiler extends CommandLineFortranCompiler {
         return this;
     }
 
-    protected void getDefineSwitch(StringBuffer buf, String define, String value) {
+    protected void getDefineSwitch(StringBuilder buf, String define, String value) {
         buf.append("/define:");
         buf.append(define);
         if (value != null && value.length() > 0) {
@@ -141,7 +141,7 @@ public class CompaqVisualFortranCompiler extends CommandLineFortranCompiler {
         return 1024;
     }
 
-    protected void getUndefineSwitch(StringBuffer buf, String define) {
+    protected void getUndefineSwitch(StringBuilder buf, String define) {
         buf.append("/undefine:");
         buf.append(define);
     }

@@ -182,10 +182,10 @@ public final class WindowsPlatform {
     /**
      * Converts parsed version information into a string representation.
      *
-     * @param buf     StringBuffer string buffer to receive version number
+     * @param buf     StringBuilder string buffer to receive version number
      * @param version short[] four-element array
      */
-    private static void encodeVersion(final StringBuffer buf,
+    private static void encodeVersion(final StringBuilder buf,
                                       final short[] version) {
         for (int i = 0; i < 3; i++) {
             buf.append(version[i]);
@@ -212,7 +212,7 @@ public final class WindowsPlatform {
         //writer.write("#include \"windows.h\"\n");
 
         writer.write("VS_VERSION_INFO VERSIONINFO\n");
-        StringBuffer buf = new StringBuffer("FILEVERSION ");
+        StringBuilder buf = new StringBuilder("FILEVERSION ");
         encodeVersion(buf, parseVersion(versionInfo.getFileversion()));
         buf.append("\nPRODUCTVERSION ");
         encodeVersion(buf, parseVersion(versionInfo.getProductversion()));

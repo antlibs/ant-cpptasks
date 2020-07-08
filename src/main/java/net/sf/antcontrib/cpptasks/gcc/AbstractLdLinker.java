@@ -90,7 +90,7 @@ public abstract class AbstractLdLinker extends CommandLineLinker {
         }
     }
 
-    protected int addLibraryPatterns(String[] libnames, StringBuffer buf, String prefix,
+    protected int addLibraryPatterns(String[] libnames, StringBuilder buf, String prefix,
                                      String extension, String[] patterns, int offset) {
         for (int i = 0; i < libnames.length; i++) {
             buf.setLength(0);
@@ -222,7 +222,7 @@ public abstract class AbstractLdLinker extends CommandLineLinker {
     }
 
     public String[] getLibraryPatterns(String[] libnames, LibraryTypeEnum libType) {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         int patternCount = libnames.length;
         if (libType == null) {
             patternCount *= 2;

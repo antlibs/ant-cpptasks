@@ -84,10 +84,10 @@ public abstract class CommandLineCompiler extends AbstractCompiler {
      * @param args         Vector of command line arguments used to execute the task
      * @param relativeArgs Vector of command line arguments used to build the
      *                     configuration identifier
-     * @param includePathId StringBuffer
+     * @param includePathId StringBuilder
      */
     protected void addIncludes(String baseDirPath, File[] includeDirs, Vector<String> args,
-                               Vector<String> relativeArgs, StringBuffer includePathId) {
+                               Vector<String> relativeArgs, StringBuilder includePathId) {
         for (File includeDir : includeDirs) {
             args.addElement(getIncludeDirSwitch(includeDir.getAbsolutePath()));
             if (relativeArgs != null) {
@@ -118,7 +118,7 @@ public abstract class CommandLineCompiler extends AbstractCompiler {
             //      containing defines
             merged = UndefineArgument.merge(defs[i].getActiveDefines(), merged);
         }
-        StringBuffer buf = new StringBuffer(30);
+        StringBuilder buf = new StringBuilder();
         for (UndefineArgument current : merged) {
             buf.setLength(0);
             if (current.isDefine()) {
@@ -315,7 +315,7 @@ public abstract class CommandLineCompiler extends AbstractCompiler {
         //
         //    add all active include and sysincludes
         //
-        StringBuffer includePathIdentifier = new StringBuffer();
+        StringBuilder includePathIdentifier = new StringBuilder();
         File baseDir = specificDef.getProject().getBaseDir();
         String baseDirPath;
         try {
@@ -343,8 +343,7 @@ public abstract class CommandLineCompiler extends AbstractCompiler {
         for (int i = 0; i < sysIncludePath.size(); i++) {
             sysIncPath[i] = new File(sysIncludePath.elementAt(i));
         }
-        addIncludes(baseDirPath, incPath, args, relativeArgs,
-                includePathIdentifier);
+        addIncludes(baseDirPath, incPath, args, relativeArgs, includePathIdentifier);
         addIncludes(baseDirPath, sysIncPath, args, null, null);
         StringBuilder buf = new StringBuilder(getIdentifier());
         for (int i = 0; i < relativeArgs.size(); i++) {
@@ -371,8 +370,7 @@ public abstract class CommandLineCompiler extends AbstractCompiler {
         return command;
     }
 
-    abstract protected void getDefineSwitch(StringBuffer buffer, String define,
-                                            String value);
+    abstract protected void getDefineSwitch(StringBuilder buffer, String define, String value);
 
     protected abstract File[] getEnvironmentIncludePath();
 
@@ -431,7 +429,7 @@ public abstract class CommandLineCompiler extends AbstractCompiler {
         return inputFile.length() + 1;
     }
 
-    abstract protected void getUndefineSwitch(StringBuffer buffer, String define);
+    abstract protected void getUndefineSwitch(StringBuilder buffer, String define);
 
     /**
      * This method is exposed so test classes can overload and test the
