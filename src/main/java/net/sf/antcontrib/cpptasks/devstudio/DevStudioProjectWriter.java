@@ -693,15 +693,15 @@ public final class DevStudioProjectWriter implements ProjectWriter {
 
     private static void writeComments(final Writer writer,
                                       final List<CommentDef> comments) throws IOException {
-        for (CommentDef object : comments) {
-            String comment = object.getText();
+        for (CommentDef commentDef : comments) {
+            String comment = commentDef.getText();
             if (comment != null) {
                 int start = 0;
-                for (int end = comment.indexOf('\n');
-                     end != -1;
-                     end = comment.indexOf('\n', start)) {
+                int end = comment.indexOf('\n');
+                while (end != -1) {
                     writer.write("#" + comment.substring(start, end) + "\r\n");
                     start = end + 1;
+                    end = comment.indexOf('\n', start);
                 }
             }
         }

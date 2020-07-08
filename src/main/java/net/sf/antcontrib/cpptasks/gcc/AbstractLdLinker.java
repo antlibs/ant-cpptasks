@@ -314,7 +314,8 @@ public abstract class AbstractLdLinker extends CommandLineLinker {
         String[] localSources = sourceFiles.clone();
         int extra = 0;
         for (String libname : libnames) {
-            for (int j = 0; j < localSources.length; j++) {
+            int j = 0;
+            while (j < localSources.length) {
                 if (localSources[j] != null && localSources[j].indexOf(libname) > 0
                         && localSources[j].indexOf("lib") > 0) {
                     String filename = new File(localSources[j]).getName();
@@ -327,6 +328,7 @@ public abstract class AbstractLdLinker extends CommandLineLinker {
                         }
                     }
                 }
+                j++;
             }
         }
         if (extra == 0) {
