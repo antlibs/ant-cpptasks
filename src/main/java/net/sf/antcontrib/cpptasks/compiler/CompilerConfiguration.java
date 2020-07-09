@@ -69,7 +69,7 @@ public interface CompilerConfiguration extends ProcessorConfiguration {
      */
     String getIncludePathIdentifier();
 
-    public CompilerParam getParam(String name);
+    CompilerParam getParam(String name);
 
     boolean isPrecompileGeneration();
 

@@ -96,11 +96,11 @@ public abstract class PrecompilingCommandLineCompiler extends CommandLineCompile
         return configs;
     }
 
-    abstract protected CompilerConfiguration createPrecompileGeneratingConfig(
+    protected abstract CompilerConfiguration createPrecompileGeneratingConfig(
             CommandLineCompilerConfiguration baseConfig, File prototype,
             String lastInclude);
 
-    abstract protected CompilerConfiguration createPrecompileUsingConfig(
+    protected abstract CompilerConfiguration createPrecompileUsingConfig(
             CommandLineCompilerConfiguration baseConfig, File prototype,
             String lastInclude, String[] exceptFiles);
 }
