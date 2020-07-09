@@ -23,7 +23,7 @@ package net.sf.antcontrib.cpptasks.parser;
  * @see AbstractParser
  */
 public abstract class AbstractParserState {
-    private AbstractParser parser;
+    private final AbstractParser parser;
 
     protected AbstractParserState(AbstractParser parser) {
         if (parser == null) {

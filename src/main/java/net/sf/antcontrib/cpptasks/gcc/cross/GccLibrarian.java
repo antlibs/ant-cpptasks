@@ -32,8 +32,8 @@ import java.io.File;
  * @author Adam Murdoch
  */
 public final class GccLibrarian extends AbstractArLibrarian {
-    private static String[] objFileExtensions = new String[]{".o"};
-    private static GccLibrarian instance = new GccLibrarian("ar",
+    private static final String[] objFileExtensions = new String[]{".o"};
+    private static final GccLibrarian instance = new GccLibrarian("ar",
             objFileExtensions, false, new GccLibrarian("ar", objFileExtensions,
             true, null));
 

@@ -25,8 +25,8 @@ import java.io.IOException;
  * @author Curt Arnold
  */
 public final class SourceHistory {
-    private/* final */ long lastModified;
-    private/* final */ String relativePath;
+    private final long lastModified;
+    private final String relativePath;
 
     /**
      * Constructor

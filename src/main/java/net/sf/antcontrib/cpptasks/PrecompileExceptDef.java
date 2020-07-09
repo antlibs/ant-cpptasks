@@ -33,7 +33,7 @@ public final class PrecompileExceptDef {
     /**
      * Collection of <fileset>contained by definition
      */
-    private PrecompileDef owner;
+    private final PrecompileDef owner;
 
     /**
      * Constructor

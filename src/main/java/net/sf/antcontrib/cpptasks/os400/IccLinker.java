@@ -51,9 +51,9 @@ public final class IccLinker extends CommandLineLinker {
         return instance;
     }
 
-    private boolean isADatasetLinker;
+    private final boolean isADatasetLinker;
     File outputFile;
-    private String outputPrefix;
+    private final String outputPrefix;
     CCTask task;
 
     private IccLinker() {

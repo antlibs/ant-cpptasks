@@ -28,7 +28,7 @@ import java.util.Vector;
  */
 public final class CParser extends AbstractParser implements Parser {
     private final Vector<String> includes = new Vector<String>();
-    private AbstractParserState newLineState;
+    private final AbstractParserState newLineState;
 
     /**
      *

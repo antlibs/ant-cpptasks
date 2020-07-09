@@ -42,7 +42,7 @@ public final class C89Linker extends CommandLineLinker {
         return instance;
     }
 
-    private String outputPrefix;
+    private final String outputPrefix;
 
     private C89Linker(String outputPrefix, String outputSuffix) {
         super("ld", "/bogus", new String[]{".o", ".a", ".lib", ".x"},

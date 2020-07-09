@@ -20,8 +20,8 @@ import net.sf.antcontrib.cpptasks.parser.AbstractParser;
 import net.sf.antcontrib.cpptasks.parser.AbstractParserState;
 
 public class QuoteBranchState extends AbstractParserState {
-    private AbstractParserState quote;
-    private AbstractParserState unquote;
+    private final AbstractParserState quote;
+    private final AbstractParserState unquote;
 
     public QuoteBranchState(AbstractParser parser, AbstractParserState quote,
                             AbstractParserState unquote) {

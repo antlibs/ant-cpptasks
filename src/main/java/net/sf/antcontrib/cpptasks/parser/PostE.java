@@ -17,8 +17,8 @@
 package net.sf.antcontrib.cpptasks.parser;
 
 public class PostE extends AbstractParserState {
-    private AbstractParserState bracket;
-    private AbstractParserState quote;
+    private final AbstractParserState bracket;
+    private final AbstractParserState quote;
 
     public PostE(CParser parser, AbstractParserState bracket, AbstractParserState quote) {
         super(parser);

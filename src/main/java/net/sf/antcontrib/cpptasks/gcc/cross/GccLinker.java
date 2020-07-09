@@ -45,7 +45,7 @@ public class GccLinker extends AbstractLdLinker {
             discardFiles, "", "", false, null);
     private static final String[] libtoolObjFiles = new String[]{".fo", ".a",
             ".lib", ".dll", ".so", ".sl"};
-    private static String[] linkerOptions = new String[]{"-bundle",
+    private static final String[] linkerOptions = new String[]{"-bundle",
             "-dynamiclib", "-nostartfiles", "-nostdlib", "-prebind", "-s",
             "-static", "-shared", "-symbolic", "-Xlinker",
             "--export-all-symbols", "-static-libgcc",};

@@ -46,7 +46,7 @@ public class GppLinker extends AbstractLdLinker {
     private final static String libPrefix = "libraries: =";
     protected static final String[] libtoolObjFiles = new String[]{".fo", ".a",
             ".lib", ".dll", ".so", ".sl"};
-    private static String[] linkerOptions = new String[]{"-bundle", "-dylib",
+    private static final String[] linkerOptions = new String[]{"-bundle", "-dylib",
             "-dynamic", "-dynamiclib", "-nostartfiles", "-nostdlib",
             "-prebind", "-s", "-static", "-shared", "-symbolic", "-Xlinker"};
     private static final GppLinker instance = new GppLinker("gcc", objFiles,

@@ -17,9 +17,9 @@
 package net.sf.antcontrib.cpptasks.parser;
 
 public class BranchState extends AbstractParserState {
-    private char[] branchChars;
-    private AbstractParserState[] branchStates;
-    private AbstractParserState noMatchState;
+    private final char[] branchChars;
+    private final AbstractParserState[] branchStates;
+    private final AbstractParserState noMatchState;
 
     public BranchState(AbstractParser parser, char[] branchChars,
                        AbstractParserState[] branchStates, AbstractParserState noMatchState) {

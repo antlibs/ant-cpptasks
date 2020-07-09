@@ -26,7 +26,7 @@ package net.sf.antcontrib.cpptasks.types;
  * @see org.apache.tools.ant.types.FlexInteger
  */
 public class FlexLong {
-    private Long value;
+    private final Long value;
 
     /**
      * Constructor used by Ant's introspection mechanism for attribute

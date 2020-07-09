@@ -32,11 +32,11 @@ public final class DependencyInfo {
      * </p>
      */
     private long compositeLastModified;
-    private/* final */ String includePathIdentifier;
-    private/* final */ String[] includes;
-    private/* final */ String source;
-    private/* final */ long sourceLastModified;
-    private/* final */ String[] sysIncludes;
+    private final String includePathIdentifier;
+    private final String[] includes;
+    private final String source;
+    private final long sourceLastModified;
+    private final String[] sysIncludes;
 
     public DependencyInfo(String includePathIdentifier, String source, long sourceLastModified,
                           Vector<String> includes, Vector<String> sysIncludes) {

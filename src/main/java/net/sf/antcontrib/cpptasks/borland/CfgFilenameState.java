@@ -21,7 +21,7 @@ import net.sf.antcontrib.cpptasks.parser.AbstractParserState;
 import net.sf.antcontrib.cpptasks.parser.FilenameState;
 
 public class CfgFilenameState extends FilenameState {
-    private char terminator;
+    private final char terminator;
 
     public CfgFilenameState(AbstractParser parser, char[] terminators) {
         super(parser, terminators);

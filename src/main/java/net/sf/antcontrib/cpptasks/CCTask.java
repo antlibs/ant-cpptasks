@@ -202,7 +202,7 @@ public class CCTask extends Task {
      *
      * The library sets.
      */
-    private Vector<LibrarySet> mLibsets = new Vector<LibrarySet>();
+    private final Vector<LibrarySet> mLibsets = new Vector<LibrarySet>();
     /**
      * The linker definitions.
      */

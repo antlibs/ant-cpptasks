@@ -43,9 +43,9 @@ public abstract class CommandLineCompiler extends AbstractCompiler {
     private String command;
     private final Environment env;
     private String identifier;
-    private String identifierArg;
-    private boolean libtool;
-    private CommandLineCompiler libtoolCompiler;
+    private final String identifierArg;
+    private final boolean libtool;
+    private final CommandLineCompiler libtoolCompiler;
     private final boolean newEnvironment;
 
     protected CommandLineCompiler(String command, String identifierArg,

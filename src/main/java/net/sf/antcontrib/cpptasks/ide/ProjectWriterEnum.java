@@ -76,7 +76,7 @@ public final class ProjectWriterEnum extends EnumeratedAttribute {
     /**
      * Project writers associated with enumeration values.
      */
-    private static ProjectWriter[] writers = new ProjectWriter[]{
+    private static final ProjectWriter[] writers = new ProjectWriter[]{
             new CBuilderXProjectWriter(), new DevStudioProjectWriter("5.00"),
             new DevStudioProjectWriter("6.00"),
             new VisualStudioNETProjectWriter("7.00", "TRUE", "FALSE"),
