@@ -42,7 +42,7 @@ import static net.sf.antcontrib.cpptasks.CUtil.getRelativePath;
  */
 public abstract class AbstractCompiler extends AbstractProcessor implements Compiler {
     private static final String[] emptyIncludeArray = new String[0];
-    private String outputSuffix;
+    private final String outputSuffix;
 
     protected AbstractCompiler(String[] sourceExtensions,
                                String[] headerExtensions, String outputSuffix) {

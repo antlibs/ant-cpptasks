@@ -23,8 +23,8 @@ import java.io.IOException;
 
 public class CCTaskProgressMonitor implements ProgressMonitor {
     private ProcessorConfiguration config;
-    private TargetHistoryTable history;
-    private VersionInfo versionInfo;
+    private final TargetHistoryTable history;
+    private final VersionInfo versionInfo;
     private long lastCommit = -1;
 
     public CCTaskProgressMonitor(TargetHistoryTable history, VersionInfo versionInfo) {

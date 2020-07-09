@@ -59,7 +59,7 @@ public final class DevStudioProjectWriter implements ProjectWriter {
     /**
      * Visual Studio version.
      */
-    private String version;
+    private final String version;
 
     /**
      * Constructor.

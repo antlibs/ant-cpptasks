@@ -30,14 +30,14 @@ import java.util.Vector;
  * @author Curt Arnold
  */
 public final class TargetMatcher implements FileVisitor {
-    private LinkerConfiguration linker;
-    private Vector<File> objectFiles;
-    private File outputDir;
-    private ProcessorConfiguration[] processors;
+    private final LinkerConfiguration linker;
+    private final Vector<File> objectFiles;
+    private final File outputDir;
+    private final ProcessorConfiguration[] processors;
     private final File[] sourceFiles = new File[1];
-    private Hashtable<String, TargetInfo> targets;
-    private VersionInfo versionInfo;
-    private CCTask task;
+    private final Hashtable<String, TargetInfo> targets;
+    private final VersionInfo versionInfo;
+    private final CCTask task;
 
     public TargetMatcher(CCTask task, File outputDir,
                          ProcessorConfiguration[] processors, LinkerConfiguration linker,

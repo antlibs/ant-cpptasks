@@ -36,7 +36,7 @@ import static net.sf.antcontrib.cpptasks.CUtil.getRelativePath;
  * @author Curt Arnold
  */
 public abstract class AbstractLdLinker extends CommandLineLinker {
-    private String outputPrefix;
+    private final String outputPrefix;
 
     protected AbstractLdLinker(String command, String identifierArg,
                                String[] extensions, String[] ignoredExtensions,

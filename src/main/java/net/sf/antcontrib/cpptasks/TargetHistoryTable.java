@@ -167,8 +167,8 @@ public final class TargetHistoryTable {
     /**
      * The file the cache was loaded from.
      */
-    private/* final */ File historyFile;
-    private/* final */ File outputDir;
+    private final File historyFile;
+    private final File outputDir;
     private String outputDirPath;
 
     /**

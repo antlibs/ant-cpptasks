@@ -228,12 +228,12 @@ public final class CBuilderXProjectWriter implements ProjectWriter {
         /**
          * Content handler.
          */
-        private ContentHandler content;
+        private final ContentHandler content;
 
         /**
          * Attributes list.
          */
-        private AttributesImpl propertyAttributes;
+        private final AttributesImpl propertyAttributes;
 
         /**
          * Constructor.

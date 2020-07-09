@@ -27,7 +27,7 @@ import java.util.Vector;
  */
 public class LineReader implements Runnable {
 
-    private InputStream is;
+    private final InputStream is;
     private String[] lines;
 
     /**

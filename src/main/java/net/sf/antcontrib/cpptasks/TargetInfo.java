@@ -27,11 +27,11 @@ import static net.sf.antcontrib.cpptasks.CUtil.getRelativePath;
  */
 public final class TargetInfo {
     private static final File[] emptyFileArray = new File[0];
-    private/* final */ ProcessorConfiguration config;
-    private/* final */ File output;
+    private final ProcessorConfiguration config;
+    private final File output;
     private boolean rebuild;
-    private/* final */ File[] sources;
-    private File[] sysSources;
+    private final File[] sources;
+    private final File[] sysSources;
 
     public TargetInfo(ProcessorConfiguration config, File[] sources,
                       File[] sysSources, File output, boolean rebuild) {

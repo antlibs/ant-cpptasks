@@ -51,7 +51,7 @@ public final class DependencyTable {
      * SAX parse events
      */
     private class DependencyTableHandler extends DefaultHandler {
-        private File baseDir;
+        private final File baseDir;
         private final DependencyTable dependencyTable;
         private String includePath;
         private final Vector<String> includes;
@@ -182,8 +182,8 @@ public final class DependencyTable {
 
     public class TimestampChecker extends DependencyVisitor {
         private boolean noNeedToRebuild;
-        private long outputLastModified;
-        private boolean rebuildOnStackExhaustion;
+        private final long outputLastModified;
+        private final boolean rebuildOnStackExhaustion;
 
         public TimestampChecker(final long outputLastModified,
                                 boolean rebuildOnStackExhaustion) {
@@ -246,7 +246,7 @@ public final class DependencyTable {
         }
     }
 
-    private/* final */ File baseDir;
+    private final File baseDir;
     private String baseDirPath;
 
     /**
@@ -257,7 +257,7 @@ public final class DependencyTable {
     /**
      * The file the cache was loaded from.
      */
-    private/* final */ File dependenciesFile;
+    private final File dependenciesFile;
 
     /**
      * Flag indicating whether the cache should be written back to file.

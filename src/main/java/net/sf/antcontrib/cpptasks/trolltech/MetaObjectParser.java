@@ -90,7 +90,7 @@ public final class MetaObjectParser extends AbstractParser {
     /**
      * Parser state for start of new line.
      */
-    private AbstractParserState newLineState;
+    private final AbstractParserState newLineState;
 
     /**
      * Constructor.

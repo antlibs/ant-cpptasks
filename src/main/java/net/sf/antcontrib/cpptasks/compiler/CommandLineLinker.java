@@ -44,14 +44,14 @@ import java.util.Vector;
  */
 public abstract class CommandLineLinker extends AbstractLinker {
     private String command;
-    private Environment env = null;
+    private final Environment env = null;
     private String identifier;
-    private String identifierArg;
-    private boolean isLibtool;
+    private final String identifierArg;
+    private final boolean isLibtool;
     private String[] librarySets;
-    private CommandLineLinker libtoolLinker;
-    private boolean newEnvironment = false;
-    private String outputSuffix;
+    private final CommandLineLinker libtoolLinker;
+    private final boolean newEnvironment = false;
+    private final String outputSuffix;
 
 
     /**

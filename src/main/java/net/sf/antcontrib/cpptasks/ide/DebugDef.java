@@ -41,11 +41,11 @@ public final class DebugDef extends DataType {
     /**
      * Environment used to hold environment variables.
      */
-    private Environment env = new Environment();
+    private final Environment env = new Environment();
     /**
      * Command line used to hold command line arguments.
      */
-    private Commandline cmdl = new Commandline();
+    private final Commandline cmdl = new Commandline();
 
     /**
      * Constructor.

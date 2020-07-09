@@ -29,15 +29,15 @@ import org.apache.tools.ant.BuildException;
  * @author Curt Arnold
  */
 public final class CommandLineLinkerConfiguration implements LinkerConfiguration {
-    private/* final */ String[][] args;
-    private/* final */ String identifier;
-    private String[] libraryNames;
-    private/* final */ CommandLineLinker linker;
-    private/* final */ boolean map;
-    private/* final */ ProcessorParam[] params;
-    private/* final */ boolean rebuild;
-    private boolean debug;
-    private String startupObject;
+    private final String[][] args;
+    private final String identifier;
+    private final String[] libraryNames;
+    private final CommandLineLinker linker;
+    private final boolean map;
+    private final ProcessorParam[] params;
+    private final boolean rebuild;
+    private final boolean debug;
+    private final String startupObject;
 
     public CommandLineLinkerConfiguration(CommandLineLinker linker,
                                           String identifier, String[][] args, ProcessorParam[] params,

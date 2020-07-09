@@ -20,10 +20,10 @@ package net.sf.antcontrib.cpptasks;
  * A description of a file built or to be built
  */
 public final class TargetHistory {
-    private/* final */ String config;
-    private/* final */ String output;
-    private/* final */ long outputLastModified;
-    private/* final */ SourceHistory[] sources;
+    private final String config;
+    private final String output;
+    private final long outputLastModified;
+    private final SourceHistory[] sources;
 
     /**
      * Constructor from build step

@@ -34,8 +34,8 @@ public class ProcessorEnumValue {
         return values;
     }
 
-    private String name;
-    private Processor processor;
+    private final String name;
+    private final Processor processor;
 
     public ProcessorEnumValue(String name, Processor processor) {
         this.name = name;

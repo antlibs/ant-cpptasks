@@ -33,21 +33,21 @@ import java.io.File;
 public final class CommandLineCompilerConfiguration
         implements
         CompilerConfiguration {
-    private/* final */ String[] args;
-    private/* final */ CommandLineCompiler compiler;
-    private String[] endArgs;
+    private final String[] args;
+    private final CommandLineCompiler compiler;
+    private final String[] endArgs;
     //
     //    include path from environment variable not
     //       explicitly stated in Ant script
-    private/* final */ File[] envIncludePath;
+    private final File[] envIncludePath;
     private String[] exceptFiles;
-    private/* final */ String identifier;
-    private/* final */ File[] includePath;
-    private/* final */ String includePathIdentifier;
-    private boolean isPrecompiledHeaderGeneration;
+    private final String identifier;
+    private final File[] includePath;
+    private final String includePathIdentifier;
+    private final boolean isPrecompiledHeaderGeneration;
     private/* final */ ProcessorParam[] params;
-    private/* final */ boolean rebuild;
-    private/* final */ File[] sysIncludePath;
+    private final boolean rebuild;
+    private final File[] sysIncludePath;
 
     public CommandLineCompilerConfiguration(CommandLineCompiler compiler,
                                             String identifier, File[] includePath, File[] sysIncludePath,
