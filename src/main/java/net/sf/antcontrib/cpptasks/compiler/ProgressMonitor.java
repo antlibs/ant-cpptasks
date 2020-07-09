@@ -22,7 +22,7 @@ package net.sf.antcontrib.cpptasks.compiler;
  * @author Curt Arnold
  */
 public interface ProgressMonitor {
-    public void finish(ProcessorConfiguration config, boolean normal);
+    void finish(ProcessorConfiguration config, boolean normal);
 
     /**
      * Called to notify monitor of progress
@@ -36,5 +36,5 @@ public interface ProgressMonitor {
      *
      * @param config ProcessorConfiguration
      */
-    public void start(ProcessorConfiguration config);
+    void start(ProcessorConfiguration config);
 }

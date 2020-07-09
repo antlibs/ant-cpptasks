@@ -27,7 +27,7 @@ import org.apache.tools.ant.BuildException;
  * @author Curt Arnold
  */
 public interface LinkerConfiguration extends ProcessorConfiguration {
-    public LinkerParam getParam(String name);
+    LinkerParam getParam(String name);
 
     void link(CCTask task, TargetInfo linkTarget) throws BuildException;
 

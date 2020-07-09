@@ -47,7 +47,7 @@ import org.apache.tools.ant.types.EnumeratedAttribute;
  * @author Curt Arnold
  */
 public class LinkerEnum extends EnumeratedAttribute {
-    private final static ProcessorEnumValue[] linkers = new ProcessorEnumValue[]{
+    private static final ProcessorEnumValue[] linkers = new ProcessorEnumValue[]{
             new ProcessorEnumValue("gcc", GccLinker.getInstance()),
             new ProcessorEnumValue("g++", GppLinker.getInstance()),
             new ProcessorEnumValue("ld", LdLinker.getInstance()),

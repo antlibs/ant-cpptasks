@@ -25,5 +25,5 @@ import java.io.File;
  * ProcessorDef
  */
 public interface FileVisitor {
-    abstract void visit(File parentDir, String filename) throws BuildException;
+    void visit(File parentDir, String filename) throws BuildException;
 }
