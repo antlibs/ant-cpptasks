@@ -112,7 +112,7 @@ public final class GccCCompiler extends GccCompatibleCCompiler {
 
     private String identifier;
     private File[] includePath;
-    private boolean isPICMeaningful = true;
+    private final boolean isPICMeaningful;
 
     /**
      * Private constructor. Use GccCCompiler.getInstance() to get singleton

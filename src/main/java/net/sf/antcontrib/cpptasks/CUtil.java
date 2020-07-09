@@ -25,7 +25,6 @@ import org.apache.tools.ant.types.Environment;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Hashtable;
 import java.util.Locale;
 import java.util.StringTokenizer;
 import java.util.Vector;
@@ -373,69 +372,6 @@ public class CUtil {
             throw new BuildException("Could not launch " + cmdline[0] + ": " + exc,
                     task.getLocation());
         }
-    }
-
-    /**
-     * Compares the contents of 2 arrays for equality.
-     */
-    public static boolean sameList(Object[] a, Object[] b) {
-        if (a == null || b == null || a.length != b.length) {
-            return false;
-        }
-        for (int i = 0; i < a.length; i++) {
-            if (!a[i].equals(b[i])) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Compares the contents of an array and a Vector for equality.
-     */
-    public static boolean sameList(Vector<Object> v, Object[] a) {
-        if (v == null || a == null || v.size() != a.length) {
-            return false;
-        }
-        for (int i = 0; i < a.length; i++) {
-            Object o = a[i];
-            if (!o.equals(v.elementAt(i))) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Compares the contents of an array and a Vector for set equality. Assumes
-     * input array and vector are sets (i.e. no duplicate entries)
-     */
-    public static boolean sameSet(Object[] a, Vector<Object> b) {
-        if (a == null || b == null || a.length != b.size()) {
-            return false;
-        }
-        if (a.length == 0) {
-            return true;
-        }
-        // Convert the array into a set
-        Hashtable<Object, Object> t = new Hashtable<Object, Object>();
-        for (Object value : a) {
-            t.put(value, value);
-        }
-        for (int i = 0; i < b.size(); i++) {
-            Object o = b.elementAt(i);
-            if (t.remove(o) == null) {
-                return false;
-            }
-        }
-        return (t.size() == 0);
-    }
-
-    /**
-     * Converts a vector to a string array.
-     */
-    public static String[] toArray(Vector<String> src) {
-        return src.toArray(new String[0]);
     }
 
     /**

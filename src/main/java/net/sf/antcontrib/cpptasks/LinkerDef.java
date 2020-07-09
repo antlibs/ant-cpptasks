@@ -462,7 +462,7 @@ public class LinkerDef extends ProcessorDef {
     }
 
     protected void setProcessor(Processor proc) throws BuildException {
-        Linker linker = null;
+        Linker linker;
         if (proc instanceof Linker) {
             linker = (Linker) proc;
         } else {
