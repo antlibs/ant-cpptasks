@@ -179,9 +179,9 @@ public final class BorlandLinker extends CommandLineLinker {
         String startup = null;
         for (String sourceFile : sourceFiles) {
             String filename = new File(sourceFile).getName().toLowerCase();
-            if (startup != null && filename.substring(0, 2).equals("c0")
-                    && filename.substring(3, 5).equals("32")
-                    && filename.substring(filename.length() - 4).equals(".obj")) {
+            if (startup != null && filename.startsWith("c0")
+                    && filename.startsWith("32", 3)
+                    && filename.endsWith(".obj")) {
                 startup = sourceFile;
             }
         }
