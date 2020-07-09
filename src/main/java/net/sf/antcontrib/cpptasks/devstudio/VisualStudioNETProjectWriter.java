@@ -377,6 +377,7 @@ public final class VisualStudioNETProjectWriter implements ProjectWriter {
         for (String arg : args) {
             if ("/Wp64".equals(arg)) {
                 warn64 = trueLiteral;
+                break;
             }
         }
         return warn64;
@@ -517,6 +518,7 @@ public final class VisualStudioNETProjectWriter implements ProjectWriter {
         for (String arg : args) {
             if ("/MACHINE:X86".equals(arg)) {
                 subsystem = "1";
+                break;
             }
         }
         return subsystem;
@@ -559,6 +561,7 @@ public final class VisualStudioNETProjectWriter implements ProjectWriter {
                     for (DependencyDef depend : projectDependencies) {
                         if (baseName.compareToIgnoreCase(depend.getName()) == 0) {
                             fromDependency = true;
+                            break;
                         }
                     }
                 }
