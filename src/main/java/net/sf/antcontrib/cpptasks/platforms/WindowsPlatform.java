@@ -248,10 +248,10 @@ public final class WindowsPlatform {
         if (Boolean.TRUE.equals(prerelease)) {
             buf.append("0x2L /* VS_FF_PRERELEASE */ | ");
         }
-        if (Boolean.TRUE.equals(versionInfo.getPrivatebuild())) {
+        if (Boolean.parseBoolean(versionInfo.getPrivatebuild())) {
             buf.append("0x8L /* VS_FF_PRIVATEBUILD */ | ");
         }
-        if (Boolean.TRUE.equals(versionInfo.getSpecialbuild())) {
+        if (Boolean.parseBoolean(versionInfo.getSpecialbuild())) {
             buf.append("0x20L /* VS_FF_SPECIALBUILD */ | ");
         }
         if (buf.length() > 10) {
