@@ -280,7 +280,7 @@ public final class CBuilderXProjectWriter implements ProjectWriter {
         //
         //   find first target with an gcc or bcc compilation
         //
-        CommandLineCompilerConfiguration compilerConfig = null;
+        CommandLineCompilerConfiguration compilerConfig;
         //
         //   get the first target and assume that it is representative
         //

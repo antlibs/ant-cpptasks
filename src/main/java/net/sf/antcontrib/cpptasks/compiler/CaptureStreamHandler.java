@@ -121,15 +121,14 @@ public class CaptureStreamHandler implements ExecuteStreamHandler {
         } catch (InterruptedException e) {
         }
 
-        String[] outputLines = null;
-        String[] errorLines = null;
-
+        String[] outputLines;
         if (this.outputReader != null) {
             outputLines = this.outputReader.getLines();
         } else {
             outputLines = new String[0];
         }
 
+        String[] errorLines;
         if (this.errorReader != null) {
             errorLines = this.errorReader.getLines();
         } else {

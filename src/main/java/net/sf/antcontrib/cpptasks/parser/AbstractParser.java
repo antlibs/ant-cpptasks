@@ -39,7 +39,7 @@ public abstract class AbstractParser {
         char[] buf = new char[4096];
         AbstractParserState newLineState = getNewLineState();
         AbstractParserState state = newLineState;
-        int charsRead = -1;
+        int charsRead;
         do {
             charsRead = reader.read(buf, 0, buf.length);
             if (state == null) {

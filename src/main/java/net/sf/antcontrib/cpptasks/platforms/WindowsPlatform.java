@@ -133,13 +133,13 @@ public final class WindowsPlatform {
      */
     private static boolean hasSameContent(final InputStream stream1,
                                           final InputStream stream2) throws IOException {
-        int byte1 = -1;
-        int byte2 = -1;
+        int byte1;
+        int byte2;
         do {
             byte1 = stream1.read();
             byte2 = stream2.read();
         } while (byte1 == byte2 && byte1 != -1);
-        return (byte1 == byte2);
+        return byte1 == byte2;
     }
 
     /**

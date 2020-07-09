@@ -144,11 +144,6 @@ public class GccLinker extends AbstractLdLinker {
             buf.append('/');
             buf.append(GccProcessor.getVersion());
             //
-            //   build default path from gcc and system /lib and /lib/w32api
-            //
-            String[] impliedLibPath = new String[]{buf.toString(),
-                    "/lib/w32api", "/lib"};
-            //
             //     read gcc specs file for other library paths
             //
             String[] specs = GccProcessor.getSpecs();
