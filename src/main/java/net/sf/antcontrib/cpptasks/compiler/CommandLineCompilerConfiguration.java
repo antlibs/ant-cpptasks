@@ -108,9 +108,7 @@ public final class CommandLineCompilerConfiguration
         }
         this.isPrecompiledHeaderGeneration = isPrecompileHeaderGeneration;
         args = new String[base.args.length + additionalArgs.length];
-        for (int i = 0; i < base.args.length; i++) {
-            args[i] = base.args[i];
-        }
+        System.arraycopy(base.args, 0, args, 0, base.args.length);
         int index = base.args.length;
         for (String additionalArg : additionalArgs) {
             args[index++] = additionalArg;

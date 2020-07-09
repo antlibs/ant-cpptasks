@@ -372,9 +372,7 @@ public abstract class CommandLineLinker extends AbstractLinker {
             execArgCount++;
         }
         String[] execArgs = new String[execArgCount + 1];
-        for (int i = 0; i < execArgCount; i++) {
-            execArgs[i] = args[i];
-        }
+        System.arraycopy(args, 0, execArgs, 0, execArgCount);
         execArgs[execArgCount] = getCommandFileSwitch(commandFile.toString());
         for (int i = execArgCount; i < args.length; i++) {
             //
