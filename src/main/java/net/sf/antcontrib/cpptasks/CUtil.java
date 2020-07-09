@@ -524,9 +524,9 @@ public class CUtil {
         String lcPath = source.getAbsolutePath().toLowerCase(Locale.US);
         return lcPath.contains("platformsdk")
                 || lcPath.contains("microsoft")
-                || lcPath == "/usr/include"
-                || lcPath == "/usr/lib"
-                || lcPath == "/usr/local/include"
-                || lcPath == "/usr/local/lib";
+                || "/usr/include".equals(lcPath)
+                || "/usr/lib".equals(lcPath)
+                || "/usr/local/include".equals(lcPath)
+                || "/usr/local/lib".equals(lcPath);
     }
 }
