@@ -16,8 +16,6 @@
  */
 package net.sf.antcontrib.cpptasks.types;
 
-import java.lang.reflect.Method;
-
 /**
  * Helper class which can be used for Ant task attribute setter methods to
  * allow the build file to specify a long in either decimal, octal, or
@@ -37,16 +35,7 @@ public class FlexLong {
      * @param value String
      */
     public FlexLong(String value) {
-        // Java 1.1 did not support Long.decode().. so we call it by
-        // reflection.
-        try {
-            Method m = Long.class.getMethod("decode", String.class);
-            Object rc = m.invoke(null, value);
-            this.value = (Long) rc;
-        } catch (Exception e) {
-            // Try it the old fashioned way, we must be on a 1.1 jre
-            this.value = new Long(value);
-        }
+        this.value = Long.decode(value);
     }
 
     /**
