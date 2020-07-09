@@ -73,13 +73,9 @@ public class UndefineArgument {
                 unduplicated.addElement(current);
             }
         }
-        UndefineArgument[] combined = new UndefineArgument[unduplicated.size()
-                + override.length];
-        unduplicated.copyInto(combined);
-        int offset = unduplicated.size();
-        for (int i = 0; i < override.length; i++) {
-            combined[offset + i] = override[i];
-        }
+        UndefineArgument[] combined = unduplicated.toArray(new UndefineArgument[unduplicated.size()
+                + override.length]);
+        System.arraycopy(override, 0, combined, unduplicated.size(), override.length);
         return combined;
     }
 

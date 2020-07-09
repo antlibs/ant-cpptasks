@@ -211,9 +211,7 @@ public abstract class CommandLineCompiler extends AbstractCompiler {
             int retval = runCommand(task, outputDir, commandline);
             if (monitor != null) {
                 String[] fileNames = new String[firstFileNextExec - sourceIndex];
-                for (int j = 0; j < fileNames.length; j++) {
-                    fileNames[j] = sourceFiles[sourceIndex + j];
-                }
+                System.arraycopy(sourceFiles, sourceIndex, fileNames, 0, fileNames.length);
                 monitor.progress(fileNames);
             }
             //
