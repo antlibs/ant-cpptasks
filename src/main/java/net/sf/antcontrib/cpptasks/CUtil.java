@@ -208,7 +208,7 @@ public class CUtil {
             //
             //  see if the prefixes are the same
             //
-            if (canonicalBase.substring(0, 2).equals("\\\\")) {
+            if (canonicalBase.startsWith("\\\\")) {
                 //
                 //  UNC file name, if target file doesn't also start with same
                 //      server name, don't go there
@@ -219,7 +219,7 @@ public class CUtil {
                     return canonicalTarget;
                 }
             } else {
-                if (canonicalBase.substring(1, 3).equals(":\\")) {
+                if (canonicalBase.startsWith(":\\", 1)) {
                     int endPrefix = 2;
                     String prefix1 = canonicalBase.substring(0, endPrefix);
                     String prefix2 = canonicalTarget.substring(0, endPrefix);
