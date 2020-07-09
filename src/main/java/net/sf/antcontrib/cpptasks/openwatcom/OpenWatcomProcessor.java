@@ -35,9 +35,6 @@ public final class OpenWatcomProcessor {
             case 0:
                 args.addElement("/w0");
                 break;
-            case 1:
-                args.addElement("/w1");
-                break;
             case 2:
                 break;
             case 3:

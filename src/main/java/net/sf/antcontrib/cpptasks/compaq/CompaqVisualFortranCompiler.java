@@ -86,7 +86,6 @@ public class CompaqVisualFortranCompiler extends CommandLineFortranCompiler {
                 args.addElement("/nowarn");
                 break;
             case 1:
-                break;
             case 2:
                 break;
             case 3:
