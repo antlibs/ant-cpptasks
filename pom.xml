@@ -70,7 +70,7 @@
     <dependency>
       <groupId>org.apache.ant</groupId>
       <artifactId>ant</artifactId>
-      <version>1.9.14</version>
+      <version>1.9.15</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -81,6 +81,17 @@
   </dependencies>
   <build>
     <plugins>
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>3.1.0</version>
+        <configuration>
+          <encoding>${project.build.sourceEncoding}</encoding>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>3.9.1</version>
+      </plugin>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>2.22.2</version>
@@ -95,7 +106,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.0</version>
+        <version>3.8.1</version>
         <configuration>
           <source>${project.build.source}</source>
           <target>${project.build.target}</target>
@@ -103,7 +114,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.1.0</version>
+        <version>3.2.0</version>
         <configuration>
           <archive>
             <manifestSections>
@@ -122,7 +133,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-antrun-plugin</artifactId>
-        <version>1.8</version>
+        <version>3.0.0</version>
         <executions>
           <!-- release builds will put SVN tags into the SCM page, this changes it back to a branch -->
           <execution>
@@ -158,7 +169,7 @@
               <target>
                 <taskdef name="replaceregexp"
                          classname="org.apache.tools.ant.taskdefs.optional.ReplaceRegExp"/>
-                <replaceregexp file="target/site/source-repository.html" match="/tags/[^ &quot;'&lt;]*"
+                <replaceregexp file="target/site/scm.html" match="/tags/[^ &quot;'&lt;]*"
                                replace="/trunk" flags="g"/>
                 <replaceregexp match="Generated on .* for " replace="Generated for " flags="g">
                   <fileset dir="target/site/apidocs" includes="**/*.html"/>
@@ -173,6 +184,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
+        <version>3.3.0</version>
         <configuration>
           <descriptors>
             <descriptor>src/assembly/bin.xml</descriptor>
@@ -181,15 +193,17 @@
         </configuration>
         <executions>
           <execution>
+            <id>make-assembly</id>
+            <phase>package</phase>
             <goals>
-              <goal>assembly</goal>
+              <goal>single</goal>
             </goals>
           </execution>
         </executions>
       </plugin>
       <plugin>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.0.1</version>
+        <version>3.2.0</version>
         <configuration>
           <source>${project.build.source}</source>
         </configuration>
@@ -203,9 +217,11 @@
       </plugin>
       <plugin>
         <artifactId>maven-source-plugin</artifactId>
-        <version>3.0.1</version>
+        <version>3.2.1</version>
         <executions>
           <execution>
+            <id>attach-sources</id>
+            <phase>verify</phase>
             <goals>
               <goal>jar</goal>
             </goals>
@@ -227,19 +243,19 @@
     <plugins>
       <plugin>
         <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>2.9</version>
+        <version>3.1.0</version>
         <reportSets>
           <reportSet>
             <reports>
               <report>index</report>
               <report>dependency-info</report>
               <report>dependencies</report>
-              <report>license</report>
-              <report>project-team</report>
+              <report>licenses</report>
+              <report>team</report>
               <report>scm</report>
-              <report>cim</report>
-              <report>issue-tracking</report>
-              <report>mailing-list</report>
+              <report>ci-management</report>
+              <report>issue-management</report>
+              <report>mailing-lists</report>
               <report>plugins</report>
               <report>plugin-management</report>
               <report>summary</report>
@@ -270,7 +286,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.0.1</version>
+        <version>3.2.0</version>
         <configuration>
           <source>${project.build.source}</source>
         </configuration>

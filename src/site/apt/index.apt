@@ -29,7 +29,8 @@ cpptasks for Apache Ant
 
 
   To use:
-     * Place cpptasks.jar into Ant's classpath by placing in Ant's lib directory,
+
+     * Place ant-cpptasks.jar into Ant's classpath by placing in Ant's lib directory,
           adding to CLASSPATH environment variable or using the -lib command line option.
 
      * Add type and task definitions in build file using either taskdef or antlib.
