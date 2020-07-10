@@ -35,8 +35,7 @@ public final class ObjectFileCollector implements FileVisitor {
     }
 
     public void visit(File parentDir, String filename) throws BuildException {
-        int bid = linker.bid(filename);
-        if (bid >= 1) {
+        if (linker.bid(filename) >= 1) {
             files.addElement(new File(parentDir, filename));
         }
     }

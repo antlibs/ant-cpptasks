@@ -134,13 +134,10 @@ public class GccProcessor {
                 //
                 //  build a relative path like
                 //    ../lib/gcc-lib/i686-pc-cygwin/2.95.3-5/specs
-                //
-                String relativePath = String.format("../lib/gcc-lib/%s/%s/specs",
-                        getMachine(), getVersion());
-                //
                 //  resolve it relative to the location of gcc.exe
                 //
-                File specsFile = new File(gccParent, relativePath);
+                File specsFile = new File(gccParent, String.format("../lib/gcc-lib/%s/%s/specs",
+                        getMachine(), getVersion()));
                 //
                 //  found the specs file
                 //

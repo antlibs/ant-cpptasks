@@ -171,8 +171,7 @@ public final class CompilerDef extends ProcessorDef {
         }
         Vector<UndefineArgument> actives = new Vector<UndefineArgument>();
         for (DefineSet currentSet : defineSets) {
-            UndefineArgument[] defines = currentSet.getDefines();
-            for (UndefineArgument define : defines) {
+            for (UndefineArgument define : currentSet.getDefines()) {
                 if (define.isActive(p)) {
                     actives.addElement(define);
                 }
@@ -202,8 +201,7 @@ public final class CompilerDef extends ProcessorDef {
         Vector<String> activePaths = new Vector<String>();
         for (ConditionalPath path : paths) {
             if (path.isActive(p)) {
-                String[] pathEntries = path.list();
-                for (String pathEntry : pathEntries) {
+                for (String pathEntry : path.list()) {
                     activePaths.addElement(pathEntry);
                 }
             }
@@ -311,8 +309,7 @@ public final class CompilerDef extends ProcessorDef {
             processor = GccCCompiler.getInstance();
         }
         if (getLibtool() && processor instanceof CommandLineCompiler) {
-            CommandLineCompiler compiler = (CommandLineCompiler) processor;
-            processor = compiler.getLibtoolCompiler();
+            processor = ((CommandLineCompiler) processor).getLibtoolCompiler();
         }
         return processor;
     }
@@ -497,8 +494,7 @@ public final class CompilerDef extends ProcessorDef {
         if (isReference()) {
             throw tooManyAttributes();
         }
-        Compiler compiler = name.getCompiler();
-        setProcessor(compiler);
+        setProcessor(name.getCompiler());
     }
 
     protected void setProcessor(Processor proc) throws BuildException {

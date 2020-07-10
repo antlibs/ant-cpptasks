@@ -119,9 +119,7 @@ public class CUtil {
         if (new File(currentDir, exeName).exists()) {
             return currentDir;
         }
-        File[] envPath = CUtil.getPathFromEnvironment("PATH",
-                File.pathSeparator);
-        for (File file : envPath) {
+        for (File file : getPathFromEnvironment("PATH", File.pathSeparator)) {
             if (new File(file, exeName).exists()) {
                 return file;
             }
@@ -321,8 +319,7 @@ public class CUtil {
             //   don't add an entry for zero-length paths
             //
             if (delimPos > startPos) {
-                String dirName = path.substring(startPos, delimPos);
-                File dir = new File(dirName);
+                File dir = new File(path.substring(startPos, delimPos));
                 if (dir.exists() && dir.isDirectory()) {
                     libpaths.addElement(dir);
                 }

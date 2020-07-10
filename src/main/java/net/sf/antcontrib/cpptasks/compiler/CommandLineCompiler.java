@@ -325,12 +325,10 @@ public abstract class CommandLineCompiler extends AbstractCompiler {
         Vector<String> includePath = new Vector<String>();
         Vector<String> sysIncludePath = new Vector<String>();
         for (int i = defaultProviders.length - 1; i >= 0; i--) {
-            String[] incPath = defaultProviders[i].getActiveIncludePaths();
-            for (String value : incPath) {
+            for (String value : defaultProviders[i].getActiveIncludePaths()) {
                 includePath.addElement(value);
             }
-            incPath = defaultProviders[i].getActiveSysIncludePaths();
-            for (String s : incPath) {
+            for (String s : defaultProviders[i].getActiveSysIncludePaths()) {
                 sysIncludePath.addElement(s);
             }
         }
@@ -346,19 +344,15 @@ public abstract class CommandLineCompiler extends AbstractCompiler {
         addIncludes(baseDirPath, sysIncPath, args, null, null);
         StringBuilder buf = new StringBuilder(getIdentifier());
         for (int i = 0; i < relativeArgs.size(); i++) {
-            buf.append(' ');
-            buf.append(relativeArgs.elementAt(i));
+            buf.append(' ').append(relativeArgs.elementAt(i));
         }
         for (String endArg : endArgs) {
-            buf.append(' ');
-            buf.append(endArg);
+            buf.append(' ').append(endArg);
         }
-        String configId = buf.toString();
-        boolean rebuild = specificDef.getRebuild(baseDefs, 0);
-        File[] envIncludePath = getEnvironmentIncludePath();
-        return new CommandLineCompilerConfiguration(this, configId, incPath,
-                sysIncPath, envIncludePath, includePathIdentifier.toString(),
-                args.toArray(new String[0]), paramArray, rebuild, endArgs);
+        return new CommandLineCompilerConfiguration(this, buf.toString(), incPath, sysIncPath,
+                getEnvironmentIncludePath(), includePathIdentifier.toString(),
+                args.toArray(new String[0]), paramArray, specificDef.getRebuild(baseDefs, 0),
+                endArgs);
     }
 
     protected int getArgumentCountPerInputFile() {

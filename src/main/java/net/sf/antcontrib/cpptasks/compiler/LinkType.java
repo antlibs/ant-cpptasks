@@ -47,8 +47,7 @@ public class LinkType {
      * @return boolean
      */
     public boolean isExecutable() {
-        String value = outputType.getValue();
-        return value.equals("executable");
+        return "executable".equals(outputType.getValue());
     }
 
     /**
@@ -57,8 +56,7 @@ public class LinkType {
      * @return boolean
      */
     public boolean isPluginModule() {
-        String value = outputType.getValue();
-        return value.equals("plugin");
+        return "plugin".equals(outputType.getValue());
     }
 
     /**
@@ -77,8 +75,7 @@ public class LinkType {
      * @return boolean
      */
     public boolean isStaticLibrary() {
-        String value = outputType.getValue();
-        return value.equals("static");
+        return "static".equals(outputType.getValue());
     }
 
     /**
@@ -96,8 +93,7 @@ public class LinkType {
      * @return boolean
      */
     public boolean isSubsystemConsole() {
-        String value = subsystem.getValue();
-        return value.equals("console");
+        return "console".equals(subsystem.getValue());
     }
 
     /**
@@ -107,8 +103,7 @@ public class LinkType {
      * @return boolean
      */
     public boolean isSubsystemGUI() {
-        String value = subsystem.getValue();
-        return value.equals("gui");
+        return "gui".equals(subsystem.getValue());
     }
 
     /**

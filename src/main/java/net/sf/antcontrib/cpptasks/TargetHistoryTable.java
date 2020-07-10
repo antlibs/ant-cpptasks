@@ -284,8 +284,7 @@ public final class TargetHistoryTable {
                         buf.append(Long.toHexString(targetHistory.getOutputLastModified()));
                         buf.append("\">\n");
                         writer.write(buf.toString());
-                        SourceHistory[] sourceHistories = targetHistory.getSources();
-                        for (SourceHistory sourceHistory : sourceHistories) {
+                        for (SourceHistory sourceHistory : targetHistory.getSources()) {
                             buf.setLength(0);
                             buf.append("         <source file=\"");
                             buf.append(xmlAttribEncode(sourceHistory.getRelativePath()));
