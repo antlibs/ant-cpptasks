@@ -80,8 +80,7 @@ public class GccLinker extends AbstractLdLinker {
     }
 
     protected Object clone() throws CloneNotSupportedException {
-        GccLinker clone = (GccLinker) super.clone();
-        return clone;
+        return (GccLinker) super.clone();
     }
 
     /**

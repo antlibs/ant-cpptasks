@@ -63,7 +63,6 @@ public final class TargetHistory {
     }
 
     public SourceHistory[] getSources() {
-        SourceHistory[] clone = sources.clone();
-        return clone;
+        return sources.clone();
     }
 }

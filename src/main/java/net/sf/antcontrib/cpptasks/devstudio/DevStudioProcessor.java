@@ -78,8 +78,7 @@ public class DevStudioProcessor {
         } else {
             buf.append(outPath);
         }
-        String[] retval = new String[]{buf.toString()};
-        return retval;
+        return new String[]{buf.toString()};
     }
 
     public static void getUndefineSwitch(StringBuilder buffer, String define) {

@@ -111,8 +111,7 @@ public class GccProcessor {
         } else {
             buf.append(outputFile.replace('\\', '/'));
         }
-        String[] retval = new String[]{letter, buf.toString()};
-        return retval;
+        return new String[]{letter, buf.toString()};
     }
 
     /**
