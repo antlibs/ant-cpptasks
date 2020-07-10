@@ -152,9 +152,7 @@ public final class TargetDef extends DataType {
      */
     public CPUEnum getCpu() {
         if (isReference()) {
-            TargetDef refPlatform = getCheckedRef(TargetDef.class,
-                    "TargetDef");
-            return refPlatform.getCpu();
+            return getRef().getCpu();
         }
         return cpu;
     }
@@ -166,9 +164,7 @@ public final class TargetDef extends DataType {
      */
     public ArchEnum getArch() {
         if (isReference()) {
-            TargetDef refPlatform = getCheckedRef(TargetDef.class,
-                    "TargetDef");
-            return refPlatform.getArch();
+            return getRef().getArch();
         }
         return arch;
     }
@@ -180,9 +176,7 @@ public final class TargetDef extends DataType {
      */
     public OSFamilyEnum getOsfamily() {
         if (isReference()) {
-            TargetDef refPlatform = getCheckedRef(TargetDef.class,
-                    "TargetDef");
-            return refPlatform.getOsfamily();
+            return getRef().getOsfamily();
         }
         return osFamily;
     }
@@ -229,4 +223,7 @@ public final class TargetDef extends DataType {
         osFamily = value;
     }
 
+    private TargetDef getRef() {
+        return getCheckedRef(TargetDef.class, "TargetDef");
+    }
 }

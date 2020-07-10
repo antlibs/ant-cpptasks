@@ -68,32 +68,28 @@ public class LibrarySet extends DataType {
      */
     public String getDataset() {
         if (isReference()) {
-            LibrarySet master = getCheckedRef(LibrarySet.class, "LibrarySet");
-            return master.getDataset();
+            return getRef().getDataset();
         }
         return dataset;
     }
 
     public File getDir(final Project project) {
         if (isReference()) {
-            LibrarySet master = getCheckedRef(LibrarySet.class, "LibrarySet");
-            return master.getDir(project);
+            return getRef().getDir(project);
         }
         return set.getDir(project);
     }
 
     protected FileSet getFileSet() {
         if (isReference()) {
-            LibrarySet master = getCheckedRef(LibrarySet.class, "LibrarySet");
-            return master.getFileSet();
+            return getRef().getFileSet();
         }
         return set;
     }
 
     public String[] getLibs() {
         if (isReference()) {
-            LibrarySet master = getCheckedRef(LibrarySet.class, "LibrarySet");
-            return master.getLibs();
+            return getRef().getLibs();
         }
         return libnames.clone();
     }
@@ -105,8 +101,7 @@ public class LibrarySet extends DataType {
      */
     public LibraryTypeEnum getType() {
         if (isReference()) {
-            LibrarySet master = getCheckedRef(LibrarySet.class, "LibrarySet");
-            return master.getType();
+            return getRef().getType();
         }
         return libraryType;
     }
@@ -150,8 +145,7 @@ public class LibrarySet extends DataType {
             }
         }
         if (isReference()) {
-            LibrarySet master = getCheckedRef(LibrarySet.class, "LibrarySet");
-            return master.isActive(project);
+            return getRef().isActive(getProject());
         }
         if (libnames.length == 0) {
             p.log("libnames not specified or empty.", Project.MSG_WARN);
@@ -278,8 +272,7 @@ public class LibrarySet extends DataType {
     public void visitLibraries(final Project project, final Linker linker, final File[] libpath,
                                final FileVisitor visitor) throws BuildException {
         if (isReference()) {
-            LibrarySet master = getCheckedRef(LibrarySet.class, "LibrarySet");
-            master.visitLibraries(project, linker, libpath, visitor);
+            getRef().visitLibraries(project, linker, libpath, visitor);
         }
         //
         //  if there was a libs attribute then
@@ -365,5 +358,9 @@ public class LibrarySet extends DataType {
                 }
             }
         }
+    }
+
+    private LibrarySet getRef() {
+        return getCheckedRef(LibrarySet.class, "LibrarySet");
     }
 }

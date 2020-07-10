@@ -166,8 +166,7 @@ public final class CompilerDef extends ProcessorDef {
             throw new IllegalStateException("project must be set before this call");
         }
         if (isReference()) {
-            return getCheckedRef(CompilerDef.class,
-                    "CompilerDef").getActiveDefines();
+            return getRef().getActiveDefines();
         }
         Vector<UndefineArgument> actives = new Vector<UndefineArgument>();
         for (DefineSet currentSet : defineSets) {
@@ -187,8 +186,7 @@ public final class CompilerDef extends ProcessorDef {
      */
     public String[] getActiveIncludePaths() {
         if (isReference()) {
-            return getCheckedRef(CompilerDef.class,
-                    "CompilerDef").getActiveIncludePaths();
+            return getRef().getActiveIncludePaths();
         }
         return getActivePaths(includePaths);
     }
@@ -211,8 +209,7 @@ public final class CompilerDef extends ProcessorDef {
 
     public PrecompileDef getActivePrecompile(CompilerDef ccElement) {
         if (isReference()) {
-            return getCheckedRef(CompilerDef.class,
-                    "CompilerDef").getActivePrecompile(ccElement);
+            return getRef().getActivePrecompile(ccElement);
         }
         for (PrecompileDef current : precompileDefs) {
             if (current.isActive()) {
@@ -234,16 +231,14 @@ public final class CompilerDef extends ProcessorDef {
 
     public String[] getActiveSysIncludePaths() {
         if (isReference()) {
-            return getCheckedRef(CompilerDef.class,
-                    "CompilerDef").getActiveSysIncludePaths();
+            return getRef().getActiveSysIncludePaths();
         }
         return getActivePaths(sysIncludePaths);
     }
 
     public final boolean getExceptions(CompilerDef[] defaultProviders, int index) {
         if (isReference()) {
-            return getCheckedRef(CompilerDef.class,
-                    "CompilerDef").getExceptions(defaultProviders, index);
+            return getRef().getExceptions(defaultProviders, index);
         }
         if (exceptions != null) {
             return exceptions;
@@ -258,8 +253,7 @@ public final class CompilerDef extends ProcessorDef {
 
     public final Boolean getRtti(CompilerDef[] defaultProviders, int index) {
         if (isReference()) {
-            return getCheckedRef(CompilerDef.class,
-                    "CompilerDef").getRtti(defaultProviders, index);
+            return getRef().getRtti(defaultProviders, index);
         }
         if (rtti != null) {
             return rtti;
@@ -274,8 +268,7 @@ public final class CompilerDef extends ProcessorDef {
 
     public final OptimizationEnum getOptimization(CompilerDef[] defaultProviders, int index) {
         if (isReference()) {
-            return getCheckedRef(CompilerDef.class,
-                    "CompilerDef").getOptimization(defaultProviders, index);
+            return getRef().getOptimization(defaultProviders, index);
         }
         if (optimization != null) {
             return optimization;
@@ -290,8 +283,7 @@ public final class CompilerDef extends ProcessorDef {
 
     public boolean getMultithreaded(CompilerDef[] defaultProviders, int index) {
         if (isReference()) {
-            return getCheckedRef(CompilerDef.class,
-                    "CompilerDef").getMultithreaded(defaultProviders, index);
+            return getRef().getMultithreaded(defaultProviders, index);
         }
         if (multithreaded != null) {
             return multithreaded;
@@ -316,8 +308,7 @@ public final class CompilerDef extends ProcessorDef {
 
     public int getWarnings(CompilerDef[] defaultProviders, int index) {
         if (isReference()) {
-            return getCheckedRef(CompilerDef.class,
-                    "CompilerDef").getWarnings(defaultProviders, index);
+            return getRef().getWarnings(defaultProviders, index);
         }
         if (warnings == -1) {
             if (defaultProviders != null && index < defaultProviders.length) {
@@ -525,5 +516,9 @@ public final class CompilerDef extends ProcessorDef {
             throw tooManyAttributes();
         }
         this.optimization = value;
+    }
+
+    private CompilerDef getRef() {
+        return getCheckedRef(CompilerDef.class, "CompilerDef");
     }
 }

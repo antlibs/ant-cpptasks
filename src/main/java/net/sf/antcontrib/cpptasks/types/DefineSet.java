@@ -92,9 +92,7 @@ public class DefineSet extends DataType {
      */
     public UndefineArgument[] getDefines() throws BuildException {
         if (isReference()) {
-            DefineSet defset = getCheckedRef(DefineSet.class,
-                    "DefineSet");
-            return defset.getDefines();
+            return getRef().getDefines();
         } else {
             if (isActive()) {
                 return defineList.toArray(new UndefineArgument[0]);
@@ -214,5 +212,9 @@ public class DefineSet extends DataType {
      */
     public final void setUnless(String propName) {
         unlessCond = propName;
+    }
+
+    private DefineSet getRef() {
+        return getCheckedRef(DefineSet.class, "DefineSet");
     }
 }
