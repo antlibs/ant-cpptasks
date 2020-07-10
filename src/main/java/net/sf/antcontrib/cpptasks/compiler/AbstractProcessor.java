@@ -131,8 +131,7 @@ public abstract class AbstractProcessor implements Processor, Cloneable {
      * @return boolean
      */
     protected boolean isDarwin() {
-        String osName = getOSName();
-        return "Mac OS X".equals(osName);
+        return "Mac OS X".equals(getOSName());
     }
 
     public final String toString() {

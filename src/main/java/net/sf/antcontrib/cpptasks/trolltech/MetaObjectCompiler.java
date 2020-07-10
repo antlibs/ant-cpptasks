@@ -195,8 +195,7 @@ public final class MetaObjectCompiler extends CommandLineCompiler {
             case 0:
                 return "-o";
             case 1:
-                String outputFileName = getOutputFileNames(filename, null)[0];
-                return new File(outputDir, outputFileName).toString();
+                return new File(outputDir, getOutputFileNames(filename, null)[0]).toString();
             case 2:
                 return filename;
             default:

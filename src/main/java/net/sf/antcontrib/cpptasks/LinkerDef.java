@@ -457,8 +457,7 @@ public class LinkerDef extends ProcessorDef {
         if (isReference()) {
             throw tooManyAttributes();
         }
-        Linker linker = name.getLinker();
-        super.setProcessor(linker);
+        super.setProcessor(name.getLinker());
     }
 
     protected void setProcessor(Processor proc) throws BuildException {
@@ -466,8 +465,7 @@ public class LinkerDef extends ProcessorDef {
         if (proc instanceof Linker) {
             linker = (Linker) proc;
         } else {
-            LinkType linkType = new LinkType();
-            linker = proc.getLinker(linkType);
+            linker = proc.getLinker(new LinkType());
         }
         super.setProcessor(linker);
     }

@@ -139,13 +139,10 @@ public class GccProcessor {
                 //
                 //  build a relative path like
                 //    ../lib/gcc-lib/i686-pc-cygwin/2.95.3-5/specs
-                //
-                String relativePath = String.format("../lib/gcc-lib/%s/%s/specs",
-                        getMachine(), getVersion());
-                //
                 //  resolve it relative to the location of gcc.exe
                 //
-                File specsFile = new File(gccParent, relativePath);
+                File specsFile = new File(gccParent, String.format("../lib/gcc-lib/%s/%s/specs",
+                        getMachine(), getVersion()));
                 //
                 //  found the specs file
                 //
@@ -173,9 +170,8 @@ public class GccProcessor {
 
     public static String getVersion() {
         if (version == null) {
-            String[] args = new String[]{GccCCompiler.CMD_PREFIX + "gcc",
-                    "-dumpversion"};
-            String[] cmdout = CaptureStreamHandler.run(args);
+            String[] cmdout = CaptureStreamHandler.run(new String[]{GccCCompiler.CMD_PREFIX
+                    + "gcc", "-dumpversion"});
             if (cmdout.length == 0) {
                 version = "noversion";
             } else {

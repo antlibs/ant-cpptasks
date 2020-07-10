@@ -683,9 +683,8 @@ public abstract class ProcessorDef extends DataType {
                 // Find matching source files
                 DirectoryScanner scanner = srcSet.getDirectoryScanner(p);
                 // Check each source file - see if it needs compilation
-                String[] fileNames = scanner.getIncludedFiles();
                 File parentDir = scanner.getBasedir();
-                for (String currentFile : fileNames) {
+                for (String currentFile : scanner.getIncludedFiles()) {
                     visitor.visit(parentDir, currentFile);
                 }
             }

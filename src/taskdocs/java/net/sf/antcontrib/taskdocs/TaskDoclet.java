@@ -407,8 +407,7 @@ public final class TaskDoclet {
         AttributesImpl attributes = new AttributesImpl();
         attributes.addAttribute(null, "name", "name", "CDATA", clazz.name());
         StringBuilder firstSentence = new StringBuilder();
-        Tag[] tags = clazz.firstSentenceTags();
-        for (Tag tag : tags) {
+        for (Tag tag : clazz.firstSentenceTags()) {
             firstSentence.append(tag.text());
         }
         if (firstSentence.length() > 0) {
