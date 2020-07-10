@@ -242,11 +242,9 @@ public final class CompilerDef extends ProcessorDef {
         }
         if (exceptions != null) {
             return exceptions;
-        } else {
-            if (defaultProviders != null && index < defaultProviders.length) {
-                return defaultProviders[index].getExceptions(defaultProviders,
-                        index + 1);
-            }
+        }
+        if (defaultProviders != null && index < defaultProviders.length) {
+            return defaultProviders[index].getExceptions(defaultProviders, index + 1);
         }
         return false;
     }
@@ -257,11 +255,9 @@ public final class CompilerDef extends ProcessorDef {
         }
         if (rtti != null) {
             return rtti;
-        } else {
-            if (defaultProviders != null && index < defaultProviders.length) {
-                return defaultProviders[index].getRtti(defaultProviders,
-                        index + 1);
-            }
+        }
+        if (defaultProviders != null && index < defaultProviders.length) {
+            return defaultProviders[index].getRtti(defaultProviders, index + 1);
         }
         return null;
     }
@@ -272,11 +268,9 @@ public final class CompilerDef extends ProcessorDef {
         }
         if (optimization != null) {
             return optimization;
-        } else {
-            if (defaultProviders != null && index < defaultProviders.length) {
-                return defaultProviders[index].getOptimization(defaultProviders,
-                        index + 1);
-            }
+        }
+        if (defaultProviders != null && index < defaultProviders.length) {
+            return defaultProviders[index].getOptimization(defaultProviders, index + 1);
         }
         return null;
     }
@@ -287,10 +281,9 @@ public final class CompilerDef extends ProcessorDef {
         }
         if (multithreaded != null) {
             return multithreaded;
-        } else {
-            if (defaultProviders != null && index < defaultProviders.length) {
-                return defaultProviders[index].getMultithreaded(defaultProviders, index + 1);
-            }
+        }
+        if (defaultProviders != null && index < defaultProviders.length) {
+            return defaultProviders[index].getMultithreaded(defaultProviders, index + 1);
         }
         return true;
     }

@@ -72,10 +72,8 @@ public final class ForteCCCompiler extends GccCompatibleCCompiler {
         if (debug) {
             args.addElement("-g");
         }
-        if (optimization != null) {
-            if (optimization.isSpeed()) {
-                args.addElement("-xO2");
-            }
+        if (optimization != null && optimization.isSpeed()) {
+            args.addElement("-xO2");
         }
         if (rtti != null) {
             if (rtti) {

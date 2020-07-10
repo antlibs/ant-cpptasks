@@ -263,11 +263,9 @@ public abstract class ProcessorDef extends DataType {
         }
         if (debug != null) {
             return debug;
-        } else {
-            if (defaultProviders != null && index < defaultProviders.length) {
-                return defaultProviders[index].getDebug(defaultProviders,
-                        index + 1);
-            }
+        }
+        if (defaultProviders != null && index < defaultProviders.length) {
+            return defaultProviders[index].getDebug(defaultProviders, index + 1);
         }
         return false;
     }
@@ -300,17 +298,16 @@ public abstract class ProcessorDef extends DataType {
      * @throws BuildException if reference is not same type object
      */
     public ProcessorDef getExtends() throws BuildException {
-        if (extendsRef != null) {
-            Object obj = extendsRef.getReferencedObject(getProject());
-            if (!getClass().isInstance(obj)) {
-                throw new BuildException("Referenced object "
-                        + extendsRef.getRefId() + " not correct type, is "
-                        + obj.getClass().getName() + " should be "
-                        + getClass().getName());
-            }
-            return (ProcessorDef) obj;
+        if (extendsRef == null) {
+            return null;
         }
-        return null;
+        Object obj = extendsRef.getReferencedObject(getProject());
+        if (!getClass().isInstance(obj)) {
+            throw new BuildException("Referenced object " + extendsRef.getRefId()
+                    + " not correct type, is " + obj.getClass().getName() + " should be "
+                    + getClass().getName());
+        }
+        return (ProcessorDef) obj;
     }
 
     /**
@@ -385,11 +382,9 @@ public abstract class ProcessorDef extends DataType {
         }
         if (rebuild != null) {
             return rebuild;
-        } else {
-            if (defaultProviders != null && index < defaultProviders.length) {
-                return defaultProviders[index].getRebuild(defaultProviders,
-                        index + 1);
-            }
+        }
+        if (defaultProviders != null && index < defaultProviders.length) {
+            return defaultProviders[index].getRebuild(defaultProviders, index + 1);
         }
         return false;
     }

@@ -262,8 +262,7 @@ public final class GccCCompiler extends GccCompatibleCCompiler {
          */
         if (System.getProperty("os.name").contains("Windows")) {
             return 2048;
-        } else {
-            return Integer.MAX_VALUE;
         }
+        return Integer.MAX_VALUE;
     }
 }

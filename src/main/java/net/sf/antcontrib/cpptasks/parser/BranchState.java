@@ -38,10 +38,7 @@ public class BranchState extends AbstractParserState {
             }
         }
         state = getNoMatchState();
-        if (state != null) {
-            return state.consume(ch);
-        }
-        return state;
+        return state == null ? null : state.consume(ch);
     }
 
     protected AbstractParserState getNoMatchState() {

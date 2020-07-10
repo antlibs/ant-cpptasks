@@ -843,10 +843,8 @@ public class CCTask extends Task {
                 } catch (IOException ex) {
                     log("Error writing link history.xml: " + ex.toString());
                 }
-            } else {
-                if (outputFileProperty != null) {
-                    getProject().setProperty(outputFileProperty, output.getAbsolutePath());
-                }
+            } else if (outputFileProperty != null) {
+                getProject().setProperty(outputFileProperty, output.getAbsolutePath());
             }
         }
     }

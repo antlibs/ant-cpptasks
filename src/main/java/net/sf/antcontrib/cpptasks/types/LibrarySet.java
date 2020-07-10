@@ -119,26 +119,20 @@ public class LibrarySet extends DataType {
         }
         if (ifCond != null) {
             String ifValue = p.getProperty(ifCond);
-            if (ifValue != null) {
-                if (ifValue.equals("no") || ifValue.equals("false")) {
-                    throw new BuildException("property "
-                            + ifCond
-                            + " used as if condition has value "
-                            + ifValue
-                            + " which suggests a misunderstanding of if attributes");
-                }
-            } else {
+            if (ifValue == null) {
                 return false;
+            }
+            if (ifValue.equals("no") || ifValue.equals("false")) {
+                throw new BuildException("property " + ifCond + " used as if condition has value "
+                        + ifValue + " which suggests a misunderstanding of if attributes");
             }
         }
         if (unlessCond != null) {
             String unlessValue = p.getProperty(unlessCond);
             if (unlessValue != null) {
                 if (unlessValue.equals("no") || unlessValue.equals("false")) {
-                    throw new BuildException("property "
-                            + unlessCond
-                            + " used as unless condition has value "
-                            + unlessValue
+                    throw new BuildException("property " + unlessCond
+                            + " used as unless condition has value " + unlessValue
                             + " which suggests a misunderstanding of unless attributes");
                 }
                 return false;

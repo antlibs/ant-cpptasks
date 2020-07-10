@@ -191,16 +191,14 @@ public class GccLinker extends AbstractLdLinker {
         if (type.isPluginModule()) {
             if (isDarwin()) {
                 return machBundleLinker;
-            } else {
-                return dllLinker;
             }
+            return dllLinker;
         }
         if (type.isSharedLibrary()) {
             if (isDarwin()) {
                 return machDllLinker;
-            } else {
-                return dllLinker;
             }
+            return dllLinker;
         }
         return instance;
     }

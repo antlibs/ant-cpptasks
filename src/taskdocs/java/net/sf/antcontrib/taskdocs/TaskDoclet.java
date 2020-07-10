@@ -68,11 +68,9 @@ public final class TaskDoclet {
         Map<String, ClassDoc> documentedTypes = new HashMap<String, ClassDoc>();
         ClassDoc[] classes = root.classes();
         for (ClassDoc clazz : classes) {
-            if (clazz.isPublic() && !clazz.isAbstract()) {
-                if (isTask(clazz) || isType(clazz)) {
-                    writeClass(typeHandler, clazz, referencedTypes);
-                    documentedTypes.put(clazz.qualifiedTypeName(), clazz);
-                }
+            if (clazz.isPublic() && !clazz.isAbstract() && (isTask(clazz) || isType(clazz))) {
+                writeClass(typeHandler, clazz, referencedTypes);
+                documentedTypes.put(clazz.qualifiedTypeName(), clazz);
             }
         }
 
@@ -80,11 +78,10 @@ public final class TaskDoclet {
         for (String referencedName : referencedTypes.keySet()) {
             if (documentedTypes.get(referencedName) == null) {
                 ClassDoc referencedClass = root.classNamed(referencedName);
-                if (referencedClass != null) {
-                    if (!referencedClass.qualifiedTypeName().startsWith("org.apache.tools.ant")) {
-                        writeClass(typeHandler, referencedClass, additionalTypes);
-                        documentedTypes.put(referencedClass.qualifiedTypeName(), referencedClass);
-                    }
+                if (referencedClass != null
+                        && !referencedClass.qualifiedTypeName().startsWith("org.apache.tools.ant")) {
+                    writeClass(typeHandler, referencedClass, additionalTypes);
+                    documentedTypes.put(referencedClass.qualifiedTypeName(), referencedClass);
                 }
             }
         }
@@ -98,7 +95,9 @@ public final class TaskDoclet {
      * @return true if class is an Ant task.
      */
     private static boolean isTask(final ClassDoc clazz) {
-        if (clazz == null) return false;
+        if (clazz == null) {
+            return false;
+        }
         if ("org.apache.tools.ant.Task".equals(clazz.qualifiedTypeName())) {
             System.out.print("true");
             return true;
@@ -113,7 +112,9 @@ public final class TaskDoclet {
      * @return true if class is an Ant type.
      */
     private static boolean isType(final ClassDoc clazz) {
-        if (clazz == null) return false;
+        if (clazz == null) {
+            return false;
+        }
         if ("org.apache.tools.ant.types.DataType".equals(clazz.qualifiedTypeName())) {
             return true;
         }

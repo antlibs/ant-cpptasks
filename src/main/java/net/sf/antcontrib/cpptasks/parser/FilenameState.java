@@ -36,9 +36,8 @@ public class FilenameState extends AbstractParserState {
         if (ch == '\n') {
             buf.setLength(0);
             return getParser().getNewLineState();
-        } else {
-            buf.append(ch);
         }
+        buf.append(ch);
         return this;
     }
 }

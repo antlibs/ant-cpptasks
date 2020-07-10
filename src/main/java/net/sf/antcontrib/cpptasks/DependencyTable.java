@@ -231,11 +231,11 @@ public final class DependencyTable {
         }
 
         public boolean visit(DependencyInfo dependInfo) {
-            if (noNeedToRebuild) {
-                if (isSignificantlyAfter(dependInfo.getSourceLastModified(), outputLastModified)
-                        || isSignificantlyAfter(dependInfo.getCompositeLastModified(), outputLastModified)) {
-                    noNeedToRebuild = false;
-                }
+            if (noNeedToRebuild && (isSignificantlyAfter(dependInfo.getSourceLastModified(),
+                    outputLastModified)
+                    || isSignificantlyAfter(dependInfo.getCompositeLastModified(),
+                    outputLastModified))) {
+                noNeedToRebuild = false;
             }
             //
             //   only need to process the children if
@@ -506,13 +506,12 @@ public final class DependencyTable {
                     stackPosition = i;
                     stack[i] = dependInfo;
                     break;
-                } else {
-                    //
-                    //   if we have appeared early in the calling history
-                    //      then we didn't exceed the criteria
-                    if (stack[i] == dependInfo) {
-                        return;
-                    }
+                }
+                //
+                //   if we have appeared early in the calling history
+                //      then we didn't exceed the criteria
+                if (stack[i] == dependInfo) {
+                    return;
                 }
             }
             if (stackPosition == -1) {

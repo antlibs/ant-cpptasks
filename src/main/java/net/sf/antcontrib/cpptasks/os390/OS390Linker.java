@@ -106,8 +106,10 @@ public final class OS390Linker extends CommandLineLinker {
                     if (lib.startsWith("//")) {
                         endargs.addElement("-l");
                         endargs.addElement(lib);
-                    } else if (libset.getDataset() != null) {
-                        String ds = libset.getDataset();
+                        continue;
+                    }
+                    String ds = libset.getDataset();
+                    if (ds != null) {
                         endargs.addElement("//'" + ds + "(" + lib + ")'");
                     }
                 }

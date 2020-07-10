@@ -131,12 +131,10 @@ public abstract class AbstractLdLinker extends CommandLineLinker {
                 if (set.getType() != null && "static".equals(set.getType().getValue())) {
                     endargs.addElement(getStaticLibFlag());
                     previousLibraryType = set.getType();
-                } else {
-                    if (set.getType() == null
-                            || !"framework".equals(set.getType().getValue()) || !isDarwin()) {
-                        endargs.addElement(getDynamicLibFlag());
-                        previousLibraryType = set.getType();
-                    }
+                } else if (set.getType() == null
+                        || !"framework".equals(set.getType().getValue()) || !isDarwin()) {
+                    endargs.addElement(getDynamicLibFlag());
+                    previousLibraryType = set.getType();
                 }
             }
             StringBuilder buf = new StringBuilder("-l");
@@ -278,10 +276,7 @@ public abstract class AbstractLdLinker extends CommandLineLinker {
 
     protected boolean isHPUX() {
         String osname = System.getProperty("os.name").toLowerCase();
-        if (osname.contains("hp") && osname.contains("ux")) {
-            return true;
-        }
-        return false;
+        return osname.contains("hp") && osname.contains("ux");
     }
 
     /**

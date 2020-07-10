@@ -215,21 +215,15 @@ public class CUtil {
                 if (!prefix1.equals(prefix2)) {
                     return canonicalTarget;
                 }
-            } else {
-                if (canonicalBase.startsWith(":\\", 1)) {
-                    int endPrefix = 2;
-                    String prefix1 = canonicalBase.substring(0, endPrefix);
-                    String prefix2 = canonicalTarget.substring(0, endPrefix);
-                    if (!prefix1.equals(prefix2)) {
-                        return canonicalTarget;
-                    }
-                } else {
-                    if (canonicalBase.charAt(0) == '/') {
-                        if (canonicalTarget.charAt(0) != '/') {
-                            return canonicalTarget;
-                        }
-                    }
+            } else if (canonicalBase.startsWith(":\\", 1)) {
+                int endPrefix = 2;
+                String prefix1 = canonicalBase.substring(0, endPrefix);
+                String prefix2 = canonicalTarget.substring(0, endPrefix);
+                if (!prefix1.equals(prefix2)) {
+                    return canonicalTarget;
                 }
+            } else if (canonicalBase.charAt(0) == '/' && canonicalTarget.charAt(0) != '/') {
+                return canonicalTarget;
             }
             char separator = File.separatorChar;
             int lastCommonSeparator = -1;
@@ -241,12 +235,11 @@ public class CUtil {
             //  walk to the shorter of the two paths
             //      finding the last separator they have in common
             for (int i = 0; i < minLength; i++) {
-                if (canonicalTarget.charAt(i) == canonicalBase.charAt(i)) {
-                    if (canonicalTarget.charAt(i) == separator) {
-                        lastCommonSeparator = i;
-                    }
-                } else {
+                if (canonicalTarget.charAt(i) != canonicalBase.charAt(i)) {
                     break;
+                }
+                if (canonicalTarget.charAt(i) == separator) {
+                    lastCommonSeparator = i;
                 }
             }
             StringBuilder relativePath = new StringBuilder(50);
