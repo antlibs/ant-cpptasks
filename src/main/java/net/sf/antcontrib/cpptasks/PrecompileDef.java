@@ -75,9 +75,8 @@ public final class PrecompileDef extends DataType {
     }
 
     public String[] getExceptFiles() {
-        PrecompileDef ref = getRef();
-        if (ref != null) {
-            return ref.getExceptFiles();
+        if (isReference()) {
+            return getRef().getExceptFiles();
         }
         if (exceptSets.size() == 0) {
             return new String[0];
@@ -115,19 +114,10 @@ public final class PrecompileDef extends DataType {
      * @return File
      */
     public File getPrototype() {
-        PrecompileDef ref = getRef();
-        if (ref != null) {
-            return ref.getPrototype();
+        if (isReference()) {
+            return getRef().getPrototype();
         }
         return prototype;
-    }
-
-    private PrecompileDef getRef() {
-        if (isReference()) {
-            return getCheckedRef(PrecompileDef.class,
-                    "PrecompileDef");
-        }
-        return null;
     }
 
     public boolean isActive() {
@@ -227,5 +217,9 @@ public final class PrecompileDef extends DataType {
      */
     public void setUnless(String propName) {
         unlessCond = propName;
+    }
+
+    private PrecompileDef getRef() {
+        return getCheckedRef(PrecompileDef.class, "PrecompileDef");
     }
 }

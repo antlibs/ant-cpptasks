@@ -197,13 +197,11 @@ public abstract class ProcessorDef extends DataType {
                                                       TargetDef targetPlatform,
                                                       VersionInfo versionInfo) {
         if (isReference()) {
-            return getCheckedRef(ProcessorDef.class,
-                    "ProcessorDef").createConfiguration(task, linkType,
+            return getRef().createConfiguration(task, linkType,
                     baseDef, targetPlatform, versionInfo);
         }
-        ProcessorDef[] defaultProviders = getDefaultProviders(baseDef);
-        Processor proc = getProcessor(linkType);
-        return proc.createConfiguration(task, linkType, defaultProviders, this, targetPlatform, versionInfo);
+        return getProcessor(linkType).createConfiguration(task, linkType,
+                getDefaultProviders(baseDef), this, targetPlatform, versionInfo);
     }
 
     /**
@@ -218,8 +216,7 @@ public abstract class ProcessorDef extends DataType {
             throw new IllegalStateException("project must be set");
         }
         if (isReference()) {
-            return getCheckedRef(ProcessorDef.class,
-                    "ProcessorDef").getActiveProcessorArgs();
+            return getRef().getActiveProcessorArgs();
         }
         Vector<CommandLineArgument> activeArgs = new Vector<CommandLineArgument>();
         for (CommandLineArgument arg : processorArgs) {
@@ -242,8 +239,7 @@ public abstract class ProcessorDef extends DataType {
             throw new IllegalStateException("project must be set");
         }
         if (isReference()) {
-            return getCheckedRef(ProcessorDef.class,
-                    "ProcessorDef").getActiveProcessorParams();
+            return getRef().getActiveProcessorParams();
         }
         Vector<ProcessorParam> activeParams = new Vector<ProcessorParam>();
         for (ProcessorParam param : processorParams) {
@@ -263,8 +259,7 @@ public abstract class ProcessorDef extends DataType {
      */
     public boolean getDebug(ProcessorDef[] defaultProviders, int index) {
         if (isReference()) {
-            return getCheckedRef(ProcessorDef.class,
-                    "ProcessorDef").getDebug(defaultProviders, index);
+            return getRef().getDebug(defaultProviders, index);
         }
         if (debug != null) {
             return debug;
@@ -334,8 +329,7 @@ public abstract class ProcessorDef extends DataType {
             return libtool;
         }
         if (isReference()) {
-            return getCheckedRef(ProcessorDef.class,
-                    "ProcessorDef").getLibtool();
+            return getRef().getLibtool();
         }
         ProcessorDef extendsDef = getExtends();
         if (extendsDef != null) {
@@ -351,8 +345,7 @@ public abstract class ProcessorDef extends DataType {
      */
     protected Processor getProcessor() {
         if (isReference()) {
-            return getCheckedRef(ProcessorDef.class,
-                    "ProcessorDef").getProcessor();
+            return getRef().getProcessor();
         }
         //
         //   if a processor has not been explicitly set
@@ -388,8 +381,7 @@ public abstract class ProcessorDef extends DataType {
      */
     public boolean getRebuild(ProcessorDef[] defaultProviders, int index) {
         if (isReference()) {
-            return getCheckedRef(ProcessorDef.class,
-                    "ProcessorDef").getRebuild(defaultProviders, index);
+            return getRef().getRebuild(defaultProviders, index);
         }
         if (rebuild != null) {
             return rebuild;
@@ -410,8 +402,7 @@ public abstract class ProcessorDef extends DataType {
      */
     public boolean hasFileSets() {
         if (isReference()) {
-            return getCheckedRef(ProcessorDef.class,
-                    "ProcessorDef").hasFileSets();
+            return getRef().hasFileSets();
         }
         return srcSets.size() > 0;
     }
@@ -433,14 +424,9 @@ public abstract class ProcessorDef extends DataType {
      */
     public boolean isActive() throws BuildException, IllegalStateException {
         Project project = getProject();
-        if (!CUtil.isActive(project, ifProp, unlessProp)) {
+        if (!CUtil.isActive(project, ifProp, unlessProp)
+                || isReference() && !getRef().isActive()) {
             return false;
-        }
-        if (isReference()) {
-            if (!getCheckedRef(ProcessorDef.class,
-                    "ProcessorDef").isActive()) {
-                return false;
-            }
         }
         //
         //  walk through any extended definitions
@@ -665,8 +651,7 @@ public abstract class ProcessorDef extends DataType {
             throw new IllegalStateException("project must be set before this call");
         }
         if (isReference()) {
-            getCheckedRef(ProcessorDef.class,
-                    "ProcessorDef").visitFiles(visitor);
+            getRef().visitFiles(visitor);
         }
         //
         //   if this processor extends another,
@@ -689,5 +674,9 @@ public abstract class ProcessorDef extends DataType {
                 }
             }
         }
+    }
+
+    private ProcessorDef getRef() {
+        return getCheckedRef(ProcessorDef.class, "ProcessorDef");
     }
 }

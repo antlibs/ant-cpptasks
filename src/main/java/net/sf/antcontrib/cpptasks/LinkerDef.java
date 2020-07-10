@@ -142,8 +142,7 @@ public class LinkerDef extends ProcessorDef {
      */
     public LibrarySet[] getActiveLibrarySets(LinkerDef[] defaultProviders, int index) {
         if (isReference()) {
-            return getCheckedRef(LinkerDef.class,
-                    "LinkerDef").getActiveUserLibrarySets(defaultProviders, index);
+            return getRef().getActiveUserLibrarySets(defaultProviders, index);
         }
         Project p = getProject();
         Vector<LibrarySet> libsets = new Vector<LibrarySet>();
@@ -167,8 +166,7 @@ public class LinkerDef extends ProcessorDef {
      */
     public LibrarySet[] getActiveSystemLibrarySets(LinkerDef[] defaultProviders, int index) {
         if (isReference()) {
-            return getCheckedRef(LinkerDef.class,
-                    "LinkerDef").getActiveUserLibrarySets(defaultProviders, index);
+            return getRef().getActiveUserLibrarySets(defaultProviders, index);
         }
         Project p = getProject();
         Vector<LibrarySet> libsets = new Vector<LibrarySet>();
@@ -188,8 +186,7 @@ public class LinkerDef extends ProcessorDef {
      */
     public LibrarySet[] getActiveUserLibrarySets(LinkerDef[] defaultProviders, int index) {
         if (isReference()) {
-            return getCheckedRef(LinkerDef.class,
-                    "LinkerDef").getActiveUserLibrarySets(defaultProviders, index);
+            return getRef().getActiveUserLibrarySets(defaultProviders, index);
         }
         Project p = getProject();
         Vector<LibrarySet> libsets = new Vector<LibrarySet>();
@@ -202,8 +199,7 @@ public class LinkerDef extends ProcessorDef {
 
     public long getBase(LinkerDef[] defaultProviders, int index) {
         if (isReference()) {
-            return getCheckedRef(LinkerDef.class,
-                    "LinkerDef").getBase(defaultProviders, index);
+            return getRef().getBase(defaultProviders, index);
         }
         if (base <= 0) {
             if (defaultProviders != null && index < defaultProviders.length) {
@@ -215,8 +211,7 @@ public class LinkerDef extends ProcessorDef {
 
     public Boolean getFixed(LinkerDef[] defaultProviders, int index) {
         if (isReference()) {
-            return getCheckedRef(LinkerDef.class,
-                    "LinkerDef").getFixed(defaultProviders, index);
+            return getRef().getFixed(defaultProviders, index);
         }
         if (fixed == null) {
             if (defaultProviders != null && index < defaultProviders.length) {
@@ -229,8 +224,7 @@ public class LinkerDef extends ProcessorDef {
 
     public boolean getIncremental(LinkerDef[] defaultProviders, int index) {
         if (isReference()) {
-            return getCheckedRef(LinkerDef.class,
-                    "LinkerDef").getIncremental(defaultProviders, index);
+            return getRef().getIncremental(defaultProviders, index);
         }
         if (incremental != null) {
             return incremental;
@@ -243,8 +237,7 @@ public class LinkerDef extends ProcessorDef {
 
     public boolean getMap(LinkerDef[] defaultProviders, int index) {
         if (isReference()) {
-            return getCheckedRef(LinkerDef.class,
-                    "LinkerDef").getMap(defaultProviders, index);
+            return getRef().getMap(defaultProviders, index);
         }
         if (map != null) {
             return map;
@@ -257,8 +250,7 @@ public class LinkerDef extends ProcessorDef {
 
     public String getEntry(LinkerDef[] defaultProviders, int index) {
         if (isReference()) {
-            return getCheckedRef(LinkerDef.class,
-                    "LinkerDef").getEntry(defaultProviders, index);
+            return getRef().getEntry(defaultProviders, index);
         }
         if (entry != null) {
             return entry;
@@ -288,8 +280,7 @@ public class LinkerDef extends ProcessorDef {
 
     public int getStack(LinkerDef[] defaultProviders, int index) {
         if (isReference()) {
-            return getCheckedRef(LinkerDef.class,
-                    "LinkerDef").getStack(defaultProviders, index);
+            return getRef().getStack(defaultProviders, index);
         }
         if (stack < 0) {
             if (defaultProviders != null && index < defaultProviders.length) {
@@ -488,9 +479,7 @@ public class LinkerDef extends ProcessorDef {
             throw new IllegalStateException("project must be set");
         }
         if (isReference()) {
-            LinkerDef master = getCheckedRef(LinkerDef.class,
-                    "Linker");
-            master.visitSystemLibraries(linker, libraryVisitor);
+            getRef().visitSystemLibraries(linker, libraryVisitor);
         } else {
             //
             //   if this linker extends another,
@@ -517,9 +506,7 @@ public class LinkerDef extends ProcessorDef {
             throw new IllegalStateException("project must be set");
         }
         if (isReference()) {
-            LinkerDef master = getCheckedRef(LinkerDef.class,
-                    "Linker");
-            master.visitUserLibraries(linker, libraryVisitor);
+            getRef().visitUserLibraries(linker, libraryVisitor);
         } else {
             //
             //   if this linker extends another,
@@ -541,5 +528,9 @@ public class LinkerDef extends ProcessorDef {
                 }
             }
         }
+    }
+
+    private LinkerDef getRef() {
+        return getCheckedRef(LinkerDef.class, "LinkerDef");
     }
 }
