@@ -99,7 +99,7 @@ public final class TaskDoclet {
             return false;
         }
         if ("org.apache.tools.ant.Task".equals(clazz.qualifiedTypeName())) {
-            System.out.print("true");
+            System.out.println("task=true");
             return true;
         }
         return isTask(clazz.superclass());
