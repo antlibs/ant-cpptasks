@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <!--
  Licensed to the Ant-Contrib Project under one or more
  contributor license agreements.  See the NOTICE file distributed with
@@ -15,10 +16,18 @@
  limitations under the License.
 
 -->
-<project name="cpptasks: Compile tasks for Apache Ant">
+<project name="ant-cpptasks: Compiler tasks for Apache Ant"
+         xmlns="http://maven.apache.org/DECORATION/1.8.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/DECORATION/1.8.0 http://maven.apache.org/xsd/decoration-1.8.0.xsd">
+  <skin>
+    <groupId>org.apache.maven.skins</groupId>
+    <artifactId>maven-fluido-skin</artifactId>
+    <version>1.9</version>
+  </skin>
   <bannerLeft>
-    <name>ant-contrib</name>
-    <href>http://ant-contrib.sourceforge.net/</href>
+    <name>ant-cpptasks</name>
+    <href>http://ant-contrib.sourceforge.net/cpptasks/</href>
   </bannerLeft>
   <bannerRight>
     <name>SourceForge.net Logo</name>
@@ -27,17 +36,16 @@
   </bannerRight>
   <body>
     <breadcrumbs>
-      <item name="ant-contrib" href="http://ant-contrib.sourceforge.net/"/>
-      <item name="cpptasks" href="http://ant-contrib.sourceforge.net:80/cpptasks/"/>
+      <item name="ant-cpptasks" href="http://ant-contrib.sourceforge.net/cpptasks/"/>
     </breadcrumbs>
 
-    <menu name="Get cpptasks">
+    <menu name="Get ant-cpptasks">
       <item name="Download" href="http://sourceforge.net/project/showfiles.php?group_id=36177"/>
       <item name="Changes" href="/changes-report.html"/>
-      <item name="License" href="/license.html"/>
+      <item name="Licenses" href="/licenses.html"/>
     </menu>
 
-    <menu name="About cpptasks">
+    <menu name="About ant-cpptasks">
       <item name="Usage" href="/index.html"/>
     </menu>
 
@@ -54,16 +62,16 @@
     </menu>
 
     <menu name="Community">
-      <item name="Mailing Lists" href="/mail-lists.html"/>
-      <item name="Issue Tracking" href="/issue-tracking.html"/>
-      <item name="Project Page" href="http://sourceforge.net/projects/ant-contrib/"/>
-      <item name="News" href="http://sourceforge.net/news/?group_id=36177"/>
+      <item name="Mailing Lists" href="/mailing-lists.html"/>
+      <item name="Issue Management" href="/issue-management.html"/>
+      <item name="Project Page" href="https://sourceforge.net/projects/ant-contrib/"/>
+      <item name="News" href="https://sourceforge.net/p/ant-contrib/discussion/"/>
     </menu>
 
     <menu name="Development">
-      <item name="Repository" href="/source-repository.html"/>
+      <item name="Repository" href="/scm.html"/>
       <item name="JavaDoc" href="/apidocs/index.html"/>
-      <item name="Continuous Integration" href="/integration.html"/>
+      <item name="Continuous Integration" href="/ci-management.html"/>
     </menu>
   </body>
 </project>

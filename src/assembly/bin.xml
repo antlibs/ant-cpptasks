@@ -20,14 +20,12 @@
     <format>zip</format>
     <format>tar.gz</format>
   </formats>
-  <baseDirectory>cpptasks-${project.version}</baseDirectory>
+  <baseDirectory>ant-cpptasks-${project.version}</baseDirectory>
   <includeSiteDirectory>true</includeSiteDirectory>
   <fileSets>
     <fileSet>
       <includes>
         <include>*.xml</include>
-        <include>INSTALL</include>
-        <include>KEYS</include>
         <include>LICENSE</include>
         <include>NOTICE</include>
         <include>src/**</include>
