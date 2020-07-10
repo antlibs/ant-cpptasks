@@ -51,15 +51,9 @@ public class ProcessorParam {
      * @return boolean
      */
     public boolean isActive(Project p) {
-        if (value == null) {
-            return false;
-        }
-        if (ifCond != null && p.getProperty(ifCond) == null) {
-            return false;
-        } else if (unlessCond != null && p.getProperty(unlessCond) != null) {
-            return false;
-        }
-        return true;
+        return value != null
+                && (ifCond == null || p.getProperty(ifCond) != null)
+                && (unlessCond == null || p.getProperty(unlessCond) == null);
     }
 
     /**

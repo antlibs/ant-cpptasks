@@ -179,7 +179,7 @@ public final class BorlandLinker extends CommandLineLinker {
         String startup = null;
         for (String sourceFile : sourceFiles) {
             String filename = new File(sourceFile).getName().toLowerCase();
-            if (startup != null && filename.startsWith("c0")
+            if (startup == null && filename.startsWith("c0")
                     && filename.startsWith("32", 3)
                     && filename.endsWith(".obj")) {
                 startup = sourceFile;
@@ -200,16 +200,12 @@ public final class BorlandLinker extends CommandLineLinker {
             String last4 = sourceFile.substring(sourceFile.length() - 4).toLowerCase();
             if (last4.equals(".def")) {
                 defFile = quoteFilename(buf, sourceFile);
+            } else if (last4.equals(".res")) {
+                resFiles.addElement(quoteFilename(buf, sourceFile));
+            } else if (last4.equals(".lib")) {
+                libFiles.addElement(quoteFilename(buf, sourceFile));
             } else {
-                if (last4.equals(".res")) {
-                    resFiles.addElement(quoteFilename(buf, sourceFile));
-                } else {
-                    if (last4.equals(".lib")) {
-                        libFiles.addElement(quoteFilename(buf, sourceFile));
-                    } else {
-                        execArgs.addElement(quoteFilename(buf, sourceFile));
-                    }
-                }
+                execArgs.addElement(quoteFilename(buf, sourceFile));
             }
         }
         //

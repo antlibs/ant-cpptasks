@@ -196,16 +196,14 @@ public class GppLinker extends AbstractLdLinker {
         if (type.isPluginModule()) {
             if (GccProcessor.getMachine().contains("darwin")) {
                 return machPluginLinker;
-            } else {
-                return dllLinker;
             }
+            return dllLinker;
         }
         if (type.isSharedLibrary()) {
             if (GccProcessor.getMachine().contains("darwin")) {
                 return machDllLinker;
-            } else {
-                return dllLinker;
             }
+            return dllLinker;
         }
         return instance;
     }

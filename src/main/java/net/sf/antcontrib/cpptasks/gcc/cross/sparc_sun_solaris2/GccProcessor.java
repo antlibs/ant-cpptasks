@@ -196,10 +196,7 @@ public class GccProcessor {
 
     private static boolean isHPUX() {
         String osname = System.getProperty("os.name").toLowerCase();
-        if (osname.contains("hp") && osname.contains("ux")) {
-            return true;
-        }
-        return false;
+        return osname.contains("hp") && osname.contains("ux");
     }
 
     /**

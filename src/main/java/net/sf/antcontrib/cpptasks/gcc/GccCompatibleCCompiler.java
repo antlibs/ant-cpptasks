@@ -98,12 +98,10 @@ public abstract class GccCompatibleCCompiler extends CommandLineCCompiler {
                 } else if (optimization.isSpeed()) {
                     if ("full".equals(optimization.getValue())) {
                         args.addElement("-O2");
+                    } else if ("speed".equals(optimization.getValue())) {
+                        args.addElement("-O1");
                     } else {
-                        if ("speed".equals(optimization.getValue())) {
-                            args.addElement("-O1");
-                        } else {
-                            args.addElement("-O3");
-                        }
+                        args.addElement("-O3");
                     }
                 }
             }

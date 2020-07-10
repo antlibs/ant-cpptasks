@@ -55,7 +55,8 @@ public final class DependencyDef {
     public String getName() {
         if (name != null) {
             return name;
-        } else if (file != null) {
+        }
+        if (file != null) {
             return file.getName();
         }
         return "null";

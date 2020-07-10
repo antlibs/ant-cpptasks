@@ -231,10 +231,8 @@ public final class VisualStudioNETProjectWriter implements ProjectWriter {
                     if (macro.equals("NDEBUG")) {
                         macro = "_DEBUG";
                     }
-                } else {
-                    if (macro.equals("_DEBUG")) {
-                        macro = "NDEBUG";
-                    }
+                } else if (macro.equals("_DEBUG")) {
+                    macro = "NDEBUG";
                 }
                 defines.append(macro);
                 defines.append(";");

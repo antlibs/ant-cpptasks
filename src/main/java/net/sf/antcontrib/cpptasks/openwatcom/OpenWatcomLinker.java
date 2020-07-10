@@ -87,10 +87,8 @@ public abstract class OpenWatcomLinker extends CommandLineLinker {
         if (linkType.isExecutable()) {
             if (linkType.isSubsystemConsole()) {
                 args.addElement("/bc");
-            } else {
-                if (linkType.isSubsystemGUI()) {
-                    args.addElement("/bg");
-                }
+            } else if (linkType.isSubsystemGUI()) {
+                args.addElement("/bg");
             }
         }
         if (linkType.isSharedLibrary()) {

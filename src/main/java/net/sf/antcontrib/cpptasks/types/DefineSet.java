@@ -93,13 +93,11 @@ public class DefineSet extends DataType {
     public UndefineArgument[] getDefines() throws BuildException {
         if (isReference()) {
             return getRef().getDefines();
-        } else {
-            if (isActive()) {
-                return defineList.toArray(new UndefineArgument[0]);
-            } else {
-                return new UndefineArgument[0];
-            }
         }
+        if (isActive()) {
+            return defineList.toArray(new UndefineArgument[0]);
+        }
+        return new UndefineArgument[0];
     }
 
     /**

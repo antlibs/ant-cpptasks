@@ -122,11 +122,8 @@ public final class PrecompileDef extends DataType {
 
     public boolean isActive() {
         boolean isActive = CUtil.isActive(getProject(), ifCond, unlessCond);
-        if (!isActive) {
-            PrecompileDef ref = getRef();
-            if (ref != null) {
-                return ref.isActive();
-            }
+        if (!isActive && isReference()) {
+            return getRef().isActive();
         }
         return isActive;
     }

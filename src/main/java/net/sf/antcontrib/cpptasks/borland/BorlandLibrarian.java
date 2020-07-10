@@ -153,16 +153,9 @@ public class BorlandLibrarian extends CommandLineLinker {
 
         for (String sourceFile : sourceFiles) {
             String last4 = sourceFile.substring(sourceFile.length() - 4).toLowerCase();
-            if (last4.equals(".def")) {
-            } else {
-                if (last4.equals(".res")) {
-                } else {
-                    if (last4.equals(".lib")) {
-                    } else {
-                        execArgs.addElement("+" + quoteFilename(buf, sourceFile));
-                        objBytes += new File(sourceFile).length();
-                    }
-                }
+            if ((!last4.equals(".def") && !last4.equals(".res")) && !last4.equals(".lib")) {
+                execArgs.addElement("+" + quoteFilename(buf, sourceFile));
+                objBytes += new File(sourceFile).length();
             }
         }
 
