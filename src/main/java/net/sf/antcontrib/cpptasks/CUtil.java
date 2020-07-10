@@ -168,8 +168,7 @@ public class CUtil {
                 }
             }
         }
-        File[] noPath = new File[0];
-        return noPath;
+        return new File[0];
     }
 
     /**

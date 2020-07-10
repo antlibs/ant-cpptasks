@@ -113,8 +113,7 @@ public final class OpenWatcomProcessor {
         } else {
             buf.append(outPath);
         }
-        String[] retval = new String[]{buf.toString()};
-        return retval;
+        return new String[]{buf.toString()};
     }
 
     /**

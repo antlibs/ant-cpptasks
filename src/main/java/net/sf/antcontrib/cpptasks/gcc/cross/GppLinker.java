@@ -104,8 +104,7 @@ public class GppLinker extends AbstractLdLinker {
     }
 
     protected Object clone() throws CloneNotSupportedException {
-        GppLinker clone = (GppLinker) super.clone();
-        return clone;
+        return (GppLinker) super.clone();
     }
 
     /**

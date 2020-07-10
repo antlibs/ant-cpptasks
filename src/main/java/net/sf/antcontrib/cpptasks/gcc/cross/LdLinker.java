@@ -57,8 +57,7 @@ public final class LdLinker extends AbstractLdLinker {
     }
 
     protected Object clone() throws CloneNotSupportedException {
-        LdLinker clone = (LdLinker) super.clone();
-        return clone;
+        return (LdLinker) super.clone();
     }
 
     public Linker getLinker(LinkType type) {

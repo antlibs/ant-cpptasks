@@ -119,8 +119,7 @@ public final class TargetInfo {
     }
 
     public File[] getSources() {
-        File[] clone = sources.clone();
-        return clone;
+        return sources.clone();
     }
 
     public String[] getSysSourcePaths() {
@@ -132,8 +131,7 @@ public final class TargetInfo {
     }
 
     public File[] getSysSources() {
-        File[] clone = sysSources.clone();
-        return clone;
+        return sysSources.clone();
     }
 
     public void mustRebuild() {

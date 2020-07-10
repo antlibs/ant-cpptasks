@@ -48,8 +48,7 @@ public final class GccLibrarian extends AbstractArLibrarian {
     }
 
     protected Object clone() throws CloneNotSupportedException {
-        GccLibrarian clone = (GccLibrarian) super.clone();
-        return clone;
+        return (GccLibrarian) super.clone();
     }
 
     public Linker getLinker(LinkType type) {

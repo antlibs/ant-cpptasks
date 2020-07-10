@@ -75,8 +75,7 @@ public final class DependencyInfo {
     }
 
     public String[] getIncludes() {
-        String[] includesClone = includes.clone();
-        return includesClone;
+        return includes.clone();
     }
 
     public String getSource() {
@@ -88,8 +87,7 @@ public final class DependencyInfo {
     }
 
     public String[] getSysIncludes() {
-        String[] sysIncludesClone = sysIncludes.clone();
-        return sysIncludesClone;
+        return sysIncludes.clone();
     }
 
     public void setCompositeLastModified(long lastMod) {

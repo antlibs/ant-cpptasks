@@ -160,8 +160,7 @@ public final class GccCCompiler extends GccCompatibleCCompiler {
     }
 
     protected Object clone() throws CloneNotSupportedException {
-        GccCCompiler clone = (GccCCompiler) super.clone();
-        return clone;
+        return (GccCCompiler) super.clone();
     }
 
     public void compile(CCTask task, File outputDir, String[] sourceFiles,

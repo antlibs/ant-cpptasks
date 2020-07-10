@@ -47,12 +47,10 @@ public class UndefineArgument {
     public static UndefineArgument[] merge(UndefineArgument[] base,
                                            UndefineArgument[] override) {
         if (base.length == 0) {
-            UndefineArgument[] overrideClone = override.clone();
-            return overrideClone;
+            return override.clone();
         }
         if (override.length == 0) {
-            UndefineArgument[] baseClone = base.clone();
-            return baseClone;
+            return base.clone();
         }
         Vector<UndefineArgument> unduplicated = new Vector<UndefineArgument>();
         for (UndefineArgument current : base) {

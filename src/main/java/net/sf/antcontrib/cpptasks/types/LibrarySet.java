@@ -95,8 +95,7 @@ public class LibrarySet extends DataType {
             LibrarySet master = getCheckedRef(LibrarySet.class, "LibrarySet");
             return master.getLibs();
         }
-        String[] retval = libnames.clone();
-        return retval;
+        return libnames.clone();
     }
 
     /**
