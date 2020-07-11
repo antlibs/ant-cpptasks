@@ -49,6 +49,7 @@ public class TestDependencyTable extends TestXMLConsumer {
      * @throws IOException if something goes wrong
      * @throws ParserConfigurationException if parser configuration is wrong
      * @throws SAXException if parser input is incorrect
+     * @throws URISyntaxException if resource URI is incorrect
      */
     @Test
     public void testLoadOpenshore() throws IOException, ParserConfigurationException, SAXException, URISyntaxException {
@@ -63,6 +64,7 @@ public class TestDependencyTable extends TestXMLConsumer {
      * @throws IOException if something goes wrong
      * @throws ParserConfigurationException if parser configuration is wrong
      * @throws SAXException if parser input is incorrect
+     * @throws URISyntaxException if resource URI is incorrect
      */
     @Test
     public void testLoadXerces() throws IOException, ParserConfigurationException, SAXException, URISyntaxException {

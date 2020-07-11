@@ -74,6 +74,7 @@ public class TestTargetHistoryTable extends TestXMLConsumer {
      * Tests loading a stock history file
      *
      * @throws IOException if something goes wrong
+     * @throws URISyntaxException if resource URI is incorrect
      */
     @Test
     public void testLoadOpenshore() throws IOException, URISyntaxException {
@@ -86,6 +87,7 @@ public class TestTargetHistoryTable extends TestXMLConsumer {
      * Tests loading a stock history file
      *
      * @throws IOException if something goes wrong
+     * @throws URISyntaxException if resource URI is incorrect
      */
     @Test
     public void testLoadXerces() throws IOException, URISyntaxException {
