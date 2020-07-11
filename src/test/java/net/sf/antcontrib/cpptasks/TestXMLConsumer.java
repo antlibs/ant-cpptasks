@@ -36,6 +36,7 @@ public abstract class TestXMLConsumer {
      * @param source resource name, such as "files/openshore/history.xml".
      * @param dest   temporary file created by TesmporaryFoolder rule.
      * @throws IOException if something goes wrong
+     * @throws URISyntaxException if resource URI is incorrect
      */
     public static void copyResource(String source, File dest) throws IOException, URISyntaxException {
         URL url = TestAllClasses.class.getClassLoader().getResource(source);
