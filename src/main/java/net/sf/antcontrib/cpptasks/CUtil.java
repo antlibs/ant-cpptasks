@@ -52,7 +52,7 @@ public class CUtil {
             Vector<String> valueList = new Vector<String>();
             while (tokens.hasMoreTokens()) {
                 String val = tokens.nextToken().trim();
-                if (val.length() == 0) {
+                if (val.isEmpty()) {
                     continue;
                 }
                 valueList.addElement(val);

@@ -110,7 +110,7 @@ public class CompaqVisualFortranCompiler extends CommandLineFortranCompiler {
     protected void getDefineSwitch(StringBuilder buf, String define, String value) {
         buf.append("/define:");
         buf.append(define);
-        if (value != null && value.length() > 0) {
+        if (value != null && !value.isEmpty()) {
             buf.append('=');
             buf.append(value);
         }

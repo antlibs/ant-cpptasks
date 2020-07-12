@@ -49,7 +49,7 @@ public final class BorlandProcessor {
     public static void getDefineSwitch(StringBuilder buffer, String define, String value) {
         buffer.append("-D");
         buffer.append(define);
-        if (value != null && value.length() > 0) {
+        if (value != null && !value.isEmpty()) {
             buffer.append('=');
             buffer.append(value);
         }

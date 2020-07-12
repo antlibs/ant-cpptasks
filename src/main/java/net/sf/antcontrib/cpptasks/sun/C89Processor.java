@@ -71,7 +71,7 @@ public class C89Processor {
         buf.setLength(0);
         buf.append("-D");
         buf.append(define);
-        if (value != null && value.length() > 0) {
+        if (value != null && !value.isEmpty()) {
             buf.append('=');
             buf.append(value);
         }

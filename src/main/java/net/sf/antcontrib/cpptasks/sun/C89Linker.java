@@ -133,7 +133,7 @@ public final class C89Linker extends CommandLineLinker {
 
     public String[] getOutputFileNames(String baseName, VersionInfo versionInfo) {
         String[] baseNames = super.getOutputFileNames(baseName, versionInfo);
-        if (outputPrefix.length() > 0) {
+        if (!outputPrefix.isEmpty()) {
             for (int i = 0; i < baseNames.length; i++) {
                 baseNames[i] = outputPrefix + baseNames[i];
             }

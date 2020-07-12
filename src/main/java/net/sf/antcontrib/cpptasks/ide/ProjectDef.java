@@ -159,7 +159,7 @@ public final class ProjectDef extends DataType {
         //
         //   if file name was empty, skip link step
         //
-        if (outfile == null || outfile.toString().length() > 0) {
+        if (outfile == null || !outfile.toString().isEmpty()) {
             outFile = outfile;
         }
     }

@@ -1308,7 +1308,7 @@ public class CCTask extends Task {
         //
         //   if file name was empty, skip link step
         //
-        if (outfile == null || outfile.toString().length() > 0) {
+        if (outfile == null || !outfile.toString().isEmpty()) {
             mOutfile = outfile;
         }
     }
