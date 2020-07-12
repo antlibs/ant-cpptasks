@@ -32,7 +32,6 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 import org.xml.sax.helpers.DefaultHandler;
 
-import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.Source;
 import javax.xml.transform.sax.SAXTransformerFactory;
@@ -64,17 +63,16 @@ public final class TaskDoclet {
         //  replace with tf.newTransformerHandler() if you want to see raw generated XML.
         TransformerHandler typeHandler = tf.newTransformerHandler(typeStyle);
 
-        Map<String, Object> referencedTypes = new HashMap<String, Object>();
+        Map<String, Type> referencedTypes = new HashMap<String, Type>();
         Map<String, ClassDoc> documentedTypes = new HashMap<String, ClassDoc>();
-        ClassDoc[] classes = root.classes();
-        for (ClassDoc clazz : classes) {
+        for (ClassDoc clazz : root.classes()) {
             if (clazz.isPublic() && !clazz.isAbstract() && (isTask(clazz) || isType(clazz))) {
                 writeClass(typeHandler, clazz, referencedTypes);
                 documentedTypes.put(clazz.qualifiedTypeName(), clazz);
             }
         }
 
-        Map<String, Object> additionalTypes = new HashMap<String, Object>();
+        Map<String, Type> additionalTypes = new HashMap<String, Type>();
         for (String referencedName : referencedTypes.keySet()) {
             if (documentedTypes.get(referencedName) == null) {
                 ClassDoc referencedClass = root.classNamed(referencedName);
@@ -95,14 +93,9 @@ public final class TaskDoclet {
      * @return true if class is an Ant task.
      */
     private static boolean isTask(final ClassDoc clazz) {
-        if (clazz == null) {
-            return false;
-        }
-        if ("org.apache.tools.ant.Task".equals(clazz.qualifiedTypeName())) {
-            System.out.println("task=true");
-            return true;
-        }
-        return isTask(clazz.superclass());
+        return clazz != null
+                && ("org.apache.tools.ant.Task".equals(clazz.qualifiedTypeName())
+                || isTask(clazz.superclass()));
     }
 
     /**
@@ -112,13 +105,9 @@ public final class TaskDoclet {
      * @return true if class is an Ant type.
      */
     private static boolean isType(final ClassDoc clazz) {
-        if (clazz == null) {
-            return false;
-        }
-        if ("org.apache.tools.ant.types.DataType".equals(clazz.qualifiedTypeName())) {
-            return true;
-        }
-        return isType(clazz.superclass());
+        return clazz != null
+                && ("org.apache.tools.ant.types.DataType".equals(clazz.qualifiedTypeName())
+                || isType(clazz.superclass()));
     }
 
     /**
@@ -160,7 +149,8 @@ public final class TaskDoclet {
      */
     private static void writeAttribute(final TransformerHandler tf, final MethodDoc method) throws Exception {
         AttributesImpl attributes = new AttributesImpl();
-        attributes.addAttribute(null, "name", "name", "CDATA", method.name().substring(3).toLowerCase(Locale.US));
+        attributes.addAttribute(null, "name", "name", "CDATA",
+                method.name().substring(3).toLowerCase(Locale.US));
         tf.startElement(NS_URI, "attribute", "attribute", attributes);
         writeType(tf, method.parameters()[0].type());
         attributes.clear();
@@ -184,7 +174,7 @@ public final class TaskDoclet {
                                    final MethodDoc method,
                                    final String name,
                                    final Type type,
-                                   final Map<String, Object> referencedTypes) throws Exception {
+                                   final Map<String, Type> referencedTypes) throws Exception {
         AttributesImpl attributes = new AttributesImpl();
         attributes.addAttribute(null, "name", "name", "CDATA", name.toLowerCase(Locale.US));
         tf.startElement(NS_URI, "child", "child", attributes);
@@ -222,7 +212,8 @@ public final class TaskDoclet {
         /**
          * {@inheritDoc}
          */
-        public void characters(final char[] ch, final int start, final int length) throws SAXException {
+        public void characters(final char[] ch, final int start, final int length)
+                throws SAXException {
             tf.characters(ch, start, length);
         }
 
@@ -260,7 +251,8 @@ public final class TaskDoclet {
         /**
          * {@inheritDoc}
          */
-        public void processingInstruction(final String target, final String data) throws SAXException {
+        public void processingInstruction(final String target, final String data)
+                throws SAXException {
             tf.processingInstruction(target, data);
         }
 
@@ -325,8 +317,8 @@ public final class TaskDoclet {
             try {
                 SAXParserFactory sf = SAXParserFactory.newInstance();
                 sf.setNamespaceAware(true);
-                SAXParser parser = sf.newSAXParser();
-                parser.parse(new InputSource(new StringReader(buf.toString())), new RedirectHandler(tf));
+                sf.newSAXParser().parse(new InputSource(new StringReader(buf.toString())),
+                        new RedirectHandler(tf));
             } catch (Exception ex) {
                 tf.characters(ex.toString().toCharArray(), 0, ex.toString().length());
             }
@@ -344,14 +336,15 @@ public final class TaskDoclet {
      */
     private static void writeAttributes(final TransformerHandler tf,
                                         final ClassDoc clazz,
-                                        final Map<String, Object> processed,
-                                        final Map<String, Object> referencedTypes) throws Exception {
-        MethodDoc[] methods = clazz.methods();
-        for (MethodDoc method : methods) {
+                                        final Map<String, MethodDoc> processed,
+                                        final Map<String, Type> referencedTypes) throws Exception {
+        for (MethodDoc method : clazz.methods()) {
             if (processed.get(method.name()) == null) {
-                if (method.name().startsWith("set") && method.isPublic() && method.parameters().length == 1) {
+                if (method.name().startsWith("set") && method.isPublic()
+                        && method.parameters().length == 1) {
                     writeAttribute(tf, method);
-                    referencedTypes.put(method.parameters()[0].typeName(), method.parameters()[0].type());
+                    referencedTypes.put(method.parameters()[0].typeName(),
+                            method.parameters()[0].type());
                 }
                 processed.put(method.name(), method);
             }
@@ -373,9 +366,8 @@ public final class TaskDoclet {
     private static void writeChildren(final TransformerHandler tf,
                                       final ClassDoc clazz,
                                       final Map<String, MethodDoc> processed,
-                                      final Map<String, Object> referencedTypes) throws Exception {
-        MethodDoc[] methods = clazz.methods();
-        for (MethodDoc method : methods) {
+                                      final Map<String, Type> referencedTypes) throws Exception {
+        for (MethodDoc method : clazz.methods()) {
             if (processed.get(method.name()) == null) {
                 if (method.name().startsWith("addConfigured") && method.isPublic() && method.parameters().length == 1) {
                     writeChild(tf, method, method.name().substring(13), method.parameters()[0].type(), referencedTypes);
@@ -402,7 +394,7 @@ public final class TaskDoclet {
      */
     private static void writeClass(final TransformerHandler tf,
                                    final ClassDoc clazz,
-                                   final Map<String, Object> referencedTypes) throws Exception {
+                                   final Map<String, Type> referencedTypes) throws Exception {
         StreamResult result = new StreamResult(new File("src/site/xdoc/antdocs/" + clazz.name() + ".xml"));
         tf.setResult(result);
         AttributesImpl attributes = new AttributesImpl();
@@ -422,9 +414,9 @@ public final class TaskDoclet {
         tf.endElement(NS_URI, "comment", "comment");
 
         tf.startElement(NS_URI, "attributes", "attributes", attributes);
-        Map<String, Object> methods = new HashMap<String, Object>();
-        methods.put("setProject", "setProject");
-        methods.put("setRuntimeConfigurableWrapper", "setRuntimeConfigurableWrapper");
+        Map<String, MethodDoc> methods = new HashMap<String, MethodDoc>();
+//        methods.put("setProject", "setProject");
+//        methods.put("setRuntimeConfigurableWrapper", "setRuntimeConfigurableWrapper");
         writeAttributes(tf, clazz, methods, referencedTypes);
         tf.endElement(NS_URI, "attributes", "attributes");
 
