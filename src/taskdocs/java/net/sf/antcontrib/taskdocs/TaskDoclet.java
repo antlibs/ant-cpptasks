@@ -132,10 +132,10 @@ public final class TaskDoclet {
         attributes.addAttribute(null, "qualifiedTypeName", "qualifiedTypeName", "CDATA", type.qualifiedTypeName());
         tf.startElement(NS_URI, "type", "type", attributes);
         ClassDoc typeDoc = type.asClassDoc();
-        if (typeDoc != null && typeDoc.commentText() != null && typeDoc.commentText().length() > 0) {
-            writeDescription(tf, typeDoc.commentText());
-        } else {
+        if (typeDoc == null || typeDoc.commentText() == null || typeDoc.commentText().isEmpty()) {
             tf.characters(type.typeName().toCharArray(), 0, type.typeName().length());
+        } else {
+            writeDescription(tf, typeDoc.commentText());
         }
         tf.endElement(NS_URI, "type", "type");
     }
