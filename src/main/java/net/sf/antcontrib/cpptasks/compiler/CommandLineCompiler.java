@@ -94,12 +94,10 @@ public abstract class CommandLineCompiler extends AbstractCompiler {
                 String relative = CUtil.getRelativePath(baseDirPath, includeDir);
                 relativeArgs.addElement(getIncludeDirSwitch(relative));
                 if (includePathId != null) {
-                    if (includePathId.length() == 0) {
-                        includePathId.append("/I");
-                    } else {
-                        includePathId.append(" /I");
+                    if (includePathId.length() > 0) {
+                        includePathId.append(" ");
                     }
-                    includePathId.append(relative);
+                    includePathId.append("/I").append(relative);
                 }
             }
         }
