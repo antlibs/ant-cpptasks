@@ -338,7 +338,7 @@ public class CCTask extends Task {
     }
 
     /**
-     * Add an environment variable to the launched process.
+     * Adds an environment variable to the launched process.
      *
      * @param var Environment.Variable
      */
