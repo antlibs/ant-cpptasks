@@ -175,6 +175,10 @@ public final class TaskDoclet {
                                    final String name,
                                    final Type type,
                                    final Map<String, Type> referencedTypes) throws Exception {
+        // skip add(), addConfigured() and create()
+        if (name.isEmpty()) {
+            return;
+        }
         AttributesImpl attributes = new AttributesImpl();
         attributes.addAttribute(null, "name", "name", "CDATA", name.toLowerCase(Locale.US));
         tf.startElement(NS_URI, "child", "child", attributes);

@@ -182,9 +182,14 @@
       <xsl:attribute name="href">
         <xsl:choose>
           <xsl:when test="starts-with(@qualifiedTypeName, 'net.sf.antcontrib.cpptasks')"><xsl:value-of select="@name"/>.html</xsl:when>
-          <xsl:when test="starts-with(@qualifiedTypeName, 'org.apache.tools.ant.types.PatternSet')">http://ant.apache.org/manual/Types/patternset.html</xsl:when>
-          <xsl:when test="starts-with(@qualifiedTypeName, 'org.apache.tools.ant.types.Path')">http://ant.apache.org/manual/using.html#path</xsl:when>
-          <xsl:when test="starts-with(@qualifiedTypeName, 'org.apache.tools.ant.types.Commandline')">http://ant.apache.org/manual/Tasks/exec.html</xsl:when>
+          <xsl:when test="starts-with(@qualifiedTypeName, 'org.apache.tools.ant.types.FileList')">https://ant.apache.org/manual/Types/filelist.html</xsl:when>
+          <xsl:when test="starts-with(@qualifiedTypeName, 'org.apache.tools.ant.types.FileSet')">https://ant.apache.org/manual/Types/fileset.html</xsl:when>
+          <xsl:when test="starts-with(@qualifiedTypeName, 'org.apache.tools.ant.types.DirSet')">https://ant.apache.org/manual/Types/dirset.html</xsl:when>
+          <xsl:when test="starts-with(@qualifiedTypeName, 'org.apache.tools.ant.types.PatternSet')">https://ant.apache.org/manual/Types/patternset.html</xsl:when>
+          <xsl:when test="starts-with(@qualifiedTypeName, 'org.apache.tools.ant.types.Path')">https://ant.apache.org/manual/using.html#path</xsl:when>
+          <xsl:when test="starts-with(@qualifiedTypeName, 'org.apache.tools.ant.types.Commandline')">https://ant.apache.org/manual/Tasks/exec.html</xsl:when>
+          <xsl:when test="starts-with(@qualifiedTypeName, 'org.apache.tools.ant.types.Environment.Variable')">https://ant.apache.org/manual/Tasks/exec.html#env</xsl:when>
+          <xsl:when test="starts-with(@qualifiedTypeName, 'org.apache.tools.ant.types.selectors')">https://ant.apache.org/manual/Types/selectors.html</xsl:when>
           <xsl:otherwise>about:blank</xsl:otherwise>
         </xsl:choose>
       </xsl:attribute>
