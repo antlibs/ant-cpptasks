@@ -372,15 +372,16 @@ public final class TaskDoclet {
                                       final Map<String, MethodDoc> processed,
                                       final Map<String, Type> referencedTypes) throws Exception {
         for (MethodDoc method : clazz.methods()) {
-            if (processed.get(method.name()) == null) {
-                if (method.name().startsWith("addConfigured") && method.isPublic() && method.parameters().length == 1) {
-                    writeChild(tf, method, method.name().substring(13), method.parameters()[0].type(), referencedTypes);
-                } else if (method.name().startsWith("add") && method.isPublic() && method.parameters().length == 1) {
-                    writeChild(tf, method, method.name().substring(3), method.parameters()[0].type(), referencedTypes);
-                } else if (method.isPublic() && method.parameters().length == 0 && method.name().startsWith("create")) {
-                    writeChild(tf, method, method.name().substring(6), method.returnType(), referencedTypes);
+            final String methodName = method.name();
+            if (processed.get(methodName) == null) {
+                if (methodName.startsWith("addConfigured") && method.isPublic() && method.parameters().length == 1) {
+                    writeChild(tf, method, methodName.substring(13), method.parameters()[0].type(), referencedTypes);
+                } else if (methodName.startsWith("add") && method.isPublic() && method.parameters().length == 1) {
+                    writeChild(tf, method, methodName.substring(3), method.parameters()[0].type(), referencedTypes);
+                } else if (method.isPublic() && method.parameters().length == 0 && methodName.startsWith("create")) {
+                    writeChild(tf, method, methodName.substring(6), method.returnType(), referencedTypes);
                 }
-                processed.put(method.name(), method);
+                processed.put(methodName, method);
             }
         }
         if (clazz.superclass() != null) {
