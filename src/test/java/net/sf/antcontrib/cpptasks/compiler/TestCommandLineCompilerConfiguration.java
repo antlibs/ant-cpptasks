@@ -28,16 +28,12 @@ import static org.junit.Assert.assertEquals;
 /**
  *
  */
-public class TestCommandLineCompilerConfiguration
-        extends
-        TestCompilerConfiguration {
+public class TestCommandLineCompilerConfiguration extends TestCompilerConfiguration {
     private CommandLineCompiler compiler;
-    private String compilerId;
 
     @Before
     public void startUp() {
         compiler = GccCCompiler.getInstance();
-        compilerId = compiler.getIdentifier();
     }
 
     protected CompilerConfiguration create() {
