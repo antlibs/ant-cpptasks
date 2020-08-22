@@ -19,6 +19,7 @@ package net.sf.antcontrib.cpptasks;
 import net.sf.antcontrib.cpptasks.compiler.CompilerConfiguration;
 import net.sf.antcontrib.cpptasks.compiler.ProgressMonitor;
 import org.apache.tools.ant.BuildException;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
@@ -32,6 +33,9 @@ import static org.junit.Assert.assertTrue;
  * A description of a file built or to be built
  */
 public class TestTargetInfo {
+
+    private CompilerConfiguration config;
+
     private class DummyConfiguration implements CompilerConfiguration {
         public int bid(String filename) {
             return 1;
@@ -87,6 +91,11 @@ public class TestTargetInfo {
         }
     }
 
+    @Before
+    public void setUp() throws Exception {
+        config = new DummyConfiguration();
+    }
+
     @Test(expected = NullPointerException.class)
     public void testConstructorNullConfig() {
         new TargetInfo(null, new File[]{new File("")}, null, new File(""), false);
@@ -94,19 +103,16 @@ public class TestTargetInfo {
 
     @Test(expected = NullPointerException.class)
     public void testConstructorNullOutput() {
-        CompilerConfiguration config = new DummyConfiguration();
         new TargetInfo(config, new File[]{new File("")}, null, null, false);
     }
 
     @Test(expected = NullPointerException.class)
     public void testConstructorNullSource() {
-        CompilerConfiguration config = new DummyConfiguration();
         new TargetInfo(config, null, null, new File(""), false);
     }
 
     @Test
     public void testGetRebuild() {
-        CompilerConfiguration config = new DummyConfiguration();
         TargetInfo targetInfo = new TargetInfo(config, new File[]{new File("FoO.BaR")},
                 null, new File("foo.o"), false);
         assertFalse(targetInfo.getRebuild());
@@ -117,7 +123,6 @@ public class TestTargetInfo {
 
    @Test
     public void testGetSource() {
-        CompilerConfiguration config = new DummyConfiguration();
         TargetInfo targetInfo = new TargetInfo(config, new File[]{new File("FoO.BaR")},
                 null, new File("foo.o"), false);
         String source = targetInfo.getSources()[0].getName();
@@ -126,7 +131,6 @@ public class TestTargetInfo {
 
     @Test
     public void testHasSameSource() {
-        CompilerConfiguration config = new DummyConfiguration();
         TargetInfo targetInfo = new TargetInfo(config, new File[]{new File("foo.bar")},
                 null, new File("foo.o"), false);
         assertEquals(targetInfo.getSources()[0], new File("foo.bar"));
@@ -135,7 +139,6 @@ public class TestTargetInfo {
 
     @Test
     public void testMustRebuild() {
-        CompilerConfiguration config = new DummyConfiguration();
         TargetInfo targetInfo = new TargetInfo(config, new File[]{new File("FoO.BaR")},
                 null, new File("foo.o"), false);
         assertFalse(targetInfo.getRebuild());

@@ -20,6 +20,7 @@ import net.sf.antcontrib.cpptasks.compiler.AbstractProcessor;
 import net.sf.antcontrib.cpptasks.parser.CParser;
 import net.sf.antcontrib.cpptasks.parser.FortranParser;
 import net.sf.antcontrib.cpptasks.parser.Parser;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
@@ -31,61 +32,65 @@ import static org.junit.Assert.assertTrue;
  * Test gcc compiler adapter
  */
 public class TestGccCCompiler extends TestGccCompatibleCCompiler {
+
+    private GccCCompiler compiler;
+
     protected GccCompatibleCCompiler create() {
         return GccCCompiler.getInstance();
     }
 
+    @Before
+    public void setUp() throws Exception {
+        compiler = GccCCompiler.getInstance();
+    }
+
     @Test
     public void testBidObjectiveAssembly() {
-        GccCCompiler compiler = GccCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.s"));
     }
 
     @Test
     public void testBidObjectiveC() {
-        GccCCompiler compiler = GccCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.m"));
     }
 
     @Test
     public void testBidObjectiveCpp() {
-        GccCCompiler compiler = GccCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.mm"));
     }
 
     @Test
     public void testBidPreprocessedCpp() {
-        GccCCompiler compiler = GccCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.ii"));
     }
 
     @Test
     public void testCreateCParser1() {
-        Parser parser = GccCCompiler.getInstance().createParser(new File("foo.c"));
+        Parser parser = compiler.createParser(new File("foo.c"));
         assertTrue(parser instanceof CParser);
     }
 
     @Test
     public void testCreateCParser2() {
-        Parser parser = GccCCompiler.getInstance().createParser(new File("foo."));
+        Parser parser = compiler.createParser(new File("foo."));
         assertTrue(parser instanceof CParser);
     }
 
     @Test
     public void testCreateCParser3() {
-        Parser parser = GccCCompiler.getInstance().createParser(new File("foo"));
+        Parser parser = compiler.createParser(new File("foo"));
         assertTrue(parser instanceof CParser);
     }
 
     @Test
     public void testCreateFortranParser1() {
-        Parser parser = GccCCompiler.getInstance().createParser(new File("foo.f"));
+        Parser parser = compiler.createParser(new File("foo.f"));
         assertTrue(parser instanceof FortranParser);
     }
 
     @Test
     public void testCreateFortranParser2() {
-        Parser parser = GccCCompiler.getInstance().createParser(new File("foo.FoR"));
+        Parser parser = compiler.createParser(new File("foo.FoR"));
         assertTrue(parser instanceof FortranParser);
     }
 }

@@ -16,6 +16,7 @@
  */
 package net.sf.antcontrib.cpptasks.parser;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.CharArrayReader;
@@ -27,6 +28,14 @@ import static org.junit.Assert.assertEquals;
  * Tests for the CParser class.
  */
 public final class TestCParser {
+
+    private CParser parser;
+
+    @Before
+    public void setUp() throws Exception {
+        parser = new CParser();
+    }
+
     /**
      * Checks parsing of #include &lt;foo.h&gt;.
      *
@@ -35,7 +44,6 @@ public final class TestCParser {
     @Test
     public void testImmediateImportBracket() throws IOException {
         CharArrayReader reader = new CharArrayReader("#import <foo.h> nowhatever  ".toCharArray());
-        CParser parser = new CParser();
         parser.parse(reader);
         String[] includes = parser.getIncludes();
         assertEquals(includes.length, 1);
@@ -50,7 +58,6 @@ public final class TestCParser {
     @Test
     public void testImmediateImportQuote() throws IOException {
         CharArrayReader reader = new CharArrayReader("#import \"foo.h\"   ".toCharArray());
-        CParser parser = new CParser();
         parser.parse(reader);
         String[] includes = parser.getIncludes();
         assertEquals(includes.length, 1);
@@ -65,7 +72,6 @@ public final class TestCParser {
     @Test
     public void testImmediateIncludeBracket() throws IOException {
         CharArrayReader reader = new CharArrayReader("#include      <foo.h>   ".toCharArray());
-        CParser parser = new CParser();
         parser.parse(reader);
         String[] includes = parser.getIncludes();
         assertEquals(includes.length, 1);
@@ -80,7 +86,6 @@ public final class TestCParser {
     @Test
     public void testImmediateIncludeQuote() throws IOException {
         CharArrayReader reader = new CharArrayReader("#include     \"foo.h\"   ".toCharArray());
-        CParser parser = new CParser();
         parser.parse(reader);
         String[] includes = parser.getIncludes();
         assertEquals(includes.length, 1);
@@ -96,7 +101,6 @@ public final class TestCParser {
     @Test
     public void testIncompleteImmediateImportBracket() throws IOException {
         CharArrayReader reader = new CharArrayReader("#import <foo.h   ".toCharArray());
-        CParser parser = new CParser();
         parser.parse(reader);
         String[] includes = parser.getIncludes();
         assertEquals(includes.length, 0);
@@ -111,7 +115,6 @@ public final class TestCParser {
     @Test
     public void testIncompleteImmediateImportQuote() throws IOException {
         CharArrayReader reader = new CharArrayReader("#import \"foo.h   ".toCharArray());
-        CParser parser = new CParser();
         parser.parse(reader);
         String[] includes = parser.getIncludes();
         assertEquals(includes.length, 0);
@@ -126,7 +129,6 @@ public final class TestCParser {
     @Test
     public void testIncompleteImmediateIncludeBracket() throws IOException {
         CharArrayReader reader = new CharArrayReader("#include <foo.h   ".toCharArray());
-        CParser parser = new CParser();
         parser.parse(reader);
         String[] includes = parser.getIncludes();
         assertEquals(includes.length, 0);
@@ -141,7 +143,6 @@ public final class TestCParser {
     @Test
     public void testIncompleteImmediateIncludeQuote() throws IOException {
         CharArrayReader reader = new CharArrayReader("#include     \"foo.h    ".toCharArray());
-        CParser parser = new CParser();
         parser.parse(reader);
         String[] includes = parser.getIncludes();
         assertEquals(includes.length, 0);
@@ -155,7 +156,6 @@ public final class TestCParser {
     @Test
     public void testNoQuoteOrBracket() throws IOException {
         CharArrayReader reader = new CharArrayReader("#include foo.h  ".toCharArray());
-        CParser parser = new CParser();
         parser.parse(reader);
         String[] includes = parser.getIncludes();
         assertEquals(includes.length, 0);
@@ -169,7 +169,6 @@ public final class TestCParser {
     @Test
     public void testNotFirstWhitespace() throws IOException {
         CharArrayReader reader = new CharArrayReader("//#include \"foo.h\"".toCharArray());
-        CParser parser = new CParser();
         parser.parse(reader);
         String[] includes = parser.getIncludes();
         assertEquals(includes.length, 0);
@@ -183,7 +182,6 @@ public final class TestCParser {
     @Test
     public void testLeadingSpace() throws IOException {
         CharArrayReader reader = new CharArrayReader(" #include     \"foo.h\"   ".toCharArray());
-        CParser parser = new CParser();
         parser.parse(reader);
         String[] includes = parser.getIncludes();
         assertEquals(includes.length, 1);
@@ -198,7 +196,6 @@ public final class TestCParser {
     @Test
     public void testLeadingTab() throws IOException {
         CharArrayReader reader = new CharArrayReader("\t#include     \"foo.h\"   ".toCharArray());
-        CParser parser = new CParser();
         parser.parse(reader);
         String[] includes = parser.getIncludes();
         assertEquals(includes.length, 1);

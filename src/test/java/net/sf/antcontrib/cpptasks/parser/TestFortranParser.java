@@ -16,6 +16,7 @@
  */
 package net.sf.antcontrib.cpptasks.parser;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.CharArrayReader;
@@ -27,6 +28,14 @@ import static org.junit.Assert.assertEquals;
  * Tests for the CParser class.
  */
 public final class TestFortranParser {
+
+    private FortranParser parser;
+
+    @Before
+    public void setUp() throws Exception {
+        parser = new FortranParser();
+    }
+
     /**
      * Checks parsing of INCLUDE 'foo.inc'.
      *
@@ -36,7 +45,6 @@ public final class TestFortranParser {
     public void testINCLUDE() throws IOException {
         CharArrayReader reader =
                 new CharArrayReader("INCLUDE 'foo.inc' nowhatever  ".toCharArray());
-        FortranParser parser = new FortranParser();
         parser.parse(reader);
         String[] includes = parser.getIncludes();
         assertEquals(includes.length, 1);
@@ -51,7 +59,6 @@ public final class TestFortranParser {
     @Test
     public void testInClUdE() throws IOException {
         CharArrayReader reader = new CharArrayReader("InClUdE 'foo.inc'  ".toCharArray());
-        FortranParser parser = new FortranParser();
         parser.parse(reader);
         String[] includes = parser.getIncludes();
         assertEquals(includes.length, 1);
@@ -67,7 +74,6 @@ public final class TestFortranParser {
     public void testMultipleInClUdE() throws IOException {
         CharArrayReader reader =
                 new CharArrayReader("InClUdE 'foo.inc'\ninclude 'bar.inc'  ".toCharArray());
-        FortranParser parser = new FortranParser();
         parser.parse(reader);
         String[] includes = parser.getIncludes();
         assertEquals(includes.length, 2);
