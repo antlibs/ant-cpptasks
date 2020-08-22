@@ -24,6 +24,7 @@ import net.sf.antcontrib.cpptasks.devstudio.DevStudioLibrarian;
 import net.sf.antcontrib.cpptasks.devstudio.DevStudioLinker;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
@@ -37,13 +38,21 @@ import static org.junit.Assert.assertTrue;
  * Tests for the LibrarySet class.
  */
 public class TestLibrarySet {
+
+    private LibrarySet libset;
+    private Project project;
+
+    @Before
+    public void setUp() throws Exception {
+        libset = new LibrarySet();
+        project = new Project();
+    }
+
     /**
      * Evaluate isActive when "if" specifies a property that is set.
      */
     @Test
     public final void testIsActive1() {
-        LibrarySet libset = new LibrarySet();
-        Project project = new Project();
         project.setProperty("windows", "");
         libset.setProject(project);
         libset.setIf("windows");
@@ -59,11 +68,8 @@ public class TestLibrarySet {
      */
     @Test(expected = BuildException.class)
     public final void testIsActive2() {
-        LibrarySet libset = new LibrarySet();
-        Project project = new Project();
         //
-        // setting the value to false should throw
-        //    exception to warn user that they are misusing if
+        // setting the value to false should throw exception to warn user that they are misusing if
         //
         project.setProperty("windows", "false");
         libset.setIf("windows");
@@ -75,8 +81,6 @@ public class TestLibrarySet {
      */
     @Test
     public final void testIsActive3() {
-        LibrarySet libset = new LibrarySet();
-        Project project = new Project();
         libset.setIf("windows");
         boolean isActive = libset.isActive(project);
         assertFalse(isActive);
@@ -87,8 +91,6 @@ public class TestLibrarySet {
      */
     @Test
     public final void testIsActive4() {
-        LibrarySet libset = new LibrarySet();
-        Project project = new Project();
         project.setProperty("windows", "");
         libset.setUnless("windows");
         boolean isActive = libset.isActive(project);
@@ -101,11 +103,9 @@ public class TestLibrarySet {
      */
     @Test(expected = BuildException.class)
     public final void testIsActive5() {
-        LibrarySet libset = new LibrarySet();
-        Project project = new Project();
         //
         // setting the value to false should throw
-        //    exception to warn user that they are misusing if
+        // exception to warn user that they are misusing if
         //
         project.setProperty("windows", "false");
         libset.setUnless("windows");
@@ -117,8 +117,6 @@ public class TestLibrarySet {
      */
     @Test
     public final void testIsActive6() {
-        LibrarySet libset = new LibrarySet();
-        Project project = new Project();
         libset.setProject(project);
         libset.setUnless("windows");
         CUtil.StringArrayBuilder libs = new CUtil.StringArrayBuilder("kernel32");
@@ -133,11 +131,9 @@ public class TestLibrarySet {
      */
     @Test
     public final void testLibContainsDot() {
-        LibrarySet libset = new LibrarySet();
-        Project p = new Project();
         MockBuildListener listener = new MockBuildListener();
-        p.addBuildListener(listener);
-        libset.setProject(p);
+        project.addBuildListener(listener);
+        libset.setProject(project);
         CUtil.StringArrayBuilder libs = new CUtil.StringArrayBuilder("mylib1.1");
         libset.setLibs(libs);
         assertEquals(0, listener.getMessageLoggedEvents().size());
@@ -151,11 +147,9 @@ public class TestLibrarySet {
      */
     @Test
     public final void testLibContainsDotLib() {
-        LibrarySet libset = new LibrarySet();
-        Project p = new Project();
         MockBuildListener listener = new MockBuildListener();
-        p.addBuildListener(listener);
-        libset.setProject(p);
+        project.addBuildListener(listener);
+        libset.setProject(project);
         CUtil.StringArrayBuilder libs = new CUtil.StringArrayBuilder("mylib1.lib");
         libset.setLibs(libs);
         assertEquals(0, listener.getMessageLoggedEvents().size());
@@ -167,12 +161,10 @@ public class TestLibrarySet {
      */
     @Test
     public final void testLibNotSpecified() {
-        LibrarySet libset = new LibrarySet();
-        Project p = new Project();
         MockBuildListener listener = new MockBuildListener();
-        p.addBuildListener(listener);
-        libset.setProject(p);
-        boolean isActive = libset.isActive(p);
+        project.addBuildListener(listener);
+        libset.setProject(project);
+        boolean isActive = libset.isActive(project);
         assertFalse(isActive);
         assertEquals(1, listener.getMessageLoggedEvents().size());
     }
@@ -183,9 +175,8 @@ public class TestLibrarySet {
      */
     @Test
     public final void testShortLibName() {
-        LibrarySet libset = new LibrarySet();
         CUtil.StringArrayBuilder libs = new CUtil.StringArrayBuilder("li");
-        libset.setProject(new Project());
+        libset.setProject(project);
         libset.setLibs(libs);
     }
 
@@ -197,11 +188,9 @@ public class TestLibrarySet {
      */
     @Test
     public final void testStartsWithLib() {
-        LibrarySet libset = new LibrarySet();
-        Project p = new Project();
         MockBuildListener listener = new MockBuildListener();
-        p.addBuildListener(listener);
-        libset.setProject(p);
+        project.addBuildListener(listener);
+        libset.setProject(project);
         CUtil.StringArrayBuilder libs = new CUtil.StringArrayBuilder("libmylib1");
         libset.setLibs(libs);
         assertEquals(0, listener.getMessageLoggedEvents().size());
@@ -217,47 +206,41 @@ public class TestLibrarySet {
      *                     files
      */
     private void testVisitFiles(final Linker linker, final int expected) throws IOException {
-        LibrarySet libset = new LibrarySet();
-        Project p = new Project();
         MockBuildListener listener = new MockBuildListener();
-        p.addBuildListener(listener);
-        libset.setProject(p);
-        //
-        //   create temporary files named cpptasksXXXXX.lib
-        //
+        project.addBuildListener(listener);
+        libset.setProject(project);
+
+        // create temporary files named cpptasksXXXXX.lib
         File lib1 = File.createTempFile("cpptasks", ".lib");
         String lib1Name = lib1.getName();
         lib1Name = lib1Name.substring(0, lib1Name.indexOf(".lib"));
         File lib2 = File.createTempFile("cpptasks", ".lib");
         File baseDir = lib1.getParentFile();
 
-        //   set the dir attribute to the temporary directory
+        // set the dir attribute to the temporary directory
         libset.setDir(baseDir);
-        //   set libs to the file name without the suffix
+        // set libs to the file name without the suffix
         CUtil.StringArrayBuilder libs = new CUtil.StringArrayBuilder(lib1Name);
         libset.setLibs(libs);
 
-        //
-        //   collect all files visited
+        // collect all files visited
         MockFileCollector collector = new MockFileCollector();
-        libset.visitLibraries(p, linker, new File[0], collector);
+        libset.visitLibraries(project, linker, new File[0], collector);
 
-        //
-        //  get the canonical paths for the initial and visited libraries
+        // get the canonical paths for the initial and visited libraries
         String expectedCanonicalPath = lib1.getCanonicalPath();
         String actualCanonicalPath = null;
         if (collector.size() == 1) {
             actualCanonicalPath = new File(collector.getBaseDir(0),
                     collector.getFileName(0)).getCanonicalPath();
         }
-        //
-        //  delete the temporary files
+        // delete the temporary files
         lib1.delete();
         lib2.delete();
         //   was there only one match
         assertEquals(expected, collector.size());
         if (expected == 1) {
-            //   is its canonical path as expected
+            // is its canonical path as expected
             assertEquals(expectedCanonicalPath, actualCanonicalPath);
         }
     }
@@ -301,17 +284,15 @@ public class TestLibrarySet {
     // @Test(expected = BuildException.class)
     @Test
     public final void testBadLibname() {
-        LibrarySet libset = new LibrarySet();
-        Project p = new Project();
         MockBuildListener listener = new MockBuildListener();
-        p.addBuildListener(listener);
-        libset.setProject(p);
+        project.addBuildListener(listener);
+        libset.setProject(project);
         // set libs to the file name without the suffix
         CUtil.StringArrayBuilder libs = new CUtil.StringArrayBuilder("badlibname");
         libset.setLibs(libs);
 
         // collect all files visited
         MockFileCollector collector = new MockFileCollector();
-        libset.visitLibraries(p, DevStudioLinker.getInstance(), new File[0], collector);
+        libset.visitLibraries(project, DevStudioLinker.getInstance(), new File[0], collector);
     }
 }

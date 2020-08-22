@@ -20,6 +20,7 @@ import net.sf.antcontrib.cpptasks.OutputTypeEnum;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -29,19 +30,26 @@ import static org.junit.Assert.assertEquals;
  */
 public class TestGccLinker {
     private final String realOSName = System.getProperty("os.name");
+    private GccLinker linker;
+    private OutputTypeEnum outputType;
+    private LinkType linkType;
 
     @After
     public void tearDown() {
         System.setProperty("os.name", realOSName);
     }
 
+    @Before
+    public void setUp() throws Exception {
+        linker = GccLinker.getInstance();
+        outputType = new OutputTypeEnum();
+        linkType = new LinkType();
+    }
+
     @Test
     public void testGetLinkerDarwinPlugin() {
         System.setProperty("os.name", "Mac OS X");
-        GccLinker linker = GccLinker.getInstance();
-        OutputTypeEnum outputType = new OutputTypeEnum();
         outputType.setValue("plugin");
-        LinkType linkType = new LinkType();
         linkType.setOutputType(outputType);
         Linker pluginLinker = linker.getLinker(linkType);
         assertEquals("libfoo.bundle", pluginLinker.getOutputFileNames("foo", null)[0]);
@@ -50,10 +58,7 @@ public class TestGccLinker {
     @Test
     public void testGetLinkerDarwinShared() {
         System.setProperty("os.name", "Mac OS X");
-        GccLinker linker = GccLinker.getInstance();
-        OutputTypeEnum outputType = new OutputTypeEnum();
         outputType.setValue("shared");
-        LinkType linkType = new LinkType();
         linkType.setOutputType(outputType);
         Linker sharedLinker = linker.getLinker(linkType);
         assertEquals("libfoo.dylib", sharedLinker.getOutputFileNames("foo", null)[0]);
@@ -62,10 +67,7 @@ public class TestGccLinker {
     @Test
     public void testGetLinkerNonDarwinPlugin() {
         System.setProperty("os.name", "Microsoft Windows");
-        GccLinker linker = GccLinker.getInstance();
-        OutputTypeEnum outputType = new OutputTypeEnum();
         outputType.setValue("plugin");
-        LinkType linkType = new LinkType();
         linkType.setOutputType(outputType);
         Linker pluginLinker = linker.getLinker(linkType);
         assertEquals("libfoo.so", pluginLinker.getOutputFileNames("foo", null)[0]);
@@ -74,10 +76,7 @@ public class TestGccLinker {
     @Test
     public void testGetLinkerNonDarwinShared() {
         System.setProperty("os.name", "Microsoft Windows");
-        GccLinker linker = GccLinker.getInstance();
-        OutputTypeEnum outputType = new OutputTypeEnum();
         outputType.setValue("shared");
-        LinkType linkType = new LinkType();
         linkType.setOutputType(outputType);
         Linker sharedLinker = linker.getLinker(linkType);
         assertEquals("libfoo.so", sharedLinker.getOutputFileNames("foo", null)[0]);

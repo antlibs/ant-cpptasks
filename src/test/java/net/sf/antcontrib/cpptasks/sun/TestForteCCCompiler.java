@@ -17,6 +17,7 @@
 package net.sf.antcontrib.cpptasks.sun;
 
 import net.sf.antcontrib.cpptasks.compiler.AbstractProcessor;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Vector;
@@ -29,51 +30,51 @@ import static org.junit.Assert.assertEquals;
 // TODO Since ForteCCCompiler extends GccCompatibleCCompiler, this test
 // should probably extend TestGccCompatibleCCompiler.
 public class TestForteCCCompiler {
+
+    private ForteCCCompiler compiler;
+
+    @Before
+    public void setUp() throws Exception {
+        compiler = ForteCCCompiler.getInstance();
+    }
+
     @Test
     public void testBidC() {
-        ForteCCCompiler compiler = ForteCCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.c"));
     }
 
     @Test
     public void testBidCpp() {
-        ForteCCCompiler compiler = ForteCCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.C"));
     }
 
     @Test
     public void testBidCpp2() {
-        ForteCCCompiler compiler = ForteCCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.cc"));
     }
 
     @Test
     public void testBidCpp3() {
-        ForteCCCompiler compiler = ForteCCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.cxx"));
     }
 
     @Test
     public void testBidCpp4() {
-        ForteCCCompiler compiler = ForteCCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.cpp"));
     }
 
     @Test
     public void testBidCpp5() {
-        ForteCCCompiler compiler = ForteCCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.c++"));
     }
 
     @Test
     public void testBidPreprocessed() {
-        ForteCCCompiler compiler = ForteCCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.i"));
     }
 
     @Test
     public void testBidAssembly() {
-        ForteCCCompiler compiler = ForteCCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.s"));
     }
 
@@ -82,7 +83,6 @@ public class TestForteCCCompiler {
      */
     @Test
     public void testWarningLevel0() {
-        ForteCCCompiler compiler = ForteCCCompiler.getInstance();
         Vector<String> args = new Vector<String>();
         compiler.addWarningSwitch(args, 0);
         assertEquals(1, args.size());
@@ -94,7 +94,6 @@ public class TestForteCCCompiler {
      */
     @Test
     public void testWarningLevel1() {
-        ForteCCCompiler compiler = ForteCCCompiler.getInstance();
         Vector<String> args = new Vector<String>();
         compiler.addWarningSwitch(args, 1);
         assertEquals(0, args.size());
@@ -105,7 +104,6 @@ public class TestForteCCCompiler {
      */
     @Test
     public void testWarningLevel2() {
-        ForteCCCompiler compiler = ForteCCCompiler.getInstance();
         Vector<String> args = new Vector<String>();
         compiler.addWarningSwitch(args, 2);
         assertEquals(0, args.size());
@@ -116,7 +114,6 @@ public class TestForteCCCompiler {
      */
     @Test
     public void testWarningLevel3() {
-        ForteCCCompiler compiler = ForteCCCompiler.getInstance();
         Vector<String> args = new Vector<String>();
         compiler.addWarningSwitch(args, 3);
         assertEquals(1, args.size());
@@ -128,7 +125,6 @@ public class TestForteCCCompiler {
      */
     @Test
     public void testWarningLevel4() {
-        ForteCCCompiler compiler = ForteCCCompiler.getInstance();
         Vector<String> args = new Vector<String>();
         compiler.addWarningSwitch(args, 4);
         assertEquals(1, args.size());
@@ -140,7 +136,6 @@ public class TestForteCCCompiler {
      */
     @Test
     public void testWarningLevel5() {
-        ForteCCCompiler compiler = ForteCCCompiler.getInstance();
         Vector<String> args = new Vector<String>();
         compiler.addWarningSwitch(args, 5);
         assertEquals(2, args.size());

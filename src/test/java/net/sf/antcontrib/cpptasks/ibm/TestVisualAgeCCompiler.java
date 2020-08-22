@@ -17,6 +17,7 @@
 package net.sf.antcontrib.cpptasks.ibm;
 
 import net.sf.antcontrib.cpptasks.compiler.AbstractProcessor;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -27,45 +28,46 @@ import static org.junit.Assert.assertEquals;
 // TODO Since VisualAgeCCompiler extends GccCompatibleCCompiler, this test
 // should probably extend TestGccCompatibleCCompiler.
 public class TestVisualAgeCCompiler {
+
+    private VisualAgeCCompiler compiler;
+
+    @Before
+    public void setUp() throws Exception {
+        compiler = VisualAgeCCompiler.getInstance();
+    }
+
     @Test
     public void testBidC() {
-        VisualAgeCCompiler compiler = VisualAgeCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.c"));
     }
 
     @Test
     public void testBidCpp() {
-        VisualAgeCCompiler compiler = VisualAgeCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.C"));
     }
 
     @Test
     public void testBidCpp2() {
-        VisualAgeCCompiler compiler = VisualAgeCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.cc"));
     }
 
     @Test
     public void testBidCpp3() {
-        VisualAgeCCompiler compiler = VisualAgeCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.cxx"));
     }
 
     @Test
     public void testBidCpp4() {
-        VisualAgeCCompiler compiler = VisualAgeCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.cpp"));
     }
 
     @Test
     public void testBidPreprocessed() {
-        VisualAgeCCompiler compiler = VisualAgeCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.i"));
     }
 
     @Test
     public void testBidAssembly() {
-        VisualAgeCCompiler compiler = VisualAgeCCompiler.getInstance();
         assertEquals(AbstractProcessor.DEFAULT_PROCESS_BID, compiler.bid("foo.s"));
     }
 }
