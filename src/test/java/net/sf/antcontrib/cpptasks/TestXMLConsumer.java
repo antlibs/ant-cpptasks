@@ -34,7 +34,7 @@ public abstract class TestXMLConsumer {
      * copies a resource to a temporary directory.
      *
      * @param source resource name, such as "files/openshore/history.xml".
-     * @param dest   temporary file created by TesmporaryFoolder rule.
+     * @param dest   temporary file created by TemporaryFolder rule.
      * @throws IOException if something goes wrong
      * @throws URISyntaxException if resource URI is incorrect
      */
