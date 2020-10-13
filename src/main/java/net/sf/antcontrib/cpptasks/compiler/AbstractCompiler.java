@@ -124,8 +124,8 @@ public abstract class AbstractCompiler extends AbstractProcessor implements Comp
      * @param task                  task for any diagnostic output
      * @param source                file to be parsed
      * @param includePath           include path to be used to resolve included files
-     * @param sysIncludePath        sysinclude path from build file, files resolved using
-     *                              sysInclude path will not participate in dependency analysis
+     * @param sysIncludePath        system include path from build file, files resolved using
+     *                              system include path will not participate in dependency analysis
      * @param envIncludePath        include path from environment variable, files resolved with
      *                              envIncludePath will not participate in dependency analysis
      * @param baseDir               used to produce relative paths in DependencyInfo
