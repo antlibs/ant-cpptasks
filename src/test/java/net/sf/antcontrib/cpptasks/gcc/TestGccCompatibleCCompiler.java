@@ -74,6 +74,7 @@ public abstract class TestGccCompatibleCCompiler {
     /**
      * Tests command lines switches for warning = 3
      */
+    @Test
     public void testWarningLevel3() {
         GccCompatibleCCompiler compiler = create();
         Vector<String> args = new Vector<String>();
