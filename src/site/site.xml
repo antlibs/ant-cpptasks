@@ -49,6 +49,8 @@
       <item name="Usage" href="/index.html"/>
     </menu>
 
+    <menu ref="reports"/>
+
     <menu name="Elements">
       <item name="cc" href="/antdocs/CCTask.html"/>
       <item name="compiler" href="/antdocs/CompilerDef.html"/>
