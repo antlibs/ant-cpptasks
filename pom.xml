@@ -70,7 +70,7 @@
     <dependency>
       <groupId>org.apache.ant</groupId>
       <artifactId>ant</artifactId>
-      <version>1.9.15</version>
+      <version>1.9.16</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -127,8 +127,7 @@
               <target>
                 <property name="ant.compile.classpath" refid="maven.compile.classpath"/>
                 <mkdir dir="target/taskdocs-classes"/>
-                <javac srcdir="src/taskdocs/java" destdir="target/taskdocs-classes"
-                       fork="true" executable="${jdk.home}/bin/javac" includeantruntime="true" debug="true">
+                <javac srcdir="src/taskdocs/java" destdir="target/taskdocs-classes" fork="true" executable="${jdk.home}/bin/javac" includeantruntime="true" debug="true">
                   <classpath>
                     <pathelement path="${ant.compile.classpath}"/>
                   </classpath>
@@ -151,10 +150,8 @@
             <id>untag-site</id>
             <configuration>
               <target>
-                <taskdef name="replaceregexp"
-                         classname="org.apache.tools.ant.taskdefs.optional.ReplaceRegExp"/>
-                <replaceregexp file="target/site/scm.html" match="/tags/[^ &quot;'&lt;]*"
-                               replace="/trunk" flags="g"/>
+                <taskdef name="replaceregexp" classname="org.apache.tools.ant.taskdefs.optional.ReplaceRegExp"/>
+                <replaceregexp file="target/site/scm.html" match="/tags/[^ &quot;'&lt;]*" replace="/trunk" flags="g"/>
                 <replaceregexp match="Generated on .* for " replace="Generated for " flags="g">
                   <fileset dir="target/site/apidocs" includes="**/*.html"/>
                 </replaceregexp>
